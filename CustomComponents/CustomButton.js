@@ -2,7 +2,6 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
 import { GlobalStyles } from '../Styles/GlobalStyles';
 const { height } = Dimensions.get('window');
-
 const CustomButton = ({ title, onPress, style, textStyle }) => {
   return (
     <TouchableOpacity style={[styles.button, style]} onPress={onPress}>

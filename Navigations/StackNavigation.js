@@ -1,22 +1,22 @@
-// import React from "react";
-// import { NavigationContainer } from "@react-navigation/native";
-// import { createStackNavigator } from "@react-navigation/stack";
-// import { StatusBar } from "expo-status-bar";
-// import CustomButton from "../CustomComponents/CustomButton";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import OnboardingScreen from "../Screens/onboardingScreen";
+import SignupScreen from "../Screens/signupscreen";
+// import LoginScreen from "../screens/LoginScreen"; // Create LoginScreen.jsx
+// import SignUpScreen from "../screens/SignUpScreen"; // Create SignUpScreen.jsx
 
-// const Stack = createStackNavigator();
+const Stack = createStackNavigator();
 
-// export default function StackNavigation() {
-//   return (
-//     <NavigationContainer>
-//       <StatusBar style="auto" />
-//       <Stack.Navigator>
-//         <Stack.Screen
-//           name="Custom"
-//           component={CustomButton}
-//           options={{ headerShown: false }}
-//         />
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// }
+const AppNavigator = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+        {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
+        {/* <Stack.Screen name="SignUp" component={SignupScreen} /> */}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default AppNavigator;
