@@ -56,8 +56,7 @@ const OnboardingScreen = () => {
       <View style={styles.svgContainer}>
         {currentIndex === 0 ? (
           // First Screen → Car1 SVG
-          <Car1Svg width={350} height={330} />
-        ) : currentIndex === 1 ? (
+<Car1Svg style={styles.carSvg} />        ) : currentIndex === 1 ? (
           // Second Screen → Board SVG (Two Times)
           <Image
           source={require("../assets/handsvg.png")}
@@ -140,58 +139,77 @@ const OnboardingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height:"100%"
+    height: "100%",
   },
 
   bgImage: {
     width: "100%",
     height: "100%",
     position: "absolute",
-    top: 100,
+    top: "10%", // Use percentage here for a relative top offset
   },
 
   /* Top Logo */
   logoContainer: {
     alignItems: "center",
+    marginTop: "3%", // Adjust with percentage for relative positioning
+    height:"20%"
   },
   logoImage: {
-    width: 230,
-    height: 220,
+    width: "100%", // Use percentage for responsive width
+    height: "100%", // Use percentage for responsive height
   },
-/* SVG Placement */
+
+
   svgContainer: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center", 
+    height:"50%",
+    width:"100%"
+  },
+  carSvg: {
+    width: "50%", // Adjust the size dynamically
+    height: "30%", // Adjust height accordingly
+    alignSelf: "start", // Center it within the container
   },
   handRight: {
-    width: 300,
-    height: 400,
+    width: "100%",
+    height: "100%", // Percentage for responsive height
     position: "absolute",
-    right: -50,
-    bottom:-5,
-    transform: [{ rotate: "-25deg" }], 
+    right: "-35%",
+    bottom: "-10%", 
+    transform: [{ rotate: "-25deg" }],
+    alignSelf: "end", // Center it within the container
+
   },
-   
+
   cardhand: {
-    width: 400,
-    height: 500,
+    width: "100%", // Responsive width
+    height: "100%", // Responsive height
     position: "absolute",
-    right: 0,
-   top:-70,
-    transform: [{ rotate: "-80deg" }], 
+    right: "-20%",
+    bottom: "-15%", // Percentage based top position
+    transform: [{ rotate: "-80deg" }],
+    alignSelf: "end", // Center it within the container
+
   },
   car4: {
-    width: 300,
-    height: 500,
+    width: "100%", // Use percentage for responsive width
+    height: "100%", // Use percentage for responsive height
     position: "absolute",
-    right: 0,
-   bottom:-70,
-    transform: [{ rotate: "0deg" }], 
+    right: "-28%",
+    bottom: "-12%", // Adjust the bottom position
+    transform: [{ rotate: "0deg" }],
+    alignSelf: "end", 
+
   },
+
   bottomContent: {
     justifyContent: "flex-end",
     alignItems: "center",
-    paddingHorizontal: 12,
-    paddingBottom: 30,
+    paddingHorizontal: "5%",
+    paddingBottom: "3%",
   },
 
   title: {
@@ -204,22 +222,22 @@ const styles = StyleSheet.create({
     fontSize: width * 0.04,
     color: "#3A3A3A",
     textAlign: "center",
-    marginTop: 10,
+    marginTop: "3%", // Percentage margin for spacing
   },
 
-  bottomContainer: { alignItems: "center", width: "100%", marginTop: 20 },
+  bottomContainer: { alignItems: "center", width: "100%", marginTop: "2%" },
 
   button: {
-    paddingVertical: 15,
+    paddingVertical: "3%",
     borderRadius: 15,
     width: "85%",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 5,
+    marginVertical: "2%", // Use percentage for vertical spacing
   },
   nextButton: { backgroundColor: "#2F61BF" },
   loginButton: { borderWidth: 2, borderColor: "#00DBFF" },
-  signupButton: { backgroundColor: "#18B0F8" },
+  signupButton: { backgroundColor: "#2F61BF" },
   skipButton: { borderWidth: 2, borderColor: "#18B0F8" },
 
   buttonText: {
@@ -229,7 +247,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 
-  dotsContainer: { flexDirection: "row", marginVertical: 10 },
+  dotsContainer: { flexDirection: "row", marginVertical: "5%" }, // Adjust spacing
   dot: {
     width: 11,
     height: 11,
@@ -239,5 +257,6 @@ const styles = StyleSheet.create({
   },
   activeDot: { backgroundColor: "#2F61BF", width: 11, height: 11 },
 });
+
 
 export default OnboardingScreen;
