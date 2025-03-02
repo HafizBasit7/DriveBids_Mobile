@@ -1,7 +1,7 @@
 import AppNavigator from "./Navigations/StackNavigation";
-
+import SignupScreen from "./Screens/signupscreen";
 export default function App() {
-  return <AppNavigator />;
+  return <SignupScreen />;
 }
 
 

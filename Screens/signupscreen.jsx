@@ -7,74 +7,58 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import BackIcon from "../assets/SVG/TahirSvgs/arrow-left.svg"; // Import your SVG
+import BackIcon from "../assets/SVG/TahirSvgs/arrow-left.svg";
 
 const { width, height } = Dimensions.get("window");
 
 const SignupScreen = () => {
-  const [role, setRole] = useState("individual"); // Default to Individual
+  const [role, setRole] = useState("private");
 
   return (
     <View style={styles.container}>
-      {/* Back Icon (Top Left) */}
+      {/* Back Icon */}
       <View style={styles.backIconContainer}>
         <BackIcon width={40} height={40} />
       </View>
 
       {/* Top Background Image */}
-      <Image
-        source={require("../assets/signup1.png")}
-        style={styles.bgImageTop}
-      />
+      <Image source={require("../assets/signup1.png")} style={styles.bgImageTop} />
 
-      {/* Conditional Rendering for Image 2 & 3 based on role */}
-      {role === "individual" ? (
+      {/* Role Selection Tabs */}
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={styles.fullTabArea}
+          onPress={() => setRole("private")}
+        >
+          <View style={styles.tab}>
+            {role === "private" && <View style={styles.activeTabIndicator} />}
+            <Text style={styles.tabText}>Private Seller</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.fullTabArea}
+          onPress={() => setRole("trade")}
+        >
+          <View style={styles.tab}>
+            {role === "trade" && <View style={styles.activeTabIndicator} />}
+            <Text style={styles.tabText}>Trade Seller</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      {/* Conditional Images */}
+      {role === "private" ? (
         <>
-          <Image
-            source={require("../assets/signup3.png")}
-            style={styles.bgImageBottom}
-          />
-          <Text style={styles.text1}>Text 1</Text>
-          <Image
-            source={require("../assets/signup2.png")}
-            style={styles.bgImageMiddle}
-          />
-          <Text style={styles.text2}>Text 2</Text>
+          <Image source={require("../assets/signup3.png")} style={styles.bgImageBottom} />
+          <Image source={require("../assets/signup2.png")} style={styles.bgImageMiddle} />
         </>
       ) : (
         <>
-          <Image
-            source={require("../assets/signup2.png")}
-            style={styles.bgImageBottom}
-          />
-          <Text style={styles.text2}>Text 2</Text>
-          <Image
-            source={require("../assets/signup3.png")}
-            style={styles.bgImageMiddle}
-          />
-          <Text style={styles.text1}>Text 1</Text>
+          <Image source={require("../assets/signup2.png")} style={styles.bgImageBottom} />
+          <Image source={require("../assets/signup3.png")} style={styles.bgImageMiddle} />
         </>
       )}
-
-      {/* Role Toggle Buttons (For Testing) */}
-      <View style={styles.roleContainer}>
-        <TouchableOpacity
-          style={[
-            styles.roleButton,
-            role === "individual" && styles.activeRole,
-          ]}
-          onPress={() => setRole("individual")}
-        >
-          <Text style={styles.roleText}>Individual</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.roleButton, role === "trader" && styles.activeRole]}
-          onPress={() => setRole("trader")}
-        >
-          <Text style={styles.roleText}>Trader</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -85,16 +69,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
-  /* Back Icon */
   backIconContainer: {
     position: "absolute",
     top: 40,
     left: 20,
-    zIndex: 10, // Ensure it's above other elements
+    zIndex: 10,
   },
-
-  /* Background Images */
   bgImageTop: {
     position: "absolute",
     top: 0,
@@ -113,48 +93,45 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "80%",
   },
-
-  /* Text 1 (Top Left of Image 3) */
-  text1: {
-    position: "absolute",
-    bottom: height * 0.3,
-    
-    left: 20,
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#ff",
-  },
-
-  /* Text 2 (Top Right of Image 2) */
-  text2: {
-    position: "absolute",
-    bottom: height * 0.5,
-    right: 20,
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#fff",
-  },
-
-  /* Role Toggle Buttons */
-  roleContainer: {
-    position: "absolute",
-    bottom: 100,
+  tabContainer: {
     flexDirection: "row",
-    gap: 10,
+    position: "absolute",
+    top: height * 0.3,
+    width: "100%",
+    justifyContent: "space-evenly",
+    zIndex: 10,
   },
-  roleButton: {
-    padding: 12,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    backgroundColor: "#fff",
+  fullTabArea: {
+    flex: 1,
+    alignItems: "center",
   },
-  activeRole: {
-    backgroundColor: "#18B0F8",
+  tab: {
+    paddingVertical: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
   },
-  roleText: {
-    color: "#333",
+  tabText: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#000",
+    marginBottom: 8,
   },
+  
+  activeTabIndicator: {
+    position: "absolute",
+    width: "70%",
+    height: 15,
+    backgroundColor: "yellow",
+    borderRadius: 10,
+    opacity: 0.6,
+    transform: [{ rotate: "-1deg" }], // Slight irregularity
+    shadowColor: "#000",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+  },
+  
 });
 
 export default SignupScreen;
