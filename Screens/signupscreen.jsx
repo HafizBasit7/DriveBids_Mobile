@@ -18,11 +18,18 @@ const SignupScreen = () => {
     <View style={styles.container}>
       {/* Back Icon */}
       <View style={styles.backIconContainer}>
-        <BackIcon width={40} height={40} />
+        <BackIcon width={30} height={30} />
       </View>
 
-      {/* Top Background Image */}
-      <Image source={require("../assets/signup1.png")} style={styles.bgImageTop} />
+      {/* Dynamic Top Image */}
+      <Image
+        source={
+          role === "private"
+            ? require("../assets/signup1.png")
+            : require("../assets/signup4.png") // Replace with trade seller image
+        }
+        style={styles.topImage}
+      />
 
       {/* Role Selection Tabs */}
       <View style={styles.tabContainer}>
@@ -47,16 +54,28 @@ const SignupScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Conditional Images */}
+      {/* Conditional Middle & Bottom Images */}
       {role === "private" ? (
         <>
-          <Image source={require("../assets/signup3.png")} style={styles.bgImageBottom} />
-          <Image source={require("../assets/signup2.png")} style={styles.bgImageMiddle} />
+          <Image
+            source={require("../assets/signup3.png")}
+            style={styles.bgImageBottom}
+          />
+          <Image
+            source={require("../assets/signup2.png")}
+            style={styles.bgImageMiddle}
+          />
         </>
       ) : (
         <>
-          <Image source={require("../assets/signup2.png")} style={styles.bgImageBottom} />
-          <Image source={require("../assets/signup3.png")} style={styles.bgImageMiddle} />
+          <Image
+            source={require("../assets/signup2.png")}
+            style={styles.bgImageBottom}
+          />
+          <Image
+            source={require("../assets/signup3.png")}
+            style={styles.bgImageMiddle}
+          />
         </>
       )}
     </View>
@@ -75,23 +94,11 @@ const styles = StyleSheet.create({
     left: 20,
     zIndex: 10,
   },
-  bgImageTop: {
+  topImage: {
     position: "absolute",
     top: 0,
     width: "100%",
-    height: height * 0.4,
-  },
-  bgImageMiddle: {
-    position: "absolute",
-    bottom: -100,
-    width: "100%",
-    height: "80%",
-  },
-  bgImageBottom: {
-    position: "absolute",
-    bottom: -100,
-    width: "100%",
-    height: "80%",
+    height: height * 0.36,
   },
   tabContainer: {
     flexDirection: "row",
@@ -112,26 +119,34 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   tabText: {
-    fontSize: 30,
+    fontSize: 22,
     fontWeight: "bold",
     color: "#000",
     marginBottom: 8,
   },
-  
   activeTabIndicator: {
     position: "absolute",
-    width: "70%",
+    width: "80%",
     height: 15,
     backgroundColor: "yellow",
     borderRadius: 10,
     opacity: 0.6,
-    transform: [{ rotate: "-1deg" }], // Slight irregularity
+    transform: [{ rotate: "-1deg" }],
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
   },
-  
+  bgImageMiddle: {
+    position: "absolute",
+    bottom: -50,
+    width: "100%",
+    height: "80%",
+  },
+  bgImageBottom: {
+    position: "absolute",
+    bottom: -50,
+    width: "100%",
+    height: "80%",
+  },
 });
 
 export default SignupScreen;

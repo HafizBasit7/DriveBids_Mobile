@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  SafeAreaView,
 } from "react-native";
 import { onboardingData } from "../utils/onBoarding";
 import { useNavigation } from "@react-navigation/native";
@@ -31,112 +32,123 @@ const OnboardingScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Background Image */}
-      <Image
-        source={
-          currentIndex === 1 || currentIndex === 3
-            ? require("../assets/Vector2.png")
-            : require("../assets/Vector1.png")
-        }
-        style={styles.bgImage}
-        resizeMode="cover"
-      />
-
-      {/* Logo at the Top */}
-      <View style={styles.logoContainer}>
+    <SafeAreaView style={styles.safeContainer}>
+      <View style={styles.container}>
+        {/* Background Image */}
         <Image
-          source={require("../assets/mainlogo.png")}
-          style={styles.logoImage}
-          resizeMode="contain"
+          source={
+            currentIndex === 1 || currentIndex === 3
+              ? require("../assets/Vector2.png")
+              : require("../assets/Vector1.png")
+          }
+          style={styles.bgImage}
+          resizeMode="cover"
         />
-      </View>
 
-      {/* SVG in the Middle */}
-      <View style={styles.svgContainer}>
-        {currentIndex === 0 ? (
-          // First Screen → Car1 SVG
-<Car1Svg style={styles.carSvg} />        ) : currentIndex === 1 ? (
-          // Second Screen → Board SVG (Two Times)
+        {/* Logo at the Top */}
+        <View style={styles.logoContainer}>
           <Image
-          source={require("../assets/handsvg.png")}
-          style={styles.handRight}
-          resizeMode="contain"
-        />        ) : currentIndex === 2 ? (
-          // Second Screen → Board SVG (Two Times)
-          <Image
-          source={require("../assets/cardhand.png")}
-          style={styles.cardhand}
-          resizeMode="contain"
-        />        ): (
+            source={require("../assets/mainlogo.png")}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
+        </View>
 
-          <Image
-          source={require("../assets/car4.png")}
-          style={styles.car4}
-          resizeMode="contain"
-        />        )}
-      </View>
-
-      {/* Bottom Content */}
-      <View style={styles.bottomContent}>
-        <Text style={styles.title}>{onboardingData[currentIndex].title}</Text>
-        <Text style={styles.description}>
-          {onboardingData[currentIndex].description}
-        </Text>
-
-        <View style={styles.bottomContainer}>
-          {currentIndex < onboardingData.length - 1 ? (
-            <TouchableOpacity
-              onPress={handleNext}
-              style={[styles.button, styles.nextButton]}
-            >
-              <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>
+        {/* SVG in the Middle */}
+        <View style={styles.svgContainer}>
+          {currentIndex === 0 ? (
+            // First Screen → Car1 SVG
+            <Car1Svg style={styles.carSvg} />
+          ) : currentIndex === 1 ? (
+            // Second Screen → Board SVG (Two Times)
+            <Image
+              source={require("../assets/handsvg.png")}
+              style={styles.handRight}
+              resizeMode="contain"
+            />
+          ) : currentIndex === 2 ? (
+            // Second Screen → Board SVG (Two Times)
+            <Image
+              source={require("../assets/cardhand.png")}
+              style={styles.cardhand}
+              resizeMode="contain"
+            />
           ) : (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("SignUp")}
-              style={[styles.button, styles.signupButton]}
-            >
-              <Text style={styles.buttonText}>Sign Up</Text>
-            </TouchableOpacity>
-          )}
-
-<View style={styles.dotsContainer}>
-  {onboardingData.map((_, dotIndex) => (
-    <TouchableOpacity key={dotIndex} onPress={() => setCurrentIndex(dotIndex)}>
-      <View
-        style={[
-          styles.dot,
-          currentIndex === dotIndex && styles.activeDot,
-        ]}
-      />
-    </TouchableOpacity>
-  ))}
-</View>
-
-
-          {currentIndex < onboardingData.length - 1 ? (
-            <TouchableOpacity
-              onPress={handleSkip}
-              style={[styles.button, styles.skipButton]}
-            >
-              <Text style={styles.buttonText}>Skip</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Login")}
-              style={[styles.button, styles.loginButton]}
-            >
-              <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
+            <Image
+              source={require("../assets/car4.png")}
+              style={styles.car4}
+              resizeMode="contain"
+            />
           )}
         </View>
+
+        {/* Bottom Content */}
+        <View style={styles.bottomContent}>
+          <Text style={styles.title}>{onboardingData[currentIndex].title}</Text>
+          <Text style={styles.description}>
+            {onboardingData[currentIndex].description}
+          </Text>
+
+          <View style={styles.bottomContainer}>
+            {currentIndex < onboardingData.length - 1 ? (
+              <TouchableOpacity
+                onPress={handleNext}
+                style={[styles.button, styles.nextButton]}
+              >
+                <Text style={styles.buttonText}>Next</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("SignUp")}
+                style={[styles.button, styles.signupButton]}
+              >
+                <Text style={styles.buttonText}>Sign Up</Text>
+              </TouchableOpacity>
+            )}
+
+            <View style={styles.dotsContainer}>
+              {onboardingData.map((_, dotIndex) => (
+                <TouchableOpacity
+                  key={dotIndex}
+                  onPress={() => setCurrentIndex(dotIndex)}
+                >
+                  <View
+                    style={[
+                      styles.dot,
+                      currentIndex === dotIndex && styles.activeDot,
+                    ]}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {currentIndex < onboardingData.length - 1 ? (
+              <TouchableOpacity
+                onPress={handleSkip}
+                style={[styles.button, styles.skipButton]}
+              >
+                <Text style={styles.buttonText}>Skip</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Login")}
+                style={[styles.button, styles.loginButton]}
+              >
+                <Text style={styles.buttonText}>Login</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
   container: {
     flex: 1,
     height: "100%",
@@ -153,20 +165,19 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: "center",
     marginTop: "3%", // Adjust with percentage for relative positioning
-    height:"20%"
+    height: "20%",
   },
   logoImage: {
     width: "100%", // Use percentage for responsive width
     height: "100%", // Use percentage for responsive height
   },
 
-
   svgContainer: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center", 
-    height:"50%",
-    width:"100%"
+    alignItems: "center",
+    height: "50%",
+    width: "100%",
   },
   carSvg: {
     width: "50%", // Adjust the size dynamically
@@ -178,10 +189,9 @@ const styles = StyleSheet.create({
     height: "100%", // Percentage for responsive height
     position: "absolute",
     right: "-35%",
-    bottom: "-10%", 
+    bottom: "-10%",
     transform: [{ rotate: "-25deg" }],
     alignSelf: "end", // Center it within the container
-
   },
 
   cardhand: {
@@ -192,7 +202,6 @@ const styles = StyleSheet.create({
     bottom: "-15%", // Percentage based top position
     transform: [{ rotate: "-80deg" }],
     alignSelf: "end", // Center it within the container
-
   },
   car4: {
     width: "100%", // Use percentage for responsive width
@@ -201,8 +210,7 @@ const styles = StyleSheet.create({
     right: "-28%",
     bottom: "-12%", // Adjust the bottom position
     transform: [{ rotate: "0deg" }],
-    alignSelf: "end", 
-
+    alignSelf: "end",
   },
 
   bottomContent: {
@@ -257,6 +265,5 @@ const styles = StyleSheet.create({
   },
   activeDot: { backgroundColor: "#2F61BF", width: 11, height: 11 },
 });
-
 
 export default OnboardingScreen;
