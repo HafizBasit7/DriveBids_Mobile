@@ -6,8 +6,9 @@ import ForgetPass from "./Screens/ForgetPass";
 import Verification from "./Screens/Verification";
 // Components
 import Header from "./CustomComponents/Header";
+import Sidebar from "./CustomComponents/Sidebar";
 export default function App() {
-  return <Header />;
+  return <Sidebar />;
 }
 
 // import { Text } from "react-native-paper";
