@@ -1,10 +1,13 @@
 import AppNavigator from "./Navigations/StackNavigation";
+// screens
 import SignupScreen from "./Screens/signupscreen";
 import SignInScreen from "./Screens/SignInScreen";
 import ForgetPass from "./Screens/ForgetPass";
 import Verification from "./Screens/Verification";
+// Components
+import Header from "./CustomComponents/Header";
 export default function App() {
-  return <ForgetPass />;
+  return <Header />;
 }
 
 // import { Text } from "react-native-paper";
