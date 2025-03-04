@@ -21,7 +21,7 @@ export default function App() {
   }
   return (
     <>
-      {/* <HomeBanner /> */}
+      {/* <HomeBanner /s> */}
 
       <Header />
     </>
