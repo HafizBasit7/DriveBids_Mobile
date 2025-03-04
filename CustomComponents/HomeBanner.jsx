@@ -34,7 +34,7 @@ const HomeBanner = () => {
           </View>
           <View style={styles.bottomRight}>
             <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Get Started</Text>
+              <Text style={styles.buttonText}>Post Ad Now!</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -52,16 +52,17 @@ const styles = StyleSheet.create({
   },
   container: {
     width: "90%",
-    height: height * 0.25, // Increased height for the new section
+    height: height * 0.2, // Increased height for the new section
     backgroundColor: "#FEE226",
     borderRadius: 20,
-    // marginTop: 50,
+    marginTop: 50,
     padding: 15,
   },
   topSection: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: -20,
   },
   leftSide: {
     flex: 1,
@@ -89,7 +90,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 10,
   },
   bottomLeft: {
     flex: 1,
@@ -101,12 +101,15 @@ const styles = StyleSheet.create({
   bottomText: {
     fontSize: 16,
     fontFamily: "Inter-Regular",
+    fontSize: Platform.OS === "android" ? 14 : 16,
+    marginTop: -20,
   },
   button: {
-    backgroundColor: "#000",
+    backgroundColor: "#2F61BF",
     paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderRadius: 10,
+    paddingHorizontal: 25,
+    borderRadius: 22,
+    marginTop: -10,
   },
   buttonText: {
     color: "#FFF",

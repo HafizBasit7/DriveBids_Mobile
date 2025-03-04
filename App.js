@@ -2,7 +2,6 @@ import AppNavigator from "./Navigations/StackNavigation";
 import useLoadFonts from "./Hooks/useLoadFonts";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 // screens
 import SignupScreen from "./Screens/signupscreen";
 import SignInScreen from "./Screens/SignInScreen";
@@ -21,24 +20,12 @@ export default function App() {
   }
   return (
     <>
-      {/* <HomeBanner /s> */}
-
-      <Header />
+      <HomeBanner />
     </>
   );
 }
 const styles = StyleSheet.create({
   safeContainer: {
     flex: 1,
-    // backgroundColor: GlobalStyles.colors.Default,
   },
 });
-
-// import HomeBanner from "./CustomComponents/HomeBanner";
-// export default function App() {
-//   return <HomeBanner />;
-// }
-
-// import { Text } from "react-native-paper";
-// import CustomButton from "./CustomComponents/CustomButton";
-// import useLoadFonts from "./Hooks/useLoadFonts";
