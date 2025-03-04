@@ -9,5 +9,6 @@ export const GlobalStyles = {
     BoxColor: "#FFF2E3",
     IconsColor: "#FF7235",
     textColor: "#000000",
+    Default: "#FEE226",
   },
 };

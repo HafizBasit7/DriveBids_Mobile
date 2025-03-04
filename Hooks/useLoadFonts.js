@@ -1,15 +1,19 @@
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect, useState } from "react";
 
 export default function useLoadFonts() {
   const [fontsLoaded] = useFonts({
-    'Poppins-Black': require('../assets/Fonts/Poppins-Black.ttf'),
-    'Poppins-Bold': require('../assets/Fonts/Poppins-Bold.ttf'),
-    'Poppins-Regular': require('../assets/Fonts/Poppins-Regular.ttf'),
-    'Poppins-Thin': require('../assets/Fonts/Poppins-Thin.ttf'),
-    'Poppins-Medium': require('../assets/Fonts/Poppins-Medium.ttf'),
-    'Poppins-SemiBold': require('../assets/Fonts/Poppins-SemiBold.ttf'),
+    "Poppins-Black": require("../assets/Fonts/Poppins-Black.ttf"),
+    "Poppins-Bold": require("../assets/Fonts/Poppins-Bold.ttf"),
+    "Poppins-Regular": require("../assets/Fonts/Poppins-Regular.ttf"),
+    "Poppins-Thin": require("../assets/Fonts/Poppins-Thin.ttf"),
+    "Poppins-Medium": require("../assets/Fonts/Poppins-Medium.ttf"),
+    "Poppins-SemiBold": require("../assets/Fonts/Poppins-SemiBold.ttf"),
+    "Inter-Bold": require("../assets/Fonts/Inter_18pt-Bold.ttf"),
+    "Inter-Regular": require("../assets/Fonts/Inter_18pt-Regular.ttf"),
+    "Inter-Light": require("../assets/Fonts/Inter_18pt-Light.ttf"),
+    "Inter-SemiBold": require("../assets/Fonts/Inter_18pt-SemiBold.ttf"),
   });
 
   const [isFontReady, setFontReady] = useState(false);
