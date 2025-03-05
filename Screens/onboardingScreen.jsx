@@ -35,7 +35,7 @@ const OnboardingScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeContainer}>
+    <View style={styles.safeContainer}>
       <View style={styles.container}>
         {/* Background Image */}
         <Image
@@ -144,7 +144,7 @@ const OnboardingScreen = () => {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
