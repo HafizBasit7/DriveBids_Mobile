@@ -7,13 +7,16 @@ import {
   TouchableOpacity,
   Dimensions,
   SafeAreaView,
+  Platform,
 } from "react-native";
 import { onboardingData } from "../utils/onBoarding";
 import { useNavigation } from "@react-navigation/native";
 
 // Import SVGs
-import Car1Svg from "../assets/SVG/TahirSvgs/car1.svg";
-import HandSvg from "../assets/SVG/TahirSvgs/handsvg.svg";
+import Car1Svg from "../assets/UmairAssets/OnBoard1.svg";
+import LogoSvg from "../assets/UmairAssets/Logo.svg";
+import Car2Svg from "../assets/UmairAssets/OnBoard3.svg";
+import Car3Svg from "../assets/UmairAssets/OnBoard3.2.svg";
 
 const { width, height } = Dimensions.get("window");
 
@@ -47,32 +50,26 @@ const OnboardingScreen = () => {
 
         {/* Logo at the Top */}
         <View style={styles.logoContainer}>
-          <Image
-            source={require("../assets/mainlogo.png")}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
+          <View style={styles.logoWrapper}>
+            <LogoSvg width="100%" height="100%" />
+          </View>
         </View>
 
-        {/* SVG in the Middle */}
+        {/* SVGS and PNGS */}
         <View style={styles.svgContainer}>
           {currentIndex === 0 ? (
-            // First Screen → Car1 SVG
-            <Car1Svg style={styles.carSvg} />
+            <Car1Svg width={300} height={250} style={styles.carSvg} />
           ) : currentIndex === 1 ? (
-            // Second Screen → Board SVG (Two Times)
             <Image
-              source={require("../assets/handsvg.png")}
+              source={require("../assets/UmairAssets/OnBoard2Png.png")}
               style={styles.handRight}
               resizeMode="contain"
             />
           ) : currentIndex === 2 ? (
-            // Second Screen → Board SVG (Two Times)
-            <Image
-              source={require("../assets/cardhand.png")}
-              style={styles.cardhand}
-              resizeMode="contain"
-            />
+            <>
+              <Car2Svg width={300} height={250} style={styles.Car2Svg} />
+              <Car3Svg width={300} height={250} style={styles.Car3Svg} />
+            </>
           ) : (
             <Image
               source={require("../assets/car4.png")}
@@ -98,12 +95,15 @@ const OnboardingScreen = () => {
                 <Text style={styles.buttonText}>Next</Text>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity
-                onPress={() => navigation.navigate("SignUp")}
-                style={[styles.button, styles.signupButton]}
-              >
-                <Text style={styles.buttonText}>Sign Up</Text>
-              </TouchableOpacity>
+              <>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("SignUp")}
+                  style={[styles.button, styles.signupButton]}
+                >
+                  <Text style={styles.buttonText}>Sign Up</Text>
+                </TouchableOpacity>
+                <Text style={styles.signupText}>Already have an account?</Text>
+              </>
             )}
 
             <View style={styles.dotsContainer}>
@@ -127,14 +127,18 @@ const OnboardingScreen = () => {
                 onPress={handleSkip}
                 style={[styles.button, styles.skipButton]}
               >
-                <Text style={styles.buttonText}>Skip</Text>
+                <Text style={[styles.buttonText, { color: "#18B0F8" }]}>
+                  Skip
+                </Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 onPress={() => navigation.navigate("Login")}
                 style={[styles.button, styles.loginButton]}
               >
-                <Text style={styles.buttonText}>Login</Text>
+                <Text style={[styles.buttonText, { color: "#18B0F8" }]}>
+                  Login
+                </Text>
               </TouchableOpacity>
             )}
           </View>
@@ -158,82 +162,87 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     position: "absolute",
-    top: "10%", // Use percentage here for a relative top offset
+    top: "12%",
   },
 
   /* Top Logo */
   logoContainer: {
     alignItems: "center",
-    marginTop: "3%", // Adjust with percentage for relative positioning
-    height: "20%",
+    marginTop: "10%",
   },
-  logoImage: {
-    width: "100%", // Use percentage for responsive width
-    height: "100%", // Use percentage for responsive height
+  logoWrapper: {
+    width: width * 0.5, // Adjust width dynamically
+    height: height * 0.15, // Adjust height dynamically
   },
 
   svgContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    height: "50%",
+    height: "100%",
     width: "100%",
   },
   carSvg: {
-    width: "50%", // Adjust the size dynamically
-    height: "30%", // Adjust height accordingly
-    alignSelf: "start", // Center it within the container
-  },
-  handRight: {
     width: "100%",
-    height: "100%", // Percentage for responsive height
+    height: "100%",
+    alignSelf: "start",
+    transform: [{ scaleX: Platform.OS === "ios" ? -1 : 1 }],
+  },
+  Car2Svg: {
     position: "absolute",
-    right: "-35%",
-    bottom: "-10%",
-    transform: [{ rotate: "-25deg" }],
-    alignSelf: "end", // Center it within the container
+    bottom: "-5%",
+    left: "-10%",
   },
 
-  cardhand: {
-    width: "100%", // Responsive width
-    height: "100%", // Responsive height
+  Car3Svg: {
     position: "absolute",
-    right: "-20%",
-    bottom: "-15%", // Percentage based top position
-    transform: [{ rotate: "-80deg" }],
-    alignSelf: "end", // Center it within the container
+    top: "-25%",
+    right: "-5%",
   },
-  car4: {
-    width: "100%", // Use percentage for responsive width
-    height: "100%", // Use percentage for responsive height
+
+  handRight: {
+    width: width * 0.7, // Increase width (80% of screen width)
+    height: height * 0.8, // Increase height (50% of screen height)
+    resizeMode: "contain", // Ensure the image scales proportionally
     position: "absolute",
-    right: "-28%",
-    bottom: "-12%", // Adjust the bottom position
-    transform: [{ rotate: "0deg" }],
+    right: "2%",
+    bottom: Platform.OS === "ios" ? "-60%" : "-40%", // Adjust bottom position for iOS
+    transform: [{ rotate: "-10deg" }], // Rotate the image
+  },
+
+  car4: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    right: "-30%",
+    bottom: "4%",
     alignSelf: "end",
   },
 
   bottomContent: {
     justifyContent: "flex-end",
     alignItems: "center",
-    paddingHorizontal: "5%",
-    paddingBottom: "3%",
+    // paddingHorizontal: "5%",
+    paddingBottom: "2%",
   },
 
   title: {
-    fontSize: width * 0.08,
+    fontSize: 26,
     fontWeight: "bold",
     color: "#3A3A3A",
     textAlign: "center",
   },
   description: {
-    fontSize: width * 0.04,
+    fontSize: 16,
     color: "#3A3A3A",
     textAlign: "center",
-    marginTop: "3%", // Percentage margin for spacing
+    marginTop: "3%",
+    paddingHorizontal: "5%", // Add padding to ensure proper centering
+    width: "100%", // Set a width to keep text centered
+    alignSelf: "center", // Ensure alignment
   },
 
-  bottomContainer: { alignItems: "center", width: "100%", marginTop: "2%" },
+  bottomContainer: { alignItems: "center", width: "100%", marginTop: "4%" },
 
   button: {
     paddingVertical: "3%",
@@ -241,9 +250,10 @@ const styles = StyleSheet.create({
     width: "85%",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: "2%", // Use percentage for vertical spacing
+    marginVertical: "2%",
   },
-  nextButton: { backgroundColor: "#2F61BF" },
+  nextButton: { backgroundColor: "#2F61BF", paddingVertical: "4%" },
+
   loginButton: { borderWidth: 2, borderColor: "#00DBFF" },
   signupButton: { backgroundColor: "#2F61BF" },
   skipButton: { borderWidth: 2, borderColor: "#18B0F8" },
@@ -255,7 +265,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 
-  dotsContainer: { flexDirection: "row", marginVertical: "5%" }, // Adjust spacing
+  dotsContainer: { flexDirection: "row", marginVertical: "5%" },
   dot: {
     width: 11,
     height: 11,
