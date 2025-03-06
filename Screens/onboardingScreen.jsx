@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     position: "absolute",
     right: "2%",
-    bottom: Platform.OS === "ios" ? "-60%" : "-40%",
+    bottom: Platform.OS === "ios" ? "-40%" : "-40%",
     transform: [{ rotate: "-10deg" }],
   },
 
