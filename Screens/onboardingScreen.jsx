@@ -6,11 +6,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  SafeAreaView,
   Platform,
 } from "react-native";
 import { onboardingData } from "../utils/onBoarding";
 import { useNavigation } from "@react-navigation/native";
+import GestureRecognizer from "react-native-swipe-gestures";
 
 // Import SVGs
 import Car1Svg from "../assets/UmairAssets/OnBoard1.svg";
@@ -30,12 +30,23 @@ const OnboardingScreen = () => {
     }
   };
 
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
   const handleSkip = () => {
     setCurrentIndex(onboardingData.length - 1);
   };
 
   return (
-    <View style={styles.safeContainer}>
+    <GestureRecognizer
+      onSwipeLeft={handleNext}
+      onSwipeRight={handlePrevious}
+      config={{ velocityThreshold: 0.3, directionalOffsetThreshold: 80 }}
+      style={styles.safeContainer}
+    >
       <View style={styles.container}>
         {/* Background Image */}
         <Image
@@ -92,7 +103,7 @@ const OnboardingScreen = () => {
                 onPress={handleNext}
                 style={[styles.button, styles.nextButton]}
               >
-                <Text style={styles.buttonText}>Next</Text>
+                <Text style={[styles.buttonText, { color: "#fff" }]}>Next</Text>
               </TouchableOpacity>
             ) : (
               <>
@@ -100,7 +111,9 @@ const OnboardingScreen = () => {
                   onPress={() => navigation.navigate("SignUp")}
                   style={[styles.button, styles.signupButton]}
                 >
-                  <Text style={styles.buttonText}>Sign Up</Text>
+                  <Text style={[styles.buttonText, { color: "#fff" }]}>
+                    Sign Up
+                  </Text>
                 </TouchableOpacity>
                 <Text style={styles.signupText}>Already have an account?</Text>
               </>
@@ -144,7 +157,7 @@ const OnboardingScreen = () => {
           </View>
         </View>
       </View>
-    </View>
+    </GestureRecognizer>
   );
 };
 
@@ -201,13 +214,13 @@ const styles = StyleSheet.create({
   },
 
   handRight: {
-    width: width * 0.7, // Increase width (80% of screen width)
-    height: height * 0.8, // Increase height (50% of screen height)
-    resizeMode: "contain", // Ensure the image scales proportionally
+    width: width * 0.7,
+    height: height * 0.8,
+    resizeMode: "contain",
     position: "absolute",
     right: "2%",
-    bottom: Platform.OS === "ios" ? "-60%" : "-40%", // Adjust bottom position for iOS
-    transform: [{ rotate: "-10deg" }], // Rotate the image
+    bottom: Platform.OS === "ios" ? "-60%" : "-40%",
+    transform: [{ rotate: "-10deg" }],
   },
 
   car4: {
@@ -222,7 +235,6 @@ const styles = StyleSheet.create({
   bottomContent: {
     justifyContent: "flex-end",
     alignItems: "center",
-    // paddingHorizontal: "5%",
     paddingBottom: "2%",
   },
 
@@ -237,9 +249,9 @@ const styles = StyleSheet.create({
     color: "#3A3A3A",
     textAlign: "center",
     marginTop: "3%",
-    paddingHorizontal: "5%", // Add padding to ensure proper centering
-    width: "100%", // Set a width to keep text centered
-    alignSelf: "center", // Ensure alignment
+    paddingHorizontal: "5%",
+    width: "100%",
+    alignSelf: "center",
   },
 
   bottomContainer: { alignItems: "center", width: "100%", marginTop: "4%" },
@@ -257,13 +269,6 @@ const styles = StyleSheet.create({
   loginButton: { borderWidth: 2, borderColor: "#00DBFF" },
   signupButton: { backgroundColor: "#2F61BF" },
   skipButton: { borderWidth: 2, borderColor: "#18B0F8" },
-
-  buttonText: {
-    color: "#fff",
-    fontSize: width * 0.045,
-    textAlign: "center",
-    width: "100%",
-  },
 
   dotsContainer: { flexDirection: "row", marginVertical: "5%" },
   dot: {
