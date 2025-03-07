@@ -3,8 +3,8 @@ import useLoadFonts from "./Hooks/useLoadFonts";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 // screens
-import SignupScreen from "./Screens/Signupscreen";
-import SignInScreen from "./Screens/SignInScreen";
+// import SignupScreen from "./Screens/Signupscreen";
+// import SignInScreen from "./Screens/SignInScreen";
 import ForgetPass from "./Screens/ForgetPass";
 import Verification from "./Screens/Verification";
 // Components
@@ -12,6 +12,7 @@ import Header from "./CustomComponents/Header";
 import Sidebar from "./CustomComponents/Sidebar";
 import HomeBanner from "./CustomComponents/HomeBanner";
 import { GlobalStyles } from "./Styles/GlobalStyles";
+import SellCar from "./Screens/tahirScreens/SellCar";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
@@ -20,7 +21,8 @@ export default function App() {
   }
   return (
     <>
-      <ForgetPass />
+      {/* <ForgetPass /> */}
+      <SellCar />
     </>
   );
 }
