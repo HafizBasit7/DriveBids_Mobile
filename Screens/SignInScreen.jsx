@@ -124,11 +124,11 @@ const SignInScreen = () => {
             style={{ marginTop: 20 }}
           />
           <View style={styles.loginTextContainer}>
-            <Text style={styles.accountText}>Already have an account? </Text>
+            <Text style={styles.accountText}>Don’t have an account? </Text>
             <TouchableOpacity
               onPress={() => console.log("Navigate to Login Screen")}
             >
-              <Text style={styles.loginLink}>Login</Text>
+              <Text style={styles.loginLink}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </View>
