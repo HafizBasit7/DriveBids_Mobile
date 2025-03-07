@@ -8,6 +8,7 @@ import SignInScreen from "./Screens/SignInScreen";
 import ForgetPass from "./Screens/ForgetPass";
 import Verification from "./Screens/Verification";
 import Reset from "./Screens/Reset";
+import PassChanged from "./Screens/PassChanged";
 // Components
 import Header from "./CustomComponents/Header";
 import Sidebar from "./CustomComponents/Sidebar";
@@ -21,7 +22,7 @@ export default function App() {
   }
   return (
     <>
-      <SignInScreen />
+      <PassChanged />
     </>
   );
 }
