@@ -7,6 +7,7 @@ import SignupScreen from "./Screens/Signupscreen";
 import SignInScreen from "./Screens/SignInScreen";
 import ForgetPass from "./Screens/ForgetPass";
 import Verification from "./Screens/Verification";
+import Reset from "./Screens/Reset";
 // Components
 import Header from "./CustomComponents/Header";
 import Sidebar from "./CustomComponents/Sidebar";
@@ -20,7 +21,7 @@ export default function App() {
   }
   return (
     <>
-      <ForgetPass />
+      <SignInScreen />
     </>
   );
 }

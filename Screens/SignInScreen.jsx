@@ -9,7 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import BouncyCheckbox from "react-native-bouncy-checkbox"; // Import the checkbox library
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import BackIcon from "../assets/SVG/TahirSvgs/arrow-left.svg";
 import GoogleIcon from "../assets/UmairAssets/Google.svg";
 import FacebookIcon from "../assets/UmairAssets/Facebook.svg";
@@ -20,7 +20,19 @@ const { width, height } = Dimensions.get("window");
 
 const SignInScreen = () => {
   const [focusedInput, setFocusedInput] = useState(null);
-  const [rememberMe, setRememberMe] = useState(false); // State for checkbox
+  const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [clickedIcon, setClickedIcon] = useState(null); // State to track clicked social icon
+
+  const handleLogin = () => {
+    console.log("Login Pressed with Email:", email, "Password:", password);
+  };
+
+  const handleSocialLogin = (platform) => {
+    setClickedIcon(platform);
+    console.log(`${platform} Login Clicked`);
+  };
 
   return (
     <View style={styles.container}>
@@ -30,33 +42,27 @@ const SignInScreen = () => {
         translucent
       />
 
-      {/* Back Icon */}
       <View style={styles.backIconContainer}>
         <BackIcon width={30} height={30} />
       </View>
 
-      {/* Background Image */}
       <Image
         source={require("../assets/SignInBGImage.png")}
         style={styles.topImage}
       />
 
-      {/* Overlay Image */}
       <View style={styles.overlayContainer}>
         <Image
           source={require("../assets/SignInText.png")}
           style={styles.overlayImage}
         />
 
-        {/* Heading */}
         <View style={styles.headingContainer}>
           <View style={styles.activeTabIndicator} />
           <Text style={styles.heading}>Hi, Welcome!</Text>
         </View>
 
-        {/* Input Fields */}
         <View style={styles.inputContainer}>
-          {/* Email Field */}
           <Text style={styles.label}>Email</Text>
           <TextInput
             style={[
@@ -68,9 +74,10 @@ const SignInScreen = () => {
             keyboardType="email-address"
             onFocus={() => setFocusedInput("email")}
             onBlur={() => setFocusedInput(null)}
+            value={email}
+            onChangeText={setEmail}
           />
 
-          {/* Password Field */}
           <Text style={styles.label}>Password</Text>
           <TextInput
             style={[
@@ -84,13 +91,13 @@ const SignInScreen = () => {
             secureTextEntry
             onFocus={() => setFocusedInput("password")}
             onBlur={() => setFocusedInput(null)}
+            value={password}
+            onChangeText={setPassword}
           />
 
-          {/* Remember Me & Forgot Password */}
           <View style={styles.rememberContainer}>
-            {/* Remember Me Checkbox */}
             <BouncyCheckbox
-              size={18} // Reduced checkbox size
+              size={18}
               fillColor="#2F61BF"
               unfillColor="#FFFFFF"
               text="Remember Me"
@@ -98,14 +105,12 @@ const SignInScreen = () => {
               textStyle={{
                 textDecorationLine: "none",
                 color: "#000",
-                fontSize: 12, // Smaller font size
-                marginLeft: -5, // Reduce gap between text and checkbox
+                fontSize: 12,
+                marginLeft: -5,
               }}
               isChecked={rememberMe}
               onPress={(isChecked) => setRememberMe(isChecked)}
             />
-
-            {/* Forgot Password */}
             <Text
               style={styles.forgotPassword}
               onPress={() => console.log("Forgot Password Pressed")}
@@ -113,27 +118,34 @@ const SignInScreen = () => {
               Forgot Password?
             </Text>
           </View>
+
           <View style={styles.socialIconsContainer}>
-            <GoogleIcon width={36} height={36} />
-            <AppleIcon width={36} height={36} />
-            <FacebookIcon width={36} height={36} />
+            <TouchableOpacity onPress={() => handleSocialLogin("Google")}>
+              <GoogleIcon width={36} height={36} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleSocialLogin("Apple")}>
+              <AppleIcon width={36} height={36} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleSocialLogin("Facebook")}>
+              <FacebookIcon width={36} height={36} />
+            </TouchableOpacity>
           </View>
+
           <CustomButton
             title="Login"
-            onPress={() => console.log("Login Pressed")}
+            onPress={handleLogin}
             style={{ marginTop: 20 }}
           />
+
           <View style={styles.loginTextContainer}>
             <Text style={styles.accountText}>Don’t have an account? </Text>
             <TouchableOpacity
-              onPress={() => console.log("Navigate to Login Screen")}
+              onPress={() => console.log("Navigate to Sign Up Screen")}
             >
               <Text style={styles.loginLink}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </View>
-
-        {/* Social Login Icons Container */}
       </View>
     </View>
   );
@@ -187,8 +199,6 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 2 },
   },
-
-  /* Input Fields Styling */
   inputContainer: {
     position: "absolute",
     top: "45%",
@@ -211,15 +221,12 @@ const styles = StyleSheet.create({
     color: "#000",
     marginBottom: 15,
   },
-
-  /* Remember Me & Forgot Password */
   rememberContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
     paddingHorizontal: 2,
-    fontSize: 12,
   },
   forgotPassword: {
     color: "#2F61BF",
@@ -228,14 +235,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: -100,
   },
-
-  /* Social Icons Styling */
   socialIconsContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
-    gap: 30, // Space between icons
+    gap: 30,
   },
   loginTextContainer: {
     flexDirection: "row",
@@ -243,12 +248,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
   },
-
   accountText: {
     fontSize: 14,
     color: "#000",
   },
-
   loginLink: {
     fontSize: 14,
     color: "#2F61BF",
