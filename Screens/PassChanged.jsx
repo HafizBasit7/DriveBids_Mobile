@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 26,
-    fontWeight: "bold",
+    fontFamily: "Inter-Bold",
     color: "#000",
     textAlign: "center",
     marginRight: 25,
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     width: "90%",
     textAlign: "center",
+    fontFamily: "Inter-Regular",
   },
   activeTabIndicator: {
     marginTop: "5%",

@@ -9,6 +9,7 @@ import ForgetPass from "./Screens/ForgetPass";
 import Verification from "./Screens/Verification";
 import Reset from "./Screens/Reset";
 import PassChanged from "./Screens/PassChanged";
+import CodeScreen from "./Screens/CodeScreen";
 // Components
 import Header from "./CustomComponents/Header";
 import Sidebar from "./CustomComponents/Sidebar";
@@ -22,7 +23,7 @@ export default function App() {
   }
   return (
     <>
-      <PassChanged />
+      <CodeScreen />
     </>
   );
 }

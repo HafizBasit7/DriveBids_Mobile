@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "Inter-Bold",
     color: "#000",
   },
   description: {
@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     width: "100%",
     flexWrap: "wrap",
+    fontFamily: "Inter-Regular",
   },
   activeTabIndicator: {
     marginTop: "2%",

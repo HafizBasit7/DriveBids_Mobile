@@ -14,18 +14,33 @@ import CustomButton from "../CustomComponents/CustomButton.js";
 
 const { width, height } = Dimensions.get("window");
 
-const ForgetPass = () => {
-  const [focusedInput, setFocusedInput] = useState(null);
+const CodeScreen = () => {
   const [email, setEmail] = useState(""); // State for email input
   const [isCodeSent, setIsCodeSent] = useState(false); // State to check if the code is sent
+  const [otp, setOtp] = useState(["", "", "", ""]); // State for OTP inputs
+  const [timer, setTimer] = useState(29); // Countdown timer
 
   const handleSendCode = () => {
     if (email.trim() !== "") {
       setIsCodeSent(true);
       console.log("Code sent to", email);
+
+      // Start countdown when code is sent
+      let countdown = 29;
+      const interval = setInterval(() => {
+        countdown--;
+        setTimer(countdown);
+        if (countdown === 0) clearInterval(interval);
+      }, 1000);
     } else {
       alert("Please enter a valid email address.");
     }
+  };
+
+  const handleOtpChange = (value, index) => {
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
   };
 
   return (
@@ -40,7 +55,10 @@ const ForgetPass = () => {
         <BackIcon width={30} height={30} />
       </View>
 
-      <Image source={require("../assets/Forget.png")} style={styles.topImage} />
+      <Image
+        source={require("../assets/UmairAssets/Code.png")}
+        style={styles.topImage}
+      />
 
       <View style={styles.overlayContainer}>
         <Image
@@ -50,47 +68,46 @@ const ForgetPass = () => {
 
         <View style={styles.headingContainer}>
           <View style={styles.activeTabIndicator} />
-          <Text style={styles.heading}>Forgot password?</Text>
+          <Text style={styles.heading}>Please check your email</Text>
           <Text style={styles.description}>
-            Please enter the email associated with your account to receive a
-            4-digit code.
+            We’ve sent a code to your email address
           </Text>
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email address</Text>
-          <TextInput
-            style={[
-              styles.input,
-              { borderColor: focusedInput === "email" ? "#2F61BF" : "black" },
-            ]}
-            placeholder="Enter your email address"
-            placeholderTextColor="#888"
-            keyboardType="email-address"
-            onFocus={() => setFocusedInput("email")}
-            onBlur={() => setFocusedInput(null)}
-            value={email}
-            onChangeText={setEmail}
-          />
+          {/* OTP Boxes */}
+          <View style={styles.otpContainer}>
+            {otp.map((digit, index) => (
+              <TextInput
+                key={index}
+                style={styles.otpBox}
+                maxLength={1}
+                keyboardType="numeric"
+                value={digit}
+                onChangeText={(value) => handleOtpChange(value, index)}
+              />
+            ))}
+          </View>
+
+          {/* Resend Code & Timer */}
+          <View style={styles.resendContainer}>
+            <TouchableOpacity onPress={handleSendCode} disabled={timer > 0}>
+              <Text
+                style={[styles.resendText, timer > 0 && styles.resendDisabled]}
+              >
+                Send code again
+              </Text>
+            </TouchableOpacity>
+            <Text style={styles.timerText}>
+              {timer > 0 ? `00:${timer < 10 ? `0${timer}` : timer}` : "00:00"}
+            </Text>
+          </View>
 
           <CustomButton
             title="Send Code"
             onPress={handleSendCode}
             style={{ marginTop: "40%" }}
           />
-
-          {isCodeSent && (
-            <Text style={styles.successMessage}>Code sent successfully!</Text>
-          )}
-
-          <View style={styles.loginTextContainer}>
-            <Text style={styles.accountText}>Remember password? </Text>
-            <TouchableOpacity
-              onPress={() => console.log("Navigate to Login Screen")}
-            >
-              <Text style={styles.loginLink}>Login</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
     </View>
@@ -131,8 +148,9 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 22,
-    fontFamily: "Inter-Bold",
+
     color: "#000",
+    fontFamily: "Inter-Bold",
   },
   description: {
     fontSize: 16,
@@ -142,9 +160,9 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-Regular",
   },
   activeTabIndicator: {
-    marginTop: "5%",
+    marginTop: "2%",
     position: "absolute",
-    width: "55%",
+    width: "75%",
     height: 12,
     backgroundColor: "yellow",
     borderRadius: 10,
@@ -155,48 +173,49 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     position: "absolute",
-    top: "48%",
+    top: "50%",
     left: "5%",
     width: "90%",
   },
-  label: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#000",
-    marginBottom: 5,
+  otpContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "70%", // Adjusted width
+    alignSelf: "center",
+    marginBottom: 10,
   },
-  input: {
-    width: "100%",
+  otpBox: {
+    width: 50,
     height: 50,
     borderWidth: 1,
+    borderColor: "#ccc",
     borderRadius: 8,
-    paddingHorizontal: 15,
-    fontSize: 16,
-    color: "#000",
-    marginBottom: 15,
-  },
-  successMessage: {
-    fontSize: 16,
-    color: "green",
-    marginTop: 10,
     textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#000",
   },
-  loginTextContainer: {
+  resendContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
   },
-  accountText: {
-    fontSize: 14,
-    color: "#000",
-  },
-  loginLink: {
+  resendText: {
     fontSize: 14,
     color: "#2F61BF",
     fontWeight: "bold",
-    textDecorationLine: "underline",
+    marginRight: 10, // Space between text and timer
+  },
+  resendDisabled: {
+    color: "#aaa", // Greyed out when disabled
+  },
+  timerText: {
+    fontSize: 14,
+    color: "red",
+    fontWeight: "bold",
   },
 });
 
-export default ForgetPass;
+export default CodeScreen;
