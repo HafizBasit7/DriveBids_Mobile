@@ -3,7 +3,7 @@ import useLoadFonts from "./Hooks/useLoadFonts";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 // screens
-import SignupScreen from "./Screens/signupscreen";
+import SignupScreen from "./Screens/Signupscreen";
 import SignInScreen from "./Screens/SignInScreen";
 import ForgetPass from "./Screens/ForgetPass";
 import Verification from "./Screens/Verification";
@@ -20,7 +20,7 @@ export default function App() {
   }
   return (
     <>
-      <AppNavigator />
+      <SignInScreen />
     </>
   );
 }

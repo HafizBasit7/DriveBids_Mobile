@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
+  StatusBar,
 } from "react-native";
 import { onboardingData } from "../utils/onBoarding";
 import { useNavigation } from "@react-navigation/native";
@@ -48,6 +49,11 @@ const OnboardingScreen = () => {
       style={styles.safeContainer}
     >
       <View style={styles.container}>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="transparent"
+          translucent
+        />
         {/* Background Image */}
         <Image
           source={

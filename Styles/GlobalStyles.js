@@ -1,6 +1,6 @@
 export const GlobalStyles = {
   colors: {
-    ButtonColor: "#FF7235",
+    ButtonColor: "#2F61BF",
     borderColor: "#FF7235",
     LinkColor: "#FF7235",
     HeadingColor: "#293032",

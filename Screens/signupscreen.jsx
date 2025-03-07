@@ -6,6 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
+  StatusBar,
 } from "react-native";
 import BackIcon from "../assets/SVG/TahirSvgs/arrow-left.svg";
 
@@ -16,6 +17,11 @@ const SignupScreen = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
       {/* Back Icon */}
       <View style={styles.backIconContainer}>
         <BackIcon width={30} height={30} />
