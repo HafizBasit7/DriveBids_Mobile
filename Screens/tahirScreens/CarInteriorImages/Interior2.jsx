@@ -34,7 +34,7 @@ const Interior2 = () => {
       <SectionHeader title={"Step 2 of 5"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
-          Take a picture of your car from the right front as shown below
+          Take a picture of the speed display as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
           {selectedImage ? (

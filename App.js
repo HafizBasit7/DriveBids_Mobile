@@ -31,6 +31,10 @@ import Wheel1 from "./Screens/tahirScreens/WheelsImages/Wheel1";
 import Wheel2 from "./Screens/tahirScreens/WheelsImages/Wheel2";
 import Wheel3 from "./Screens/tahirScreens/WheelsImages/Wheel3";
 import Wheel4 from "./Screens/tahirScreens/WheelsImages/Wheel4";
+import Thread1 from "./Screens/tahirScreens/ThreadsImages/Thread1";
+import Thread2 from "./Screens/tahirScreens/ThreadsImages/Thread2";
+import Thread3 from "./Screens/tahirScreens/ThreadsImages/Thread3";
+import Thread4 from "./Screens/tahirScreens/ThreadsImages/Thread4";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
@@ -59,6 +63,10 @@ export default function App() {
       {/* <Wheel2 /> */}
       {/* <Wheel3 /> */}
       {/* <Wheel4 /> */}
+      {/* <Thread1 /> */}
+      {/* <Thread2 /> */}
+      {/* <Thread3 /> */}
+      {/* <Thread4 /> */}
     </>
   );
 }
