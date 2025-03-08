@@ -67,6 +67,8 @@ const VehicleInfo = () => {
       <View
         style={{
           width: "100%",
+          flex: 1,
+          justifyContent: "flex-end",
         }}
       >
         <CustomButton
@@ -85,7 +87,6 @@ const VehicleInfo = () => {
           }}
           textStyle={{
             color: GlobalStyles.colors.ButtonColor,
-
             fontFamily: "Inter-SemiBold",
           }}
         />
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     backgroundColor: GlobalStyles.colors.ScreenBg,
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
 
     gap: 2,

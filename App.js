@@ -16,6 +16,12 @@ import SellCar from "./Screens/tahirScreens/SellCar";
 import VehicleReg from "./Screens/tahirScreens/VehicleReg";
 import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
 import CarImages from "./Screens/tahirScreens/CarImages";
+import Exterior1 from "./Screens/tahirScreens/CarExterior/Exterior1";
+import Exterior2 from "./Screens/tahirScreens/CarExterior/Exterior2";
+import Exterior3 from "./Screens/tahirScreens/CarExterior/Exterior3";
+import Exterior4 from "./Screens/tahirScreens/CarExterior/Exterior4";
+import Exterior5 from "./Screens/tahirScreens/CarExterior/Exterior5";
+import Exterior6 from "./Screens/tahirScreens/CarExterior/Exterior6";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
@@ -28,7 +34,13 @@ export default function App() {
       {/* <SellCar /> */}
       {/* <VehicleReg /> */}
       {/* <VehicleInfo /> */}
-      <CarImages />
+      {/* <CarImages /> */}
+      {/* <Exterior1 /> */}
+      {/* <Exterior2 /> */}
+      {/* <Exterior3 /> */}
+      {/* <Exterior4 /> */}
+      {/* <Exterior5 /> */}
+      {/* <Exterior6 /> */}
     </>
   );
 }

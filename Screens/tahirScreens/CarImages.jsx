@@ -50,6 +50,8 @@ const CarImages = () => {
       <View
         style={{
           width: "100%",
+          flex: 1,
+          justifyContent: "flex-end",
         }}
       >
         <CustomButton
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     backgroundColor: GlobalStyles.colors.ScreenBg,
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
 
     gap: 2,
