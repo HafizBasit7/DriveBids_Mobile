@@ -6,10 +6,10 @@ import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHead
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import Interior from "../../../assets/tahirAssets/Interior4";
-
+import { useNavigation } from "@react-navigation/native";
 const Interior4 = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-
+  const navigation = useNavigation();
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -54,11 +54,16 @@ const Interior4 = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
-        <CustomButton style={{ marginBottom: 10 }} title="Next" />
+        <CustomButton
+          style={{ marginBottom: 10 }}
+          title="Next"
+          onPress={() => navigation.navigate("Interior5")}
+        />
         <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
+          onPress={() => navigation.navigate("Interior3")}
         />
       </View>
     </View>

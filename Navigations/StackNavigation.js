@@ -8,6 +8,12 @@ import Exterior4 from "../Screens/tahirScreens/CarExteriorImages/Exterior4";
 import Exterior5 from "../Screens/tahirScreens/CarExteriorImages/Exterior5";
 import Exterior6 from "../Screens/tahirScreens/CarExteriorImages/Exterior6";
 
+import Interior1 from "../Screens/tahirScreens/CarInteriorImages/Interior1";
+import Interior2 from "../Screens/tahirScreens/CarInteriorImages/Interior2";
+import Interior3 from "../Screens/tahirScreens/CarInteriorImages/Interior3";
+import Interior4 from "../Screens/tahirScreens/CarInteriorImages/Interior4";
+import Interior5 from "../Screens/tahirScreens/CarInteriorImages/Interior5";
+
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
@@ -15,15 +21,23 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
-          header: () => <Header />, // Set custom header
+          header: () => <Header />,
         }}
       >
-        <Stack.Screen name="Exterior1" component={Exterior1} />
+        {/* Exterior Screens */}
+        {/* <Stack.Screen name="Exterior1" component={Exterior1} />
         <Stack.Screen name="Exterior2" component={Exterior2} />
         <Stack.Screen name="Exterior3" component={Exterior3} />
         <Stack.Screen name="Exterior4" component={Exterior4} />
         <Stack.Screen name="Exterior5" component={Exterior5} />
-        <Stack.Screen name="Exterior6" component={Exterior6} />
+        <Stack.Screen name="Exterior6" component={Exterior6} /> */}
+
+        {/* Interior Screens */}
+        <Stack.Screen name="Interior1" component={Interior1} />
+        <Stack.Screen name="Interior2" component={Interior2} />
+        <Stack.Screen name="Interior3" component={Interior3} />
+        <Stack.Screen name="Interior4" component={Interior4} />
+        <Stack.Screen name="Interior5" component={Interior5} />
       </Stack.Navigator>
     </NavigationContainer>
   );
