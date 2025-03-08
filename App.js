@@ -15,6 +15,7 @@ import { GlobalStyles } from "./Styles/GlobalStyles";
 import SellCar from "./Screens/tahirScreens/SellCar";
 import VehicleReg from "./Screens/tahirScreens/VehicleReg";
 import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
+import CarImages from "./Screens/tahirScreens/CarImages";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
@@ -26,7 +27,8 @@ export default function App() {
       {/* <ForgetPass /> */}
       {/* <SellCar /> */}
       {/* <VehicleReg /> */}
-      <VehicleInfo />
+      {/* <VehicleInfo /> */}
+      <CarImages />
     </>
   );
 }
