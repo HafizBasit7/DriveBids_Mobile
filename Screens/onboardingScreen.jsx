@@ -249,6 +249,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#3A3A3A",
     textAlign: "center",
+    fontFamily: "Inter-Regular",
   },
   description: {
     fontSize: 16,
@@ -258,6 +259,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%",
     width: "100%",
     alignSelf: "center",
+    fontFamily: "Inter-Regular",
   },
 
   bottomContainer: { alignItems: "center", width: "100%", marginTop: "4%" },
