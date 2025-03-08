@@ -16,17 +16,17 @@ import SellCar from "./Screens/tahirScreens/SellCar";
 import VehicleReg from "./Screens/tahirScreens/VehicleReg";
 import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
 import CarImages from "./Screens/tahirScreens/CarImages";
-import Exterior1 from "./Screens/tahirScreens/CarExterior/Exterior1";
-import Exterior2 from "./Screens/tahirScreens/CarExterior/Exterior2";
-import Exterior3 from "./Screens/tahirScreens/CarExterior/Exterior3";
-import Exterior4 from "./Screens/tahirScreens/CarExterior/Exterior4";
-import Exterior5 from "./Screens/tahirScreens/CarExterior/Exterior5";
-import Exterior6 from "./Screens/tahirScreens/CarExterior/Exterior6";
-import Interior1 from "./Screens/tahirScreens/CarInterior/Interior1";
-import Interior2 from "./Screens/tahirScreens/CarInterior/Interior2";
-import Interior3 from "./Screens/tahirScreens/CarInterior/Interior3";
-import Interior4 from "./Screens/tahirScreens/CarInterior/Interior4";
-import Interior5 from "./Screens/tahirScreens/CarInterior/Interior5";
+import Exterior1 from "./Screens/tahirScreens/CarExteriorImages/Exterior1";
+import Exterior2 from "./Screens/tahirScreens/CarExteriorImages/Exterior2";
+import Exterior3 from "./Screens/tahirScreens/CarExteriorImages/Exterior3";
+import Exterior4 from "./Screens/tahirScreens/CarExteriorImages/Exterior4";
+import Exterior5 from "./Screens/tahirScreens/CarExteriorImages/Exterior5";
+import Exterior6 from "./Screens/tahirScreens/CarExteriorImages/Exterior6";
+import Interior1 from "./Screens/tahirScreens/CarInteriorImages/Interior1";
+import Interior2 from "./Screens/tahirScreens/CarInteriorImages/Interior2";
+import Interior3 from "./Screens/tahirScreens/CarInteriorImages/Interior3";
+import Interior4 from "./Screens/tahirScreens/CarInteriorImages/Interior4";
+import Interior5 from "./Screens/tahirScreens/CarInteriorImages/Interior5";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
