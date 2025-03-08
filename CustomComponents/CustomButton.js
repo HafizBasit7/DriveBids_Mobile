@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    fontFamily: "Poppins-Bold",
+    fontFamily: "Inter-SemiBold",
     fontSize: 18,
   },
 });

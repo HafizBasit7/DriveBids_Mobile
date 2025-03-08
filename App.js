@@ -14,6 +14,7 @@ import HomeBanner from "./CustomComponents/HomeBanner";
 import { GlobalStyles } from "./Styles/GlobalStyles";
 import SellCar from "./Screens/tahirScreens/SellCar";
 import VehicleReg from "./Screens/tahirScreens/VehicleReg";
+import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
@@ -24,7 +25,8 @@ export default function App() {
     <>
       {/* <ForgetPass /> */}
       {/* <SellCar /> */}
-      <VehicleReg />
+      {/* <VehicleReg /> */}
+      <VehicleInfo />
     </>
   );
 }
