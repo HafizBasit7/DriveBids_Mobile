@@ -14,6 +14,11 @@ import Interior3 from "../Screens/tahirScreens/CarInteriorImages/Interior3";
 import Interior4 from "../Screens/tahirScreens/CarInteriorImages/Interior4";
 import Interior5 from "../Screens/tahirScreens/CarInteriorImages/Interior5";
 
+import Thread1 from "../Screens/tahirScreens/ThreadsImages/Thread1";
+import Thread2 from "../Screens/tahirScreens/ThreadsImages/Thread2";
+import Thread3 from "../Screens/tahirScreens/ThreadsImages/Thread3";
+import Thread4 from "../Screens/tahirScreens/ThreadsImages/Thread4";
+
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
@@ -33,11 +38,17 @@ const AppNavigator = () => {
         <Stack.Screen name="Exterior6" component={Exterior6} /> */}
 
         {/* Interior Screens */}
-        <Stack.Screen name="Interior1" component={Interior1} />
+        {/* <Stack.Screen name="Interior1" component={Interior1} />
         <Stack.Screen name="Interior2" component={Interior2} />
         <Stack.Screen name="Interior3" component={Interior3} />
         <Stack.Screen name="Interior4" component={Interior4} />
-        <Stack.Screen name="Interior5" component={Interior5} />
+        <Stack.Screen name="Interior5" component={Interior5} /> */}
+
+        {/* Thread Screens */}
+        <Stack.Screen name="Thread1" component={Thread1} />
+        <Stack.Screen name="Thread2" component={Thread2} />
+        <Stack.Screen name="Thread3" component={Thread3} />
+        <Stack.Screen name="Thread4" component={Thread4} />
       </Stack.Navigator>
     </NavigationContainer>
   );
