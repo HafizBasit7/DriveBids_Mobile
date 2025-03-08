@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; // Icons for check/cross
+import { GlobalStyles } from "../../Styles/GlobalStyles";
 
 const DraftCard = ({
   regNumber,
@@ -23,7 +24,9 @@ const DraftCard = ({
             <FontAwesome
               name={item.completed ? "check-circle" : "times-circle"}
               size={16}
-              color={item.completed ? "blue" : "gray"}
+              color={
+                item.completed ? GlobalStyles.colors.ButtonColor : "#6F6F6F"
+              }
             />
             <Text
               style={[styles.statusText, item.completed && styles.checkedText]}
@@ -51,53 +54,55 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 4,
     elevation: 5,
-    margin: 10,
-    padding: 10,
+    marginTop: 5,
+
     alignItems: "center",
+    paddingBottom: 10,
   },
   carImage: {
     width: "100%",
-    height: 180,
-    borderRadius: 10,
+    height: 150,
+    borderRadius: 12,
   },
   regNumber: {
     fontSize: 18,
-    fontWeight: "bold",
-    marginVertical: 10,
+    fontFamily: "Inter-SemiBold",
+    marginVertical: 5,
   },
   statusContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
     gap: 10,
-    marginVertical: 5,
+    padding: 10,
   },
   statusItem: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 5,
+    width: "40%",
   },
   statusText: {
     marginLeft: 5,
     fontSize: 14,
-    color: "gray",
+    color: "#6F6F6F",
   },
   checkedText: {
-    color: "blue",
+    color: GlobalStyles.colors.ButtonColor,
     fontWeight: "600",
   },
   button: {
-    backgroundColor: "blue",
+    backgroundColor: GlobalStyles.colors.ButtonColor,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 8,
-    marginTop: 10,
+    borderRadius: 25,
+    marginTop: 5,
     width: "90%",
     alignItems: "center",
   },
   buttonText: {
-    color: "#fff",
-    fontWeight: "600",
+    color: "white",
+    fontFamily: "Inter-Regular",
+
     fontSize: 16,
   },
 });
