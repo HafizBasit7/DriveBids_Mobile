@@ -62,48 +62,6 @@ const VehicleInfo = () => {
           completionStatus="Incomplete"
           onPress={() => alert("Car Pricing Clicked")}
         />
-        <VehicleInfoCard
-          name="Car Pricing"
-          steps={4}
-          iconName="tag"
-          completionStatus="Incomplete"
-          onPress={() => alert("Car Pricing Clicked")}
-        />
-        <VehicleInfoCard
-          name="Car Pricing"
-          steps={4}
-          iconName="tag"
-          completionStatus="Incomplete"
-          onPress={() => alert("Car Pricing Clicked")}
-        />
-        <VehicleInfoCard
-          name="Car Pricing"
-          steps={4}
-          iconName="tag"
-          completionStatus="Incomplete"
-          onPress={() => alert("Car Pricing Clicked")}
-        />
-        <VehicleInfoCard
-          name="Car Pricing"
-          steps={4}
-          iconName="tag"
-          completionStatus="Incomplete"
-          onPress={() => alert("Car Pricing Clicked")}
-        />
-        <VehicleInfoCard
-          name="Car Pricing"
-          steps={4}
-          iconName="tag"
-          completionStatus="Incomplete"
-          onPress={() => alert("Car Pricing Clicked")}
-        />
-        <VehicleInfoCard
-          name="Car Pricingx"
-          steps={4}
-          iconName="tag"
-          completionStatus="Incomplete"
-          onPress={() => alert("Car Pricing Clicked")}
-        />
       </ScrollView>
 
       <View
@@ -113,8 +71,7 @@ const VehicleInfo = () => {
       >
         <CustomButton
           style={{
-            marginBottom: 5,
-            marginTop: 10,
+            marginBottom: 10,
           }}
           title="Post Ad"
         />
@@ -124,7 +81,7 @@ const VehicleInfo = () => {
             backgroundColor: "transparent",
             borderColor: GlobalStyles.colors.ButtonColor,
             borderWidth: 1,
-            marginBottom: 0,
+            marginBottom: 2,
           }}
           textStyle={{
             color: GlobalStyles.colors.ButtonColor,
@@ -144,6 +101,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     backgroundColor: GlobalStyles.colors.ScreenBg,
+    justifyContent: "space-between",
+    alignItems: "center",
 
     gap: 2,
   },
