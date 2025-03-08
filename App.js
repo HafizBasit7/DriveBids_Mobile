@@ -22,6 +22,11 @@ import Exterior3 from "./Screens/tahirScreens/CarExterior/Exterior3";
 import Exterior4 from "./Screens/tahirScreens/CarExterior/Exterior4";
 import Exterior5 from "./Screens/tahirScreens/CarExterior/Exterior5";
 import Exterior6 from "./Screens/tahirScreens/CarExterior/Exterior6";
+import Interior1 from "./Screens/tahirScreens/CarInterior/Interior1";
+import Interior2 from "./Screens/tahirScreens/CarInterior/Interior2";
+import Interior3 from "./Screens/tahirScreens/CarInterior/Interior3";
+import Interior4 from "./Screens/tahirScreens/CarInterior/Interior4";
+import Interior5 from "./Screens/tahirScreens/CarInterior/Interior5";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
@@ -41,6 +46,11 @@ export default function App() {
       {/* <Exterior4 /> */}
       {/* <Exterior5 /> */}
       {/* <Exterior6 /> */}
+      {/* <Interior1 /> */}
+      {/* <Interior2 /> */}
+      {/* <Interior3 /> */}
+      {/* <Interior4 /> */}
+      {/* <Interior5 /> */}
     </>
   );
 }

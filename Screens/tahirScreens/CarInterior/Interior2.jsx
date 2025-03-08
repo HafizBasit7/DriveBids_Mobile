@@ -5,9 +5,9 @@ import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
 import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
-import Exterior from "../../../assets/tahirAssets/exterior1";
+import Interior from "../../../assets/tahirAssets/Interior2";
 
-const Exterior1 = () => {
+const Interior2 = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const openGallery = async () => {
@@ -31,7 +31,7 @@ const Exterior1 = () => {
 
   return (
     <View style={styles.container}>
-      <SectionHeader title={"Step 1 of 6"} />
+      <SectionHeader title={"Step 2 of 5"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
           Take a picture of your car from the right front as shown below
@@ -49,7 +49,7 @@ const Exterior1 = () => {
               </View>
             </>
           ) : (
-            <Exterior />
+            <Interior />
           )}
         </TouchableOpacity>
       </View>
@@ -122,4 +122,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Exterior1;
+export default Interior2;

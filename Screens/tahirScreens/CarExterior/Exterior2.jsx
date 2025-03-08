@@ -54,9 +54,9 @@ const Exterior2 = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
-        <CustomButton style={{ marginBottom: 10 }} title="Save" />
+        <CustomButton style={{ marginBottom: 10 }} title="Next" />
         <CustomButton
-          title="Next"
+          title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
         />
