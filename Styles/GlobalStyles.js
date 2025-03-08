@@ -10,5 +10,6 @@ export const GlobalStyles = {
     IconsColor: "#FF7235",
     textColor: "#000000",
     Default: "#FEE226",
+    ScreenBg: "#FEFEFE",
   },
 };

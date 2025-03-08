@@ -13,6 +13,7 @@ import Sidebar from "./CustomComponents/Sidebar";
 import HomeBanner from "./CustomComponents/HomeBanner";
 import { GlobalStyles } from "./Styles/GlobalStyles";
 import SellCar from "./Screens/tahirScreens/SellCar";
+import VehicleReg from "./Screens/tahirScreens/VehicleReg";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
@@ -22,7 +23,8 @@ export default function App() {
   return (
     <>
       {/* <ForgetPass /> */}
-      <SellCar />
+      {/* <SellCar /> */}
+      <VehicleReg />
     </>
   );
 }

@@ -9,6 +9,8 @@ import {
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import Line from "../../assets/tahirAssets/Line";
 import SectionHeader from "../../CustomComponents/tahirComponents/SectionHeader";
+import Header from "../../CustomComponents/Header";
+import { GlobalStyles } from "../../Styles/GlobalStyles";
 // import { Svg, Line } from "react-native-svg";
 
 const SellCar = () => {
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: GlobalStyles.colors.ScreenBg,
   },
   titleHead: {
     width: "90%",
