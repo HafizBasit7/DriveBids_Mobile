@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 // screens
 import SignupScreen from "./Screens/Signupscreen";
-// import SignInScreen from "./Screens/SignInScreen";
+import SignInScreen from "./Screens/SignInScreen";
 import ForgetPass from "./Screens/ForgetPass";
 import Verification from "./Screens/Verification";
 import Reset from "./Screens/Reset";
@@ -16,6 +16,7 @@ import Header from "./CustomComponents/Header";
 import Sidebar from "./CustomComponents/Sidebar";
 import HomeBanner from "./CustomComponents/HomeBanner";
 import { GlobalStyles } from "./Styles/GlobalStyles";
+import CarDetails1 from "./Screens/CarDetails1";
 
 // import VehicleReg from "./Screens/tahirScreens/VehicleReg";
 // import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
@@ -38,8 +39,8 @@ import { GlobalStyles } from "./Styles/GlobalStyles";
 // import Thread1 from "./Screens/tahirScreens/ThreadsImages/Thread1";
 // import Thread2 from "./Screens/tahirScreens/ThreadsImages/Thread2";
 // import Thread3 from "./Screens/tahirScreens/ThreadsImages/Thread3";
-// import Thread4 from "./Screens/tahirScreens/ThreadsImages/Thread4";
-// import SellCar from "./Screens/tahirScreens copy/SellCar";
+import Thread4 from "./Screens/tahirScreens/ThreadsImages/Thread4";
+import SellCar from "./Screens/tahirScreens/SellCar";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
@@ -48,7 +49,7 @@ export default function App() {
   }
   return (
     <>
-      <SignupScreen />
+      <AppNavigator />
     </>
   );
 }
