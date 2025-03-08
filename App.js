@@ -4,13 +4,13 @@ import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // screens
-import SignupScreen from "./Screens/Signupscreen";
-import SignInScreen from "./Screens/SignInScreen";
-import ForgetPass from "./Screens/ForgetPass";
-import Verification from "./Screens/Verification";
-import Reset from "./Screens/Reset";
-import PassChanged from "./Screens/PassChanged";
-import CodeScreen from "./Screens/CodeScreen";
+// import SignupScreen from "./Screens/Signupscreen";
+// import SignInScreen from "./Screens/SignInScreen";
+// import ForgetPass from "./Screens/ForgetPass";
+// import Verification from "./Screens/Verification";
+// import Reset from "./Screens/Reset";
+// import PassChanged from "./Screens/PassChanged";
+// import CodeScreen from "./Screens/CodeScreen";
 // Components
 import Header from "./CustomComponents/Header";
 import Sidebar from "./CustomComponents/Sidebar";
@@ -41,6 +41,7 @@ import CarDetails1 from "./Screens/CarDetails1";
 // import Thread3 from "./Screens/tahirScreens/ThreadsImages/Thread3";
 import Thread4 from "./Screens/tahirScreens/ThreadsImages/Thread4";
 import SellCar from "./Screens/tahirScreens/SellCar";
+import Draft from "./Screens/tahirScreens/Draft";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
@@ -49,7 +50,8 @@ export default function App() {
   }
   return (
     <>
-      <AppNavigator />
+      {/* <AppNavigator /> */}
+      <Draft />
     </>
   );
 }
