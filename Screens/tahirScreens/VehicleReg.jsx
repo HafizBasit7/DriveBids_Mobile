@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
-import Line from "../../assets/tahirAssets/Line";
+
 import SectionHeader from "../../CustomComponents/tahirComponents/SectionHeader";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
 import CustomButton from "../../CustomComponents/CustomButton";
