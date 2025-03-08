@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import SectionHeader from "../../CustomComponents/tahirComponents/SectionHeader";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
