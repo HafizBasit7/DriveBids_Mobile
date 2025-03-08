@@ -19,6 +19,11 @@ import Thread2 from "../Screens/tahirScreens/ThreadsImages/Thread2";
 import Thread3 from "../Screens/tahirScreens/ThreadsImages/Thread3";
 import Thread4 from "../Screens/tahirScreens/ThreadsImages/Thread4";
 
+import Wheel1 from "../Screens/tahirScreens/WheelsImages/Wheel1";
+import Wheel2 from "../Screens/tahirScreens/WheelsImages/Wheel2";
+import Wheel3 from "../Screens/tahirScreens/WheelsImages/Wheel3";
+import Wheel4 from "../Screens/tahirScreens/WheelsImages/Wheel4";
+
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
@@ -45,10 +50,16 @@ const AppNavigator = () => {
         <Stack.Screen name="Interior5" component={Interior5} /> */}
 
         {/* Thread Screens */}
-        <Stack.Screen name="Thread1" component={Thread1} />
+        {/* <Stack.Screen name="Thread1" component={Thread1} />
         <Stack.Screen name="Thread2" component={Thread2} />
         <Stack.Screen name="Thread3" component={Thread3} />
-        <Stack.Screen name="Thread4" component={Thread4} />
+        <Stack.Screen name="Thread4" component={Thread4} /> */}
+
+        {/* Wheels Screens */}
+        <Stack.Screen name="Wheel1" component={Wheel1} />
+        <Stack.Screen name="Wheel2" component={Wheel2} />
+        <Stack.Screen name="Wheel3" component={Wheel3} />
+        <Stack.Screen name="Wheel4" component={Wheel4} />
       </Stack.Navigator>
     </NavigationContainer>
   );
