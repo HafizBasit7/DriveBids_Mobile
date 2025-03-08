@@ -16,6 +16,7 @@
     "expo": "^52.0.30",
     "expo-checkbox": "~4.0.1",
     "expo-font": "~13.0.3",
+    "expo-image-picker": "~16.0.6",
     "expo-splash-screen": "~0.29.21",
     "expo-status-bar": "~2.0.1",
     "lottie-ios": "^4.5.1",
@@ -32,10 +33,12 @@
     "react-native-svg-transformer": "^1.5.0",
     "react-native-swipe-gestures": "^1.0.5",
     "react-native-vector-icons": "^10.2.0",
-    "expo-image-picker": "~16.0.6"
+    "expo-camera": "~16.0.17"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "typescript": "^5.3.3",
+    "@types/react": "~18.3.12"
   },
   "private": true
 }
