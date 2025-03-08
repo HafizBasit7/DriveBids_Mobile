@@ -6,10 +6,10 @@ import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHead
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import Thread from "../../../assets/tahirAssets/Thread2";
-
+import { useNavigation } from "@react-navigation/native";
 const Thread2 = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-
+  const navigation = useNavigation();
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -54,11 +54,16 @@ const Thread2 = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
-        <CustomButton style={{ marginBottom: 10 }} title="Next" />
+        <CustomButton
+          style={{ marginBottom: 10 }}
+          title="Next"
+          onPress={() => navigation.navigate("Thread3")}
+        />
         <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
+          onPress={() => navigation.navigate("Thread1")}
         />
       </View>
     </View>
