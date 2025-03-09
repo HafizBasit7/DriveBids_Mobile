@@ -19,14 +19,9 @@ const options = [
   { label: "Requires Immediate Attention", color: "#C0392B", icon: "report" },
 ];
 
-const tests = [
-  "Break Efficiency",
-  "Hand Brake Test",
-  "Static Gear Selection",
-  "Reverse Clutch Slip",
-];
+const tests = ["Headlights", "BrakeLights", "SideLights", "FogLights"];
 
-const InspectionReport1 = () => {
+const InspectionReport2 = () => {
   const [selections, setSelections] = useState({});
 
   const handleSelect = (test, option) => {
@@ -36,7 +31,7 @@ const InspectionReport1 = () => {
   return (
     <View style={styles.container}>
       <View style={{ width: "100%" }}>
-        <SectionHeader title={"Step 1 of 3"} marginCustom={5} />
+        <SectionHeader title={"Step 2 of 3"} marginCustom={5} />
         <SectionHeader
           sx={{ fontSize: 18, fontWeight: "500", fontFamily: "Inter-SemiBold" }}
           title={"Inspection Report"}
@@ -58,7 +53,7 @@ const InspectionReport1 = () => {
           }}
         >
           <View style={styles.dynamicButton}>
-            <Text style={styles.dynamicButtonText}>Dynamic Operations</Text>
+            <Text style={styles.dynamicButtonText}>Essentials Checks</Text>
           </View>
           {tests.map((test, index) => (
             <View key={index} style={styles.testSection}>
@@ -196,4 +191,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InspectionReport1;
+export default InspectionReport2;

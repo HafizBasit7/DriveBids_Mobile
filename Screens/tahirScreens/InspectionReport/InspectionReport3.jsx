@@ -20,13 +20,13 @@ const options = [
 ];
 
 const tests = [
-  "Break Efficiency",
-  "Hand Brake Test",
-  "Static Gear Selection",
-  "Reverse Clutch Slip",
+  "Engine Management Light",
+  "Brake Wear Indicator Light",
+  "Abs Warning Light",
+  "Oil Warning Light",
 ];
 
-const InspectionReport1 = () => {
+const InspectionReport3 = () => {
   const [selections, setSelections] = useState({});
 
   const handleSelect = (test, option) => {
@@ -36,7 +36,7 @@ const InspectionReport1 = () => {
   return (
     <View style={styles.container}>
       <View style={{ width: "100%" }}>
-        <SectionHeader title={"Step 1 of 3"} marginCustom={5} />
+        <SectionHeader title={"Step 3 of 3"} marginCustom={5} />
         <SectionHeader
           sx={{ fontSize: 18, fontWeight: "500", fontFamily: "Inter-SemiBold" }}
           title={"Inspection Report"}
@@ -58,7 +58,7 @@ const InspectionReport1 = () => {
           }}
         >
           <View style={styles.dynamicButton}>
-            <Text style={styles.dynamicButtonText}>Dynamic Operations</Text>
+            <Text style={styles.dynamicButtonText}>Interior Checks</Text>
           </View>
           {tests.map((test, index) => (
             <View key={index} style={styles.testSection}>
@@ -196,4 +196,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InspectionReport1;
+export default InspectionReport3;
