@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
+import { MaterialIcons } from "@expo/vector-icons";
 import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import Exterior from "../../../assets/tahirAssets/exterior1";
+import { useNavigation } from "@react-navigation/native"; // Import navigation hook
 
 const Exterior1 = () => {
+  const navigation = useNavigation(); // Initialize navigation
   const [selectedImage, setSelectedImage] = useState(null);
 
   const openGallery = async () => {
@@ -19,7 +21,6 @@ const Exterior1 = () => {
 
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images", "videos"],
-      // allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
@@ -54,11 +55,16 @@ const Exterior1 = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
-        <CustomButton style={{ marginBottom: 10 }} title="Next" />
+        <CustomButton
+          style={{ marginBottom: 10 }}
+          title="Next"
+          onPress={() => navigation.navigate("Exterior2")} // Navigate to Exterior2
+        />
         <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
+          onPress={() => console.log("Back Pressed")} // Temporary action
         />
       </View>
     </View>
@@ -96,7 +102,6 @@ const styles = StyleSheet.create({
   },
   penIconContainer: {
     position: "absolute",
-
     backgroundColor: "rgba(22, 23, 24, 0.8)",
     padding: 5,
     paddingHorizontal: 10,

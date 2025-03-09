@@ -104,7 +104,7 @@ const CodeScreen = () => {
           </View>
 
           <CustomButton
-            title="Send Code"
+            title="Verify"
             onPress={handleSendCode}
             style={{ marginTop: "40%" }}
           />
