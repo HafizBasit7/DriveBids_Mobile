@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
-import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
-import CustomButton from "../../../CustomComponents/CustomButton";
-import Wheel from "../../../assets/tahirAssets/Wheel3";
+import SectionHeader from "../../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../../Styles/GlobalStyles";
+import CustomButton from "../../CustomComponents/CustomButton";
+import Wheel from "../../assets/tahirAssets/Wheel3";
 import { useNavigation } from "@react-navigation/native";
 const Wheel3 = () => {
   const [selectedImage, setSelectedImage] = useState(null);

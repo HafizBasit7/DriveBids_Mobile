@@ -9,9 +9,9 @@ import {
   ScrollView,
 } from "react-native";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
-import SectionHeader from "../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../Styles/GlobalStyles";
-import DraftCard from "../../CustomComponents/tahirComponents/DraftCard";
+import SectionHeader from "../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../Styles/GlobalStyles";
+import DraftCard from "../CustomComponents/DraftCard";
 
 const Draft = () => {
   const carList = [
@@ -60,7 +60,7 @@ const Draft = () => {
   ];
 
   return (
-    <View style={{ paddingHorizontal: 20, flex: 1 }}>
+    <View style={{ paddingHorizontal: 20, flex: 1, backgroundColor: "#ffff" }}>
       <SectionHeader title="Drafts" />
       <FlatList
         data={carList}

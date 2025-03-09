@@ -7,12 +7,13 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import SectionHeader from "../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../Styles/GlobalStyles";
-import CustomButton from "../../CustomComponents/CustomButton";
-import VehicleInfoCard from "../../CustomComponents/tahirComponents/VehicleInfoCard";
-
+import SectionHeader from "../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../Styles/GlobalStyles";
+import CustomButton from "../CustomComponents/CustomButton";
+import VehicleInfoCard from "../CustomComponents/VehicleInfoCard";
+import { useNavigation } from "@react-navigation/native";
 const CarImages = () => {
+  const navigation = useNavigation(); // Initialize navigation
   return (
     <View style={styles.container}>
       <SectionHeader title={"Car Images"} />
@@ -22,28 +23,28 @@ const CarImages = () => {
           steps={6}
           iconName="car-hatchback"
           completionStatus="Completed"
-          onPress={() => alert("Car Details Clicked")}
+          onPress={() => navigation.navigate("Exterior1")}
         />
         <VehicleInfoCard
           name="Interior Images"
           steps={9}
           iconName="steering"
           completionStatus="Incomplete"
-          onPress={() => alert("Car Features Clicked")}
+          onPress={() => navigation.navigate("Interior1")}
         />
         <VehicleInfoCard
           name="Wheels"
           steps={3}
           iconName="ship-wheel"
           completionStatus="Incomplete"
-          onPress={() => alert("Car Images Clicked")}
+          onPress={() => navigation.navigate("Wheel1")}
         />
         <VehicleInfoCard
           name="Tyres Threads"
           steps={2}
           iconName="tire"
           completionStatus="Incomplete"
-          onPress={() => alert("Inspection Report Clicked")}
+          onPress={() => navigation.navigate("Thread1")}
         />
       </ScrollView>
 
@@ -59,6 +60,7 @@ const CarImages = () => {
             marginBottom: 10,
           }}
           title="Save"
+          onPress={() => navigation.navigate("VehicleInfo")}
         />
       </View>
     </View>

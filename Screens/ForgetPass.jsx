@@ -11,10 +11,12 @@ import {
 } from "react-native";
 import BackIcon from "../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../CustomComponents/CustomButton.js";
+import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
 
 const ForgetPass = () => {
+  const navigation = useNavigation();
   const [focusedInput, setFocusedInput] = useState(null);
   const [email, setEmail] = useState(""); // State for email input
   const [isCodeSent, setIsCodeSent] = useState(false); // State to check if the code is sent
@@ -26,6 +28,7 @@ const ForgetPass = () => {
     } else {
       alert("Please enter a valid email address.");
     }
+    navigation.navigate("Reset");
   };
 
   return (
@@ -86,7 +89,7 @@ const ForgetPass = () => {
           <View style={styles.loginTextContainer}>
             <Text style={styles.accountText}>Remember password? </Text>
             <TouchableOpacity
-              onPress={() => console.log("Navigate to Login Screen")}
+              onPress={() => navigation.navigate("SignInScreen")}
             >
               <Text style={styles.loginLink}>Login</Text>
             </TouchableOpacity>

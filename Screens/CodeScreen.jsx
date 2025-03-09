@@ -11,10 +11,11 @@ import {
 } from "react-native";
 import BackIcon from "../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../CustomComponents/CustomButton.js";
-
+import { useNavigation } from "@react-navigation/native";
 const { width, height } = Dimensions.get("window");
 
 const CodeScreen = () => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState(""); // State for email input
   const [isCodeSent, setIsCodeSent] = useState(false); // State to check if the code is sent
   const [otp, setOtp] = useState(["", "", "", ""]); // State for OTP inputs

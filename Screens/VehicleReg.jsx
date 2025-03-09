@@ -1,11 +1,12 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import SectionHeader from "../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../Styles/GlobalStyles";
-import CustomButton from "../../CustomComponents/CustomButton";
+import SectionHeader from "../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../Styles/GlobalStyles";
+import CustomButton from "../CustomComponents/CustomButton";
 // import { Svg, Line } from "react-native-svg";
-
+import { useNavigation } from "@react-navigation/native";
 const VehicleReg = () => {
+  const navigation = useNavigation(); // Initialize navigation
   return (
     <View style={styles.container}>
       <SectionHeader title={"Vehicle Registration"} />
@@ -14,7 +15,10 @@ const VehicleReg = () => {
           Enter your vehicle's Registration Number:
         </Text>
         <TextInput style={styles.input} placeholder="Registration Number" />
-        <CustomButton title="Sell my car" />
+        <CustomButton
+          title="Sell my car"
+          onPress={() => navigation.navigate("VehicleInfo")}
+        />
       </View>
     </View>
   );

@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
-import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
-import CustomButton from "../../../CustomComponents/CustomButton";
-import Thread from "../../../assets/tahirAssets/Thread4";
+import SectionHeader from "../../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../../Styles/GlobalStyles";
+import CustomButton from "../../CustomComponents/CustomButton";
+import Thread from "../../assets/tahirAssets/Thread4";
 import { useNavigation } from "@react-navigation/native";
 const Thread4 = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -54,7 +54,11 @@ const Thread4 = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
-        <CustomButton style={{ marginBottom: 10 }} title="Finish" />
+        <CustomButton
+          style={{ marginBottom: 10 }}
+          title="Finish"
+          onPress={() => navigation.navigate("CarImages")}
+        />
         <CustomButton
           title="Back"
           style={styles.nextButton}

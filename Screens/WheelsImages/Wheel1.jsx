@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
-import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
-import CustomButton from "../../../CustomComponents/CustomButton";
-import Thread from "../../../assets/tahirAssets/Thread1";
+import SectionHeader from "../../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../../Styles/GlobalStyles";
+import CustomButton from "../../CustomComponents/CustomButton";
+import Wheel from "../../assets/tahirAssets/Wheel1";
 import { useNavigation } from "@react-navigation/native";
-const Thread1 = () => {
+const Wheel1 = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const navigation = useNavigation();
   const openGallery = async () => {
@@ -34,7 +34,7 @@ const Thread1 = () => {
       <SectionHeader title={"Step 1 of 4"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
-          Take a picture of the back driver tyre treads as shown below
+          Take a picture of the front driver wheel as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
           {selectedImage ? (
@@ -49,7 +49,7 @@ const Thread1 = () => {
               </View>
             </>
           ) : (
-            <Thread />
+            <Wheel />
           )}
         </TouchableOpacity>
       </View>
@@ -57,12 +57,13 @@ const Thread1 = () => {
         <CustomButton
           style={{ marginBottom: 10 }}
           title="Next"
-          onPress={() => navigation.navigate("Thread2")}
+          onPress={() => navigation.navigate("Wheel2")}
         />
         <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
+          onPress={() => navigation.navigate("CarImages")}
         />
       </View>
     </View>
@@ -126,4 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Thread1;
+export default Wheel1;

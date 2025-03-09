@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
-import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
-import CustomButton from "../../../CustomComponents/CustomButton";
-import Wheel from "../../../assets/tahirAssets/Wheel1";
-import { useNavigation } from "@react-navigation/native";
-const Wheel1 = () => {
+import SectionHeader from "../../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../../Styles/GlobalStyles";
+import CustomButton from "../../CustomComponents/CustomButton";
+import Exterior from "../../assets/tahirAssets/exterior6";
+import { useNavigation } from "@react-navigation/native"; // Import navigation hook
+const Exterior6 = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // Initialize navigation
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -31,10 +31,10 @@ const Wheel1 = () => {
 
   return (
     <View style={styles.container}>
-      <SectionHeader title={"Step 1 of 4"} />
+      <SectionHeader title={"Step 6 of 6"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
-          Take a picture of the front driver wheel as shown below
+          Take a picture of your car from the back as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
           {selectedImage ? (
@@ -49,20 +49,21 @@ const Wheel1 = () => {
               </View>
             </>
           ) : (
-            <Wheel />
+            <Exterior />
           )}
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton
           style={{ marginBottom: 10 }}
-          title="Next"
-          onPress={() => navigation.navigate("Wheel2")}
+          title="Finish"
+          onPress={() => navigation.navigate("CarImages")}
         />
         <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
+          onPress={() => navigation.navigate("Exterior5")}
         />
       </View>
     </View>
@@ -126,4 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Wheel1;
+export default Exterior6;

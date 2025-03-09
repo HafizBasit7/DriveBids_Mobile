@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { GlobalStyles } from "../../Styles/GlobalStyles";
+import { GlobalStyles } from "../Styles/GlobalStyles";
 
 const VehicleInfoCard = ({
   name,

@@ -11,15 +11,16 @@ import {
 import LottieView from "lottie-react-native"; // Import Lottie
 import BackIcon from "../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../CustomComponents/CustomButton.js";
-
+import { useNavigation } from "@react-navigation/native";
 const { width, height } = Dimensions.get("window");
 
 const PassChanged = () => {
   const [isCodeSent, setIsCodeSent] = useState(false);
-
+  const navigation = useNavigation();
   const handleSendCode = () => {
     setIsCodeSent(true);
     console.log("Navigating to Login");
+    navigation.navigate("SignInScreen");
   };
 
   return (
@@ -77,7 +78,7 @@ const PassChanged = () => {
           <View style={styles.loginTextContainer}>
             <Text style={styles.accountText}>Already have an account? </Text>
             <TouchableOpacity
-              onPress={() => console.log("Navigate to Login Screen")}
+              onPress={() => navigation.navigate("SignInScreen")}
             >
               <Text style={styles.loginLink}>Log in</Text>
             </TouchableOpacity>
