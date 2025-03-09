@@ -54,7 +54,11 @@ const Exterior6 = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
-        <CustomButton style={{ marginBottom: 10 }} title="Finish" />
+        <CustomButton
+          style={{ marginBottom: 10 }}
+          title="Finish"
+          onPress={() => navigation.navigate("CarImages")}
+        />
         <CustomButton
           title="Back"
           style={styles.nextButton}

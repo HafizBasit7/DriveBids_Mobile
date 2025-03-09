@@ -10,11 +10,11 @@ import {
 import { RadioButton } from "react-native-paper"; // Ensure you have installed react-native-paper
 import Header from "../CustomComponents/Header"; // Adjust the path if needed
 import CustomButton from "../CustomComponents/CustomButton";
-
+import { useNavigation } from "@react-navigation/native";
 const CarDetails1 = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [inputValue, setInputValue] = useState("");
-
+  const navigation = useNavigation(); // Initialize navigation
   const options = [
     { id: 1, label: "Toyota" },
     { id: 2, label: "Honda" },

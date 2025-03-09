@@ -13,13 +13,13 @@ import {
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import BackIcon from "../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../CustomComponents/CustomButton";
-
+import { useNavigation } from "@react-navigation/native";
 const { width, height } = Dimensions.get("window");
 
 const SignupScreen = () => {
   const [selectedTab, setSelectedTab] = useState("private");
   const [isChecked, setIsChecked] = useState(false);
-
+  const navigation = useNavigation("");
   const handleTermsClick = () => {
     Linking.openURL("https://example.com/terms");
   };
@@ -30,6 +30,7 @@ const SignupScreen = () => {
 
   const handleLogin = () => {
     console.log("Login Pressed");
+    navigation.navigate("SignInScreen");
   };
 
   return (
@@ -42,7 +43,11 @@ const SignupScreen = () => {
 
       {/* Back Icon */}
       <View style={styles.backIconContainer}>
-        <BackIcon width={30} height={30} />
+        <BackIcon
+          width={30}
+          height={30}
+          onPress={() => navigation.navigate("onboardingScreen")}
+        />
       </View>
 
       {/* Top Image */}
@@ -152,7 +157,12 @@ const SignupScreen = () => {
             <TouchableOpacity
               onPress={() => console.log("Navigate to Login Screen")}
             >
-              <Text style={styles.loginLink}>Log in</Text>
+              <Text
+                style={styles.loginLink}
+                onPress={() => navigation.navigate("SignInScreen")}
+              >
+                Log in
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -64,7 +64,7 @@ const Exterior1 = () => {
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
-          onPress={() => console.log("Back Pressed")} // Temporary action
+          onPress={() => navigation.navigate("CarImages")}
         />
       </View>
     </View>

@@ -3,18 +3,25 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import SectionHeader from "../../CustomComponents/tahirComponents/SectionHeader";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
-
+import { useNavigation } from "@react-navigation/native";
 const SellCar = () => {
+  const navigation = useNavigation(); // Initialize navigation
   return (
     <View style={styles.container}>
       <SectionHeader title={"Sell Car"} />
-      <TouchableOpacity style={styles.buttonPrimary}>
+      <TouchableOpacity
+        style={styles.buttonPrimary}
+        onPress={() => navigation.navigate("VehicleReg")}
+      >
         <FontAwesome5 name="car" size={24} color="white" />
         <Text style={styles.buttonText}>Post a new ad</Text>
         <MaterialIcons name="keyboard-arrow-right" size={24} color="white" />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.buttonSecondary}>
+      <TouchableOpacity
+        style={styles.buttonSecondary}
+        onPress={() => navigation.navigate("Draft")}
+      >
         <FontAwesome5 name="edit" size={24} color="black" />
         <Text style={styles.buttonTextSecondary}>Drafts</Text>
         <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />

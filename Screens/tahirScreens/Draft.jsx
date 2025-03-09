@@ -60,7 +60,7 @@ const Draft = () => {
   ];
 
   return (
-    <View style={{ paddingHorizontal: 20, flex: 1 }}>
+    <View style={{ paddingHorizontal: 20, flex: 1, backgroundColor: "#ffff" }}>
       <SectionHeader title="Drafts" />
       <FlatList
         data={carList}

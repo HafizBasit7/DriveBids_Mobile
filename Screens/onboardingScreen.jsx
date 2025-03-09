@@ -114,7 +114,7 @@ const OnboardingScreen = () => {
             ) : (
               <>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("SignUp")}
+                  onPress={() => navigation.navigate("Signupscreen")}
                   style={[styles.button, styles.signupButton]}
                 >
                   <Text style={[styles.buttonText, { color: "#fff" }]}>
@@ -152,7 +152,7 @@ const OnboardingScreen = () => {
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
-                onPress={() => navigation.navigate("Login")}
+                onPress={() => navigation.navigate("SignInScreen")}
                 style={[styles.button, styles.loginButton]}
               >
                 <Text style={[styles.buttonText, { color: "#18B0F8" }]}>

@@ -19,7 +19,7 @@ import { GlobalStyles } from "./Styles/GlobalStyles";
 import CarDetails1 from "./Screens/CarDetails1";
 
 // import VehicleReg from "./Screens/tahirScreens/VehicleReg";
-// import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
+import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
 // import CarImages from "./Screens/tahirScreens/CarImages";
 // import Exterior1 from "./Screens/tahirScreens/CarExteriorImages/Exterior1";
 // import Exterior2 from "./Screens/tahirScreens/CarExteriorImages/Exterior2";
@@ -50,8 +50,8 @@ export default function App() {
   }
   return (
     <>
-      {/* <AppNavigator /> */}
-      <Draft />
+      <AppNavigator />
+      {/* <VehicleInfo /> */}
     </>
   );
 }

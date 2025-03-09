@@ -15,10 +15,11 @@ import GoogleIcon from "../assets/UmairAssets/Google.svg";
 import FacebookIcon from "../assets/UmairAssets/Facebook.svg";
 import AppleIcon from "../assets/UmairAssets/Apple.svg";
 import CustomButton from "../CustomComponents/CustomButton.js";
-
+import { useNavigation } from "@react-navigation/native";
 const { width, height } = Dimensions.get("window");
 
 const SignInScreen = () => {
+  const navigation = useNavigation();
   const [focusedInput, setFocusedInput] = useState(null);
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
@@ -43,7 +44,11 @@ const SignInScreen = () => {
       />
 
       <View style={styles.backIconContainer}>
-        <BackIcon width={30} height={30} />
+        <BackIcon
+          width={30}
+          height={30}
+          onPress={() => navigation.navigate("onboardingScreen")}
+        />
       </View>
 
       <Image
@@ -113,7 +118,7 @@ const SignInScreen = () => {
             />
             <Text
               style={styles.forgotPassword}
-              onPress={() => console.log("Forgot Password Pressed")}
+              onPress={() => navigation.navigate("ForgetPass")}
             >
               Forgot Password?
             </Text>
@@ -140,9 +145,9 @@ const SignInScreen = () => {
           <View style={styles.loginTextContainer}>
             <Text style={styles.accountText}>Don’t have an account? </Text>
             <TouchableOpacity
-              onPress={() => console.log("Navigate to Sign Up Screen")}
+              onPress={() => navigation.navigate("Signupscreen")}
             >
-              <Text style={styles.loginLink}>Sign Up</Text>
+              <Text style={styles.loginLink}> Sign Up</Text>
             </TouchableOpacity>
           </View>
         </View>

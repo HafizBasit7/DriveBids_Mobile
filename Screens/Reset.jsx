@@ -11,10 +11,11 @@ import {
 } from "react-native";
 import BackIcon from "../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../CustomComponents/CustomButton.js";
-
+import { useNavigation } from "@react-navigation/native";
 const { width, height } = Dimensions.get("window");
 
 const Reset = () => {
+  const navigation = useNavigation();
   const [focusedInput, setFocusedInput] = useState(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -97,7 +98,7 @@ const Reset = () => {
           <CustomButton
             title="Reset Password"
             onPress={() =>
-              console.log("Reset Password Pressed", {
+              navigation.navigate("PassChanged", {
                 password,
                 confirmPassword,
               })
@@ -108,7 +109,7 @@ const Reset = () => {
           <View style={styles.loginTextContainer}>
             <Text style={styles.accountText}>Already have an account? </Text>
             <TouchableOpacity
-              onPress={() => console.log("Navigate to Login Screen")}
+              onPress={() => navigation.navigate("SignInScreen")}
             >
               <Text style={styles.loginLink}>Log in</Text>
             </TouchableOpacity>

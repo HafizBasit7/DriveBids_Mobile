@@ -63,6 +63,7 @@ const Thread1 = () => {
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
+          onPress={() => navigation.navigate("CarImages")}
         />
       </View>
     </View>

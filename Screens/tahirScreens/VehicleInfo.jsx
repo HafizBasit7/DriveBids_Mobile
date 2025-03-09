@@ -1,25 +1,20 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import SectionHeader from "../../CustomComponents/tahirComponents/SectionHeader";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
 import CustomButton from "../../CustomComponents/CustomButton";
 import VehicleInfoCard from "../../CustomComponents/tahirComponents/VehicleInfoCard";
-import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
-
-// import { Svg, Line } from "react-native-svg";
-
+import { useNavigation } from "@react-navigation/native";
 const VehicleInfo = () => {
+  const navigation = useNavigation("");
   return (
     <View style={styles.container}>
       <SectionHeader title={"Vehicle Information"} />
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.head}>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent} // Allows content to expand
+      >
         <VehicleInfoCard
           name="Car Details"
           steps={9}
@@ -39,7 +34,7 @@ const VehicleInfo = () => {
           steps={4}
           iconName="car"
           completionStatus="Incomplete"
-          onPress={() => alert("Car Images Clicked")}
+          onPress={() => navigation.navigate("CarImages")}
         />
         <VehicleInfoCard
           name="Inspection Report"
@@ -64,31 +59,14 @@ const VehicleInfo = () => {
         />
       </ScrollView>
 
-      <View
-        style={{
-          width: "100%",
-          flex: 1,
-          justifyContent: "flex-end",
-        }}
-      >
+      {/* Buttons placed outside the ScrollView */}
+      <View style={styles.buttonContainer}>
+        <CustomButton title="Post Ad" style={styles.postAdButton} />
         <CustomButton
-          style={{
-            marginBottom: 10,
-          }}
-          title="Post Ad"
-        />
-        <CustomButton
-          title=" Save Draft"
-          style={{
-            backgroundColor: "transparent",
-            borderColor: GlobalStyles.colors.ButtonColor,
-            borderWidth: 1,
-            marginBottom: 2,
-          }}
-          textStyle={{
-            color: GlobalStyles.colors.ButtonColor,
-            fontFamily: "Inter-SemiBold",
-          }}
+          title="Save Draft"
+          style={styles.saveDraftButton}
+          textStyle={styles.saveDraftText}
+          onPress={() => navigation.navigate("Draft")}
         />
       </View>
     </View>
@@ -98,18 +76,30 @@ const VehicleInfo = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     paddingHorizontal: 20,
     paddingVertical: 10,
     backgroundColor: GlobalStyles.colors.ScreenBg,
-    justifyContent: "flex-start",
-    alignItems: "center",
-
-    gap: 2,
   },
-  head: {
-    paddingHorizontal: 5,
+  scrollContent: {
+    flexGrow: 1, // Ensures scrollable content does not overlap
+    paddingBottom: 20, // Adds some space before buttons
+  },
+  buttonContainer: {
     width: "100%",
+    paddingVertical: 10,
+    backgroundColor: GlobalStyles.colors.ScreenBg,
+  },
+  postAdButton: {
+    marginBottom: 10,
+  },
+  saveDraftButton: {
+    backgroundColor: "transparent",
+    borderColor: GlobalStyles.colors.ButtonColor,
+    borderWidth: 1,
+  },
+  saveDraftText: {
+    color: GlobalStyles.colors.ButtonColor,
+    fontFamily: "Inter-SemiBold",
   },
 });
 
