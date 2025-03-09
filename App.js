@@ -41,6 +41,7 @@ import Thread3 from "./Screens/tahirScreens/ThreadsImages/Thread3";
 import Thread4 from "./Screens/tahirScreens/ThreadsImages/Thread4";
 import Draft from "./Screens/tahirScreens/Draft";
 import CarCameraOverlay from "./Screens/tahirScreens/CameraOverlay";
+import InspectionReport1 from "./Screens/tahirScreens/InspectionReport/InspectionReport1";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
@@ -49,7 +50,8 @@ export default function App() {
   }
   return (
     <>
-      <CarCameraOverlay />
+      <InspectionReport1 />
+      {/* <CarCameraOverlay /> */}
       {/* <Draft /> */}
       {/* <ForgetPass /> */}
       {/* <SellCar /> */}
