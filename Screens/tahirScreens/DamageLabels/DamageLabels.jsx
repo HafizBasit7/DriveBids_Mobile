@@ -14,7 +14,6 @@ import * as ImagePicker from "expo-image-picker";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
-import Upload from "../../../assets/tahirAssets/Upload";
 import DamageReportModal from "../../../CustomComponents/tahirComponents/DamageReportModal";
 
 const damageOptions = [
@@ -24,6 +23,12 @@ const damageOptions = [
 ];
 
 const DamageInspection = () => {
+  const carSides = [
+    require("../../../assets/tahirAssets/CarFront.png"),
+    require("../../../assets/tahirAssets/CarRight.png"),
+    require("../../../assets/tahirAssets/CarLeft.png"),
+    require("../../../assets/tahirAssets/CarBack.png"),
+  ];
   const [selectedDamage, setSelectedDamage] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -31,7 +36,7 @@ const DamageInspection = () => {
   const [image, setImage] = useState(null);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-
+  const [carFacing, setCarFacing] = useState(0);
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -140,10 +145,7 @@ const DamageInspection = () => {
       >
         <TouchableOpacity style={styles.carContainer} onPress={handleCarPress}>
           <Svg width={250} height={200} viewBox="0 0 250 200">
-            <Image
-              source={require("../../../assets/tahirAssets/CarFront.png")}
-              style={styles.carImage}
-            />
+            <Image source={carSides[carFacing]} style={styles.carImage} />
             {markers.map((marker, index) => (
               <Circle
                 key={index}
@@ -155,8 +157,37 @@ const DamageInspection = () => {
             ))}
           </Svg>
         </TouchableOpacity>
+        <Text style={[styles.instruction, { fontSize: 15, marginTop: 7 }]}>
+          {carFacing === 0
+            ? "[ Front Side ]"
+            : carFacing === 1
+            ? "[ Right Side ]"
+            : carFacing === 2
+            ? "[ Left Side ]"
+            : "[ Back Side ]"}
+        </Text>
 
-        <CustomButton title="Next" onPress={() => console.log("Next Step")} />
+        <View style={styles.buttonContainer}>
+          {carFacing < 3 ? (
+            <CustomButton
+              title="Next"
+              onPress={() => setCarFacing(carFacing + 1)}
+            />
+          ) : (
+            <CustomButton
+              title="Finish"
+              onPress={() => console.log("All Marks Completed!")}
+            />
+          )}
+          {carFacing > 0 && (
+            <CustomButton
+              onPress={() => setCarFacing(carFacing - 1)}
+              title="Back"
+              style={styles.nextButton}
+              textStyle={styles.nextButtonText}
+            />
+          )}
+        </View>
       </View>
       <DamageReportModal
         damageDescription={damageDescription}
@@ -281,6 +312,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+  },
+  buttonContainer: {
+    width: "100%",
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  nextButton: {
+    backgroundColor: "transparent",
+    borderColor: GlobalStyles.colors.ButtonColor,
+    borderWidth: 1,
+    marginBottom: 2,
+  },
+  nextButtonText: {
+    color: GlobalStyles.colors.ButtonColor,
+    fontFamily: "Inter-SemiBold",
   },
 });
 
