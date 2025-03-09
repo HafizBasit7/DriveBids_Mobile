@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
-import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
-import CustomButton from "../../../CustomComponents/CustomButton";
-import Wheel from "../../../assets/tahirAssets/Wheel3";
+import SectionHeader from "../../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../../Styles/GlobalStyles";
+import CustomButton from "../../CustomComponents/CustomButton";
+import Wheel from "../../assets/tahirAssets/Wheel2";
 import { useNavigation } from "@react-navigation/native";
-const Wheel3 = () => {
+const Wheel2 = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const navigation = useNavigation();
   const openGallery = async () => {
@@ -31,10 +31,10 @@ const Wheel3 = () => {
 
   return (
     <View style={styles.container}>
-      <SectionHeader title={"Step 3 of 4"} />
+      <SectionHeader title={"Step 2 of 4"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
-          Take a picture of the back passenger wheel as shown below
+          Take a picture of the back driver wheel as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
           {selectedImage ? (
@@ -57,13 +57,13 @@ const Wheel3 = () => {
         <CustomButton
           style={{ marginBottom: 10 }}
           title="Next"
-          onPress={() => navigation.navigate("Wheel4")}
+          onPress={() => navigation.navigate("Wheel3")}
         />
         <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
-          onPress={() => navigation.navigate("Wheel2")}
+          onPress={() => navigation.navigate("Wheel1")}
         />
       </View>
     </View>
@@ -127,4 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Wheel3;
+export default Wheel2;

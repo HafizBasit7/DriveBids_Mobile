@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
-import SectionHeader from "../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../Styles/GlobalStyles";
+import SectionHeader from "../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../Styles/GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 const SellCar = () => {
   const navigation = useNavigation(); // Initialize navigation

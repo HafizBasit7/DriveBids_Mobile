@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
-import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
-import CustomButton from "../../../CustomComponents/CustomButton";
-import Thread from "../../../assets/tahirAssets/Thread2";
-import { useNavigation } from "@react-navigation/native";
-const Thread2 = () => {
+import SectionHeader from "../../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../../Styles/GlobalStyles";
+import CustomButton from "../../CustomComponents/CustomButton";
+import Exterior from "../../assets/tahirAssets/exterior2";
+import { useNavigation } from "@react-navigation/native"; // Import navigation hook
+
+const Exterior2 = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // Initialize navigation
+
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -31,10 +33,10 @@ const Thread2 = () => {
 
   return (
     <View style={styles.container}>
-      <SectionHeader title={"Step 2 of 4"} />
+      <SectionHeader title={"Step 2 of 6"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
-          Take a picture of the back passenger tyre treads as shown below
+          Take a picture of your car from the left front as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
           {selectedImage ? (
@@ -49,7 +51,7 @@ const Thread2 = () => {
               </View>
             </>
           ) : (
-            <Thread />
+            <Exterior />
           )}
         </TouchableOpacity>
       </View>
@@ -57,13 +59,13 @@ const Thread2 = () => {
         <CustomButton
           style={{ marginBottom: 10 }}
           title="Next"
-          onPress={() => navigation.navigate("Thread3")}
+          onPress={() => navigation.navigate("Exterior3")}
         />
         <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
-          onPress={() => navigation.navigate("Thread1")}
+          onPress={() => navigation.navigate("Exterior1")}
         />
       </View>
     </View>
@@ -127,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Thread2;
+export default Exterior2;

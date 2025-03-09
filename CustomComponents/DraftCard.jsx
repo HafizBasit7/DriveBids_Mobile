@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; // Icons for check/cross
-import { GlobalStyles } from "../../Styles/GlobalStyles";
+import { GlobalStyles } from "../Styles/GlobalStyles";
 
 const DraftCard = ({
   regNumber,

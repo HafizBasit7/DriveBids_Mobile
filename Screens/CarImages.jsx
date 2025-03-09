@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import SectionHeader from "../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../Styles/GlobalStyles";
-import CustomButton from "../../CustomComponents/CustomButton";
-import VehicleInfoCard from "../../CustomComponents/tahirComponents/VehicleInfoCard";
+import SectionHeader from "../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../Styles/GlobalStyles";
+import CustomButton from "../CustomComponents/CustomButton";
+import VehicleInfoCard from "../CustomComponents/VehicleInfoCard";
 import { useNavigation } from "@react-navigation/native";
 const CarImages = () => {
   const navigation = useNavigation(); // Initialize navigation

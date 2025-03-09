@@ -19,7 +19,7 @@ import { GlobalStyles } from "./Styles/GlobalStyles";
 import CarDetails1 from "./Screens/CarDetails1";
 
 // import VehicleReg from "./Screens/tahirScreens/VehicleReg";
-import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
+// import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
 // import CarImages from "./Screens/tahirScreens/CarImages";
 // import Exterior1 from "./Screens/tahirScreens/CarExteriorImages/Exterior1";
 // import Exterior2 from "./Screens/tahirScreens/CarExteriorImages/Exterior2";
@@ -39,9 +39,9 @@ import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
 // import Thread1 from "./Screens/tahirScreens/ThreadsImages/Thread1";
 // import Thread2 from "./Screens/tahirScreens/ThreadsImages/Thread2";
 // import Thread3 from "./Screens/tahirScreens/ThreadsImages/Thread3";
-import Thread4 from "./Screens/tahirScreens/ThreadsImages/Thread4";
-import SellCar from "./Screens/tahirScreens/SellCar";
-import Draft from "./Screens/tahirScreens/Draft";
+// import Thread4 from "./Screens/tahirScreens/ThreadsImages/Thread4";
+// import SellCar from "./Screens/tahirScreens/SellCar";
+// import Draft from "./Screens/tahirScreens/Draft";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();

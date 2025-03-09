@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { MaterialIcons } from "@expo/vector-icons";
-import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
-import CustomButton from "../../../CustomComponents/CustomButton";
-import Exterior from "../../../assets/tahirAssets/exterior1";
+import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
+import SectionHeader from "../../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../../Styles/GlobalStyles";
+import CustomButton from "../../CustomComponents/CustomButton";
+import Exterior from "../../assets/tahirAssets/exterior5";
 import { useNavigation } from "@react-navigation/native"; // Import navigation hook
 
-const Exterior1 = () => {
-  const navigation = useNavigation(); // Initialize navigation
+const Exterior5 = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-
+  const navigation = useNavigation(); // Initialize navigation
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -21,6 +20,7 @@ const Exterior1 = () => {
 
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images", "videos"],
+      // allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
@@ -32,10 +32,10 @@ const Exterior1 = () => {
 
   return (
     <View style={styles.container}>
-      <SectionHeader title={"Step 1 of 6"} />
+      <SectionHeader title={"Step 5 of 6"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
-          Take a picture of your car from the right front as shown below
+          Take a picture of your car from the front as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
           {selectedImage ? (
@@ -58,13 +58,13 @@ const Exterior1 = () => {
         <CustomButton
           style={{ marginBottom: 10 }}
           title="Next"
-          onPress={() => navigation.navigate("Exterior2")} // Navigate to Exterior2
+          onPress={() => navigation.navigate("Exterior6")}
         />
         <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
-          onPress={() => navigation.navigate("CarImages")}
+          onPress={() => navigation.navigate("Exterior4")}
         />
       </View>
     </View>
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   },
   penIconContainer: {
     position: "absolute",
+
     backgroundColor: "rgba(22, 23, 24, 0.8)",
     padding: 5,
     paddingHorizontal: 10,
@@ -127,4 +128,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Exterior1;
+export default Exterior5;

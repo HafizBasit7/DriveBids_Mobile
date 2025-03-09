@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
-import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
-import CustomButton from "../../../CustomComponents/CustomButton";
-import Wheel from "../../../assets/tahirAssets/Wheel4";
+import SectionHeader from "../../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../../Styles/GlobalStyles";
+import CustomButton from "../../CustomComponents/CustomButton";
+import Interior from "../../assets/tahirAssets/Interior4";
 import { useNavigation } from "@react-navigation/native";
-const Wheel4 = () => {
+const Interior4 = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const navigation = useNavigation();
   const openGallery = async () => {
@@ -31,10 +31,10 @@ const Wheel4 = () => {
 
   return (
     <View style={styles.container}>
-      <SectionHeader title={"Step 4 of 4"} />
+      <SectionHeader title={"Step 4 of 5"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
-          Take a picture of the front passenger wheel as shown below
+          Take a picture of the dashboard as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
           {selectedImage ? (
@@ -49,21 +49,21 @@ const Wheel4 = () => {
               </View>
             </>
           ) : (
-            <Wheel />
+            <Interior />
           )}
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton
           style={{ marginBottom: 10 }}
-          title="Finish"
-          onPress={() => navigation.navigate("CarImages")}
+          title="Next"
+          onPress={() => navigation.navigate("Interior5")}
         />
         <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
-          onPress={() => navigation.navigate("Wheel3")}
+          onPress={() => navigation.navigate("Interior3")}
         />
       </View>
     </View>
@@ -127,4 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Wheel4;
+export default Interior4;

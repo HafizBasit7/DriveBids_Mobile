@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import SectionHeader from "../../CustomComponents/tahirComponents/SectionHeader";
-import { GlobalStyles } from "../../Styles/GlobalStyles";
-import CustomButton from "../../CustomComponents/CustomButton";
+import SectionHeader from "../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../Styles/GlobalStyles";
+import CustomButton from "../CustomComponents/CustomButton";
 // import { Svg, Line } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 const VehicleReg = () => {
