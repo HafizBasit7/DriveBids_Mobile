@@ -10,8 +10,8 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import Upload from "../../assets/tahirAssets/Upload";
-import { GlobalStyles } from "../../Styles/GlobalStyles";
+import Upload from "../assets/tahirAssets/Upload";
+import { GlobalStyles } from "../Styles/GlobalStyles";
 export default DamageReportModal = ({
   styles,
   damageDescription,

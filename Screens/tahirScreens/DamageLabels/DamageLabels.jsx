@@ -13,8 +13,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
-import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
-import DamageReportModal from "../../../CustomComponents/tahirComponents/DamageReportModal";
+import SectionHeader from "../../../CustomComponents/SectionHeader";
+import DamageReportModal from "../../../CustomComponents/DamageReportModal";
 
 const damageOptions = [
   { label: "Scratches", icon: "gesture", color: "#2D8CFF" },
@@ -29,7 +29,7 @@ const DamageInspection = () => {
     require("../../../assets/tahirAssets/CarLeft.png"),
     require("../../../assets/tahirAssets/CarBack.png"),
   ];
-  const [selectedDamage, setSelectedDamage] = useState(null);
+  const [selectedDamage, setSelectedDamage] = useState(damageOptions[0]);
   const [markers, setMarkers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [damageDescription, setDamageDescription] = useState("");
@@ -85,7 +85,7 @@ const DamageInspection = () => {
   };
   return (
     <View style={styles.container}>
-      <SectionHeader title={"Step 1 of 4"} />
+      <SectionHeader title={`Step ${carFacing + 1} of 4`} />
       <Text style={styles.instruction}>
         Please pick the damage label and place it on the front part of the car
         that is damaged

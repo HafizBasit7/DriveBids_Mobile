@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import SectionHeader from "../../../CustomComponents/tahirComponents/SectionHeader";
+import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { Svg, Line } from "react-native-svg";
@@ -20,13 +20,13 @@ const options = [
 ];
 
 const tests = [
-  "Engine Management Light",
-  "Brake Wear Indicator Light",
-  "Abs Warning Light",
-  "Oil Warning Light",
+  "Break Efficiency",
+  "Hand Brake Test",
+  "Static Gear Selection",
+  "Reverse Clutch Slip",
 ];
 
-const InspectionReport3 = () => {
+const InspectionReport1 = () => {
   const [selections, setSelections] = useState({});
 
   const handleSelect = (test, option) => {
@@ -36,7 +36,7 @@ const InspectionReport3 = () => {
   return (
     <View style={styles.container}>
       <View style={{ width: "100%" }}>
-        <SectionHeader title={"Step 3 of 3"} marginCustom={5} />
+        <SectionHeader title={"Step 1 of 3"} marginCustom={5} />
         <SectionHeader
           sx={{ fontSize: 18, fontWeight: "500", fontFamily: "Inter-SemiBold" }}
           title={"Inspection Report"}
@@ -58,7 +58,7 @@ const InspectionReport3 = () => {
           }}
         >
           <View style={styles.dynamicButton}>
-            <Text style={styles.dynamicButtonText}>Interior Checks</Text>
+            <Text style={styles.dynamicButtonText}>Dynamic Operations</Text>
           </View>
           {tests.map((test, index) => (
             <View key={index} style={styles.testSection}>
@@ -196,4 +196,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InspectionReport3;
+export default InspectionReport1;

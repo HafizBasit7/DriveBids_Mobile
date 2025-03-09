@@ -1,4 +1,4 @@
-import AppNavigator from "./Navigations/StackNavigation";
+// import AppNavigator from "./Navigations/StackNavigation";
 import useLoadFonts from "./Hooks/useLoadFonts";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
