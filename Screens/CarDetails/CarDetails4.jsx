@@ -10,22 +10,22 @@ import {
 import CustomButton from "../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 
-const CarDetails1 = () => {
+const CarDetails2 = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const navigation = useNavigation(); // Initialize navigation
 
   const options = [
-    { id: 1, label: "Toyota" },
-    { id: 2, label: "Honda" },
-    { id: 3, label: "Ford" },
-    { id: 4, label: "BMW" },
-    { id: 5, label: "Mercedes" },
-    { id: 6, label: "Nissan" },
-    { id: 7, label: "Hyundai" },
-    { id: 8, label: "Chevrolet" },
-    { id: 9, label: "Kia" },
-    { id: 10, label: "Volkswagen" },
+    { id: 1, label: "New York" },
+    { id: 2, label: "Los Angeles" },
+    { id: 3, label: "Chicago" },
+    { id: 4, label: "Houston" },
+    { id: 5, label: "Miami" },
+    { id: 6, label: "San Francisco" },
+    { id: 7, label: "Dallas" },
+    { id: 8, label: "Boston" },
+    { id: 9, label: "Seattle" },
+    { id: 10, label: "Washington D.C." },
   ];
 
   return (
@@ -33,14 +33,14 @@ const CarDetails1 = () => {
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 1 of 10</Text>
+        <Text style={styles.lineText}>Step 4 of 10</Text>
         <View style={styles.line} />
       </View>
 
       {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>Company</Text>
+        <Text style={styles.lineText2}>City</Text>
         <View style={styles.line} />
       </View>
 
@@ -48,7 +48,7 @@ const CarDetails1 = () => {
       <View style={styles.inputWrapper}>
         <TextInput
           style={styles.input}
-          placeholder="Enter custom company"
+          placeholder="Search City..."
           placeholderTextColor="#999"
           value={inputValue}
           onChangeText={setInputValue}
@@ -167,4 +167,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CarDetails1;
+export default CarDetails2;

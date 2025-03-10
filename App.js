@@ -1,4 +1,4 @@
-// import AppNavigator from "./Navigations/StackNavigation";
+import AppNavigator from "./Navigations/StackNavigation";
 import useLoadFonts from "./Hooks/useLoadFonts";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 // import CodeScreen from "./Screens/CodeScreen";
 import CarDetails3 from "./Screens/CarDetails/CarDetails3";
 import CarDetails5 from "./Screens/CarDetails/CarDetails5";
+import CarDetails8 from "./Screens/CarDetails/CarDetails8";
 // Components
 import Header from "./CustomComponents/Header";
 import Sidebar from "./CustomComponents/Sidebar";
@@ -58,7 +59,7 @@ export default function App() {
   return (
     <>
       {/* <AppNavigator /> */}
-      <CarDetails5 />
+      <AppNavigator />
       {/* <InspectionReport3 /> */}
       {/* <InspectionReport2 /> */}
       {/* <InspectionReport1 /> */}

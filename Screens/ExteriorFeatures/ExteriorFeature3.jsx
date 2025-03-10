@@ -9,67 +9,65 @@ import {
 } from "react-native";
 import CustomButton from "../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { CheckBox } from "react-native-elements"; // Importing CheckBox
 
-const CarDetails1 = () => {
-  const [selectedOption, setSelectedOption] = useState(null);
+const ExteriorFeature3 = () => {
+  const [selectedOptions, setSelectedOptions] = useState([]); // Multiple selections
   const [inputValue, setInputValue] = useState("");
   const navigation = useNavigation(); // Initialize navigation
 
   const options = [
-    { id: 1, label: "Toyota" },
-    { id: 2, label: "Honda" },
-    { id: 3, label: "Ford" },
-    { id: 4, label: "BMW" },
-    { id: 5, label: "Mercedes" },
-    { id: 6, label: "Nissan" },
-    { id: 7, label: "Hyundai" },
-    { id: 8, label: "Chevrolet" },
-    { id: 9, label: "Kia" },
-    { id: 10, label: "Volkswagen" },
+    { id: 1, label: "Airbags" },
+    { id: 2, label: "Traction Control" },
+    { id: 3, label: "Reverse Camera" },
+    { id: 4, label: "Anti-lock Braking System (ABS)" },
+    { id: 5, label: "Electronic Stability Control" },
+    { id: 6, label: "Lane Departure Warning" },
+    { id: 7, label: "Blind Spot Monitoring" },
+    { id: 8, label: "Adaptive Cruise Control" },
+    { id: 9, label: "Parking Sensors" },
+    { id: 10, label: "Tyre Pressure Monitoring System" },
   ];
+
+  const toggleSelection = (id) => {
+    setSelectedOptions(
+      (prevSelected) =>
+        prevSelected.includes(id)
+          ? prevSelected.filter((item) => item !== id) // Deselect if already selected
+          : [...prevSelected, id] // Select otherwise
+    );
+  };
 
   return (
     <View style={styles.container}>
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 1 of 10</Text>
+        <Text style={styles.lineText}>Step 3 of 3</Text>
         <View style={styles.line} />
       </View>
 
       {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>Company</Text>
+        <Text style={styles.lineText2}>Exterior Features</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Input Field */}
-      <View style={styles.inputWrapper}>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter custom company"
-          placeholderTextColor="#999"
-          value={inputValue}
-          onChangeText={setInputValue}
-        />
-      </View>
-
-      {/* Clickable List */}
+      {/* Clickable List with Checkboxes */}
       <FlatList
         data={options}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => setSelectedOption(item.id)}>
-            <Text
-              style={[
-                styles.entityText,
-                selectedOption === item.id && styles.selectedText,
-              ]}
-            >
-              {item.label}
-            </Text>
-            <View style={styles.separator} />
+          <TouchableOpacity onPress={() => toggleSelection(item.id)}>
+            <View style={styles.optionContainer}>
+              <CheckBox
+                checked={selectedOptions.includes(item.id)}
+                onPress={() => toggleSelection(item.id)}
+                checkedColor="#007BFF"
+              />
+              <Text style={styles.entityText}>{item.label}</Text>
+            </View>
           </TouchableOpacity>
         )}
       />
@@ -135,20 +133,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
   },
+  optionContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+  },
   entityText: {
     fontSize: 16,
     color: "#000",
-    paddingVertical: 12,
-    paddingHorizontal: 15,
-  },
-  selectedText: {
-    color: "#007BFF", // Blue color for selected text
-    fontWeight: "700",
-  },
-  separator: {
-    height: 1,
-    backgroundColor: "#ccc",
-    marginHorizontal: 15,
   },
   buttonContainer: {
     alignItems: "center",
@@ -167,4 +160,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CarDetails1;
+export default ExteriorFeature3;

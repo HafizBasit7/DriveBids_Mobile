@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, PanResponder, Animated } from "react-native";
 import CustomButton from "../../CustomComponents/CustomButton";
 
-const CarDetails5 = () => {
+const CarDetails8 = () => {
   const [progress] = useState(new Animated.Value(0));
   const [lastProgress, setLastProgress] = useState(0); // Store last valid progress
 
@@ -33,20 +33,20 @@ const CarDetails5 = () => {
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 5 of 10</Text>
+        <Text style={styles.lineText}>Step 8 of 10</Text>
         <View style={styles.line} />
       </View>
 
       {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>Milage</Text>
+        <Text style={styles.lineText2}>Engine Size</Text>
         <View style={styles.line} />
       </View>
 
       {/* Progress Bar Container */}
       <View style={styles.progressContainer}>
-        <Text style={styles.progressHeading}>Mileage</Text>
+        <Text style={styles.progressHeading}>Engine Size(CCs)</Text>
         <View style={styles.progressBar}>
           <Animated.View
             style={[
@@ -73,12 +73,11 @@ const CarDetails5 = () => {
           />
         </View>
         <View style={styles.rangeLabels}>
-          <Text style={styles.rangeText}>10k</Text>
-          <Text style={styles.rangeText}>20k</Text>
-          <Text style={styles.rangeText}>40k</Text>
-          <Text style={styles.rangeText}>80k</Text>
-          <Text style={styles.rangeText}>160k</Text>
-          <Text style={styles.rangeText}>320k</Text>
+          <Text style={styles.rangeText}>500</Text>
+          <Text style={styles.rangeText}>1000</Text>
+          <Text style={styles.rangeText}>2000</Text>
+          <Text style={styles.rangeText}>4000</Text>
+          <Text style={styles.rangeText}>8000</Text>
         </View>
       </View>
 
@@ -183,4 +182,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CarDetails5;
+export default CarDetails8;

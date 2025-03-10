@@ -14,6 +14,21 @@ import Signupscreen from "../Screens/Signupscreen";
 import ForgetPass from "../Screens/ForgetPass";
 import Reset from "../Screens/Reset";
 import PassChanged from "../Screens/PassChanged";
+// Car Details
+import CarDetails1 from "../Screens/CarDetails/CarDetails1";
+import CarDetails2 from "../Screens/CarDetails/CarDetails2";
+import CarDetails3 from "../Screens/CarDetails/CarDetails3";
+import CarDetails4 from "../Screens/CarDetails/CarDetails4";
+import CarDetails5 from "../Screens/CarDetails/CarDetails5";
+import CarDetails6 from "../Screens/CarDetails/CarDetails6";
+import CarDetails7 from "../Screens/CarDetails/CarDetails7";
+import CarDetails8 from "../Screens/CarDetails/CarDetails8";
+import CarDetails9 from "../Screens/CarDetails/CarDetails9";
+import CarDetails10 from "../Screens/CarDetails/CarDetails10";
+// Exterior Features
+import ExteriorFeature1 from "../Screens/ExteriorFeatures/ExteriorFeature1";
+import ExteriorFeature2 from "../Screens/ExteriorFeatures/ExteriorFeature2";
+import ExteriorFeature3 from "../Screens/ExteriorFeatures/ExteriorFeature3";
 // Exterior
 import Exterior1 from "../Screens/CarExteriorImages/Exterior1";
 import Exterior2 from "../Screens/CarExteriorImages/Exterior2";
@@ -49,7 +64,7 @@ const AppNavigator = () => {
         }}
       >
         {/* Onboarding Screen without Header */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="onboardingScreen"
           component={onboardingScreen}
           options={{ headerShown: false }}
@@ -78,15 +93,27 @@ const AppNavigator = () => {
           name="PassChanged"
           component={PassChanged}
           options={{ headerShown: false }}
-        />
-
+        /> */}
         {/* Sell Car */}
+        <Stack.Screen name="CarDetails1" component={CarDetails1} />
+        <Stack.Screen name="CarDetails2" component={CarDetails2} />
+        <Stack.Screen name="CarDetails3" component={CarDetails3} />
+        <Stack.Screen name="CarDetails4" component={CarDetails4} />
+        <Stack.Screen name="CarDetails5" component={CarDetails5} />
+        <Stack.Screen name="CarDetails6" component={CarDetails6} />
+        <Stack.Screen name="CarDetails7" component={CarDetails7} />
+        <Stack.Screen name="CarDetails8" component={CarDetails8} />
+        <Stack.Screen name="CarDetails9" component={CarDetails9} />
+        <Stack.Screen name="CarDetails10" component={CarDetails10} />
         <Stack.Screen name="SellCar" component={SellCar} />
         <Stack.Screen name="Draft" component={Draft} />
         <Stack.Screen name="VehicleReg" component={VehicleReg} />
         <Stack.Screen name="VehicleInfo" component={VehicleInfo} />
         <Stack.Screen name="CarImages" component={CarImages} />
-
+        {/* Exterior Features */}
+        <Stack.Screen name="ExteriorFeature1" component={ExteriorFeature1} />
+        <Stack.Screen name="ExteriorFeature2" component={ExteriorFeature2} />
+        <Stack.Screen name="ExteriorFeature3" component={ExteriorFeature3} />
         {/* Exterior Screens */}
         <Stack.Screen name="Exterior1" component={Exterior1} />
         <Stack.Screen name="Exterior2" component={Exterior2} />
@@ -94,20 +121,17 @@ const AppNavigator = () => {
         <Stack.Screen name="Exterior4" component={Exterior4} />
         <Stack.Screen name="Exterior5" component={Exterior5} />
         <Stack.Screen name="Exterior6" component={Exterior6} />
-
         {/* Interior Screens */}
         <Stack.Screen name="Interior1" component={Interior1} />
         <Stack.Screen name="Interior2" component={Interior2} />
         <Stack.Screen name="Interior3" component={Interior3} />
         <Stack.Screen name="Interior4" component={Interior4} />
         <Stack.Screen name="Interior5" component={Interior5} />
-
         {/* Thread Screens */}
         <Stack.Screen name="Thread1" component={Thread1} />
         <Stack.Screen name="Thread2" component={Thread2} />
         <Stack.Screen name="Thread3" component={Thread3} />
         <Stack.Screen name="Thread4" component={Thread4} />
-
         {/* Wheels Screens */}
         <Stack.Screen name="Wheel1" component={Wheel1} />
         <Stack.Screen name="Wheel2" component={Wheel2} />

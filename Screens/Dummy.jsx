@@ -1,10 +1,41 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-
+import { View, Text, StyleSheet, TextInput, FlatList } from "react-native";
 import CustomButton from "../../CustomComponents/CustomButton";
-// import { useNavigation } from "@react-navigation/native";
-const CarDetails3 = () => {
-  //   const navigation = useNavigation(); // Initialize navigation
+
+const CarDetails = () => {
+  const [adTitle, setAdTitle] = useState("");
+  const [adDescription, setAdDescription] = useState("");
+
+  const data = [
+    {
+      id: "1",
+      label: "Ad Title",
+      value: adTitle,
+      setValue: setAdTitle,
+      height: 50,
+    },
+    {
+      id: "2",
+      label: "Ad Description",
+      value: adDescription,
+      setValue: setAdDescription,
+      height: 100,
+    },
+  ];
+
+  const renderItem = ({ item }) => (
+    <View style={styles.inputWrapper}>
+      <Text style={styles.label}>
+        {item.label} <Text style={styles.required}>*</Text>
+      </Text>
+      <TextInput
+        style={[styles.input, { height: item.height }]}
+        value={item.value}
+        onChangeText={item.setValue}
+        multiline={item.id === "2"} // Enable multiline only for Ad Description
+      />
+    </View>
+  );
 
   return (
     <View style={styles.container}>
@@ -21,6 +52,14 @@ const CarDetails3 = () => {
         <Text style={styles.lineText2}>Model</Text>
         <View style={styles.line} />
       </View>
+
+      {/* Input Fields in FlatList */}
+      <FlatList
+        data={data}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        contentContainerStyle={styles.flatListContainer}
+      />
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
@@ -40,13 +79,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingBottom: 20, // Prevents content from being cut off
+    paddingBottom: 20,
   },
   lineContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: "5%", // Ensures spacing between headers
+    marginTop: "5%",
   },
   line: {
     flex: 1,
@@ -67,41 +106,30 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "700",
   },
-  scrollContainer: {
-    flexGrow: 0, // Prevents ScrollView from taking up excess space
-    marginTop: 10,
-  },
-  radioContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 4,
-    marginLeft: 10,
-  },
-  radioText: {
-    fontSize: 16,
-    color: "#000",
-    marginLeft: 10,
+  flatListContainer: {
+    paddingHorizontal: 20,
+    marginTop: 20,
   },
   inputWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#000",
+    marginBottom: 5,
+  },
+  required: {
+    color: "red",
+  },
+  input: {
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 10,
     paddingHorizontal: 15,
-    marginHorizontal: 20,
-    height: 55, // Ensure box-like structure
-  },
-  input: {
-    flex: 1,
     fontSize: 16,
     color: "#000",
-  },
-  inputText: {
-    fontSize: 16,
-    color: "#007BFF",
-    fontWeight: "bold",
-    marginLeft: 10,
+    backgroundColor: "#F9F9F9",
   },
   buttonContainer: {
     alignItems: "center",
@@ -120,4 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CarDetails3;
+export default CarDetails;
