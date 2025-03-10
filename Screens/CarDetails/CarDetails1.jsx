@@ -8,8 +8,8 @@ import {
   TextInput,
 } from "react-native";
 import { RadioButton } from "react-native-paper"; // Ensure you have installed react-native-paper
-import Header from "../CustomComponents/Header"; // Adjust the path if needed
-import CustomButton from "../CustomComponents/CustomButton";
+import Header from "../../CustomComponents/Header"; // Adjust the path if needed
+import CustomButton from "../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 const CarDetails1 = () => {
   const [selectedOption, setSelectedOption] = useState(null);

@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import SectionHeader from "../../../CustomComponents/SectionHeader";
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
-import CustomButton from "../../../CustomComponents/CustomButton";
+import SectionHeader from "../../CustomComponents/SectionHeader";
+import { GlobalStyles } from "../../Styles/GlobalStyles";
+import CustomButton from "../../CustomComponents/CustomButton";
 import { Svg, Line } from "react-native-svg";
 
 const options = [
@@ -19,14 +19,9 @@ const options = [
   { label: "Requires Immediate Attention", color: "#C0392B", icon: "report" },
 ];
 
-const tests = [
-  "Engine Management Light",
-  "Brake Wear Indicator Light",
-  "Abs Warning Light",
-  "Oil Warning Light",
-];
+const tests = ["Headlights", "BrakeLights", "SideLights", "FogLights"];
 
-const InspectionReport3 = () => {
+const InspectionReport2 = () => {
   const [selections, setSelections] = useState({});
 
   const handleSelect = (test, option) => {
@@ -36,7 +31,7 @@ const InspectionReport3 = () => {
   return (
     <View style={styles.container}>
       <View style={{ width: "100%" }}>
-        <SectionHeader title={"Step 3 of 3"} marginCustom={5} />
+        <SectionHeader title={"Step 2 of 3"} marginCustom={5} />
         <SectionHeader
           sx={{ fontSize: 18, fontWeight: "500", fontFamily: "Inter-SemiBold" }}
           title={"Inspection Report"}
@@ -58,7 +53,7 @@ const InspectionReport3 = () => {
           }}
         >
           <View style={styles.dynamicButton}>
-            <Text style={styles.dynamicButtonText}>Interior Checks</Text>
+            <Text style={styles.dynamicButtonText}>Essentials Checks</Text>
           </View>
           {tests.map((test, index) => (
             <View key={index} style={styles.testSection}>
@@ -196,4 +191,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InspectionReport3;
+export default InspectionReport2;

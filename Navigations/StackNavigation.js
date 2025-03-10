@@ -2,6 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Header from "../CustomComponents/Header";
 // Sell Car
+
 import onboardingScreen from "../Screens/onboardingScreen";
 import SellCar from "../Screens/SellCar";
 import Draft from "../Screens/Draft";

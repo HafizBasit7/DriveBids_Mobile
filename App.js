@@ -11,12 +11,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 // import Reset from "./Screens/Reset";
 // import PassChanged from "./Screens/PassChanged";
 // import CodeScreen from "./Screens/CodeScreen";
+import CarDetails3 from "./Screens/CarDetails/CarDetails3";
+import CarDetails5 from "./Screens/CarDetails/CarDetails5";
 // Components
 import Header from "./CustomComponents/Header";
 import Sidebar from "./CustomComponents/Sidebar";
 import HomeBanner from "./CustomComponents/HomeBanner";
 import { GlobalStyles } from "./Styles/GlobalStyles";
-import CarDetails1 from "./Screens/CarDetails1";
+import CarDetails1 from "./Screens/CarDetails/CarDetails1";
 
 // import VehicleReg from "./Screens/tahirScreens/VehicleReg";
 // import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
@@ -42,11 +44,11 @@ import CarDetails1 from "./Screens/CarDetails1";
 // import Thread4 from "./Screens/tahirScreens/ThreadsImages/Thread4";
 // import SellCar from "./Screens/tahirScreens/SellCar";
 // import Draft from "./Screens/tahirScreens/Draft";
-import CarCameraOverlay from "./Screens/tahirScreens/CameraOverlay";
-import InspectionReport1 from "./Screens/tahirScreens/InspectionReport/InspectionReport1";
-import InspectionReport2 from "./Screens/tahirScreens/InspectionReport/InspectionReport2";
-import InspectionReport3 from "./Screens/tahirScreens/InspectionReport/InspectionReport3";
-import DamageInspection from "./Screens/tahirScreens/DamageLabels/DamageLabels";
+import CarCameraOverlay from "./Screens/CameraOverlay";
+import InspectionReport1 from "./Screens/InspectionReport/InspectionReport1";
+import InspectionReport2 from "./Screens/InspectionReport/InspectionReport2";
+import InspectionReport3 from "./Screens//InspectionReport/InspectionReport3";
+import DamageInspection from "./Screens/DamageLabels/DamageLabels";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
@@ -56,7 +58,7 @@ export default function App() {
   return (
     <>
       {/* <AppNavigator /> */}
-      <DamageInspection />
+      <CarDetails5 />
       {/* <InspectionReport3 /> */}
       {/* <InspectionReport2 /> */}
       {/* <InspectionReport1 /> */}

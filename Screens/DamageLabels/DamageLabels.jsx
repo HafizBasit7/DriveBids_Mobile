@@ -11,10 +11,10 @@ import {
 import { Svg, Circle } from "react-native-svg";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import CustomButton from "../../../CustomComponents/CustomButton";
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
-import SectionHeader from "../../../CustomComponents/SectionHeader";
-import DamageReportModal from "../../../CustomComponents/DamageReportModal";
+import CustomButton from "../../CustomComponents/CustomButton";
+import { GlobalStyles } from "../../Styles/GlobalStyles";
+import SectionHeader from "../../CustomComponents/SectionHeader";
+import DamageReportModal from "../../CustomComponents/DamageReportModal";
 
 const damageOptions = [
   { label: "Scratches", icon: "gesture", color: "#2D8CFF" },
@@ -24,10 +24,10 @@ const damageOptions = [
 
 const DamageInspection = () => {
   const carSides = [
-    require("../../../assets/tahirAssets/CarFront.png"),
-    require("../../../assets/tahirAssets/CarRight.png"),
-    require("../../../assets/tahirAssets/CarLeft.png"),
-    require("../../../assets/tahirAssets/CarBack.png"),
+    require("../../assets/tahirAssets/CarFront.png"),
+    require("../../assets/tahirAssets/CarRight.png"),
+    require("../../assets/tahirAssets/CarLeft.png"),
+    require("../../assets/tahirAssets/CarBack.png"),
   ];
   const [selectedDamage, setSelectedDamage] = useState(damageOptions[0]);
   const [markers, setMarkers] = useState([]);
@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
+    backgroundColor: "#ffff",
   },
 
   instruction: {

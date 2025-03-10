@@ -1,61 +1,37 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import { RadioButton } from "react-native-paper"; // Ensure you have installed react-native-paper
-import Header from "../CustomComponents/Header"; // Adjust the path if needed
+import { View, Text, StyleSheet } from "react-native";
 
-const CarDetails1 = () => {
-  const [selectedOption, setSelectedOption] = useState(null);
-
-  const options = [
-    { id: 1, label: "Toyota" },
-    { id: 2, label: "Honda" },
-    { id: 3, label: "Ford" },
-    { id: 4, label: "BMW" },
-    { id: 5, label: "Mercedes" },
-  ];
+import CustomButton from "../../CustomComponents/CustomButton";
+// import { useNavigation } from "@react-navigation/native";
+const CarDetails3 = () => {
+  //   const navigation = useNavigation(); // Initialize navigation
 
   return (
     <View style={styles.container}>
-      {/* Importing Header Component */}
-      <Header />
-
-      {/* First Horizontal Line with Centered Text */}
+      {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 1 of 10</Text>
+        <Text style={styles.lineText}>Step 3 of 10</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Second Horizontal Line with Centered Text */}
+      {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>Company</Text>
+        <Text style={styles.lineText2}>Model</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Scrollable Container for Radio Buttons */}
-      <ScrollView style={styles.scrollContainer}>
-        {options.map((option) => (
-          <TouchableOpacity
-            key={option.id}
-            style={styles.radioContainer}
-            onPress={() => setSelectedOption(option.id)}
-          >
-            <RadioButton
-              value={option.id}
-              status={selectedOption === option.id ? "checked" : "unchecked"}
-              onPress={() => setSelectedOption(option.id)}
-            />
-            <Text style={styles.radioText}>{option.label}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      {/* Buttons */}
+      <View style={styles.buttonContainer}>
+        <CustomButton style={styles.button} title="Next" />
+        <View style={{ height: 10 }} />
+        <CustomButton
+          title="Back"
+          style={styles.backButton}
+          textStyle={{ color: "#007BFF" }}
+        />
+      </View>
     </View>
   );
 };
@@ -64,12 +40,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingBottom: 20, // Prevents content from being cut off
   },
   lineContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: "5%", // Ensure spacing between headers
+    marginTop: "5%", // Ensures spacing between headers
   },
   line: {
     flex: 1,
@@ -81,7 +58,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingHorizontal: 10,
     color: "#000",
-    fontFamily: "Inter-Regular",
     fontWeight: "700",
   },
   lineText2: {
@@ -89,42 +65,59 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingHorizontal: 10,
     color: "#000",
-    fontFamily: "Inter-Regular",
     fontWeight: "700",
   },
   scrollContainer: {
-    marginTop: 20,
-    paddingHorizontal: 20,
+    flexGrow: 0, // Prevents ScrollView from taking up excess space
+    marginTop: 10,
   },
   radioContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 8,
-  },
-  radioButton: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: "#007BFF",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  radioButtonSelected: {
-    borderColor: "#007BFF",
-    backgroundColor: "#fff",
-  },
-  radioDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: "#007BFF",
+    paddingVertical: 4,
+    marginLeft: 10,
   },
   radioText: {
     fontSize: 16,
     color: "#000",
     marginLeft: 10,
   },
+  inputWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    marginHorizontal: 20,
+    height: 55, // Ensure box-like structure
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+    color: "#000",
+  },
+  inputText: {
+    fontSize: 16,
+    color: "#007BFF",
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
+  buttonContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "90%",
+    alignSelf: "center",
+    marginTop: 15,
+  },
+  button: {
+    marginBottom: 5,
+  },
+  backButton: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#007BFF",
+  },
 });
 
-export default CarDetails1;
+export default CarDetails3;
