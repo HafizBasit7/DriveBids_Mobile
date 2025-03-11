@@ -7,6 +7,10 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
   StatusBar,
 } from "react-native";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
@@ -32,70 +36,84 @@ const ForgetPass = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        translucent
-      />
+    <>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "padding"}
+        style={{ flex: 1 }}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <StatusBar
+              barStyle="dark-content"
+              backgroundColor="transparent"
+              translucent
+            />
 
-      <View style={styles.backIconContainer}>
-        <BackIcon width={30} height={30} />
-      </View>
-      <View style={styles.topImage}>
-        <Image
-          source={require("../../assets/tahirAssets/AuthPngs/CheckEmail.png")}
-          style={styles.topImage}
-        />
-      </View>
+            <View style={styles.backIconContainer}>
+              <BackIcon width={30} height={30} />
+            </View>
+            <View style={styles.topImage}>
+              <Image
+                source={require("../../assets/tahirAssets/AuthPngs/forgetPassword.png")}
+                style={styles.topImage}
+              />
+            </View>
 
-      <View style={styles.overlayContainer}>
-        <View style={styles.headingContainer}>
-          <View style={styles.activeTabIndicator} />
-          <Text style={styles.heading}>Forgot password?</Text>
-          <Text style={styles.description}>
-            Please enter the email associated with your account to receive a
-            4-digit code.
-          </Text>
-        </View>
+            <View style={styles.overlayContainer}>
+              <View style={styles.headingContainer}>
+                <View style={styles.activeTabIndicator} />
+                <Text style={styles.heading}>Forgot password?</Text>
+                <Text style={styles.description}>
+                  Please enter the email associated with your account to receive
+                  a 4-digit code.
+                </Text>
+              </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email address</Text>
-          <TextInput
-            style={[
-              styles.input,
-              { borderColor: focusedInput === "email" ? "#2F61BF" : "black" },
-            ]}
-            placeholder="Enter your email address"
-            placeholderTextColor="#888"
-            keyboardType="email-address"
-            onFocus={() => setFocusedInput("email")}
-            onBlur={() => setFocusedInput(null)}
-            value={email}
-            onChangeText={setEmail}
-          />
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Email address</Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    {
+                      borderColor:
+                        focusedInput === "email" ? "#2F61BF" : "black",
+                    },
+                  ]}
+                  placeholder="Enter your email address"
+                  placeholderTextColor="#888"
+                  keyboardType="email-address"
+                  onFocus={() => setFocusedInput("email")}
+                  onBlur={() => setFocusedInput(null)}
+                  value={email}
+                  onChangeText={setEmail}
+                />
 
-          <CustomButton
-            title="Send Code"
-            onPress={handleSendCode}
-            style={{ marginTop: "40%" }}
-          />
+                <CustomButton
+                  title="Send Code"
+                  onPress={handleSendCode}
+                  style={{ marginTop: "40%" }}
+                />
 
-          {isCodeSent && (
-            <Text style={styles.successMessage}>Code sent successfully!</Text>
-          )}
+                {isCodeSent && (
+                  <Text style={styles.successMessage}>
+                    Code sent successfully!
+                  </Text>
+                )}
 
-          <View style={styles.loginTextContainer}>
-            <Text style={styles.accountText}>Remember password? </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("SignInScreen")}
-            >
-              <Text style={styles.loginLink}>Login</Text>
-            </TouchableOpacity>
+                <View style={styles.loginTextContainer}>
+                  <Text style={styles.accountText}>Remember password? </Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("SignInScreen")}
+                  >
+                    <Text style={styles.loginLink}>Login</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
           </View>
-        </View>
-      </View>
-    </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </>
   );
 };
 
@@ -103,7 +121,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
   },
   backIconContainer: {
     position: "absolute",
