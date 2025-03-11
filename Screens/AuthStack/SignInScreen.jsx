@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
-    backgroundColor: "red",
   },
   backIconContainer: {
     position: "absolute",
