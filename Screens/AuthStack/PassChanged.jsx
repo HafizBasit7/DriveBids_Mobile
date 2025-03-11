@@ -36,7 +36,7 @@ const PassChanged = () => {
       </View>
 
       <Image
-        source={require("../../assets/Forget.png")}
+        source={require("../../assets/tahirAssets/AuthPngs/forgetPassword.png")}
         style={styles.topImage}
       />
 
