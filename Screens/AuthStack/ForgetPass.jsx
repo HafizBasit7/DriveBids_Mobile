@@ -47,14 +47,18 @@ const ForgetPass = () => {
         <View style={styles.backIconContainer}>
           <BackIcon width={30} height={30} />
         </View>
-        <View style={styles.topImage}>
-          <Image
-            source={require("../../assets/tahirAssets/AuthPngs/CheckEmail.png")}
-            style={styles.topImage}
-          />
-        </View>
+
+        <Image
+          source={require("../../assets/Forget.png")}
+          style={styles.topImage}
+        />
 
         <View style={styles.overlayContainer}>
+          <Image
+            source={require("../../assets/SignInText.png")}
+            style={styles.overlayImage}
+          />
+
           <View style={styles.headingContainer}>
             <View style={styles.activeTabIndicator} />
             <Text style={styles.heading}>Forgot password?</Text>
@@ -120,15 +124,25 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   topImage: {
+    position: "absolute",
+    top: 0,
     width: "100%",
     height: height * 0.45,
   },
   overlayContainer: {
     width: "100%",
-    padding: 10,
-    paddingHorizontal: 15,
   },
-
+  overlayImage: {
+    width: "100%",
+    height: "100%",
+    marginTop: "25%",
+  },
+  headingContainer: {
+    position: "absolute",
+    top: "38%",
+    left: 20,
+    width: "90%",
+  },
   heading: {
     fontSize: 22,
     fontFamily: "Inter-Bold",
@@ -153,11 +167,15 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 2 },
   },
-
+  inputContainer: {
+    position: "absolute",
+    top: "48%",
+    left: "5%",
+    width: "90%",
+  },
   label: {
     fontSize: 16,
     fontWeight: "bold",
-    fontFamily: "Inter-Regular",
     color: "#000",
     marginBottom: 5,
   },
