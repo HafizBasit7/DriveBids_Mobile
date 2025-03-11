@@ -45,11 +45,11 @@ import CarDetails1 from "./Screens/CarDetails/CarDetails1";
 // import Thread4 from "./Screens/tahirScreens/ThreadsImages/Thread4";
 // import SellCar from "./Screens/tahirScreens/SellCar";
 // import Draft from "./Screens/tahirScreens/Draft";
-import CarCameraOverlay from "./Screens/CameraOverlay";
-import InspectionReport1 from "./Screens/InspectionReport/InspectionReport1";
-import InspectionReport2 from "./Screens/InspectionReport/InspectionReport2";
-import InspectionReport3 from "./Screens//InspectionReport/InspectionReport3";
-import DamageInspection from "./Screens/DamageLabels/DamageLabels";
+// import CarCameraOverlay from "./Screens/Camera/CameraOverlay";
+// import InspectionReport1 from "./Screens/InspectionReport/InspectionReport1";
+// import InspectionReport2 from "./Screens/InspectionReport/InspectionReport2";
+// import InspectionReport3 from "./Screens//InspectionReport/InspectionReport3";
+// import DamageInspection from "./Screens/DamageLabels/DamageLabels";
 
 export default function App() {
   const fontsLoaded = useLoadFonts();

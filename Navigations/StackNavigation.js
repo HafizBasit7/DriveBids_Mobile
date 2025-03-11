@@ -3,55 +3,56 @@ import { NavigationContainer } from "@react-navigation/native";
 import Header from "../CustomComponents/Header";
 // Sell Car
 
-import onboardingScreen from "../Screens/onboardingScreen";
-import SellCar from "../Screens/SellCar";
-import Draft from "../Screens/Draft";
-import VehicleReg from "../Screens/VehicleReg";
-import VehicleInfo from "../Screens/VehicleInfo";
-import CarImages from "../Screens/CarImages";
-import SignInScreen from "../Screens/SignInScreen";
-import Signupscreen from "../Screens/Signupscreen";
-import ForgetPass from "../Screens/ForgetPass";
-import Reset from "../Screens/Reset";
-import PassChanged from "../Screens/PassChanged";
+import onboardingScreen from "../Screens/AuthStack/onboardingScreen";
+import SellCar from "../Screens/SellACar/SellACarMain/SellCar";
+import Draft from "../Screens/SellACar/Drafts/Draft";
+import VehicleReg from "../Screens/SellACar/VehicleInfoAndReg/VehicleReg";
+import VehicleInfo from "../Screens/SellACar/VehicleInfoAndReg/VehicleInfo";
+import CarImages from "../Screens/SellACar/CarImages/CarImages";
+import SignInScreen from "../Screens/AuthStack/SignInScreen";
+// import Signupscreen from "../Screens/Signupscreen";
+import Signupscreen from "../Screens/AuthStack/Signupscreen";
+import ForgetPass from "../Screens/AuthStack/ForgetPass";
+import Reset from "../Screens/AuthStack/Reset";
+import PassChanged from "../Screens/AuthStack/PassChanged";
 // Car Details
-import CarDetails1 from "../Screens/CarDetails/CarDetails1";
-import CarDetails2 from "../Screens/CarDetails/CarDetails2";
-import CarDetails3 from "../Screens/CarDetails/CarDetails3";
-import CarDetails4 from "../Screens/CarDetails/CarDetails4";
-import CarDetails5 from "../Screens/CarDetails/CarDetails5";
-import CarDetails6 from "../Screens/CarDetails/CarDetails6";
-import CarDetails7 from "../Screens/CarDetails/CarDetails7";
-import CarDetails8 from "../Screens/CarDetails/CarDetails8";
-import CarDetails9 from "../Screens/CarDetails/CarDetails9";
-import CarDetails10 from "../Screens/CarDetails/CarDetails10";
+import CarDetails1 from "../Screens/SellACar/CarDetails/CarDetails1";
+import CarDetails2 from "../Screens/SellACar/CarDetails/CarDetails2";
+import CarDetails3 from "../Screens/SellACar/CarDetails/CarDetails3";
+import CarDetails4 from "../Screens/SellACar/CarDetails/CarDetails4";
+import CarDetails5 from "../Screens/SellACar/CarDetails/CarDetails5";
+import CarDetails6 from "../Screens/SellACar/CarDetails/CarDetails6";
+import CarDetails7 from "../Screens/SellACar/CarDetails/CarDetails7";
+import CarDetails8 from "../Screens/SellACar/CarDetails/CarDetails8";
+import CarDetails9 from "../Screens/SellACar/CarDetails/CarDetails9";
+import CarDetails10 from "../Screens/SellACar/CarDetails/CarDetails10";
 // Exterior Features
-import ExteriorFeature1 from "../Screens/ExteriorFeatures/ExteriorFeature1";
-import ExteriorFeature2 from "../Screens/ExteriorFeatures/ExteriorFeature2";
-import ExteriorFeature3 from "../Screens/ExteriorFeatures/ExteriorFeature3";
+import ExteriorFeature1 from "../Screens/SellACar/ExteriorFeatures/ExteriorFeature1";
+import ExteriorFeature2 from "../Screens/SellACar/ExteriorFeatures/ExteriorFeature2";
+import ExteriorFeature3 from "../Screens/SellACar/ExteriorFeatures/ExteriorFeature3";
 // Exterior
-import Exterior1 from "../Screens/CarExteriorImages/Exterior1";
-import Exterior2 from "../Screens/CarExteriorImages/Exterior2";
-import Exterior3 from "../Screens/CarExteriorImages/Exterior3";
-import Exterior4 from "../Screens/CarExteriorImages/Exterior4";
-import Exterior5 from "../Screens/CarExteriorImages/Exterior5";
-import Exterior6 from "../Screens/CarExteriorImages/Exterior6";
+import Exterior1 from "../Screens/SellACar/CarExteriorImages/Exterior1";
+import Exterior2 from "../Screens/SellACar/CarExteriorImages/Exterior2";
+import Exterior3 from "../Screens/SellACar/CarExteriorImages/Exterior3";
+import Exterior4 from "../Screens/SellACar/CarExteriorImages/Exterior4";
+import Exterior5 from "../Screens/SellACar/CarExteriorImages/Exterior5";
+import Exterior6 from "../Screens/SellACar/CarExteriorImages/Exterior6";
 // Interior
-import Interior1 from "../Screens/CarInteriorImages/Interior1";
-import Interior2 from "../Screens/CarInteriorImages/Interior2";
-import Interior3 from "../Screens/CarInteriorImages/Interior3";
-import Interior4 from "../Screens/CarInteriorImages/Interior4";
-import Interior5 from "../Screens/CarInteriorImages/Interior5";
+import Interior1 from "../Screens/SellACar/CarInteriorImages/Interior1";
+import Interior2 from "../Screens/SellACar/CarInteriorImages/Interior2";
+import Interior3 from "../Screens/SellACar/CarInteriorImages/Interior3";
+import Interior4 from "../Screens/SellACar/CarInteriorImages/Interior4";
+import Interior5 from "../Screens/SellACar/CarInteriorImages/Interior5";
 // Thread
-import Thread1 from "../Screens/ThreadsImages/Thread1";
-import Thread2 from "../Screens/ThreadsImages/Thread2";
-import Thread3 from "../Screens/ThreadsImages/Thread3";
-import Thread4 from "../Screens/ThreadsImages/Thread4";
+import Thread1 from "../Screens/SellACar/ThreadsImages/Thread1";
+import Thread2 from "../Screens/SellACar/ThreadsImages/Thread2";
+import Thread3 from "../Screens/SellACar/ThreadsImages/Thread3";
+import Thread4 from "../Screens/SellACar/ThreadsImages/Thread4";
 // Wheel
-import Wheel1 from "../Screens/WheelsImages/Wheel1";
-import Wheel2 from "../Screens/WheelsImages/Wheel2";
-import Wheel3 from "../Screens/WheelsImages/Wheel3";
-import Wheel4 from "../Screens/WheelsImages/Wheel4";
+import Wheel1 from "../Screens/SellACar/WheelsImages/Wheel1";
+import Wheel2 from "../Screens/SellACar/WheelsImages/Wheel2";
+import Wheel3 from "../Screens/SellACar/WheelsImages/Wheel3";
+import Wheel4 from "../Screens/SellACar/WheelsImages/Wheel4";
 
 const Stack = createStackNavigator();
 
@@ -64,7 +65,7 @@ const AppNavigator = () => {
         }}
       >
         {/* Onboarding Screen without Header */}
-        {/* <Stack.Screen
+        <Stack.Screen
           name="onboardingScreen"
           component={onboardingScreen}
           options={{ headerShown: false }}
@@ -93,7 +94,7 @@ const AppNavigator = () => {
           name="PassChanged"
           component={PassChanged}
           options={{ headerShown: false }}
-        /> */}
+        />
         {/* Sell Car */}
         <Stack.Screen name="CarDetails1" component={CarDetails1} />
         <Stack.Screen name="CarDetails2" component={CarDetails2} />
