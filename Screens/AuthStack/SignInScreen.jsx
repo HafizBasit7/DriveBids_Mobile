@@ -20,7 +20,6 @@ import FacebookIcon from "../../assets/UmairAssets/Facebook.svg";
 import AppleIcon from "../../assets/UmairAssets/Apple.svg";
 import CustomButton from "../../CustomComponents/CustomButton.js";
 import { useNavigation } from "@react-navigation/native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const SignInScreen = () => {
   const navigation = useNavigation();
