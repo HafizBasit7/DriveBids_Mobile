@@ -15,6 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 // import CarDetails5 from "./Screens/CarDetails/CarDetails5";
 // import CarDetails8 from "./Screens/CarDetails/CarDetails8";
 import PriceRange4 from "./Screens/SellACar/PriceRange/PriceRange4";
+import PostAd from "./Screens/SellACar/PriceRange/PostAd";
 // Components
 // import Header from "./CustomComponents/Header";
 // import Sidebar from "./CustomComponents/Sidebar";
@@ -65,7 +66,7 @@ export default function App() {
   return (
     <>
       {/* <AppNavigator /> */}
-      <PriceRange4 />
+      <PostAd />
       {/* <InspectionReport3 /> */}
       {/* <InspectionReport2 /> */}
       {/* <InspectionReport1 /> */}

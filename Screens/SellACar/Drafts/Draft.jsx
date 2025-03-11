@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  Alert,
-  ScrollView,
-} from "react-native";
+import { View, FlatList, Alert } from "react-native";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
