@@ -8,6 +8,10 @@ import {
   StatusBar,
   TextInput,
   TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
@@ -16,7 +20,7 @@ import FacebookIcon from "../../assets/UmairAssets/Facebook.svg";
 import AppleIcon from "../../assets/UmairAssets/Apple.svg";
 import CustomButton from "../../CustomComponents/CustomButton.js";
 import { useNavigation } from "@react-navigation/native";
-const { width, height } = Dimensions.get("window");
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const SignInScreen = () => {
   const navigation = useNavigation();
@@ -36,123 +40,135 @@ const SignInScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        translucent
-      />
-
-      <View style={styles.backIconContainer}>
-        <BackIcon
-          width={30}
-          height={30}
-          onPress={() => navigation.navigate("onboardingScreen")}
-        />
-      </View>
-
-      <Image
-        source={require("../../assets/SignInBGImage.png")}
-        style={styles.topImage}
-      />
-
-      <View style={styles.overlayContainer}>
-        <Image
-          source={require("../../assets/SignInText.png")}
-          style={styles.overlayImage}
-        />
-
-        <View style={styles.headingContainer}>
-          <View style={styles.activeTabIndicator} />
-          <Text style={styles.heading}>Hi, Welcome!</Text>
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            style={[
-              styles.input,
-              { borderColor: focusedInput === "email" ? "#2F61BF" : "black" },
-            ]}
-            placeholder="Enter your email"
-            placeholderTextColor="#888"
-            keyboardType="email-address"
-            onFocus={() => setFocusedInput("email")}
-            onBlur={() => setFocusedInput(null)}
-            value={email}
-            onChangeText={setEmail}
-          />
-
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={[
-              styles.input,
-              {
-                borderColor: focusedInput === "password" ? "#2F61BF" : "black",
-              },
-            ]}
-            placeholder="Enter your password"
-            placeholderTextColor="#888"
-            secureTextEntry
-            onFocus={() => setFocusedInput("password")}
-            onBlur={() => setFocusedInput(null)}
-            value={password}
-            onChangeText={setPassword}
-          />
-
-          <View style={styles.rememberContainer}>
-            <BouncyCheckbox
-              size={18}
-              fillColor="#2F61BF"
-              unfillColor="#FFFFFF"
-              text="Remember Me"
-              iconStyle={{ borderColor: "#2F61BF" }}
-              textStyle={{
-                textDecorationLine: "none",
-                color: "#000",
-                fontSize: 12,
-                marginLeft: -5,
-              }}
-              isChecked={rememberMe}
-              onPress={(isChecked) => setRememberMe(isChecked)}
+    <>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <StatusBar
+              barStyle="dark-content"
+              backgroundColor="transparent"
+              translucent
             />
-            <Text
-              style={styles.forgotPassword}
-              onPress={() => navigation.navigate("ForgetPass")}
-            >
-              Forgot Password?
-            </Text>
-          </View>
 
-          <View style={styles.socialIconsContainer}>
-            <TouchableOpacity onPress={() => handleSocialLogin("Google")}>
-              <GoogleIcon width={36} height={36} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleSocialLogin("Apple")}>
-              <AppleIcon width={36} height={36} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleSocialLogin("Facebook")}>
-              <FacebookIcon width={36} height={36} />
-            </TouchableOpacity>
-          </View>
+            <View style={styles.backIconContainer}>
+              <BackIcon
+                width={30}
+                height={30}
+                onPress={() => navigation.navigate("onboardingScreen")}
+              />
+            </View>
 
-          <CustomButton
-            title="Login"
-            onPress={handleLogin}
-            style={{ marginTop: 20 }}
-          />
+            <Image
+              source={require("../../assets/SignInBGImage.png")}
+              style={styles.topImage}
+            />
 
-          <View style={styles.loginTextContainer}>
-            <Text style={styles.accountText}>Don’t have an account? </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Signupscreen")}
-            >
-              <Text style={styles.loginLink}> Sign Up</Text>
-            </TouchableOpacity>
+            <View style={styles.overlayContainer}>
+              <Image
+                source={require("../../assets/SignInText.png")}
+                style={styles.overlayImage}
+              />
+
+              <View style={styles.headingContainer}>
+                <View style={styles.activeTabIndicator} />
+                <Text style={styles.heading}>Hi, Welcome!</Text>
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    {
+                      borderColor:
+                        focusedInput === "email" ? "#2F61BF" : "black",
+                    },
+                  ]}
+                  placeholder="Enter your email"
+                  placeholderTextColor="#888"
+                  keyboardType="email-address"
+                  onFocus={() => setFocusedInput("email")}
+                  onBlur={() => setFocusedInput(null)}
+                  value={email}
+                  onChangeText={setEmail}
+                />
+                <Text style={styles.label}>Password</Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    {
+                      borderColor:
+                        focusedInput === "password" ? "#2F61BF" : "black",
+                    },
+                  ]}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#888"
+                  secureTextEntry
+                  onFocus={() => setFocusedInput("password")}
+                  onBlur={() => setFocusedInput(null)}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+                <View style={styles.rememberContainer}>
+                  <BouncyCheckbox
+                    size={18}
+                    fillColor="#2F61BF"
+                    unfillColor="#FFFFFF"
+                    text="Remember Me"
+                    iconStyle={{ borderColor: "#2F61BF" }}
+                    textStyle={{
+                      textDecorationLine: "none",
+                      color: "#000",
+                      fontSize: 12,
+                      marginLeft: -5,
+                    }}
+                    isChecked={rememberMe}
+                    onPress={(isChecked) => setRememberMe(isChecked)}
+                  />
+                  <Text
+                    style={styles.forgotPassword}
+                    onPress={() => navigation.navigate("ForgetPass")}
+                  >
+                    Forgot Password?
+                  </Text>
+                </View>
+                <View style={styles.socialIconsContainer}>
+                  <TouchableOpacity onPress={() => handleSocialLogin("Google")}>
+                    <GoogleIcon width={36} height={36} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => handleSocialLogin("Apple")}>
+                    <AppleIcon width={36} height={36} />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => handleSocialLogin("Facebook")}
+                  >
+                    <FacebookIcon width={36} height={36} />
+                  </TouchableOpacity>
+                </View>
+                <CustomButton
+                  title="Login"
+                  onPress={handleLogin}
+                  style={{ marginTop: 10 }}
+                />
+                <View style={styles.loginTextContainer}>
+                  <Text style={styles.accountText}>
+                    Don’t have an account?{" "}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Signupscreen")}
+                  >
+                    <Text style={styles.loginLink}> Sign Up</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
           </View>
-        </View>
-      </View>
-    </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </>
   );
 };
 
@@ -161,6 +177,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
+    backgroundColor: "red",
   },
   backIconContainer: {
     position: "absolute",
@@ -172,7 +189,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     width: "100%",
-    height: height * 0.5,
   },
   overlayContainer: {
     width: "100%",

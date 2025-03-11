@@ -21,6 +21,11 @@ import PriceRange4 from "./Screens/SellACar/PriceRange/PriceRange4";
 // import HomeBanner from "./CustomComponents/HomeBanner";
 // import { GlobalStyles } from "./Styles/GlobalStyles";
 // import CarDetails1 from "./Screens/CarDetails/CarDetails1";
+// import Header from "./CustomComponents/Header";
+// import Sidebar from "./CustomComponents/Sidebar";
+// import HomeBanner from "./CustomComponents/HomeBanner";
+// import { GlobalStyles } from "./Styles/GlobalStyles";
+// import CarDetails1 from "./Screens/CarDetails/CarDetails1";
 
 // import VehicleReg from "./Screens/tahirScreens/VehicleReg";
 // import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
