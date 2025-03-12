@@ -18,8 +18,11 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 import CustomButton from "../../CustomComponents/CustomButton.js";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../R1_Contexts/authContext.js";
 
 const SignInScreen = () => {
+
+  const {login} = useAuth();
   const navigation = useNavigation();
   const [focusedInput, setFocusedInput] = useState(null);
   const [rememberMe, setRememberMe] = useState(false);
@@ -28,7 +31,7 @@ const SignInScreen = () => {
   const [clickedIcon, setClickedIcon] = useState(null); // State to track clicked social icon
 
   const handleLogin = () => {
-    console.log("Login Pressed with Email:", email, "Password:", password);
+    login({email, password});
   };
 
   const handleSocialLogin = (platform) => {

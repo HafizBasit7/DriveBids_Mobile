@@ -16,9 +16,23 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { ScrollView } from "react-native-gesture-handler";
+import {useAuth} from "../../R1_Contexts/authContext";
 const { width, height } = Dimensions.get("window");
 
 const SignupScreen = () => {
+  const {signup} = useAuth();
+
+  //Form state
+  const [name, setName] = useState('');
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  //Trader
+  const [businessAddress, setBusinessAddress] = useState('');
+
   const [selectedTab, setSelectedTab] = useState("private");
   const [isChecked, setIsChecked] = useState(false);
   const navigation = useNavigation("");
@@ -31,8 +45,16 @@ const SignupScreen = () => {
   };
 
   const handleLogin = () => {
-    console.log("Login Pressed");
-    navigation.navigate("SignInScreen");
+    signup({
+      name,
+      phoneNumber,
+      city,
+      country,
+      email,
+      password,
+      businessAddress,
+      type: selectedTab === 'private' ? 'individual' : 'trader'
+    });
   };
 
   return (
@@ -98,59 +120,84 @@ const SignupScreen = () => {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.inputContainer}
         >
-          <View style={styles.inputContainer}>
-            <View style={styles.inputWrapper}>
-              <Text style={styles.label}>Email</Text>
-              <TextInput style={styles.input} placeholder="Enter your email" />
-            </View>
-
-            <View style={styles.inputWrapper}>
-              <Text style={styles.label}>Password</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your password"
-                secureTextEntry
-              />
-            </View>
-
-            {/* Extra Input Field for Trade Seller */}
-            {selectedTab === "trade" && (
+          <ScrollView>
+            <View>
               <View style={styles.inputWrapper}>
-                <Text style={styles.label}>Phone Number</Text>
+                  <Text style={styles.label}>Name</Text>
+                  <TextInput style={styles.input} placeholder="Enter your name" value={name} onChangeText={setName}/>
+                </View>
+
+                <View style={styles.inputWrapper}>
+                  <Text style={styles.label}>City</Text>
+                  <TextInput style={styles.input} placeholder="Enter your city" value={city} onChangeText={setCity}/>
+                </View>
+
+                <View style={styles.inputWrapper}>
+                  <Text style={styles.label}>Country</Text>
+                  <TextInput style={styles.input} placeholder="Enter your country" value={country} onChangeText={setCountry}/>
+                </View>
+
+                <View style={styles.inputWrapper}>
+                  <Text style={styles.label}>Phone Number</Text>
+                  <TextInput style={styles.input} placeholder="Enter your phone number" keyboardType="phone-pad" value={phoneNumber} onChangeText={setPhoneNumber}/>
+                </View>
+
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput style={styles.input} placeholder="Enter your email" value={email} onChangeText={setEmail}/>
+              </View>
+
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>Password</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Enter your phone number"
-                  keyboardType="phone-pad"
+                  placeholder="Enter your password"
+                  secureTextEntry
+                  value={password} onChangeText={setPassword}
                 />
               </View>
-            )}
 
-            {/* Checkbox */}
-            <View style={styles.checkboxContainer}>
-              <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
-                <BouncyCheckbox
-                  size={20}
-                  fillColor="#2F61BF"
-                  unfillColor="#FFFFFF"
-                  iconStyle={{ borderColor: "#2F61BF" }}
-                  isChecked={isChecked}
-                  disableBuiltInState={true}
-                  onPress={() => setIsChecked(!isChecked)}
-                />
-              </TouchableOpacity>
+              {/* Extra Input Field for Trade Seller */}
+              {selectedTab === "trade" && (
+                <View style={styles.inputWrapper}>
+                  <Text style={styles.label}>Business Address</Text>
+                  <TextInput
+                    value={businessAddress}
+                    onChangeText={setBusinessAddress}
+                    style={styles.input}
+                    placeholder="Enter your business address"
+                    
+                  />
+                </View>
+              )}
 
-              <Text style={styles.checkboxText}>
-                I agree to the{" "}
-                <TouchableOpacity onPress={handleTermsClick}>
-                  <Text style={styles.clickableText}>terms</Text>
-                </TouchableOpacity>{" "}
-                and{" "}
-                <TouchableOpacity onPress={handleConditionsClick}>
-                  <Text style={styles.clickableText}>conditions</Text>
+              {/* Checkbox */}
+              <View style={styles.checkboxContainer}>
+                <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
+                  <BouncyCheckbox
+                    size={20}
+                    fillColor="#2F61BF"
+                    unfillColor="#FFFFFF"
+                    iconStyle={{ borderColor: "#2F61BF" }}
+                    isChecked={isChecked}
+                    disableBuiltInState={true}
+                    onPress={() => setIsChecked(!isChecked)}
+                  />
                 </TouchableOpacity>
-              </Text>
+
+                <Text style={styles.checkboxText}>
+                  I agree to the{" "}
+                  <TouchableOpacity onPress={handleTermsClick}>
+                    <Text style={styles.clickableText}>terms</Text>
+                  </TouchableOpacity>{" "}
+                  and{" "}
+                  <TouchableOpacity onPress={handleConditionsClick}>
+                    <Text style={styles.clickableText}>conditions</Text>
+                  </TouchableOpacity>
+                </Text>
+              </View>
             </View>
-          </View>
+          </ScrollView>
         </KeyboardAvoidingView>
       </View>
 
@@ -250,6 +297,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginTop: 10,
+    height: height * 0.41,
   },
   inputWrapper: {
     marginBottom: 15,
@@ -288,7 +336,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     position: "absolute",
-    bottom: 5,
+    bottom: 19,
     width: "100%",
     paddingHorizontal: 20,
   },

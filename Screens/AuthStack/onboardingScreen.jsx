@@ -18,12 +18,16 @@ import Car1Svg from "../../assets/UmairAssets/OnBoard1.svg";
 import LogoSvg from "../../assets/UmairAssets/Logo.svg";
 import Car2Svg from "../../assets/UmairAssets/OnBoard3.svg";
 import Car3Svg from "../../assets/UmairAssets/OnBoard3.2.svg";
+import { useAuth } from "../../R1_Contexts/authContext";
 
 const { width, height } = Dimensions.get("window");
 
 const OnboardingScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigation = useNavigation();
+
+  //Auth Context
+  const {onboardingComplete} = useAuth();
 
   const handleNext = () => {
     if (currentIndex < onboardingData.length - 1) {
@@ -39,6 +43,11 @@ const OnboardingScreen = () => {
 
   const handleSkip = () => {
     setCurrentIndex(onboardingData.length - 1);
+  };
+
+  const R1_onNavigate = (routeName) => {
+    onboardingComplete();
+    navigation.navigate(routeName);
   };
 
   return (
@@ -114,7 +123,7 @@ const OnboardingScreen = () => {
             ) : (
               <>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("Signupscreen")}
+                  onPress={() => R1_onNavigate("Signupscreen")}
                   style={[styles.button, styles.signupButton]}
                 >
                   <Text style={[styles.buttonText, { color: "#fff" }]}>
@@ -152,7 +161,7 @@ const OnboardingScreen = () => {
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
-                onPress={() => navigation.navigate("SignInScreen")}
+                onPress={() => R1_onNavigate("SignInScreen")}
                 style={[styles.button, styles.loginButton]}
               >
                 <Text style={[styles.buttonText, { color: "#18B0F8" }]}>
