@@ -74,12 +74,17 @@ const CarDetails6 = () => {
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
-        <CustomButton style={styles.button} title="Next" />
+        <CustomButton
+          style={styles.button}
+          title="Next"
+          onPress={() => navigation.navigate("CarDetails7")}
+        />
         <View style={{ height: 10 }} />
         <CustomButton
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
+          onPress={() => navigation.navigate("CarDetails5")}
         />
       </View>
     </View>

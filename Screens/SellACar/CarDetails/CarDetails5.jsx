@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, PanResponder, Animated } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
-
+import { useNavigation } from "@react-navigation/native";
 const CarDetails5 = () => {
   const [progress] = useState(new Animated.Value(0));
   const [lastProgress, setLastProgress] = useState(0); // Store last valid progress
-
+  const navigation = useNavigation(); // Initialize navigation
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderGrant: () => {
@@ -84,12 +84,17 @@ const CarDetails5 = () => {
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
-        <CustomButton style={styles.button} title="Next" />
+        <CustomButton
+          style={styles.button}
+          title="Next"
+          onPress={() => navigation.navigate("CarDetails6")}
+        />
         <View style={{ height: 10 }} />
         <CustomButton
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
+          onPress={() => navigation.navigate("CarDetails4")}
         />
       </View>
     </View>
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   progressContainer: {
-    marginTop: 20,
+    marginTop: 40,
     paddingHorizontal: 20,
   },
   progressHeading: {
@@ -160,7 +165,7 @@ const styles = StyleSheet.create({
   rangeLabels: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 5,
+    marginTop: 20,
   },
   rangeText: {
     fontSize: 14,
@@ -171,7 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: "30%",
+    marginTop: "60%",
   },
   button: {
     marginBottom: 5,

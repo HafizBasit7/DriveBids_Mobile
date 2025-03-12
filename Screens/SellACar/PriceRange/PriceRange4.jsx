@@ -8,11 +8,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
-
+import { useNavigation } from "@react-navigation/native";
 const PriceRange4 = () => {
   const [inputValue, setInputValue] = useState("");
   const [selectedEntity, setSelectedEntity] = useState(null);
-
+  const navigation = useNavigation(); // Initialize navigation
   const entities = [
     { id: "1", name: "1 week" },
     { id: "2", name: "2 weeks" },
@@ -25,7 +25,7 @@ const PriceRange4 = () => {
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 1 of 4</Text>
+        <Text style={styles.lineText}>Step 4 of 4</Text>
         <View style={styles.line} />
       </View>
 
@@ -62,17 +62,13 @@ const PriceRange4 = () => {
             </TouchableOpacity>
           )}
         />
-      </View>
-
-      {/* Buttons */}
-      <View style={styles.buttonContainer}>
-        <CustomButton style={styles.button} title="Next" />
-        <View style={{ height: 10 }} />
-        <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-        />
+        <View style={styles.buttonContainer}>
+          <CustomButton
+            style={styles.button}
+            title="Finish"
+            onPress={() => navigation.navigate("VehicleInfo")}
+          />
+        </View>
       </View>
     </View>
   );
@@ -184,9 +180,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: "center",
     justifyContent: "center",
-    width: "90%",
+    width: "100%",
     alignSelf: "center",
-    marginTop: "100%",
+    marginTop: "60%",
   },
   button: {
     marginBottom: 5,

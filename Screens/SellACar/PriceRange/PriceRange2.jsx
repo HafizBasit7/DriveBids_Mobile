@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
-
+import { useNavigation } from "@react-navigation/native";
 const PriceRange2 = () => {
   const [inputValue, setInputValue] = useState("");
-
+  const navigation = useNavigation(); // Initialize navigation
   return (
     <View style={styles.container}>
       {/* Step Progress Indicator */}
@@ -39,12 +39,17 @@ const PriceRange2 = () => {
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
-        <CustomButton style={styles.button} title="Next" />
+        <CustomButton
+          style={styles.button}
+          title="Next"
+          onPress={() => navigation.navigate("PriceRange3")}
+        />
         <View style={{ height: 10 }} />
         <CustomButton
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
+          onPress={() => navigation.navigate("PriceRange1")}
         />
       </View>
     </View>

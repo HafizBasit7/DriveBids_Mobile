@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
 import { View, Text, StyleSheet, Animated, FlatList } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
-
+import { useNavigation } from "@react-navigation/native";
 const CarDetails3 = () => {
   const years = Array.from({ length: 50 }, (_, i) => 2000 + i);
   const scrollY = useRef(new Animated.Value(0)).current;
-
+  const navigation = useNavigation(); // Initialize navigation
   const renderItem = ({ item, index }) => {
     const inputRange = [(index - 1) * 50, index * 50, (index + 1) * 50];
     const textColor = scrollY.interpolate({
@@ -20,7 +20,7 @@ const CarDetails3 = () => {
     });
     const translateY = scrollY.interpolate({
       inputRange,
-      outputRange: [20, 18, 20],
+      outputRange: [16, 18, 20],
       extrapolate: "clamp",
     });
 
@@ -77,12 +77,17 @@ const CarDetails3 = () => {
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
-        <CustomButton style={styles.button} title="Next" />
+        <CustomButton
+          style={styles.button}
+          title="Next"
+          onPress={() => navigation.navigate("CarDetails4")}
+        />
         <View style={{ height: 10 }} />
         <CustomButton
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
+          onPress={() => navigation.navigate("CarDetails2")}
         />
       </View>
     </View>
@@ -123,7 +128,7 @@ const styles = StyleSheet.create({
   yearSelectorContainer: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: 40,
     height: 150,
     overflow: "hidden",
   },
@@ -140,7 +145,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: "30%",
+    marginTop: "40%",
   },
   button: {
     marginBottom: 5,

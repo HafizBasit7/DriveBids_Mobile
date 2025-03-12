@@ -9,72 +9,81 @@ import {
   Platform,
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
+import { useNavigation } from "@react-navigation/native";
 
 const CarDetails10 = () => {
   const [adTitle, setAdTitle] = useState("");
   const [adDescription, setAdDescription] = useState("");
+  const navigation = useNavigation();
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        keyboardShouldPersistTaps="handled"
-      >
-        {/* Step Progress Indicator */}
-        <View style={styles.lineContainer}>
-          <View style={styles.line} />
-          <Text style={styles.lineText}>Step 3 of 10</Text>
-          <View style={styles.line} />
-        </View>
+      <View style={{ flex: 1 }}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* Step Progress Indicator */}
+          <View style={styles.lineContainer}>
+            <View style={styles.line} />
+            <Text style={styles.lineText}>Step 3 of 10</Text>
+            <View style={styles.line} />
+          </View>
 
-        {/* Section Title */}
-        <View style={styles.lineContainer}>
-          <View style={styles.line} />
-          <Text style={styles.lineText2}>Model</Text>
-          <View style={styles.line} />
-        </View>
+          {/* Section Title */}
+          <View style={styles.lineContainer}>
+            <View style={styles.line} />
+            <Text style={styles.lineText2}>Model</Text>
+            <View style={styles.line} />
+          </View>
 
-        {/* Ad Title Input */}
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>
-            Ad Title <Text style={styles.required}>*</Text>
-          </Text>
-          <TextInput
-            style={[styles.input, { height: 50 }]}
-            value={adTitle}
-            onChangeText={setAdTitle}
-            placeholder="Enter Ad Title"
-          />
-        </View>
+          {/* Ad Title Input */}
+          <View style={styles.inputWrapper}>
+            <Text style={styles.label}>
+              Ad Title <Text style={styles.required}>*</Text>
+            </Text>
+            <TextInput
+              style={[styles.input, { height: 50 }]}
+              value={adTitle}
+              onChangeText={setAdTitle}
+              placeholder="Enter Ad Title"
+            />
+          </View>
 
-        {/* Ad Description Input */}
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>
-            Ad Description <Text style={styles.required}>*</Text>
-          </Text>
-          <TextInput
-            style={[styles.input, { height: 100 }]}
-            value={adDescription}
-            onChangeText={setAdDescription}
-            placeholder="Enter Ad Description"
-            multiline
-          />
-        </View>
+          {/* Ad Description Input */}
+          <View style={styles.inputWrapper}>
+            <Text style={styles.label}>
+              Ad Description <Text style={styles.required}>*</Text>
+            </Text>
+            <TextInput
+              style={[styles.input, { height: 100 }]}
+              value={adDescription}
+              onChangeText={setAdDescription}
+              placeholder="Enter Ad Description"
+              multiline
+            />
+          </View>
+        </ScrollView>
 
-        {/* Buttons */}
+        {/* Buttons at the bottom */}
         <View style={styles.buttonContainer}>
-          <CustomButton style={styles.button} title="Next" />
+          <CustomButton
+            style={styles.button}
+            title="Finish"
+            onPress={() => navigation.navigate("VehicleInfo")}
+          />
           <View style={{ height: 10 }} />
           <CustomButton
             title="Back"
             style={styles.backButton}
             textStyle={{ color: "#007BFF" }}
+            onPress={() => navigation.navigate("CarDetails9")}
           />
         </View>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -83,11 +92,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingBottom: 20,
   },
   scrollContainer: {
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingBottom: 100, // Ensures no overlap with buttons
   },
   lineContainer: {
     flexDirection: "row",
@@ -136,19 +144,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#F9F9F9",
   },
   buttonContainer: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    backgroundColor: "#fff",
+    paddingVertical: 15,
     alignItems: "center",
     justifyContent: "center",
-    width: "90%",
-    alignSelf: "center",
-    marginTop: 15,
   },
   button: {
-    marginBottom: 5,
+    width: "90%",
   },
   backButton: {
     backgroundColor: "#fff",
     borderWidth: 1,
     borderColor: "#007BFF",
+    width: "90%",
   },
 });
 

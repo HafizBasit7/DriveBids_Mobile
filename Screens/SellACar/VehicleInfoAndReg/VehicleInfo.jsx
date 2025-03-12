@@ -27,7 +27,7 @@ const VehicleInfo = () => {
           steps={3}
           iconName="account"
           completionStatus="Incomplete"
-          onPress={() => alert("Car Features Clicked")}
+          onPress={() => navigation.navigate("ExteriorFeature1")}
         />
         <VehicleInfoCard
           name="Car Images"
@@ -41,7 +41,7 @@ const VehicleInfo = () => {
           steps={2}
           iconName="shield-check"
           completionStatus="Incomplete"
-          onPress={() => alert("Inspection Report Clicked")}
+          onPress={() => navigation.navigate("InspectionReport1")}
         />
         <VehicleInfoCard
           name="Damage Report"
@@ -55,7 +55,8 @@ const VehicleInfo = () => {
           steps={4}
           iconName="tag"
           completionStatus="Incomplete"
-          onPress={() => alert("Car Pricing Clicked")}
+          o
+          onPress={() => navigation.navigate("PriceRange1")}
         />
       </ScrollView>
 

@@ -11,7 +11,7 @@ import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { Svg, Line } from "react-native-svg";
-
+import { useNavigation } from "@react-navigation/native";
 const options = [
   { label: "OK", color: "#2ECC71", icon: "check-circle" },
   { label: "Not Tested", color: "#D32F2F", icon: "cancel" },
@@ -27,6 +27,7 @@ const tests = [
 ];
 
 const InspectionReport1 = () => {
+  const navigation = useNavigation();
   const [selections, setSelections] = useState({});
 
   const handleSelect = (test, option) => {
@@ -125,9 +126,12 @@ const InspectionReport1 = () => {
         </View>
       </ScrollView>
 
-      <CustomButton title="Next" onPress={() => console.log("Next Step")} />
       <CustomButton
-        onPress={() => console.log("Go Back")}
+        title="Next"
+        onPress={() => navigation.navigate("InspectionReport2")}
+      />
+      <CustomButton
+        onPress={() => navigation.navigate("VehicleInfo")}
         title="Back"
         style={styles.nextButton}
         textStyle={styles.nextButtonText}
