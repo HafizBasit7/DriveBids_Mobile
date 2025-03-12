@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   TextInput,
   Linking,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
@@ -92,59 +94,64 @@ const SignupScreen = () => {
           selectedTab === "private" ? styles.privateBg : styles.tradeBg,
         ]}
       >
-        <View style={styles.inputContainer}>
-          <View style={styles.inputWrapper}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput style={styles.input} placeholder="Enter your email" />
-          </View>
-
-          <View style={styles.inputWrapper}>
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your password"
-              secureTextEntry
-            />
-          </View>
-
-          {/* Extra Input Field for Trade Seller */}
-          {selectedTab === "trade" && (
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.inputContainer}
+        >
+          <View style={styles.inputContainer}>
             <View style={styles.inputWrapper}>
-              <Text style={styles.label}>Phone Number</Text>
+              <Text style={styles.label}>Email</Text>
+              <TextInput style={styles.input} placeholder="Enter your email" />
+            </View>
+
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>Password</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter your phone number"
-                keyboardType="phone-pad"
+                placeholder="Enter your password"
+                secureTextEntry
               />
             </View>
-          )}
 
-          {/* Checkbox */}
-          <View style={styles.checkboxContainer}>
-            <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
-              <BouncyCheckbox
-                size={20}
-                fillColor="#2F61BF"
-                unfillColor="#FFFFFF"
-                iconStyle={{ borderColor: "#2F61BF" }}
-                isChecked={isChecked}
-                disableBuiltInState={true}
-                onPress={() => setIsChecked(!isChecked)}
-              />
-            </TouchableOpacity>
+            {/* Extra Input Field for Trade Seller */}
+            {selectedTab === "trade" && (
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>Phone Number</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your phone number"
+                  keyboardType="phone-pad"
+                />
+              </View>
+            )}
 
-            <Text style={styles.checkboxText}>
-              I agree to the{" "}
-              <TouchableOpacity onPress={handleTermsClick}>
-                <Text style={styles.clickableText}>terms</Text>
-              </TouchableOpacity>{" "}
-              and{" "}
-              <TouchableOpacity onPress={handleConditionsClick}>
-                <Text style={styles.clickableText}>conditions</Text>
+            {/* Checkbox */}
+            <View style={styles.checkboxContainer}>
+              <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
+                <BouncyCheckbox
+                  size={20}
+                  fillColor="#2F61BF"
+                  unfillColor="#FFFFFF"
+                  iconStyle={{ borderColor: "#2F61BF" }}
+                  isChecked={isChecked}
+                  disableBuiltInState={true}
+                  onPress={() => setIsChecked(!isChecked)}
+                />
               </TouchableOpacity>
-            </Text>
+
+              <Text style={styles.checkboxText}>
+                I agree to the{" "}
+                <TouchableOpacity onPress={handleTermsClick}>
+                  <Text style={styles.clickableText}>terms</Text>
+                </TouchableOpacity>{" "}
+                and{" "}
+                <TouchableOpacity onPress={handleConditionsClick}>
+                  <Text style={styles.clickableText}>conditions</Text>
+                </TouchableOpacity>
+              </Text>
+            </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </View>
 
       {/* Bottom Buttons Container */}
@@ -189,7 +196,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F1F1F1",
     alignItems: "center",
     justifyContent: "center",
-    borderTopRightRadius: 40,
+    borderTopRightRadius: 45,
     position: "relative",
   },
   rightBox: {
@@ -197,7 +204,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "center",
-    borderTopLeftRadius: 40,
+    borderTopLeftRadius: 45,
     position: "relative",
   },
   selectedTab: {
@@ -242,7 +249,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   inputContainer: {
-    marginTop: 20,
+    marginTop: 10,
   },
   inputWrapper: {
     marginBottom: 15,

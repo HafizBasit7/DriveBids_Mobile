@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
@@ -36,27 +37,30 @@ const SignInScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.innerContainer}>
-          <StatusBar
-            barStyle="dark-content"
-            backgroundColor="transparent"
-            translucent
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.innerContainer}>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="transparent"
+          translucent
+        />
+        <View style={{ height: "40%", width: "100%" }}>
+          <Image
+            source={require("../../assets/tahirAssets/AuthPngs/Signin.png")}
+            style={styles.topImage}
           />
-          <View style={{ height: "40%", width: "100%" }}>
-            <Image
-              source={require("../../assets/tahirAssets/AuthPngs/Signin.png")}
-              style={styles.topImage}
-            />
+        </View>
+
+        <View style={styles.overlayContainer}>
+          <View style={styles.headingContainer}>
+            <View style={styles.activeTabIndicator} />
+            <Text style={styles.heading}>Hi, Welcome!</Text>
           </View>
 
-          <View style={styles.overlayContainer}>
-            <View style={styles.headingContainer}>
-              <View style={styles.activeTabIndicator} />
-              <Text style={styles.heading}>Hi, Welcome!</Text>
-            </View>
-
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.container}
+          >
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Email</Text>
               <TextInput
@@ -111,23 +115,23 @@ const SignInScreen = () => {
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </KeyboardAvoidingView>
+        </View>
 
-          {/* Bottom Buttons Container */}
-          <View style={styles.bottomContainer}>
-            <CustomButton title="Login" onPress={handleLogin} />
-            <View style={styles.signupContainer}>
-              <Text style={styles.accountText}>Don’t have an account?</Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Signupscreen")}
-              >
-                <Text style={styles.loginLink}> Sign Up</Text>
-              </TouchableOpacity>
-            </View>
+        {/* Bottom Buttons Container */}
+        <View style={styles.bottomContainer}>
+          <CustomButton title="Login" onPress={handleLogin} />
+          <View style={styles.signupContainer}>
+            <Text style={styles.accountText}>Don’t have an account?</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Signupscreen")}
+            >
+              <Text style={styles.loginLink}> Sign Up</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
