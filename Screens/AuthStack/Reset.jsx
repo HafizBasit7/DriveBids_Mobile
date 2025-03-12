@@ -9,9 +9,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../../CustomComponents/CustomButton.js";
 import { useNavigation } from "@react-navigation/native";
+
 const { width, height } = Dimensions.get("window");
 
 const Reset = () => {
@@ -19,9 +19,6 @@ const Reset = () => {
   const [focusedInput, setFocusedInput] = useState(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
-    useState(false);
 
   return (
     <View style={styles.container}>
@@ -31,32 +28,24 @@ const Reset = () => {
         translucent
       />
 
-      {/* Back Icon */}
-      <View style={styles.backIconContainer}>
-        <BackIcon width={30} height={30} />
-      </View>
-
-      {/* Background Image */}
+      {/* Full-width Image at the very top */}
       <Image
-        source={require("../../assets/UmairAssets/Reset.png")}
+        source={require("../../assets/tahirAssets/AuthPngs/ResetPass.png")}
         style={styles.topImage}
+        resizeMode="cover"
       />
 
-      {/* Overlay Image */}
+      {/* Content Section */}
       <View style={styles.overlayContainer}>
-        <Image
-          source={require("../../assets/SignInText.png")}
-          style={styles.overlayImage}
-        />
-
         {/* Heading */}
         <View style={styles.headingContainer}>
           <View style={styles.activeTabIndicator} />
-          <Text style={styles.heading}>Reset password</Text>
-          <Text style={styles.description}>
-            Please type something you’ll remember
-          </Text>
+          <Text style={styles.heading}>Reset Password</Text>
         </View>
+
+        <Text style={styles.description}>
+          Please type something you’ll remember
+        </Text>
 
         {/* Input Fields */}
         <View style={styles.inputContainer}>
@@ -70,7 +59,7 @@ const Reset = () => {
             ]}
             placeholder="Must be at least 8 characters"
             placeholderTextColor="#888"
-            secureTextEntry={!isPasswordVisible}
+            secureTextEntry={true}
             value={password}
             onChangeText={setPassword}
             onFocus={() => setFocusedInput("password")}
@@ -88,32 +77,26 @@ const Reset = () => {
             ]}
             placeholder="Repeat password"
             placeholderTextColor="#888"
-            secureTextEntry={!isConfirmPasswordVisible}
+            secureTextEntry={true}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
             onFocus={() => setFocusedInput("confirmPassword")}
             onBlur={() => setFocusedInput(null)}
           />
+        </View>
+      </View>
 
-          <CustomButton
-            title="Reset Password"
-            onPress={() =>
-              navigation.navigate("PassChanged", {
-                password,
-                confirmPassword,
-              })
-            }
-            style={{ marginTop: "20%" }}
-          />
-
-          <View style={styles.loginTextContainer}>
-            <Text style={styles.accountText}>Already have an account? </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("SignInScreen")}
-            >
-              <Text style={styles.loginLink}>Log in</Text>
-            </TouchableOpacity>
-          </View>
+      {/* Button Section - Fixed at Bottom */}
+      <View style={styles.bottomContainer}>
+        <CustomButton
+          title="Reset Password"
+          onPress={() => navigation.navigate("PassChanged")}
+        />
+        <View style={styles.loginTextContainer}>
+          <Text style={styles.accountText}>Already have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("SignInScreen")}>
+            <Text style={styles.loginLink}>Log in</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -123,46 +106,23 @@ const Reset = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  backIconContainer: {
-    position: "absolute",
-    top: 40,
-    left: 20,
-    zIndex: 10,
+    backgroundColor: "#fff",
   },
   topImage: {
+    width: width,
+    height: height * 0.4, // Adjust height if needed
     position: "absolute",
     top: 0,
-    width: "100%",
-    height: height * 0.5,
   },
   overlayContainer: {
-    width: "100%",
-  },
-  overlayImage: {
-    width: "100%",
-    height: "90%",
-    marginTop: "30%",
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    marginTop: height * 0.2, // Push content below image
   },
   headingContainer: {
-    position: "absolute",
-    top: "40%",
-    left: 20,
-  },
-  heading: {
-    fontSize: 20,
-    fontFamily: "Inter-Bold",
-    color: "#000",
-  },
-  description: {
-    fontSize: 16,
-    color: "#555",
-    marginTop: 5,
-    width: "100%",
-    flexWrap: "wrap",
-    fontFamily: "Inter-Regular",
+    alignItems: "flex-start",
+    marginBottom: 10,
   },
   activeTabIndicator: {
     marginTop: "2%",
@@ -175,12 +135,22 @@ const styles = StyleSheet.create({
     transform: [{ rotate: "-1deg" }],
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+  },
+  heading: {
+    fontSize: 22,
+    fontFamily: "Inter-Bold",
+    color: "#000",
+  },
+  description: {
+    fontSize: 16,
+    color: "#555",
+    marginBottom: 5,
+    fontFamily: "Inter-Regular",
   },
   inputContainer: {
-    position: "absolute",
-    top: "50%",
-    left: "5%",
-    width: "90%",
+    width: "100%",
   },
   label: {
     fontSize: 16,
@@ -198,11 +168,16 @@ const styles = StyleSheet.create({
     color: "#000",
     marginBottom: 15,
   },
+  bottomContainer: {
+    width: "100%",
+    paddingHorizontal: 20,
+    position: "absolute",
+    bottom: 0,
+  },
   loginTextContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
   },
   accountText: {
     fontSize: 14,

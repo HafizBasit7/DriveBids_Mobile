@@ -14,12 +14,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 // import CarDetails3 from "./Screens/CarDetails/CarDetails3";
 // import CarDetails5 from "./Screens/CarDetails/CarDetails5";
 // import CarDetails8 from "./Screens/CarDetails/CarDetails8";
+import PriceRange4 from "./Screens/SellACar/PriceRange/PriceRange4";
+import PostAd from "./Screens/SellACar/PriceRange/PostAd";
 // Components
 // import Header from "./CustomComponents/Header";
 // import Sidebar from "./CustomComponents/Sidebar";
 // import HomeBanner from "./CustomComponents/HomeBanner";
 // import { GlobalStyles } from "./Styles/GlobalStyles";
 // import CarDetails1 from "./Screens/CarDetails/CarDetails1";
+// import Header from "./CustomComponents/Header";
+// import Sidebar from "./CustomComponents/Sidebar";
+// import HomeBanner from "./CustomComponents/HomeBanner";
+// import { GlobalStyles } from "./Styles/GlobalStyles";
+// // import CarDetails1 from "./Screens/CarDetails/CarDetails1";
 
 // import VehicleReg from "./Screens/tahirScreens/VehicleReg";
 // import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
@@ -58,8 +65,9 @@ export default function App() {
   }
   return (
     <>
-      {/* <AppNavigator /> */}
       <AppNavigator />
+      {/* <PriceRange4 /> */}
+
       {/* <InspectionReport3 /> */}
       {/* <InspectionReport2 /> */}
       {/* <InspectionReport1 /> */}

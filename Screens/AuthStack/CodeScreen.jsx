@@ -5,28 +5,38 @@ import {
   StyleSheet,
   Dimensions,
   Text,
-  TextInput,
   TouchableOpacity,
   StatusBar,
 } from "react-native";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../../CustomComponents/CustomButton.js";
 import { useNavigation } from "@react-navigation/native";
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from "react-native-confirmation-code-field";
+
 const { width, height } = Dimensions.get("window");
+const CELL_COUNT = 4;
 
 const CodeScreen = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState(""); // State for email input
-  const [isCodeSent, setIsCodeSent] = useState(false); // State to check if the code is sent
-  const [otp, setOtp] = useState(["", "", "", ""]); // State for OTP inputs
-  const [timer, setTimer] = useState(29); // Countdown timer
+  const [email, setEmail] = useState("");
+  const [isCodeSent, setIsCodeSent] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [timer, setTimer] = useState(29);
+
+  const ref = useBlurOnFulfill({ value: otp, cellCount: CELL_COUNT });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value: otp,
+    setValue: setOtp,
+  });
 
   const handleSendCode = () => {
     if (email.trim() !== "") {
       setIsCodeSent(true);
-      console.log("Code sent to", email);
-
-      // Start countdown when code is sent
       let countdown = 29;
       const interval = setInterval(() => {
         countdown--;
@@ -36,12 +46,7 @@ const CodeScreen = () => {
     } else {
       alert("Please enter a valid email address.");
     }
-  };
-
-  const handleOtpChange = (value, index) => {
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
+    navigation.navigate("Reset");
   };
 
   return (
@@ -51,22 +56,17 @@ const CodeScreen = () => {
         backgroundColor="transparent"
         translucent
       />
-
-      <View style={styles.backIconContainer}>
+      <TouchableOpacity
+        style={styles.backIconContainer}
+        onPress={() => navigation.goBack()}
+      >
         <BackIcon width={30} height={30} />
-      </View>
-
+      </TouchableOpacity>
       <Image
-        source={require("../../assets/UmairAssets/Code.png")}
+        source={require("../../assets/tahirAssets/AuthPngs/CheckEmail.png")}
         style={styles.topImage}
       />
-
       <View style={styles.overlayContainer}>
-        <Image
-          source={require("../../assets/SignInText.png")}
-          style={styles.overlayImage}
-        />
-
         <View style={styles.headingContainer}>
           <View style={styles.activeTabIndicator} />
           <Text style={styles.heading}>Please check your email</Text>
@@ -74,23 +74,26 @@ const CodeScreen = () => {
             We’ve sent a code to your email address
           </Text>
         </View>
-
         <View style={styles.inputContainer}>
-          {/* OTP Boxes */}
-          <View style={styles.otpContainer}>
-            {otp.map((digit, index) => (
-              <TextInput
+          <CodeField
+            ref={ref}
+            {...props}
+            value={otp}
+            onChangeText={setOtp}
+            cellCount={CELL_COUNT}
+            rootStyle={styles.otpContainer}
+            keyboardType="number-pad"
+            textContentType="oneTimeCode"
+            renderCell={({ index, symbol, isFocused }) => (
+              <Text
                 key={index}
-                style={styles.otpBox}
-                maxLength={1}
-                keyboardType="numeric"
-                value={digit}
-                onChangeText={(value) => handleOtpChange(value, index)}
-              />
-            ))}
-          </View>
-
-          {/* Resend Code & Timer */}
+                style={[styles.otpBox, isFocused && styles.focusCell]}
+                onLayout={getCellOnLayoutHandler(index)}
+              >
+                {symbol || (isFocused ? <Cursor /> : null)}
+              </Text>
+            )}
+          />
           <View style={styles.resendContainer}>
             <TouchableOpacity onPress={handleSendCode} disabled={timer > 0}>
               <Text
@@ -103,13 +106,21 @@ const CodeScreen = () => {
               {timer > 0 ? `00:${timer < 10 ? `0${timer}` : timer}` : "00:00"}
             </Text>
           </View>
-
-          <CustomButton
-            title="Verify"
-            onPress={handleSendCode}
-            style={{ marginTop: "40%" }}
-          />
         </View>
+      </View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "flex-end",
+          width: "100%",
+          paddingHorizontal: 15,
+        }}
+      >
+        <CustomButton
+          title="Verify"
+          onPress={handleSendCode}
+          style={{ marginTop: 0 }}
+        />
       </View>
     </View>
   );
@@ -120,6 +131,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
+    backgroundColor: "#fff",
   },
   backIconContainer: {
     position: "absolute",
@@ -128,74 +140,61 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   topImage: {
-    position: "absolute",
-    top: 0,
     width: "100%",
     height: height * 0.45,
   },
   overlayContainer: {
     width: "100%",
-  },
-  overlayImage: {
-    width: "100%",
-    height: "100%",
-    marginTop: "25%",
+    alignItems: "center",
   },
   headingContainer: {
-    position: "absolute",
-    top: "38%",
-    left: 20,
-    width: "90%",
+    alignItems: "center",
+    marginBottom: 20,
   },
   heading: {
     fontSize: 22,
-
+    fontFamily: "Inter-Semibold",
     color: "#000",
-    fontFamily: "Inter-Bold",
   },
   description: {
     fontSize: 16,
+    fontFamily: "Inter-Regular",
     color: "#555",
     marginTop: 5,
-    width: "90%",
-    fontFamily: "Inter-Regular",
+    textAlign: "center",
   },
   activeTabIndicator: {
-    marginTop: "2%",
-    position: "absolute",
     width: "75%",
     height: 12,
     backgroundColor: "yellow",
     borderRadius: 10,
     opacity: 0.6,
     transform: [{ rotate: "-1deg" }],
-    shadowColor: "#000",
-    shadowOffset: { width: 2, height: 2 },
   },
   inputContainer: {
-    position: "absolute",
-    top: "50%",
-    left: "5%",
     width: "90%",
+    alignItems: "center",
   },
   otpContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "70%", // Adjusted width
+    width: "80%",
     alignSelf: "center",
-    marginBottom: 10,
   },
   otpBox: {
     width: 50,
+
     height: 50,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
     textAlign: "center",
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "Inter-Semibold",
     color: "#000",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  focusCell: {
+    borderColor: "#000",
   },
   resendContainer: {
     flexDirection: "row",
@@ -205,17 +204,16 @@ const styles = StyleSheet.create({
   },
   resendText: {
     fontSize: 14,
-    color: "#2F61BF",
-    fontWeight: "bold",
-    marginRight: 10, // Space between text and timer
+    fontFamily: "Inter-Semibold",
+    marginRight: 10,
   },
   resendDisabled: {
-    color: "#aaa", // Greyed out when disabled
+    color: "#aaa",
   },
   timerText: {
     fontSize: 14,
     color: "red",
-    fontWeight: "bold",
+    fontFamily: "Inter-Semibold",
   },
 });
 
