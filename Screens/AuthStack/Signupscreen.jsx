@@ -85,7 +85,7 @@ const SignupScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Bottom Container */}
+      {/* Content Container */}
       <View
         style={[
           styles.contentContainer,
@@ -144,27 +144,17 @@ const SignupScreen = () => {
               </TouchableOpacity>
             </Text>
           </View>
+        </View>
+      </View>
 
-          <CustomButton
-            title="Create Account"
-            onPress={handleLogin}
-            style={{ marginTop: selectedTab === "private" ? "30%" : "4%" }}
-          />
-
-          {/* Login Link */}
-          <View style={styles.loginTextContainer}>
-            <Text style={styles.accountText}>Already have an account? </Text>
-            <TouchableOpacity
-              onPress={() => console.log("Navigate to Login Screen")}
-            >
-              <Text
-                style={styles.loginLink}
-                onPress={() => navigation.navigate("SignInScreen")}
-              >
-                Log in
-              </Text>
-            </TouchableOpacity>
-          </View>
+      {/* Bottom Buttons Container */}
+      <View style={styles.bottomContainer}>
+        <CustomButton title="Create Account" onPress={handleLogin} />
+        <View style={styles.loginTextContainer}>
+          <Text style={styles.accountText}>Already have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("SignInScreen")}>
+            <Text style={styles.loginLink}>Log in</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -204,7 +194,7 @@ const styles = StyleSheet.create({
   },
   rightBox: {
     flex: 1,
-    backgroundColor: "#D1D1D1",
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "center",
     borderTopLeftRadius: 40,
@@ -249,7 +239,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F1F1F1",
   },
   tradeBg: {
-    backgroundColor: "#D1D1D1",
+    backgroundColor: "#FFFFFF",
   },
   inputContainer: {
     marginTop: 20,
@@ -289,11 +279,16 @@ const styles = StyleSheet.create({
     top: 3,
     fontFamily: "Inter-Regular",
   },
+  bottomContainer: {
+    position: "absolute",
+    bottom: 5,
+    width: "100%",
+    paddingHorizontal: 20,
+  },
   loginTextContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 5,
   },
   accountText: {
     fontSize: 14,
