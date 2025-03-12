@@ -63,7 +63,7 @@ const CodeScreen = () => {
         <BackIcon width={30} height={30} />
       </TouchableOpacity>
       <Image
-        source={require("../../assets/UmairAssets/Code.png")}
+        source={require("../../assets/tahirAssets/AuthPngs/CheckEmail.png")}
         style={styles.topImage}
       />
       <View style={styles.overlayContainer}>
