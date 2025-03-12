@@ -26,7 +26,7 @@ import PostAd from "./Screens/SellACar/PriceRange/PostAd";
 // import Sidebar from "./CustomComponents/Sidebar";
 // import HomeBanner from "./CustomComponents/HomeBanner";
 // import { GlobalStyles } from "./Styles/GlobalStyles";
-// import CarDetails1 from "./Screens/CarDetails/CarDetails1";
+// // import CarDetails1 from "./Screens/CarDetails/CarDetails1";
 
 // import VehicleReg from "./Screens/tahirScreens/VehicleReg";
 // import VehicleInfo from "./Screens/tahirScreens/VehicleInfo";
@@ -65,8 +65,13 @@ export default function App() {
   }
   return (
     <>
+<<<<<<< HEAD
       {/* <AppNavigator /> */}
       <AppNavigator />
+=======
+      <AppNavigator />
+      {/* <PriceRange4 /> */}
+>>>>>>> 488797988f3c100a7b6ccd491320110beb7393d1
       {/* <InspectionReport3 /> */}
       {/* <InspectionReport2 /> */}
       {/* <InspectionReport1 /> */}
