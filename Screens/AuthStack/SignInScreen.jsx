@@ -34,6 +34,7 @@ const SignInScreen = () => {
     setClickedIcon(platform);
     console.log(`${platform} Login Clicked`);
   };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -54,7 +55,11 @@ const SignInScreen = () => {
           </View>
 
           <View style={styles.overlayContainer}>
-            <Text style={styles.heading}>Hi, Welcome!</Text>
+            <View style={styles.headingContainer}>
+              <View style={styles.activeTabIndicator} />
+              <Text style={styles.heading}>Hi, Welcome!</Text>
+            </View>
+
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Email</Text>
               <TextInput
@@ -108,20 +113,19 @@ const SignInScreen = () => {
                   <Text style={styles.forgotPassword}>Forgot Password?</Text>
                 </TouchableOpacity>
               </View>
+            </View>
+          </View>
 
-              <CustomButton
-                title="Login"
-                onPress={handleLogin}
-                style={{ marginTop: 20 }}
-              />
-              <View style={styles.signupContainer}>
-                <Text style={styles.accountText}>Don’t have an account?</Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Signupscreen")}
-                >
-                  <Text style={styles.loginLink}> Sign Up</Text>
-                </TouchableOpacity>
-              </View>
+          {/* Bottom Buttons Container */}
+          <View style={styles.bottomContainer}>
+            <CustomButton title="Login" onPress={handleLogin} />
+            <View style={styles.signupContainer}>
+              <Text style={styles.accountText}>Don’t have an account?</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Signupscreen")}
+              >
+                <Text style={styles.loginLink}> Sign Up</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -139,7 +143,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-
   topImage: {
     width: "100%",
     height: "100%",
@@ -147,11 +150,30 @@ const styles = StyleSheet.create({
   overlayContainer: {
     width: "100%",
     paddingHorizontal: 20,
+    flex: 1, // Take up remaining space
+  },
+  headingContainer: {
+    alignItems: "Left",
+    marginBottom: 10,
+    position: "relative",
+  },
+  activeTabIndicator: {
+    marginTop: "2%",
+    position: "absolute",
+    width: "35%",
+    height: 14,
+    backgroundColor: "yellow",
+    borderRadius: 10,
+    opacity: 0.6,
+    transform: [{ rotate: "-1deg" }],
+    shadowColor: "#000",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
   },
   heading: {
-    fontSize: 24,
-
-    textAlign: "center",
+    fontSize: 18,
+    textAlign: "Left",
     marginBottom: 10,
     color: "#000",
     fontFamily: "Inter-SemiBold",
@@ -161,7 +183,6 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-
     fontFamily: "Inter-SemiBold",
     marginBottom: 5,
     color: "#000",
@@ -179,27 +200,26 @@ const styles = StyleSheet.create({
   },
   rememberContainer: {
     flexDirection: "row",
-    maxWidth: 200,
-    justifyContent: "space-between",
     alignItems: "center",
-    fontFamily: "Inter-SemiBold",
+    justifyContent: "flex-start",
   },
   forgotPassword: {
     color: "#2F61BF",
     textDecorationLine: "underline",
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: "Inter-Regular",
+    marginLeft: -100,
   },
-  socialIconsContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 20,
-    gap: 20,
+  bottomContainer: {
+    width: "100%",
+    paddingHorizontal: 20,
+    // marginTop: 10,
+    position: "absolute",
+    bottom: 0,
   },
   signupContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 10,
   },
   accountText: {
     fontSize: 14,
@@ -214,7 +234,7 @@ const styles = StyleSheet.create({
   checkboxText: {
     textDecorationLine: "none",
     color: "#000",
-    fontSize: 12,
+    fontSize: 14,
     marginLeft: -5,
   },
 });

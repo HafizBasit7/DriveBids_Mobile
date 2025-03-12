@@ -65,13 +65,9 @@ export default function App() {
   }
   return (
     <>
-<<<<<<< HEAD
-      {/* <AppNavigator /> */}
-      <AppNavigator />
-=======
       <AppNavigator />
       {/* <PriceRange4 /> */}
->>>>>>> 488797988f3c100a7b6ccd491320110beb7393d1
+
       {/* <InspectionReport3 /> */}
       {/* <InspectionReport2 /> */}
       {/* <InspectionReport1 /> */}
