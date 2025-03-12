@@ -48,6 +48,15 @@ import Wheel1 from "../Screens/SellACar/WheelsImages/Wheel1";
 import Wheel2 from "../Screens/SellACar/WheelsImages/Wheel2";
 import Wheel3 from "../Screens/SellACar/WheelsImages/Wheel3";
 import Wheel4 from "../Screens/SellACar/WheelsImages/Wheel4";
+// Inspection Report
+import InspectionReport1 from "../Screens/SellACar/InspectionReport/InspectionReport1";
+import InspectionReport2 from "../Screens/SellACar/InspectionReport/InspectionReport2";
+import InspectionReport3 from "../Screens/SellACar/InspectionReport/InspectionReport3";
+// Price Range
+import PriceRange1 from "../Screens/SellACar/PriceRange/PriceRange1";
+import PriceRange2 from "../Screens/SellACar/PriceRange/PriceRange2";
+import PriceRange3 from "../Screens/SellACar/PriceRange/PriceRange3";
+import PriceRange4 from "../Screens/SellACar/PriceRange/PriceRange4";
 
 const Stack = createStackNavigator();
 
@@ -59,6 +68,7 @@ export default function R1_DashboardStack () {
             }}
         >
             {/* Sell Car */}
+            <Stack.Screen name="SellCar" component={SellCar} />
             <Stack.Screen name="CarDetails1" component={CarDetails1} />
             <Stack.Screen name="CarDetails2" component={CarDetails2} />
             <Stack.Screen name="CarDetails3" component={CarDetails3} />
@@ -69,7 +79,7 @@ export default function R1_DashboardStack () {
             <Stack.Screen name="CarDetails8" component={CarDetails8} />
             <Stack.Screen name="CarDetails9" component={CarDetails9} />
             <Stack.Screen name="CarDetails10" component={CarDetails10} />
-            <Stack.Screen name="SellCar" component={SellCar} />
+            {/* <Stack.Screen name="SellCar" component={SellCar} /> */}
             <Stack.Screen name="Draft" component={Draft} />
             <Stack.Screen name="VehicleReg" component={VehicleReg} />
             <Stack.Screen name="VehicleInfo" component={VehicleInfo} />
@@ -101,6 +111,15 @@ export default function R1_DashboardStack () {
             <Stack.Screen name="Wheel2" component={Wheel2} />
             <Stack.Screen name="Wheel3" component={Wheel3} />
             <Stack.Screen name="Wheel4" component={Wheel4} />
+            {/* Inspetion Report */}
+            <Stack.Screen name="InspectionReport1" component={InspectionReport1} />
+            <Stack.Screen name="InspectionReport2" component={InspectionReport2} />
+            <Stack.Screen name="InspectionReport3" component={InspectionReport3} />
+            {/* Price Range */}
+            <Stack.Screen name="PriceRange1" component={PriceRange1} />
+            <Stack.Screen name="PriceRange2" component={PriceRange2} />
+            <Stack.Screen name="PriceRange3" component={PriceRange3} />
+            <Stack.Screen name="PriceRange4" component={PriceRange4} />
         </Stack.Navigator>
     )
 }
