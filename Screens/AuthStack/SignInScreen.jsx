@@ -42,6 +42,13 @@ const SignInScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.innerContainer}>
+       <DialogBox
+           visible={false}
+           message={"You can pass sucess error and info for this "}
+           onOkPress={() => {}}
+           type={"info"}
+           title={"Login Success"}
+         />
         <StatusBar
           barStyle="dark-content"
           backgroundColor="transparent"
