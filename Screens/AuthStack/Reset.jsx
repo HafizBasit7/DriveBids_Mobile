@@ -11,17 +11,49 @@ import {
 } from "react-native";
 import CustomButton from "../../CustomComponents/CustomButton.js";
 import { useNavigation } from "@react-navigation/native";
+import { confirmResetPassword } from "../../API_Callings/R1_API/Reset.js";
+import DialogBox from "../../CustomComponents/DialogBox.jsx";
 
 const { width, height } = Dimensions.get("window");
 
-const Reset = () => {
+const Reset = ({route}) => {
+
+  //Store otp code
+  const {otp} = route.params;
+
   const navigation = useNavigation();
   const [focusedInput, setFocusedInput] = useState(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  const resetPassword = async () => {
+    setLoading(true);
+    try {
+      await confirmResetPassword({otpCode: parseInt(otp), password});
+      navigation.navigate("PassChanged");
+    }
+    catch(e) {
+        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
+      <DialogBox
+        visible={loading ? true : message ? true : false}
+        message={message?.message}
+        onOkPress={() => setMessage(null)}
+        type={message?.type}
+        loading={loading}
+        title={message?.title || ''}
+      />
+
       <StatusBar
         barStyle="dark-content"
         backgroundColor="transparent"
@@ -90,7 +122,7 @@ const Reset = () => {
       <View style={styles.bottomContainer}>
         <CustomButton
           title="Reset Password"
-          onPress={() => navigation.navigate("PassChanged")}
+          onPress={resetPassword}
         />
         <View style={styles.loginTextContainer}>
           <Text style={styles.accountText}>Already have an account? </Text>
@@ -172,7 +204,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 20,
     position: "absolute",
-    bottom: 0,
+    bottom: 25,
   },
   loginTextContainer: {
     flexDirection: "row",

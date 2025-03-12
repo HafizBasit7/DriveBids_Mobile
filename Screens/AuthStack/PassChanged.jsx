@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 20,
     position: "absolute",
-    bottom: 0,
+    bottom: 27,
   },
   loginTextContainer: {
     flexDirection: "row",

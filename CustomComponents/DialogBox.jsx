@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, Modal, TouchableOpacity } from "react-native";
+import { View, Text, Modal, TouchableOpacity, ActivityIndicator } from "react-native";
 import { GlobalStyles } from "../Styles/GlobalStyles";
 import { Icon } from "react-native-elements";
 
-const DialogBox = ({ visible, title, message, type, onOkPress }) => {
+const DialogBox = ({ visible, title, message, type, onOkPress, loading }) => {
   const getTypeColor = () => {
     switch (type) {
       case "success":
@@ -46,35 +46,37 @@ const DialogBox = ({ visible, title, message, type, onOkPress }) => {
             alignItems: "center",
           }}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              gap: 5,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <View
+          {!loading && (
+             <View
               style={{
-                backgroundColor: getTypeColor(),
-                borderRadius: 15,
-                padding: 1,
+                flexDirection: "row",
+                gap: 5,
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              <Icon name={getIconName()} size={16} color={"white"} />
-            </View>
-            <View>
-              <Text
+              <View
                 style={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  color: getTypeColor(),
+                  backgroundColor: getTypeColor(),
+                  borderRadius: 15,
+                  padding: 1,
                 }}
               >
-                {title.toUpperCase()}
-              </Text>
+                <Icon name={getIconName()} size={16} color={"white"} />
+              </View>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    color: getTypeColor(),
+                  }}
+                >
+                  {title.toUpperCase()}
+                </Text>
+              </View>
             </View>
-          </View>
+          )}
           <Text
             style={{
               marginVertical: 15,
@@ -83,21 +85,24 @@ const DialogBox = ({ visible, title, message, type, onOkPress }) => {
               fontFamily: "Inter-Regular",
             }}
           >
-            {message}
+            {loading ? (<ActivityIndicator size="large" color="#0000ff" />) : message}
           </Text>
-          <TouchableOpacity
-            onPress={onOkPress}
-            style={{
-              backgroundColor: GlobalStyles.colors.ButtonColor,
-              paddingVertical: 5,
-              paddingHorizontal: 30,
-              borderRadius: 5,
-            }}
-          >
-            <Text style={{ color: "white", fontFamily: "Inter-SemiBold" }}>
-              OK
-            </Text>
-          </TouchableOpacity>
+          {!loading && (
+             <TouchableOpacity
+              onPress={onOkPress}
+              style={{
+                backgroundColor: GlobalStyles.colors.ButtonColor,
+                paddingVertical: 5,
+                paddingHorizontal: 30,
+                borderRadius: 5,
+              }}
+            >
+              
+              <Text style={{ color: "white", fontFamily: "Inter-SemiBold" }}>
+                OK
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </Modal>

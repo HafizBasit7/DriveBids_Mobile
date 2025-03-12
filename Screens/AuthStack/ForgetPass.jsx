@@ -16,6 +16,8 @@ import {
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../../CustomComponents/CustomButton.js";
 import { useNavigation } from "@react-navigation/native";
+import { sendResetOtp } from "../../API_Callings/R1_API/Reset.js";
+import DialogBox from "../../CustomComponents/DialogBox.jsx";
 
 const { width, height } = Dimensions.get("window");
 
@@ -23,20 +25,39 @@ const ForgetPass = () => {
   const navigation = useNavigation();
   const [focusedInput, setFocusedInput] = useState(null);
   const [email, setEmail] = useState(""); // State for email input
-  const [isCodeSent, setIsCodeSent] = useState(false); // State to check if the code is sent
+  // const [isCodeSent, setIsCodeSent] = useState(false); // State to check if the code is sent
 
-  const handleSendCode = () => {
-    if (email.trim() !== "") {
-      setIsCodeSent(true);
-      console.log("Code sent to", email);
-    } else {
-      alert("Please enter a valid email address.");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  const handleSendCode = async () => {
+    if (email.trim() === "") {
+      setMessage({type: 'error', message: 'Enter email', title: 'Error'});
+      return;
     }
-    navigation.navigate("CodeScreen");
+    //Send email
+    setLoading(true);
+    try {
+        await sendResetOtp({email});
+        navigation.navigate("CodeScreen");
+    }
+    catch(e) {
+        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
+       <DialogBox
+        visible={loading ? true : message ? true : false}
+        message={message?.message}
+        onOkPress={() => setMessage(null)}
+        type={message?.type}
+        loading={loading}
+        title={message?.title || ''}
+      />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "padding"}
         style={{ flex: 1 }}
@@ -94,11 +115,11 @@ const ForgetPass = () => {
                   style={{ marginTop: "40%" }}
                 />
 
-                {isCodeSent && (
+                {/* {isCodeSent && (
                   <Text style={styles.successMessage}>
                     Code sent successfully!
                   </Text>
-                )}
+                )} */}
 
                 <View style={styles.loginTextContainer}>
                   <Text style={styles.accountText}>Remember password? </Text>
@@ -192,6 +213,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
+    marginBottom: 25
   },
   accountText: {
     fontSize: 14,

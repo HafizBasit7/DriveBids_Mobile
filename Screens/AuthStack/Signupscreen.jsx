@@ -18,10 +18,14 @@ import CustomButton from "../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import {useAuth} from "../../R1_Contexts/authContext";
+import DialogBox from "../../CustomComponents/DialogBox";
 const { width, height } = Dimensions.get("window");
 
 const SignupScreen = () => {
   const {signup} = useAuth();
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
   //Form state
   const [name, setName] = useState('');
@@ -44,21 +48,39 @@ const SignupScreen = () => {
     Linking.openURL("https://example.com/conditions");
   };
 
-  const handleLogin = () => {
-    signup({
-      name,
-      phoneNumber,
-      city,
-      country,
-      email,
-      password,
-      businessAddress,
-      type: selectedTab === 'private' ? 'individual' : 'trader'
-    });
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      await signup({
+        name,
+        phoneNumber,
+        city,
+        country,
+        email,
+        password,
+        businessAddress,
+        type: selectedTab === 'private' ? 'individual' : 'trader'
+      });
+      setMessage({type: 'success', message: 'Signup successful, Log in now', title: 'Success'});
+    }
+    catch(e) {
+        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <View style={styles.container}>
+      <DialogBox
+        visible={loading ? true : message ? true : false}
+        message={message?.message}
+        onOkPress={() => setMessage(null)}
+        type={message?.type}
+        loading={loading}
+        title={message?.title || ''}
+      />
+
       <StatusBar
         barStyle="dark-content"
         backgroundColor="transparent"
@@ -336,7 +358,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     position: "absolute",
-    bottom: 19,
+    bottom: 20,
     width: "100%",
     paddingHorizontal: 20,
   },

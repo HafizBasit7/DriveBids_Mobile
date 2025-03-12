@@ -19,6 +19,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import CustomButton from "../../CustomComponents/CustomButton.js";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../R1_Contexts/authContext.js";
+import DialogBox from "../../CustomComponents/DialogBox.jsx";
 
 const SignInScreen = () => {
 
@@ -30,8 +31,20 @@ const SignInScreen = () => {
   const [password, setPassword] = useState("");
   const [clickedIcon, setClickedIcon] = useState(null); // State to track clicked social icon
 
-  const handleLogin = () => {
-    login({email, password});
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+        await login({email, password});
+    }
+    catch(e) {
+        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    } finally {
+      setLoading(false);
+    }
+
   };
 
   const handleSocialLogin = (platform) => {
@@ -42,13 +55,16 @@ const SignInScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.innerContainer}>
-       {/* <DialogBox
-           visible={false}
-           message={"You can pass sucess error and info for this "}
-           onOkPress={() => {}}
-           type={"info"}
-           title={"Login Success"}
-         /> */}
+
+        <DialogBox
+           visible={loading ? true : message ? true : false}
+           message={message?.message}
+           onOkPress={() => setMessage(null)}
+           type={message?.type}
+           loading={loading}
+           title={message?.title || ''}
+         />
+
         <StatusBar
           barStyle="dark-content"
           backgroundColor="transparent"
@@ -225,7 +241,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 20,
     position: "absolute",
-    bottom: 0,
+    bottom: 25,
   },
   signupContainer: {
     flexDirection: "row",

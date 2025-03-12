@@ -1,8 +1,8 @@
 import apiClient from "./axios-client";
 
-export const getUser = async () => {
+export const sendResetOtp = async (payload) => {
     try {
-        const result = await apiClient.get('/auth');
+        const result = await apiClient.post('/otp/reset-password', payload);
         const resultData = result.data;
 
         if(!resultData.status) {
@@ -25,9 +25,9 @@ export const getUser = async () => {
     }
 };
 
-export const signupUser = async (payload) => {
+export const confirmResetPassword = async (payload) => {
     try {
-        const result = await apiClient.post('/auth/signup', payload);
+        const result = await apiClient.post('/otp/confirm-reset-password', payload);
         const resultData = result.data;
 
         if(!resultData.status) {
@@ -37,7 +37,7 @@ export const signupUser = async (payload) => {
             };
         }
 
-        return resultData;
+        return resultData; 
     }
     catch(e) {
         if(e.response?.data) {
@@ -49,30 +49,3 @@ export const signupUser = async (payload) => {
         throw e;
     }
 };
-
-export const loginUser = async (payload) => {
-    try {
-        const result = await apiClient.post('/auth/login', payload);
-        const resultData = result.data;
-
-        if(!resultData.status) {
-            throw {
-                name: 'app',
-                message: resultData.message,
-            };
-        }
-
-        return resultData;
-    }
-    catch(e) {
-        if(e.response?.data) {
-            throw {
-                name: 'app',
-                ...e.response.data,
-            }
-        }
-
-        throw e;
-    }
-};
-

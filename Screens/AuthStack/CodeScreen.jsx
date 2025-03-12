@@ -17,6 +17,7 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
+import DialogBox from "../../CustomComponents/DialogBox.jsx";
 
 const { width, height } = Dimensions.get("window");
 const CELL_COUNT = 4;
@@ -24,9 +25,10 @@ const CELL_COUNT = 4;
 const CodeScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
-  const [isCodeSent, setIsCodeSent] = useState(false);
+  // const [isCodeSent, setIsCodeSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(29);
+    const [message, setMessage] = useState(null);
 
   const ref = useBlurOnFulfill({ value: otp, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -35,22 +37,34 @@ const CodeScreen = () => {
   });
 
   const handleSendCode = () => {
-    if (email.trim() !== "") {
-      setIsCodeSent(true);
-      let countdown = 29;
-      const interval = setInterval(() => {
-        countdown--;
-        setTimer(countdown);
-        if (countdown === 0) clearInterval(interval);
-      }, 1000);
-    } else {
-      alert("Please enter a valid email address.");
+    if(otp.trim() === "") {
+      setMessage({type: 'error', message: 'Enter otp code', title: 'Error'});
+      return;
     }
-    navigation.navigate("Reset");
+    // if (email.trim() !== "") {
+      
+    //   let countdown = 29;
+    //   const interval = setInterval(() => {
+    //     countdown--;
+    //     setTimer(countdown);
+    //     if (countdown === 0) clearInterval(interval);
+    //   }, 1000);
+    // } else {
+    //   alert("Please enter a valid email address.");
+    // }
+
+    navigation.navigate("Reset", {otp});
   };
 
   return (
     <View style={styles.container}>
+       <DialogBox
+        visible={message ? true : false}
+        message={message?.message}
+        onOkPress={() => setMessage(null)}
+        type={message?.type}
+        title={message?.title || ''}
+      />
       <StatusBar
         barStyle="dark-content"
         backgroundColor="transparent"
@@ -119,7 +133,7 @@ const CodeScreen = () => {
         <CustomButton
           title="Verify"
           onPress={handleSendCode}
-          style={{ marginTop: 0 }}
+          style={{ marginTop: 0, marginBottom: 25 }}
         />
       </View>
     </View>

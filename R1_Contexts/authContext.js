@@ -34,7 +34,7 @@ const authReducerFunction = (state, action) => {
 };
 
 //Context
-const AuthContext = createContext({authState: intialState, onboardingComplete: () => {}, login: (payload) => {}, signup: (payload) => {}});
+const AuthContext = createContext({authState: intialState, onboardingComplete: () => {}, login: async (payload) => {}, signup: async (payload) => {}});
 export const useAuth = () => useContext(AuthContext);
 
 export default function AuthContextProvider ({children}) {
