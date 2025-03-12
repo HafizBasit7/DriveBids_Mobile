@@ -18,6 +18,7 @@ import PriceRange4 from "./Screens/SellACar/PriceRange/PriceRange4";
 import PostAd from "./Screens/SellACar/PriceRange/PostAd";
 import R1_App from "./R1_App";
 import AuthContextProvider from "./R1_Contexts/authContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // Components
 // import Header from "./CustomComponents/Header";
 // import Sidebar from "./CustomComponents/Sidebar";
@@ -60,6 +61,8 @@ import AuthContextProvider from "./R1_Contexts/authContext";
 // import InspectionReport3 from "./Screens//InspectionReport/InspectionReport3";
 // import DamageInspection from "./Screens/DamageLabels/DamageLabels";
 
+const queryClient = new QueryClient();
+
 export default function App() {
   const fontsLoaded = useLoadFonts();
   if (!fontsLoaded) {
@@ -70,7 +73,9 @@ export default function App() {
       
       {/* <PriceRange4 /> */}
       <AuthContextProvider>
-        <R1_App/>
+        <QueryClientProvider client={queryClient}>
+          <R1_App/>
+        </QueryClientProvider>
       </AuthContextProvider>
       {/* <InspectionReport3 /> */}
       {/* <InspectionReport2 /> */}

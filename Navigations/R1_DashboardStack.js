@@ -8,7 +8,7 @@ export default function R1_DashboardStack () {
     return (
         <Tab.Navigator>
             <Tab.Screen
-                name="SellCar"
+                name="Sell"
                 component={R1_SellCarStack}
                 options={{ headerShown: false }}
             />

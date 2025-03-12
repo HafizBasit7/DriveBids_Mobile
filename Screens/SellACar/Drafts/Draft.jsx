@@ -4,8 +4,18 @@ import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import DraftCard from "../../../CustomComponents/DraftCard";
+import { ActivityIndicator } from "react-native-paper";
+import { useQuery } from "@tanstack/react-query";
+import { getDrafts } from "../../../API_Callings/R1_API/Car";
 
 const Draft = () => {
+
+  const {data, isLoading} = useQuery({
+    queryKey: ["drafts"],
+    queryFn: getDrafts,
+  });
+
+
   const carList = [
     {
       id: "1",
@@ -54,22 +64,28 @@ const Draft = () => {
   return (
     <View style={{ paddingHorizontal: 20, flex: 1, backgroundColor: "#ffff" }}>
       <SectionHeader title="Drafts" />
-      <FlatList
-        data={carList}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <DraftCard
-            regNumber={item.regNumber}
-            imageUrl={item.imageUrl}
-            statusList={item.statusList}
-            onCompleteRegistration={() =>
-              Alert.alert(`Registration Completed for ${item.regNumber}!`)
-            }
-          />
-        )}
-        contentContainerStyle={{ paddingHorizontal: 5 }}
-        showsVerticalScrollIndicator={false}
-      />
+      {isLoading && (
+        <ActivityIndicator />
+      )}
+      
+      {!isLoading && (
+        <FlatList
+          data={carList}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <DraftCard
+              regNumber={item.regNumber}
+              imageUrl={item.imageUrl}
+              statusList={item.statusList}
+              onCompleteRegistration={() =>
+                Alert.alert(`Registration Completed for ${item.regNumber}!`)
+              }
+            />
+          )}
+          contentContainerStyle={{ paddingHorizontal: 5 }}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 };
