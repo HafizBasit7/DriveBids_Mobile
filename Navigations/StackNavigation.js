@@ -15,6 +15,7 @@ import Signupscreen from "../Screens/AuthStack/Signupscreen";
 import ForgetPass from "../Screens/AuthStack/ForgetPass";
 import Reset from "../Screens/AuthStack/Reset";
 import PassChanged from "../Screens/AuthStack/PassChanged";
+import CodeScreen from "../Screens/AuthStack/CodeScreen";
 // Car Details
 import CarDetails1 from "../Screens/SellACar/CarDetails/CarDetails1";
 import CarDetails2 from "../Screens/SellACar/CarDetails/CarDetails2";
@@ -83,6 +84,11 @@ const AppNavigator = () => {
         <Stack.Screen
           name="ForgetPass"
           component={ForgetPass}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CodeScreen"
+          component={CodeScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

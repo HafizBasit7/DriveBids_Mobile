@@ -32,7 +32,7 @@ const ForgetPass = () => {
     } else {
       alert("Please enter a valid email address.");
     }
-    navigation.navigate("Reset");
+    navigation.navigate("CodeScreen");
   };
 
   return (

@@ -36,6 +36,7 @@ const CodeScreen = () => {
     } else {
       alert("Please enter a valid email address.");
     }
+    navigation.navigate("Reset");
   };
 
   const handleOtpChange = (value, index) => {
@@ -107,7 +108,7 @@ const CodeScreen = () => {
           <CustomButton
             title="Verify"
             onPress={handleSendCode}
-            style={{ marginTop: "40%" }}
+            style={{ marginTop: "50%" }}
           />
         </View>
       </View>

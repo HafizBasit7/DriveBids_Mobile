@@ -36,10 +36,7 @@ const SignInScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
+    <KeyboardAvoidingView style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.innerContainer}>
           <StatusBar
@@ -213,7 +210,6 @@ const styles = StyleSheet.create({
   bottomContainer: {
     width: "100%",
     paddingHorizontal: 20,
-    // marginTop: 10,
     position: "absolute",
     bottom: 0,
   },
