@@ -20,7 +20,7 @@ const VehicleInfo = () => {
           steps={9}
           iconName="file-document"
           completionStatus="Completed"
-          onPress={() => alert("Car Details Clicked")}
+          onPress={() => navigation.navigate("CarDetails1")}
         />
         <VehicleInfoCard
           name="Car Features"

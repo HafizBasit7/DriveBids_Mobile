@@ -66,7 +66,7 @@ export default function App() {
   return (
     <>
       {/* <AppNavigator /> */}
-      <PostAd />
+      <AppNavigator />
       {/* <InspectionReport3 /> */}
       {/* <InspectionReport2 /> */}
       {/* <InspectionReport1 /> */}
