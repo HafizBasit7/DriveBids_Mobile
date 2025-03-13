@@ -1,13 +1,32 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { View, Text, StyleSheet, Animated, FlatList } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
+
 const CarDetails3 = () => {
-  const years = Array.from({ length: 50 }, (_, i) => 2000 + i);
+  const years = Array.from({ length: (new Date().getFullYear() + 4) - 1980 + 1 }, (_, i) => 1980 + i);
   const scrollY = useRef(new Animated.Value(0)).current;
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation();
+  const flatListRef = useRef(null);
+
+  const {carState, dispatch} = useCar();
+
+  useEffect(() => {
+    const index = years.indexOf(carState.carDetails.model);
+    if (index !== -1) {
+      setTimeout(() => {
+        flatListRef.current?.scrollToOffset({
+          offset: index * 50,
+          animated: false,
+        });
+      }, 100);
+    }
+  }, []);
+
   const renderItem = ({ item, index }) => {
     const inputRange = [(index - 1) * 50, index * 50, (index + 1) * 50];
+
     const textColor = scrollY.interpolate({
       inputRange,
       outputRange: ["#808080", "#007BFF", "#808080"],
@@ -37,25 +56,35 @@ const CarDetails3 = () => {
     );
   };
 
+  const handleScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    const index = Math.round(offsetY / 50);
+
+    dispatch({
+      type: 'UPDATE_FIELD',
+      section: 'carDetails',
+      field: 'model',
+      value: parseInt(years[index]),
+    })
+  };
+
   return (
     <View style={styles.container}>
-      {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText}>Step 3 of 10</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>Model</Text>
+        <Text style={styles.lineText2}>Model Year</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Year Selector */}
       <View style={styles.yearSelectorContainer}>
         <FlatList
+          ref={flatListRef}
           data={years}
           keyExtractor={(item) => item.toString()}
           renderItem={renderItem}
@@ -70,12 +99,10 @@ const CarDetails3 = () => {
           })}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: false }
+            { useNativeDriver: false, listener: handleScroll }
           )}
         />
       </View>
-
-      {/* Buttons */}
       <View style={styles.buttonContainer}>
         <CustomButton
           style={styles.button}
@@ -129,7 +156,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 40,
-    height: 150,
+    height: 265,
     overflow: "hidden",
   },
   yearContainer: {
@@ -140,12 +167,18 @@ const styles = StyleSheet.create({
   yearText: {
     fontWeight: "bold",
   },
+  selectedYearText: {
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginVertical: 20,
+  },
   buttonContainer: {
     alignItems: "center",
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: "40%",
+    marginTop: "1%",
   },
   button: {
     marginBottom: 5,

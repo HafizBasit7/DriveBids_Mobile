@@ -9,11 +9,23 @@ import {
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
 
 const CarDetails2 = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const navigation = useNavigation(); // Initialize navigation
+
+  const {carState, dispatch} = useCar();
+
+  function onChangeCarVariant (value) {
+    dispatch({
+      type: 'UPDATE_FIELD',
+      section: 'carDetails',
+      field: 'variant',
+      value,
+    });
+  };
 
   const options = [
     { id: 1, label: "Corolla" },
@@ -50,8 +62,8 @@ const CarDetails2 = () => {
           style={styles.input}
           placeholder="Enter custom Variant"
           placeholderTextColor="#999"
-          value={inputValue}
-          onChangeText={setInputValue}
+          value={carState.carDetails.variant}
+          onChangeText={onChangeCarVariant}
         />
       </View>
 
@@ -60,11 +72,11 @@ const CarDetails2 = () => {
         data={options}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => setSelectedOption(item.id)}>
+          <TouchableOpacity onPress={() => onChangeCarVariant(item.label)}>
             <Text
               style={[
                 styles.entityText,
-                selectedOption === item.id && styles.selectedText,
+                carState.carDetails.variant === item.label && styles.selectedText,
               ]}
             >
               {item.label}

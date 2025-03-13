@@ -7,9 +7,18 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import Interior from "../../../assets/tahirAssets/Interior4";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
+import { uploadImage } from "../../../utils/upload";
+import DialogBox from "../../../CustomComponents/DialogBox";
 const Interior4 = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
   const navigation = useNavigation();
+
+  const {carState, dispatch} = useCar();
+  const index = 3;
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -25,21 +34,44 @@ const Interior4 = () => {
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      setLoading(true);
+      try {
+        const imgUrl = await uploadImage(result.assets[0]);
+        dispatch({
+          type: 'UPDATE_IMAGE',
+          section: "interior",
+          index: index,
+          value: {type: 'image', url: imgUrl}
+        });
+      }
+      catch(e) {
+        setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
     <View style={styles.container}>
+      <DialogBox
+        visible={loading ? true : message ? true : false}
+        message={message?.message}
+        onOkPress={() => setMessage(null)}
+        type={message?.type}
+        loading={loading}
+        title={message?.title || ''}
+      />
+
       <SectionHeader title={"Step 4 of 5"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
           Take a picture of the dashboard as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
-          {selectedImage ? (
+          {carState.images.interior[index]?.url ? (
             <>
-              <Image source={{ uri: selectedImage }} style={styles.image} />
+              <Image source={{ uri: carState.images.interior[index]?.url }} style={styles.image} />
               <View style={styles.penIconContainer}>
                 <MaterialIcons
                   name="edit"
@@ -63,7 +95,7 @@ const Interior4 = () => {
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
-          onPress={() => navigation.navigate("Interior3")}
+          onPress={() => navigation.goBack()}
         />
       </View>
     </View>

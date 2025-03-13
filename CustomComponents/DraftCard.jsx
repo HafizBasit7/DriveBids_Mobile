@@ -4,21 +4,20 @@ import { FontAwesome } from "@expo/vector-icons"; // Icons for check/cross
 import { GlobalStyles } from "../Styles/GlobalStyles";
 
 const DraftCard = ({
-  regNumber,
-  imageUrl,
-  statusList,
-  onCompleteRegistration,
+  item,
+  onCompleteRegistration
 }) => {
+
   return (
     <View style={styles.container}>
       {/* Car Image */}
-      <Image source={{ uri: imageUrl }} style={styles.carImage} />
+      <Image source={{ uri: 'https://img.lovepik.com/free-png/20210926/lovepik-a-car-png-image_401434180_wh1200.png' }} style={styles.carImage} />
 
       {/* Registration Number */}
-      <Text style={styles.regNumber}>Reg No: {regNumber}</Text>
-
+      <Text style={styles.regNumber}>Reg No: {item.regNo}</Text>
+{/* //TODO: UNCOMMENT */}
       {/* Status List (Flex-Wrap Row) */}
-      <View style={styles.statusContainer}>
+      {/* <View style={styles.statusContainer}>
         {statusList.map((item, index) => (
           <View key={index} style={styles.statusItem}>
             <FontAwesome
@@ -35,11 +34,11 @@ const DraftCard = ({
             </Text>
           </View>
         ))}
-      </View>
+      </View> */}
 
       {/* Button */}
       <TouchableOpacity style={styles.button} onPress={onCompleteRegistration}>
-        <Text style={styles.buttonText}>Complete Registration</Text>
+        <Text style={styles.buttonText}>Continue</Text>
       </TouchableOpacity>
     </View>
   );

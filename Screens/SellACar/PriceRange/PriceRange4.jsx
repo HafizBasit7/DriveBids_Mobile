@@ -9,19 +9,77 @@ import {
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
+import DialogBox from "../../../CustomComponents/DialogBox";
+
 const PriceRange4 = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [selectedEntity, setSelectedEntity] = useState(null);
+
   const navigation = useNavigation(); // Initialize navigation
+  const {carState, dispatch, draftSave} = useCar();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  const handleSaveDraft = async () => {
+    setLoading(true);
+    try {
+        await draftSave('carPricing');
+        setMessage({type: 'success', message: 'Car Saved', title: 'Success'});
+    }
+    catch(e) {
+        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onOk = () => {
+    if(message?.type === 'error') {
+      setMessage(null);
+    } else {
+      setMessage(null); navigation.popTo("VehicleInfo");
+    }
+  };
+
+  function setDuration (value) {
+    const getFutureDateUTC = (weeks) => {
+      const currentDateUTC = new Date();
+      const futureDateUTC = new Date(currentDateUTC);
+      futureDateUTC.setUTCDate(futureDateUTC.getUTCDate() + weeks * 7);
+      return futureDateUTC.toUTCString();
+    };
+
+    dispatch({
+      type: 'UPDATE_FIELD',
+      section: 'carPricing',
+      field: 'duration',
+      value: getFutureDateUTC(value),
+    });
+
+    dispatch({
+      type: 'UPDATE_FIELD',
+      field: 'selectedWeek',
+      value,
+    });
+  };
+
   const entities = [
     { id: "1", name: "1 week" },
     { id: "2", name: "2 weeks" },
-    { id: "3", name: "1 month" },
-    { id: "4", name: "6 months" },
+    { id: "3", name: "3 weeks" },
+    { id: "4", name: "4 weeks" },
   ];
 
   return (
     <View style={styles.container}>
+      <DialogBox
+        visible={loading ? true : message ? true : false}
+        message={message?.message}
+        onOkPress={onOk}
+        type={message?.type}
+        loading={loading}
+        title={message?.title || ''}
+      />
+
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
@@ -44,16 +102,16 @@ const PriceRange4 = () => {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.entityItem}
-              onPress={() => setSelectedEntity(item.id)}
+              onPress={() => setDuration(item.id)}
             >
               <View style={styles.radioButtonContainer}>
                 <View
                   style={[
                     styles.radioButton,
-                    selectedEntity === item.id && styles.radioButtonSelected,
+                    carState.selectedWeek === item.id && styles.radioButtonSelected,
                   ]}
                 >
-                  {selectedEntity === item.id && (
+                  {carState.selectedWeek === item.id && (
                     <View style={styles.radioDot} />
                   )}
                 </View>
@@ -65,8 +123,8 @@ const PriceRange4 = () => {
         <View style={styles.buttonContainer}>
           <CustomButton
             style={styles.button}
-            title="Finish"
-            onPress={() => navigation.navigate("VehicleInfo")}
+            title="Save"
+            onPress={handleSaveDraft}
           />
         </View>
       </View>

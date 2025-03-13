@@ -5,7 +5,18 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import VehicleInfoCard from "../../../CustomComponents/VehicleInfoCard";
 import { useNavigation } from "@react-navigation/native";
+import {useCar} from "../../../R1_Contexts/carContext";
+import { carDetailsValidation, carInspectionReportValidation, carPricingValidation, imagesValidation } from "../../../R1_Validations/CarValidations";
+
 const VehicleInfo = () => {
+
+  const {carState} = useCar();
+
+  const carPricingCompletion = carPricingValidation.safeParse(carState.carPricing);
+  const carInspectionReportCompletion = carInspectionReportValidation.safeParse(carState.carInspectionReport);
+  const carDetailsCompletion = carDetailsValidation.safeParse(carState.carDetails);
+  const imageCompletion = imagesValidation.safeParse(carState.images);
+
   const navigation = useNavigation("");
   return (
     <View style={styles.container}>
@@ -19,7 +30,7 @@ const VehicleInfo = () => {
           name="Car Details"
           steps={9}
           iconName="file-document"
-          completionStatus="Completed"
+          completionStatus={carDetailsCompletion.success ? "Completed" : "Incomplete"}
           onPress={() => navigation.navigate("CarDetails1")}
         />
         <VehicleInfoCard
@@ -33,14 +44,14 @@ const VehicleInfo = () => {
           name="Car Images"
           steps={4}
           iconName="car"
-          completionStatus="Incomplete"
+          completionStatus={imageCompletion.success ? "Completed" : "Incomplete"}
           onPress={() => navigation.navigate("CarImages")}
         />
         <VehicleInfoCard
           name="Inspection Report"
-          steps={2}
+          steps={3}
           iconName="shield-check"
-          completionStatus="Incomplete"
+          completionStatus={carInspectionReportCompletion.success ? "Completed": "Incomplete"}
           onPress={() => navigation.navigate("InspectionReport1")}
         />
         <VehicleInfoCard
@@ -54,8 +65,8 @@ const VehicleInfo = () => {
           name="Car Pricing"
           steps={4}
           iconName="tag"
-          completionStatus="Incomplete"
-          o
+          completionStatus={carPricingCompletion.success ? "Completed" : "Incomplete"}
+          
           onPress={() => navigation.navigate("PriceRange1")}
         />
       </ScrollView>
@@ -63,12 +74,12 @@ const VehicleInfo = () => {
       {/* Buttons placed outside the ScrollView */}
       <View style={styles.buttonContainer}>
         <CustomButton title="Post Ad" style={styles.postAdButton} />
-        <CustomButton
+        {/* <CustomButton
           title="Save Draft"
           style={styles.saveDraftButton}
           textStyle={styles.saveDraftText}
           onPress={() => navigation.navigate("Draft")}
-        />
+        /> */}
       </View>
     </View>
   );
@@ -87,7 +98,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
-    paddingVertical: 10,
+    // paddingVertical: 0,
     backgroundColor: GlobalStyles.colors.ScreenBg,
   },
   postAdButton: {

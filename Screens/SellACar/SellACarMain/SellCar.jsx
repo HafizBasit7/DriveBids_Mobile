@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
 const SellCar = () => {
+
+  const {resetDraftState} = useCar();
+
+  useEffect(() => {
+    resetDraftState();
+  }, []);
+
   const navigation = useNavigation(); // Initialize navigation
   return (
     <View style={styles.container}>

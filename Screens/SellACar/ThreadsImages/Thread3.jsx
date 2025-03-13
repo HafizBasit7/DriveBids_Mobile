@@ -7,8 +7,10 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import Thread from "../../../assets/tahirAssets/Thread3";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
 const Thread3 = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const {carState, dispatch} = useCar();
+  const index = 2;
   const navigation = useNavigation();
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -25,7 +27,12 @@ const Thread3 = () => {
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      dispatch({
+        type: 'UPDATE_IMAGE',
+        section: "tyreTreads",
+        index: index,
+        value: {type: 'image', url: result.assets[0].uri}
+      });
     }
   };
 
@@ -37,9 +44,9 @@ const Thread3 = () => {
           Take a picture of the front passenger tyre treads as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
-          {selectedImage ? (
+          {carState.images.tyreTreads[index]?.url ? (
             <>
-              <Image source={{ uri: selectedImage }} style={styles.image} />
+              <Image source={{ uri: carState.images.tyreTreads[index]?.url }} style={styles.image} />
               <View style={styles.penIconContainer}>
                 <MaterialIcons
                   name="edit"

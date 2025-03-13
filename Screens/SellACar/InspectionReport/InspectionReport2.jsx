@@ -12,6 +12,7 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { Svg, Line } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
 const options = [
   { label: "OK", color: "#2ECC71", icon: "check-circle" },
   { label: "Not Tested", color: "#D32F2F", icon: "cancel" },
@@ -19,14 +20,30 @@ const options = [
   { label: "Requires Immediate Attention", color: "#C0392B", icon: "report" },
 ];
 
-const tests = ["Headlights", "BrakeLights", "SideLights", "FogLights"];
+const tests = [
+  {name: "Head lights", target: "headLight"},
+  {name: "Brake lights", target: "brakeLight"},
+  {name: "Side Lights", target: "sideLight"},
+  {name: "Fog lights", target: "fogLight"},
+  {name: "Indicators", target: "indicators"},
+  {name: "Electric Windows", target: "electricWindows"},
+  {name: "Electric Mirrors", target: "electricMirrors"},
+  {name: "Wipers", target: "wipers"},
+];
 
 const InspectionReport2 = () => {
   const navigation = useNavigation();
-  const [selections, setSelections] = useState({});
-
-  const handleSelect = (test, option) => {
-    setSelections({ ...selections, [test]: option });
+  
+  const {carState, dispatch} = useCar();
+  
+  function handleSelectTest (field, value) {
+    dispatch({
+      type: "UPDATE_FIELD",
+      section: 'carInspectionReport',
+      subSection: 'essentialChecks',
+      field: field,
+      value,
+    });
   };
 
   return (
@@ -58,18 +75,18 @@ const InspectionReport2 = () => {
           </View>
           {tests.map((test, index) => (
             <View key={index} style={styles.testSection}>
-              <Text style={styles.testTitle}>{test}</Text>
+              <Text style={styles.testTitle}>{test.name}</Text>
               {options.map((option, idx) => (
                 <TouchableOpacity
                   key={idx}
                   style={[
                     styles.option,
-                    selections[test]?.label === option.label && {
+                    carState.carInspectionReport.essentialChecks[test.target] === option.label && {
                       backgroundColor: "#F5F5F5",
                       fontWeight: "700",
                     },
                   ]}
-                  onPress={() => handleSelect(test, option)}
+                  onPress={() => handleSelectTest(test.target, option.label)}
                 >
                   <View
                     style={[
@@ -78,7 +95,7 @@ const InspectionReport2 = () => {
                         borderWidth: 2,
                         borderRadius: 8,
                       },
-                      selections[test]?.label === option.label && {
+                      carState.carInspectionReport.essentialChecks[test.target] === option.label && {
                         borderColor: GlobalStyles.colors.ButtonColor,
                         borderWidth: 1,
                       },
@@ -88,7 +105,7 @@ const InspectionReport2 = () => {
                       name={option.icon}
                       size={18}
                       color={
-                        selections[test]?.label === option.label
+                        carState.carInspectionReport.essentialChecks[test.target] === option.label
                           ? option.color
                           : "#B0B0B0"
                       }
@@ -97,7 +114,7 @@ const InspectionReport2 = () => {
                   <Text
                     style={[
                       styles.optionText,
-                      selections[test]?.label === option.label && {
+                      carState.carInspectionReport.essentialChecks[test.target] === option.label && {
                         fontWeight: "700",
                       },
                     ]}
@@ -126,7 +143,7 @@ const InspectionReport2 = () => {
         onPress={() => navigation.navigate("InspectionReport3")}
       />
       <CustomButton
-        onPress={() => navigation.navigate("InspectionReport1")}
+        onPress={() => navigation.goBack()}
         title="Back"
         style={styles.nextButton}
         textStyle={styles.nextButtonText}

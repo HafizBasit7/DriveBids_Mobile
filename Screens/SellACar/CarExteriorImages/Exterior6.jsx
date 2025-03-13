@@ -7,9 +7,18 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import Exterior from "../../../assets/tahirAssets/exterior6";
 import { useNavigation } from "@react-navigation/native"; // Import navigation hook
+import { useCar } from "../../../R1_Contexts/carContext";
+import { uploadImage } from "../../../utils/upload";
+import DialogBox from "../../../CustomComponents/DialogBox";
 const Exterior6 = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
   const navigation = useNavigation(); // Initialize navigation
+
+  const {carState, dispatch, draftSave} = useCar();
+  const index = 5;
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -25,21 +34,66 @@ const Exterior6 = () => {
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      setLoading(true);
+      try {
+        const imgUrl = await uploadImage(result.assets[0]);
+        dispatch({
+          type: 'UPDATE_IMAGE',
+          section: "exterior",
+          index: index,
+          value: {type: 'image', url: imgUrl}
+        });
+      }
+      catch(e) {
+        setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleSaveDraft = async () => {
+    setLoading(true);
+    try {
+        await draftSave('images', 'exterior');
+        setMessage({type: 'success', message: 'Car Saved', title: 'Success'});
+    }
+    catch(e) {
+        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onOk = () => {
+    if(message?.type === 'error') {
+      setMessage(null);
+    } else {
+      setMessage(null); navigation.popTo("CarImages");
     }
   };
 
   return (
     <View style={styles.container}>
+
+      <DialogBox
+        visible={loading ? true : message ? true : false}
+        message={message?.message}
+        onOkPress={onOk}
+        type={message?.type}
+        loading={loading}
+        title={message?.title || ''}
+      />
+
       <SectionHeader title={"Step 6 of 6"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
           Take a picture of your car from the back as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
-          {selectedImage ? (
+          {carState.images.exterior[index]?.url ? (
             <>
-              <Image source={{ uri: selectedImage }} style={styles.image} />
+              <Image source={{ uri: carState.images.exterior[index]?.url }} style={styles.image} />
               <View style={styles.penIconContainer}>
                 <MaterialIcons
                   name="edit"
@@ -56,14 +110,14 @@ const Exterior6 = () => {
       <View style={styles.buttonContainer}>
         <CustomButton
           style={{ marginBottom: 10 }}
-          title="Finish"
-          onPress={() => navigation.navigate("CarImages")}
+          title="Save"
+          onPress={handleSaveDraft}
         />
         <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
-          onPress={() => navigation.navigate("Exterior5")}
+          onPress={() =>navigation.goBack()}
         />
       </View>
     </View>

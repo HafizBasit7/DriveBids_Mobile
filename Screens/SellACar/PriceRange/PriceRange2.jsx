@@ -2,9 +2,22 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
 const PriceRange2 = () => {
   const [inputValue, setInputValue] = useState("");
   const navigation = useNavigation(); // Initialize navigation
+
+  const {carState, dispatch} = useCar();
+
+  function setReservedBidPrice (value) {
+    dispatch({
+      type: 'UPDATE_FIELD',
+      section: 'carPricing',
+      field: 'reserveBidPrice',
+      value: parseInt(value),
+    });
+  };
+
   return (
     <View style={styles.container}>
       {/* Step Progress Indicator */}
@@ -31,8 +44,8 @@ const PriceRange2 = () => {
           <TextInput
             style={styles.input}
             keyboardType="numeric"
-            value={inputValue}
-            onChangeText={setInputValue}
+            value={(carState.carPricing.reserveBidPrice || 0).toString() || 0}
+            onChangeText={setReservedBidPrice}
           />
         </View>
       </View>
@@ -49,7 +62,7 @@ const PriceRange2 = () => {
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.navigate("PriceRange1")}
+          onPress={() => navigation.goBack()}
         />
       </View>
     </View>

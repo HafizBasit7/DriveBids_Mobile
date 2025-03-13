@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, PanResponder, Animated } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 const CarDetails5 = () => {
+  
   const [progress] = useState(new Animated.Value(0));
   const [lastProgress, setLastProgress] = useState(0); // Store last valid progress
   const navigation = useNavigation(); // Initialize navigation

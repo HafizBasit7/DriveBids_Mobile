@@ -12,26 +12,44 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { Svg, Line } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
+
+//
 const options = [
   { label: "OK", color: "#2ECC71", icon: "check-circle" },
   { label: "Not Tested", color: "#D32F2F", icon: "cancel" },
   { label: "Requires Some Attention", color: "#F39C12", icon: "error" },
   { label: "Requires Immediate Attention", color: "#C0392B", icon: "report" },
 ];
-
 const tests = [
-  "Break Efficiency",
-  "Hand Brake Test",
-  "Static Gear Selection",
-  "Reverse Clutch Slip",
+  {name: "Break Efficiency", target: "breakEfficiency"},
+  {name: "Hand Brake Test", target: "handBrakeTest"},
+  {name: "Static Gear Selection", target: "staticGearSelection"},
+  {name: "Reverse Clutch Slip", target: "reverseClutchSlip"},
+  {name: "Steering Noise", target: "steeringNoise"},
+  {name: "Suspension Ride Height", target: "suspensionRideHeight"},
+  {name: "Air Conditioning Power", target: "airconPower"},
+  {name: "Sat Nav Power", target: "satNavPower"},
+  {name: "Ice Power", target: "icePower"},
+  {name: "Central Locking", target: "centralLocking"},
+  {name: "Converitble Sunroof Electics", target: "convertibleSunroofElectrics"},
+  {name: "Horn", target: "horn"}
 ];
+//
 
 const InspectionReport1 = () => {
   const navigation = useNavigation();
-  const [selections, setSelections] = useState({});
 
-  const handleSelect = (test, option) => {
-    setSelections({ ...selections, [test]: option });
+  const {carState, dispatch} = useCar();
+
+  function handleSelectTest (field, value) {
+    dispatch({
+      type: "UPDATE_FIELD",
+      section: 'carInspectionReport',
+      subSection: 'dynamicOperations',
+      field: field,
+      value,
+    });
   };
 
   return (
@@ -63,18 +81,18 @@ const InspectionReport1 = () => {
           </View>
           {tests.map((test, index) => (
             <View key={index} style={styles.testSection}>
-              <Text style={styles.testTitle}>{test}</Text>
+              <Text style={styles.testTitle}>{test.name}</Text>
               {options.map((option, idx) => (
                 <TouchableOpacity
                   key={idx}
                   style={[
                     styles.option,
-                    selections[test]?.label === option.label && {
+                    carState.carInspectionReport.dynamicOperations[test.target] === option.label && {
                       backgroundColor: "#F5F5F5",
                       fontWeight: "700",
                     },
                   ]}
-                  onPress={() => handleSelect(test, option)}
+                  onPress={() => handleSelectTest(test.target, option.label)}
                 >
                   <View
                     style={[
@@ -83,7 +101,7 @@ const InspectionReport1 = () => {
                         borderWidth: 2,
                         borderRadius: 8,
                       },
-                      selections[test]?.label === option.label && {
+                      carState.carInspectionReport.dynamicOperations[test.target] === option.label && {
                         borderColor: GlobalStyles.colors.ButtonColor,
                         borderWidth: 1,
                       },
@@ -93,7 +111,7 @@ const InspectionReport1 = () => {
                       name={option.icon}
                       size={18}
                       color={
-                        selections[test]?.label === option.label
+                        carState.carInspectionReport.dynamicOperations[test.target] === option.label
                           ? option.color
                           : "#B0B0B0"
                       }
@@ -102,7 +120,7 @@ const InspectionReport1 = () => {
                   <Text
                     style={[
                       styles.optionText,
-                      selections[test]?.label === option.label && {
+                      carState.carInspectionReport.dynamicOperations[test.target] === option.label && {
                         fontWeight: "700",
                       },
                     ]}
@@ -131,7 +149,7 @@ const InspectionReport1 = () => {
         onPress={() => navigation.navigate("InspectionReport2")}
       />
       <CustomButton
-        onPress={() => navigation.navigate("VehicleInfo")}
+        onPress={() => navigation.goBack()}
         title="Back"
         style={styles.nextButton}
         textStyle={styles.nextButtonText}

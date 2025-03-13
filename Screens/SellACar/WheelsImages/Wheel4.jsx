@@ -7,8 +7,10 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import Wheel from "../../../assets/tahirAssets/Wheel4";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
 const Wheel4 = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const {carState, dispatch} = useCar();
+  const index = 3;
   const navigation = useNavigation();
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -25,7 +27,12 @@ const Wheel4 = () => {
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      dispatch({
+        type: 'UPDATE_IMAGE',
+        section: "wheels",
+        index: index,
+        value: {type: 'image', url: result.assets[0].uri}
+      });
     }
   };
 
@@ -37,9 +44,9 @@ const Wheel4 = () => {
           Take a picture of the front passenger wheel as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
-          {selectedImage ? (
+          {carState.images.wheels[index]?.url ? (
             <>
-              <Image source={{ uri: selectedImage }} style={styles.image} />
+              <Image source={{ uri: carState.images.wheels[index]?.url }} style={styles.image} />
               <View style={styles.penIconContainer}>
                 <MaterialIcons
                   name="edit"
@@ -63,7 +70,7 @@ const Wheel4 = () => {
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
-          onPress={() => navigation.navigate("Wheel3")}
+          onPress={() => navigation.goBack()}
         />
       </View>
     </View>

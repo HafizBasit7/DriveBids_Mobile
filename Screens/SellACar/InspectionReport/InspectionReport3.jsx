@@ -12,6 +12,8 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { Svg, Line } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
+import DialogBox from "../../../CustomComponents/DialogBox";
 const options = [
   { label: "OK", color: "#2ECC71", icon: "check-circle" },
   { label: "Not Tested", color: "#D32F2F", icon: "cancel" },
@@ -20,22 +22,64 @@ const options = [
 ];
 
 const tests = [
-  "Engine Management Light",
-  "Brake Wear Indicator Light",
-  "Abs Warning Light",
-  "Oil Warning Light",
+  {name: "Engine Management Light", target: "engineManagementLight"},
+  {name: "Brake Wear Indicator Light", target: "breakWearIndicatorLight"},
+  {name: "Abs Warning Light", target: "absWarningLight"},
+  {name: "Oil Warning Light", target: "oilWarningLight"},
+  {name: "Airbag warning light", target: "airbagWarningLight"},
+  {name: "Glow plug light", target: "glowPlugLight"},
 ];
+
 
 const InspectionReport3 = () => {
   const navigation = useNavigation();
-  const [selections, setSelections] = useState({});
+  
+  const {carState, dispatch, draftSave} = useCar();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
-  const handleSelect = (test, option) => {
-    setSelections({ ...selections, [test]: option });
+  const handleSaveDraft = async () => {
+    setLoading(true);
+    try {
+        await draftSave('carInspectionReport');
+        setMessage({type: 'success', message: 'Car Saved', title: 'Success'});
+    }
+    catch(e) {
+        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onOk = () => {
+    if(message?.type === 'error') {
+      setMessage(null);
+    } else {
+      setMessage(null); navigation.popTo("VehicleInfo");
+    }
+  };
+  
+  function handleSelectTest (field, value) {
+    dispatch({
+      type: "UPDATE_FIELD",
+      section: 'carInspectionReport',
+      subSection: 'interiorChecks',
+      field: field,
+      value,
+    });
   };
 
   return (
     <View style={styles.container}>
+      <DialogBox
+        visible={loading ? true : message ? true : false}
+        message={message?.message}
+        onOkPress={onOk}
+        type={message?.type}
+        loading={loading}
+        title={message?.title || ''}
+      />
+
       <View style={{ width: "100%" }}>
         <SectionHeader title={"Step 3 of 3"} marginCustom={5} />
         <SectionHeader
@@ -63,18 +107,18 @@ const InspectionReport3 = () => {
           </View>
           {tests.map((test, index) => (
             <View key={index} style={styles.testSection}>
-              <Text style={styles.testTitle}>{test}</Text>
+              <Text style={styles.testTitle}>{test.name}</Text>
               {options.map((option, idx) => (
                 <TouchableOpacity
                   key={idx}
                   style={[
                     styles.option,
-                    selections[test]?.label === option.label && {
+                    carState.carInspectionReport.interiorChecks[test.target] === option.label && {
                       backgroundColor: "#F5F5F5",
                       fontWeight: "700",
                     },
                   ]}
-                  onPress={() => handleSelect(test, option)}
+                  onPress={() => handleSelectTest(test.target, option.label)}
                 >
                   <View
                     style={[
@@ -83,7 +127,7 @@ const InspectionReport3 = () => {
                         borderWidth: 2,
                         borderRadius: 8,
                       },
-                      selections[test]?.label === option.label && {
+                      carState.carInspectionReport.interiorChecks[test.target] === option.label && {
                         borderColor: GlobalStyles.colors.ButtonColor,
                         borderWidth: 1,
                       },
@@ -93,7 +137,7 @@ const InspectionReport3 = () => {
                       name={option.icon}
                       size={18}
                       color={
-                        selections[test]?.label === option.label
+                        carState.carInspectionReport.interiorChecks[test.target] === option.label
                           ? option.color
                           : "#B0B0B0"
                       }
@@ -102,7 +146,7 @@ const InspectionReport3 = () => {
                   <Text
                     style={[
                       styles.optionText,
-                      selections[test]?.label === option.label && {
+                      carState.carInspectionReport.interiorChecks[test.target] === option.label && {
                         fontWeight: "700",
                       },
                     ]}
@@ -127,11 +171,11 @@ const InspectionReport3 = () => {
       </ScrollView>
 
       <CustomButton
-        title="Finish"
-        onPress={() => navigation.navigate("VehicleInfo")}
+        title="Save"
+        onPress={handleSaveDraft}
       />
       <CustomButton
-        onPress={() => navigation.navigate("InspectionReport2")}
+        onPress={() => navigation.goBack()}
         title="Back"
         style={styles.nextButton}
         textStyle={styles.nextButtonText}

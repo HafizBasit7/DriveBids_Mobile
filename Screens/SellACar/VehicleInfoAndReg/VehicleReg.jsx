@@ -5,8 +5,29 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 // import { Svg, Line } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
+
 const VehicleReg = () => {
   const navigation = useNavigation(); // Initialize navigation
+  const {carState, dispatch} = useCar();
+
+  function onChangeTextReg(value) {
+    dispatch({
+      type: 'UPDATE_FIELD',
+      field: 'regNo',
+      value,
+    })
+  }
+
+  function nextPage() {
+    if(!carState.regNo) {
+      console.log('Enter reg no');
+      return;
+    } else {
+      navigation.navigate("VehicleInfo")
+    }
+  }
+
   return (
     <View style={styles.container}>
       <SectionHeader title={"Vehicle Registration"} />
@@ -14,10 +35,15 @@ const VehicleReg = () => {
         <Text style={styles.label}>
           Enter your vehicle's Registration Number:
         </Text>
-        <TextInput style={styles.input} placeholder="Registration Number" />
+        <TextInput 
+          style={styles.input} 
+          placeholder="Registration Number" 
+          value={carState.regNo}
+          onChangeText={onChangeTextReg} 
+        />
         <CustomButton
           title="Sell my car"
-          onPress={() => navigation.navigate("VehicleInfo")}
+          onPress={nextPage}
         />
       </View>
     </View>
