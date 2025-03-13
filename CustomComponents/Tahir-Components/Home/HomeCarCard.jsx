@@ -11,10 +11,17 @@ const HomeCarCard = ({
   topBid,
   timeLeft,
   favorite,
+  CardWidth = 250,
+  imgHeight = 140,
+  onViewPress,
 }) => {
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: image }} style={styles.image} resizeMode="cover" />
+    <View style={[styles.card, { width: CardWidth }]}>
+      <Image
+        source={{ uri: image }}
+        style={[styles.image, { height: imgHeight }]}
+        resizeMode="cover"
+      />
       <Icon
         name={favorite ? "favorite" : "favorite-border"}
         type="material"
@@ -49,6 +56,7 @@ const HomeCarCard = ({
           size: 18,
           color: "white",
         }}
+        onPress={onViewPress}
         iconPosition="right"
       />
     </View>

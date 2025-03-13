@@ -84,7 +84,14 @@ export default Home = () => {
         <FlatList
           data={carData}
           keyExtractor={(item) => String(item.id)}
-          renderItem={({ item }) => <HomeCarCard {...item} />}
+          renderItem={({ item }) => (
+            <HomeCarCard
+              onViewPress={() => {
+                console.log("View Ad from Home");
+              }}
+              {...item}
+            />
+          )}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 5 }} // Add padding instead of fixed height
@@ -104,7 +111,14 @@ export default Home = () => {
         <FlatList
           data={carData}
           keyExtractor={(item) => String(item.id)}
-          renderItem={({ item }) => <HomeCarCard {...item} />}
+          renderItem={({ item }) => (
+            <HomeCarCard
+              onViewPress={() => {
+                console.log("View Ad from Home");
+              }}
+              {...item}
+            />
+          )}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 5 }} // Add padding instead of fixed height
@@ -125,7 +139,14 @@ export default Home = () => {
         <FlatList
           data={carData}
           keyExtractor={(item) => String(item.id)}
-          renderItem={({ item }) => <HomeCarCard {...item} />}
+          renderItem={({ item }) => (
+            <HomeCarCard
+              onViewPress={() => {
+                console.log("View Ad from Home");
+              }}
+              {...item}
+            />
+          )}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 5 }} // Add padding instead of fixed height
