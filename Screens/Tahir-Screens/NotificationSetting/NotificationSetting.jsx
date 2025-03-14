@@ -32,7 +32,7 @@ export default function NotificationSettingsScreen() {
     <Switch
       value={value}
       onValueChange={onValueChange}
-      trackColor={{ false: "#e4e4e4", true: "#2563eb" }}
+      trackColor={{ false: "#e4e4e4", true: GlobalStyles.colors.ButtonColor }}
       thumbColor={"#ffffff"}
       ios_backgroundColor="#e4e4e4"
       style={styles.switch}
@@ -42,7 +42,10 @@ export default function NotificationSettingsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <SectionHeader title={"Notifications Setting"} />
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
         {/* Common Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Common</Text>

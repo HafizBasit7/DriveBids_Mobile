@@ -31,7 +31,10 @@ const ProfileEditScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <SectionHeader title={"Edit Profile"} />
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
         {/* Profile Image */}
         <View style={styles.profileImageContainer}>
           <Image

@@ -29,7 +29,10 @@ export default function PasswordChangeScreen() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingView}
       >
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContainer}
+        >
           <View style={styles.formContainer}>
             <Text style={styles.labelText}>Old Password</Text>
             <Input
