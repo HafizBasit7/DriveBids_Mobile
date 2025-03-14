@@ -19,13 +19,13 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 const ActiveChatBox = () => {
   const [messages, setMessages] = useState(chatData);
   const [newMessage, setNewMessage] = useState("");
-  const [keyboardStatus, setKeyboardStatus] = useState(1);
+  const [keyboardStatus, setKeyboardStatus] = useState(0);
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-      setKeyboardStatus(0);
+      setKeyboardStatus(1);
     });
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      setKeyboardStatus(1);
+      setKeyboardStatus(0);
     });
     return () => {
       showSubscription.remove();
@@ -35,8 +35,8 @@ const ActiveChatBox = () => {
   const sendMessage = () => {
     if (newMessage.trim().length > 0) {
       setMessages([
-        ...messages,
         { id: Date.now().toString(), text: newMessage, sender: "user" },
+        ...messages,
       ]);
       setNewMessage("");
     }
@@ -116,7 +116,10 @@ const ActiveChatBox = () => {
 
       {/* Only the chat area and input are affected by KeyboardAvoidingView */}
       <KeyboardAvoidingView
-        style={[styles.keyboardAvoidingArea, { flexGrow: keyboardStatus }]}
+        style={[
+          styles.keyboardAvoidingArea,
+          { flexGrow: keyboardStatus ? 0 : 1 },
+        ]}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
       >
@@ -141,8 +144,19 @@ const ActiveChatBox = () => {
           </TouchableOpacity>
           <TextInput
             multiline={true}
-            style={styles.input}
-            placeholder="Message"
+            style={[
+              styles.input,
+              {
+                borderRadius: 12,
+                borderColor: keyboardStatus
+                  ? GlobalStyles.colors.ButtonColor
+                  : "#E6E6E6",
+                borderWidth: keyboardStatus ? 0.6 : 1,
+                paddingHorizontal: 15,
+                paddingVertical: 10,
+              },
+            ]}
+            placeholder="Type a message"
             placeholderTextColor="#999"
             value={newMessage}
             onChangeText={setNewMessage}
@@ -257,13 +271,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingVertical: 5,
     backgroundColor: "#FFFFFF",
     borderTopWidth: 1,
     borderColor: "#E0E0E0",
   },
   plusButton: {
-    marginRight: 10,
+    marginRight: 5,
     color: GlobalStyles.colors.ButtonColor,
   },
   input: {
@@ -272,6 +286,7 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-Regular",
     paddingVertical: 8,
     color: "#333",
+    marginRight: 5,
   },
   sendButton: {
     backgroundColor: GlobalStyles.colors.ButtonColor,
