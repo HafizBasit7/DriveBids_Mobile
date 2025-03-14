@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon, Button } from "react-native-elements";
+import { GlobalStyles } from "../../../Styles/GlobalStyles";
 
 const HomeCarCard = ({
   image,
@@ -13,7 +14,12 @@ const HomeCarCard = ({
   favorite,
   CardWidth = 250,
   imgHeight = 140,
+  winning,
+  yourBid,
   onViewPress,
+  isFromMyBids = false,
+  onIncreaseBid,
+  onCancelBid,
 }) => {
   return (
     <View style={[styles.card, { width: CardWidth }]}>
@@ -28,6 +34,22 @@ const HomeCarCard = ({
         color={favorite ? "#E63946" : "rgba(244, 244, 244, 0.9)"}
         containerStyle={styles.favoriteIcon}
       />
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <Text
+          style={{
+            backgroundColor: winning
+              ? "rgba(0,139,39,0.2)"
+              : "rgba(204,0,43,0.2)",
+            marginTop: 5,
+            paddingHorizontal: 10,
+            paddingVertical: 3,
+            borderRadius: 12,
+            color: winning ? "#008B27" : "#B3261E",
+          }}
+        >
+          {winning ? "Winning" : "Losing"}
+        </Text>
+      </View>
       <View style={styles.details}>
         <Text style={styles.title}>{name}</Text>
         <View style={styles.infoRow}>
@@ -42,23 +64,80 @@ const HomeCarCard = ({
           <Text style={styles.infoText}>{transmission}</Text>
         </View>
         <Text style={styles.bidText}>
-          Top Bid: <Text style={styles.bidAmount}>${topBid}</Text>
+          {isFromMyBids ? "Your Bid" : "Top Bid"}{" "}
+          <Text style={styles.bidAmount}>
+            $ {isFromMyBids ? yourBid : topBid}
+          </Text>
         </Text>
         <Text style={styles.timer}>{timeLeft}</Text>
       </View>
-      <Button
-        title="View Ad"
-        buttonStyle={styles.button}
-        titleStyle={styles.buttonText}
-        icon={{
-          name: "campaign",
-          type: "material",
-          size: 18,
-          color: "white",
-        }}
-        onPress={onViewPress}
-        iconPosition="right"
-      />
+      {isFromMyBids ? (
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-around",
+            marginBottom: 10,
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              borderColor: "#B3261E",
+              borderWidth: 1,
+              paddingHorizontal: 10,
+              paddingVertical: 10,
+              borderRadius: 10,
+              width: "48%",
+            }}
+            onPress={onCancelBid}
+          >
+            <Text
+              style={[
+                styles.buttonText,
+                { color: "#B3261E", textAlign: "center" },
+              ]}
+            >
+              Cancel Bid
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={onIncreaseBid}
+            style={{
+              paddingHorizontal: 10,
+              paddingVertical: 10,
+              borderRadius: 10,
+              width: "48%",
+              backgroundColor: GlobalStyles.colors.ButtonColor,
+            }}
+          >
+            <Text
+              style={[
+                styles.buttonText,
+                { color: "white", textAlign: "center" },
+              ]}
+            >
+              Increase Bid
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <>
+          <Button
+            title="View Ad"
+            buttonStyle={styles.button}
+            titleStyle={styles.buttonText}
+            icon={{
+              name: "campaign",
+              type: "material",
+              size: 18,
+              color: "white",
+            }}
+            onPress={onViewPress}
+            iconPosition="right"
+          />
+        </>
+      )}
     </View>
   );
 };
@@ -132,7 +211,7 @@ const styles = StyleSheet.create({
   timer: {
     fontSize: 14,
     fontFamily: "Inter-SemiBold",
-    color: "#d9534f",
+    color: "#B3261E",
     marginTop: 3,
   },
   button: {
