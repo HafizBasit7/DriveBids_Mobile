@@ -22,6 +22,39 @@ const ChatHeads = () => {
           <Text style={styles.name}>{item.name}</Text>
           <Text style={styles.time}>{item.time}</Text>
         </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            gap: 5,
+          }}
+        >
+          <Text
+            style={{ fontFamily: "Inter-SemiBold", fontSize: 14, opacity: 0.8 }}
+          >
+            {"Honda Civic Oriel "}
+          </Text>
+          <Text
+            style={{
+              fontFamily: "Inter-SemiBold",
+              fontSize: 12,
+              marginTop: 2,
+              opacity: 0.8,
+            }}
+          >
+            {"|"}
+          </Text>
+          <Text
+            style={{
+              fontFamily: "Inter-SemiBold",
+              fontSize: 12,
+              marginTop: 2,
+              opacity: 0.8,
+            }}
+          >
+            {"1994"}
+          </Text>
+        </View>
         <Text style={styles.message}>{item.message}</Text>
       </View>
     </TouchableOpacity>
