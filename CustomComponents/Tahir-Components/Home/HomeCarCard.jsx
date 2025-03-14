@@ -25,7 +25,7 @@ const HomeCarCard = ({
       <Icon
         name={favorite ? "favorite" : "favorite-border"}
         type="material"
-        color={favorite ? "#E63946" : "#555"}
+        color={favorite ? "#E63946" : "rgba(244, 244, 244, 0.9)"}
         containerStyle={styles.favoriteIcon}
       />
       <View style={styles.details}>
@@ -84,9 +84,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 8,
     right: 8,
-    backgroundColor: "rgba(255,255,255,0.8)",
+    backgroundColor: "rgba(101, 101, 101, 0.8)",
     padding: 6,
-    borderRadius: 50,
+    borderRadius: 15,
   },
   details: {
     padding: 5,
