@@ -34,7 +34,7 @@ const NotificationScreen = () => {
   return (
     <View style={styles.container}>
       <SectionHeader title={"Notifications"} />
-      {notifications.length > 5 ? (
+      {notifications.length > 0 ? (
         <FlatList
           data={notifications}
           keyExtractor={(item) => item.id}
