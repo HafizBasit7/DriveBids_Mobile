@@ -69,9 +69,9 @@ const Interior4 = () => {
           Take a picture of the dashboard as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
-          {carState.images.interior[index]?.url ? (
+          {(carState.images.interior || [])[index]?.url ? (
             <>
-              <Image source={{ uri: carState.images.interior[index]?.url }} style={styles.image} />
+              <Image source={{ uri: (carState.images.interior || [])[index]?.url }} style={styles.image} />
               <View style={styles.penIconContainer}>
                 <MaterialIcons
                   name="edit"

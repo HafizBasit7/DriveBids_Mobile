@@ -91,9 +91,9 @@ const Exterior6 = () => {
           Take a picture of your car from the back as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
-          {carState.images.exterior[index]?.url ? (
+          {(carState.images.exterior || [])[index]?.url ? (
             <>
-              <Image source={{ uri: carState.images.exterior[index]?.url }} style={styles.image} />
+              <Image source={{ uri: (carState.images.exterior || [])[index]?.url }} style={styles.image} />
               <View style={styles.penIconContainer}>
                 <MaterialIcons
                   name="edit"

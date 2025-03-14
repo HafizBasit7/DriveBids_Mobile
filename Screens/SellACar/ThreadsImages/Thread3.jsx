@@ -8,9 +8,15 @@ import CustomButton from "../../../CustomComponents/CustomButton";
 import Thread from "../../../assets/tahirAssets/Thread3";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
+import { uploadImage } from "../../../utils/upload";
+import DialogBox from "../../../CustomComponents/DialogBox";
 const Thread3 = () => {
   const {carState, dispatch} = useCar();
   const index = 2;
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+
   const navigation = useNavigation();
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -27,26 +33,43 @@ const Thread3 = () => {
     });
 
     if (!result.canceled) {
-      dispatch({
-        type: 'UPDATE_IMAGE',
-        section: "tyreTreads",
-        index: index,
-        value: {type: 'image', url: result.assets[0].uri}
-      });
+      setLoading(true);
+      try {
+        const imgUrl = await uploadImage(result.assets[0]);
+        dispatch({
+          type: 'UPDATE_IMAGE',
+          section: "tyreTreads",
+          index: index,
+          value: {type: 'image', url: imgUrl}
+        });
+      }
+      catch(e) {
+        setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
     <View style={styles.container}>
+      <DialogBox
+        visible={loading ? true : message ? true : false}
+        message={message?.message}
+        onOkPress={() => setMessage(null)}
+        type={message?.type}
+        loading={loading}
+        title={message?.title || ''}
+      />
       <SectionHeader title={"Step 3 of 4"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
           Take a picture of the front passenger tyre treads as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
-          {carState.images.tyreTreads[index]?.url ? (
+          {(carState.images.tyreTreads || [])[index]?.url  ? (
             <>
-              <Image source={{ uri: carState.images.tyreTreads[index]?.url }} style={styles.image} />
+              <Image source={{ uri: (carState.images.tyreTreads || [])[index]?.url  }} style={styles.image} />
               <View style={styles.penIconContainer}>
                 <MaterialIcons
                   name="edit"
@@ -70,7 +93,7 @@ const Thread3 = () => {
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
-          onPress={() => navigation.navigate("Thread2")}
+          onPress={() => navigation.goBack()}
         />
       </View>
     </View>

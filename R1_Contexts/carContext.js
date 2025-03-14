@@ -95,7 +95,12 @@ const carReducerFunction = (state, action) => {
         }
         case 'UPDATE_IMAGE': {
             const images = {...state.images};
-            images[action.section][action.index] = action.value;
+            if(images[action.section]) {
+                images[action.section][action.index] = action.value;
+            } else {
+                images[action.section] = [];
+                images[action.section][action.index] = action.value;
+            }
 
             return {
                 ...state,
@@ -145,6 +150,7 @@ export default function CarContextProvider({children}) {
         if(subSection) {
             const result = await saveDraft({
                 [section]: {
+                    ...carState[section],
                     [subSection]: carState[section][subSection],
                 },
                 draftId: carState.draftId,

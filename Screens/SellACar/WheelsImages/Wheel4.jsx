@@ -8,9 +8,13 @@ import CustomButton from "../../../CustomComponents/CustomButton";
 import Wheel from "../../../assets/tahirAssets/Wheel4";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
+import DialogBox from "../../../CustomComponents/DialogBox";
+import { uploadImage } from "../../../utils/upload";
 const Wheel4 = () => {
-  const {carState, dispatch} = useCar();
+  const {carState, dispatch, draftSave} = useCar();
   const index = 3;
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
   const navigation = useNavigation();
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -27,26 +31,64 @@ const Wheel4 = () => {
     });
 
     if (!result.canceled) {
-      dispatch({
-        type: 'UPDATE_IMAGE',
-        section: "wheels",
-        index: index,
-        value: {type: 'image', url: result.assets[0].uri}
-      });
+      setLoading(true);
+      try {
+        const imgUrl = await uploadImage(result.assets[0]);
+        dispatch({
+          type: 'UPDATE_IMAGE',
+          section: "wheels",
+          index: index,
+          value: {type: 'image', url: imgUrl}
+        });
+      }
+      catch(e) {
+        setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleSaveDraft = async () => {
+    setLoading(true);
+    try {
+        await draftSave('images', 'wheels');
+        setMessage({type: 'success', message: 'Car Saved', title: 'Success'});
+    }
+    catch(e) {
+        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onOk = () => {
+    if(message?.type === 'error') {
+      setMessage(null);
+    } else {
+      setMessage(null); navigation.popTo("CarImages");
     }
   };
 
   return (
     <View style={styles.container}>
+      <DialogBox
+        visible={loading ? true : message ? true : false}
+        message={message?.message}
+        onOkPress={onOk}
+        type={message?.type}
+        loading={loading}
+        title={message?.title || ''}
+      />
       <SectionHeader title={"Step 4 of 4"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
           Take a picture of the front passenger wheel as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
-          {carState.images.wheels[index]?.url ? (
+          {(carState.images.wheels || [])[index]?.url ? (
             <>
-              <Image source={{ uri: carState.images.wheels[index]?.url }} style={styles.image} />
+              <Image source={{ uri: (carState.images.wheels || [])[index]?.url }} style={styles.image} />
               <View style={styles.penIconContainer}>
                 <MaterialIcons
                   name="edit"
@@ -63,8 +105,8 @@ const Wheel4 = () => {
       <View style={styles.buttonContainer}>
         <CustomButton
           style={{ marginBottom: 10 }}
-          title="Finish"
-          onPress={() => navigation.navigate("CarImages")}
+          title="Save"
+          onPress={handleSaveDraft}
         />
         <CustomButton
           title="Back"

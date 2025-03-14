@@ -90,9 +90,9 @@ const Interior5 = () => {
           Take a picture of the trunk as shown below
         </Text>
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
-          {carState.images.interior[index]?.url  ? (
+          {(carState.images.interior || [])[index]?.url  ? (
             <>
-              <Image source={{ uri: carState.images.interior[index]?.url }} style={styles.image} />
+              <Image source={{ uri: (carState.images.interior || [])[index]?.url }} style={styles.image} />
               <View style={styles.penIconContainer}>
                 <MaterialIcons
                   name="edit"
@@ -109,7 +109,7 @@ const Interior5 = () => {
       <View style={styles.buttonContainer}>
         <CustomButton
           style={{ marginBottom: 10 }}
-          title="Finish"
+          title="Save"
           onPress={handleSaveDraft}
         />
         <CustomButton
