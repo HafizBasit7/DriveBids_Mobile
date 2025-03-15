@@ -22,27 +22,26 @@ const SimilarAds = () => {
       </View>
 
       {/* Expandable Content */}
-      {isExpanded && (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollViewContent}
-        >
-          {similarAds.map((ad, index) => (
-            <View key={index} style={styles.cardSpacing}>
-              <HomeCarCard {...ad} />
-            </View>
-          ))}
-        </ScrollView>
-      )}
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollViewContent}
+      >
+        {similarAds.map((ad, index) => (
+          <View key={index} style={styles.cardSpacing}>
+            <HomeCarCard {...ad} />
+          </View>
+        ))}
+      </ScrollView>
 
       {/* Toggle Button */}
       <TouchableOpacity
         style={styles.dropdownButton}
         onPress={() => setIsExpanded(!isExpanded)}
       >
-        <Icon
+        {/* <Icon
           name={isExpanded ? "keyboard-arrow-up" : "keyboard-arrow-down"}
           size={24}
           color="#2A5DB0"
@@ -50,7 +49,7 @@ const SimilarAds = () => {
         />
         <Text style={styles.dropdownText}>
           {isExpanded ? "Hide Similar Ads" : "View Similar Ads"}
-        </Text>
+        </Text> */}
       </TouchableOpacity>
     </View>
   );
@@ -68,7 +67,7 @@ const similarAds = [
     favorite: true,
     winning: false,
     yourBid: 42000,
-    isFromMyBids: true,
+    isFromMyBids: false,
     onViewPress: () => alert("View Ad Pressed"),
     onIncreaseBid: () => alert("Increase Bid Pressed"),
     onCancelBid: () => alert("Cancel Bid Pressed"),

@@ -3,14 +3,15 @@ import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
 
 const { width } = Dimensions.get("window"); // Get screen width
 import MakeModel from "../../CustomComponents/UmairComponents/MakeModel";
-import BidsButtons from "../../CustomComponents/UmairComponents/BidsButtons";
+// import BidsButtons from "../../CustomComponents/UmairComponents/BidsButtons";
+import BiddingList from "../../CustomComponents/UmairComponents/BiddingList";
 import InspectionReport from "../../CustomComponents/UmairComponents/InspectionReport";
-import DamageReportCarousel from "../../CustomComponents/UmairComponents/DamageReportcard";
-import BiddingHistory from "../../CustomComponents/UmairComponents/BiddingHistory";
+// import DamageReportCarousel from "../../CustomComponents/UmairComponents/DamageReportcard";
+// import BiddingHistory from "../../CustomComponents/UmairComponents/BiddingHistory";
 import CarFeatures from "../../CustomComponents/UmairComponents/CarFetauresCard";
 import SellersComment from "../../CustomComponents/UmairComponents/SellersComment";
 import SimilarAds from "../../CustomComponents/UmairComponents/SimilarAds";
-const AdDetails = () => {
+const MyAdDetails = () => {
   return (
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
@@ -25,18 +26,12 @@ const AdDetails = () => {
         </View>
 
         {/* Second Line Container with Centered Box */}
-        <View style={styles.boxedLineContainer}>
-          <View style={styles.smallLine} />
-          <View style={styles.centerBox}>
-            <Text style={styles.centerText}>RESERVE MET</Text>
-          </View>
-          <View style={styles.smallLine} />
-        </View>
+        <View style={styles.boxedLineContainer}></View>
         <MakeModel />
-        <BidsButtons />
+        <BiddingList />
         <InspectionReport />
-        <DamageReportCarousel />
-        <BiddingHistory />
+        {/* <DamageReportCarousel /> */}
+        {/* <BiddingHistory /> */}
         <CarFeatures />
         <SellersComment />
         <SimilarAds />
@@ -57,7 +52,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 30, // Space before the next section
     width: width, // Make it full width
   },
   fullLine: {
@@ -106,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AdDetails;
+export default MyAdDetails;
