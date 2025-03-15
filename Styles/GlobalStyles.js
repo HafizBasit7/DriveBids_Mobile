@@ -11,5 +11,6 @@ export const GlobalStyles = {
     textColor: "#000000",
     Default: "#FEE226",
     ScreenBg: "#FEFEFE",
+    HomeHeaderColour: "#FEE226",
   },
 };
