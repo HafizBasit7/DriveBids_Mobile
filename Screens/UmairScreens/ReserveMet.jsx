@@ -6,6 +6,10 @@ import MakeModel from "../../CustomComponents/UmairComponents/MakeModel";
 import BidsButtons from "../../CustomComponents/UmairComponents/BidsButtons";
 import InspectionReport from "../../CustomComponents/UmairComponents/InspectionReport";
 import DamageReportCarousel from "../../CustomComponents/UmairComponents/DamageReportcard";
+import BiddingHistory from "../../CustomComponents/UmairComponents/BiddingHistory";
+import CarFeatures from "../../CustomComponents/UmairComponents/CarFetauresCard";
+import SellersComment from "../../CustomComponents/UmairComponents/SellersComment";
+import SimilarAds from "../../CustomComponents/UmairComponents/SimilarAds";
 const ReserveMet = () => {
   return (
     <ScrollView
@@ -28,16 +32,14 @@ const ReserveMet = () => {
           </View>
           <View style={styles.smallLine} />
         </View>
-
         <MakeModel />
-        <BidsButtons
-        // buyItNowTitle="BUY IT NOW"
-        // placeBidTitle="PLACE BID"
-        // quickBidTitle="QUICK BID"
-        />
-
+        <BidsButtons />
         <InspectionReport />
         <DamageReportCarousel />
+        <BiddingHistory />
+        <CarFeatures />
+        <SellersComment />
+        <SimilarAds />
       </View>
     </ScrollView>
   );

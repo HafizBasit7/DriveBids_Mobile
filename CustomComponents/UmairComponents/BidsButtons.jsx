@@ -57,10 +57,10 @@ const styles = StyleSheet.create({
   blueText: {
     fontSize: 12,
     fontWeight: "bold",
-    color: "#777", // 🔵 Changed to blue
+    color: "#777", //
   },
   primaryText: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "bold",
     color: "#fff",
   },

@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: "Inter-SemiBold",
-    fontSize: 16,
+    fontSize: 12,
   },
 });
 

@@ -18,48 +18,114 @@ const InspectionReport = () => {
           <View style={styles.card}>
             <Text style={styles.cardHeader}>Symbols</Text>
             <View style={styles.cardContent}>
-              {renderItem("check-circle", "green", "Ok")}
-              {renderItem("block", "gray", "Not Tested")}
-              {renderItem("error", "orange", "Requires Some Attention")}
-              {renderItem(
-                "error-outline",
-                "red",
-                "Requires Immediate Attention"
-              )}
+              {renderGrid([
+                { icon: "check-circle", color: "green", label: "Ok" },
+                { icon: "block", color: "gray", label: "Not Tested" },
+                {
+                  icon: "error",
+                  color: "orange",
+                  label: "Requires Some Attention",
+                },
+                {
+                  icon: "error-outline",
+                  color: "red",
+                  label: "Requires Immediate Attention",
+                },
+                { icon: "check-circle", color: "green", label: "Passed" },
+                { icon: "error", color: "orange", label: "Minor Issue" },
+                { icon: "error-outline", color: "red", label: "Major Issue" },
+                { icon: "block", color: "gray", label: "Not Applicable" },
+              ])}
             </View>
           </View>
 
           <View style={styles.card}>
             <Text style={styles.cardHeader}>Dynamic Operations</Text>
             <View style={styles.cardContent}>
-              {renderItem("check-circle", "green", "Brake Efficiency Test")}
-              {renderItem("error", "orange", "Static Gear Selection")}
-              {renderItem("error-outline", "red", "Reverse Clutch Slip Test")}
-              {renderItem("check-circle", "green", "Hand Brake Test")}
+              {renderGrid([
+                {
+                  icon: "check-circle",
+                  color: "green",
+                  label: "Brake Efficiency Test",
+                },
+                {
+                  icon: "error",
+                  color: "orange",
+                  label: "Static Gear Selection",
+                },
+                {
+                  icon: "error-outline",
+                  color: "red",
+                  label: "Reverse Clutch Slip Test",
+                },
+                {
+                  icon: "check-circle",
+                  color: "green",
+                  label: "Hand Brake Test",
+                },
+                {
+                  icon: "error",
+                  color: "orange",
+                  label: "Suspension Performance",
+                },
+                {
+                  icon: "error-outline",
+                  color: "red",
+                  label: "Engine Idle Stability",
+                },
+              ])}
             </View>
           </View>
 
           <View style={styles.card}>
             <Text style={styles.cardHeader}>Essential Checks</Text>
             <View style={styles.cardContent}>
-              {renderItem("check-circle", "green", "Headlights")}
-              {renderItem("error-outline", "red", "Brake Lights")}
-              {renderItem("error", "orange", "Indicators")}
+              {renderGrid([
+                { icon: "check-circle", color: "green", label: "Headlights" },
+                { icon: "error-outline", color: "red", label: "Brake Lights" },
+                { icon: "error", color: "orange", label: "Indicators" },
+                { icon: "block", color: "gray", label: "Fog Lights" },
+                {
+                  icon: "check-circle",
+                  color: "green",
+                  label: "Reverse Lights",
+                },
+                { icon: "error-outline", color: "red", label: "Hazard Lights" },
+              ])}
             </View>
           </View>
 
           <View style={styles.card}>
             <Text style={styles.cardHeader}>Interior Checks</Text>
             <View style={styles.cardContent}>
-              {renderItem("check-circle", "green", "Seat Belts")}
-              {renderItem("error", "orange", "Dashboard Warning Lights")}
-              {renderItem("error-outline", "red", "Horn Functionality")}
+              {renderGrid([
+                { icon: "check-circle", color: "green", label: "Seat Belts" },
+                {
+                  icon: "error",
+                  color: "orange",
+                  label: "Dashboard Warning Lights",
+                },
+                {
+                  icon: "error-outline",
+                  color: "red",
+                  label: "Horn Functionality",
+                },
+                {
+                  icon: "check-circle",
+                  color: "green",
+                  label: "AC/Heater Functionality",
+                },
+                {
+                  icon: "block",
+                  color: "gray",
+                  label: "Radio/Multimedia System",
+                },
+              ])}
             </View>
           </View>
         </View>
       )}
 
-      {/* Move the button to the bottom */}
       <TouchableOpacity
         style={styles.dropdownButton}
         onPress={() => setIsExpanded(!isExpanded)}
@@ -78,14 +144,26 @@ const InspectionReport = () => {
   );
 };
 
-const renderItem = (iconName, color, label) => (
-  <View style={styles.iconRow}>
-    <View style={styles.iconContainer}>
-      <Icon name={iconName} size={18} color={color} />
+const renderGrid = (items) => {
+  const numColumns = items.length <= 4 ? 1 : 2;
+  return (
+    <View
+      style={[
+        styles.gridContainer,
+        { flexDirection: numColumns === 1 ? "column" : "row" },
+      ]}
+    >
+      {items.map((item, index) => (
+        <View key={index} style={styles.gridItem}>
+          <View style={styles.iconContainer}>
+            <Icon name={item.icon} size={12} color={item.color} />
+          </View>
+          <Text style={styles.text}>{item.label}</Text>
+        </View>
+      ))}
     </View>
-    <Text style={styles.text}>{label}</Text>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -103,7 +181,7 @@ const styles = StyleSheet.create({
   },
   lineText: {
     marginHorizontal: 10,
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
   },
   dropdownButton: {
@@ -111,7 +189,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 14,
-    // marginTop: 0,
   },
   icon: {
     marginRight: 5,
@@ -143,18 +220,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
   },
-  cardContent: {
-    paddingLeft: 5,
+  gridContainer: {
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
-  iconRow: {
+  gridItem: {
+    width: "48%",
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 5,
   },
   iconContainer: {
-    width: 30,
-    height: 30,
-    borderRadius: 8,
+    width: 20,
+    height: 20,
+    borderRadius: 6,
     borderWidth: 2,
     borderColor: "#2A5DB0",
     justifyContent: "center",
@@ -162,7 +241,7 @@ const styles = StyleSheet.create({
   },
   text: {
     marginLeft: 8,
-    fontSize: 14,
+    fontSize: 10,
   },
 });
 
