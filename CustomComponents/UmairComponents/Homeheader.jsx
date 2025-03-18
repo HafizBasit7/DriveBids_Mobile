@@ -13,7 +13,7 @@ import {
   StatusBar,
 } from "react-native";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg"; // Ensure correct path
-import MsgIcon from "../../assets/UmairAssets/MsgSVG.svg"; // Ensure correct path
+// import MsgIcon from "../../assets/UmairAssets/MsgSVG.svg"; // Ensure correct path
 import { GlobalStyles } from "../../Styles/GlobalStyles";
 
 const { width } = Dimensions.get("window");
@@ -94,13 +94,13 @@ const HomeHeader = () => {
         </TouchableOpacity>
 
         {/* Right Arrow Button */}
-        <TouchableOpacity style={styles.msgIconContainer}>
+        {/* <TouchableOpacity style={styles.msgIconContainer}>
           <MsgIcon
             width={30}
             height={30}
             style={{ transform: [{ rotate: "180deg" }] }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         {/* Pagination Dots */}
         <View style={styles.pagination}>
