@@ -10,38 +10,50 @@ import BiddingHistory from "../../CustomComponents/UmairComponents/BiddingHistor
 import CarFeatures from "../../CustomComponents/UmairComponents/CarFetauresCard";
 import SellersComment from "../../CustomComponents/UmairComponents/SellersComment";
 import SimilarAds from "../../CustomComponents/UmairComponents/SimilarAds";
+import HomeHeader from "../../CustomComponents/UmairComponents/Homeheader";
+import SellerProfileCard from "../../CustomComponents/UmairComponents/SellerProfileCard";
+import { GlobalStyles } from "../../Styles/GlobalStyles";
 const AdDetails = () => {
   return (
-    <ScrollView
-      contentContainerStyle={styles.scrollContainer}
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.container}>
-        {/* Step Progress Container (Lines should extend fully) */}
-        <View style={styles.lineContainer}>
-          <View style={styles.fullLine} />
-          <Text style={styles.lineText}>Car Details</Text>
-          <View style={styles.fullLine} />
-        </View>
-
-        {/* Second Line Container with Centered Box */}
-        <View style={styles.boxedLineContainer}>
-          <View style={styles.smallLine} />
-          <View style={styles.centerBox}>
-            <Text style={styles.centerText}>RESERVE MET</Text>
+    <>
+      <HomeHeader />
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.container}>
+          {/* Step Progress Container (Lines should extend fully) */}
+          <View style={styles.lineContainer}>
+            <View style={styles.fullLine} />
+            <Text style={styles.lineText}>Car Details</Text>
+            <View style={styles.fullLine} />
           </View>
-          <View style={styles.smallLine} />
+
+          {/* Second Line Container with Centered Box */}
+          <View style={styles.boxedLineContainer}>
+            <View style={styles.smallLine} />
+            <View style={styles.centerBox}>
+              <Text style={styles.centerText}>RESERVE MET</Text>
+            </View>
+            <View style={styles.smallLine} />
+          </View>
+          <MakeModel />
+          <BidsButtons />
+          <SellerProfileCard
+            onViewAllPress={() => {}}
+            name="ADAM WILLIAMS"
+            status="Private Seller"
+            profileImage="https://randomuser.me/api/portraits/men/32.jpg"
+          />
+          <InspectionReport />
+          <DamageReportCarousel />
+          <BiddingHistory />
+          <CarFeatures />
+          <SellersComment />
+          <SimilarAds />
         </View>
-        <MakeModel />
-        <BidsButtons />
-        <InspectionReport />
-        <DamageReportCarousel />
-        <BiddingHistory />
-        <CarFeatures />
-        <SellersComment />
-        <SimilarAds />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };
 
@@ -101,7 +113,7 @@ const styles = StyleSheet.create({
   },
   centerText: {
     fontSize: 16,
-    color: "#2a5db0", // Blue text
+    color: GlobalStyles.colors.ButtonColor, // Blue text
     fontWeight: "bold",
   },
 });
