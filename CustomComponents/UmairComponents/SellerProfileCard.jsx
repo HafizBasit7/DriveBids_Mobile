@@ -7,12 +7,12 @@ import { GlobalStyles } from "../../Styles/GlobalStyles";
 const SellerProfileCard = ({
   name = "ADAM WILLIAMS",
   status = "Private Seller",
+  ShowChatOptions = false,
   profileImage = "https://randomuser.me/api/portraits/men/32.jpg",
   onViewAllPress = () => {},
 }) => {
   return (
     <>
-      <SectionHeader title={"Owner Details"} />
       <View style={styles.container}>
         <View style={styles.leftContainer}>
           <Image source={{ uri: profileImage }} style={styles.profileImage} />
@@ -21,33 +21,47 @@ const SellerProfileCard = ({
             <Text style={styles.status}>{status}</Text>
           </View>
         </View>
-        <View style={{ gap: 10 }}>
-          <TouchableOpacity
-            style={styles.viewAllButton}
-            onPress={onViewAllPress}
-          >
-            <Icon
-              name="visibility"
-              type="material"
-              size={20}
-              color={GlobalStyles.colors.ButtonColor}
-            />
-            <Text style={styles.viewAllText}>View All Cars</Text>
-          </TouchableOpacity>
+        {ShowChatOptions ? (
+          <View style={{ gap: 10 }}>
+            <TouchableOpacity
+              style={styles.viewAllButton}
+              onPress={onViewAllPress}
+            >
+              <Icon
+                name="visibility"
+                type="material"
+                size={20}
+                color={GlobalStyles.colors.ButtonColor}
+              />
+              <Text style={styles.viewAllText}>View All Cars</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.viewAllButton}
-            onPress={onViewAllPress}
-          >
-            <Icon
-              name="chat"
-              type="material"
-              size={20}
-              color={GlobalStyles.colors.ButtonColor}
-            />
-            <Text style={styles.viewAllText}>Chat Now</Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={styles.viewAllButton}
+              onPress={onViewAllPress}
+            >
+              <Icon
+                name="chat"
+                type="material"
+                size={20}
+                color={GlobalStyles.colors.ButtonColor}
+              />
+              <Text style={styles.viewAllText}>Chat Now</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View>
+            <TouchableOpacity style={styles.viewAllButton} disabled={true}>
+              <Text style={styles.viewAllText}>All Listings</Text>
+              <Icon
+                name="chevron-right"
+                type="material"
+                size={20}
+                color={GlobalStyles.colors.ButtonColor}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </>
   );

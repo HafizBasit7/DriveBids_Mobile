@@ -13,6 +13,7 @@ import SimilarAds from "../../CustomComponents/UmairComponents/SimilarAds";
 import HomeHeader from "../../CustomComponents/UmairComponents/Homeheader";
 import SellerProfileCard from "../../CustomComponents/UmairComponents/SellerProfileCard";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
+import SectionHeader from "../../CustomComponents/SectionHeader";
 const AdDetails = () => {
   return (
     <>
@@ -39,6 +40,7 @@ const AdDetails = () => {
           </View>
           <MakeModel />
           <BidsButtons />
+          <SectionHeader title={"Owner Details"} />
           <SellerProfileCard
             onViewAllPress={() => {}}
             name="ADAM WILLIAMS"
