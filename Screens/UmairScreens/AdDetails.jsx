@@ -10,14 +10,14 @@ import BiddingHistory from "../../CustomComponents/UmairComponents/BiddingHistor
 import CarFeatures from "../../CustomComponents/UmairComponents/CarFetauresCard";
 import SellersComment from "../../CustomComponents/UmairComponents/SellersComment";
 import SimilarAds from "../../CustomComponents/UmairComponents/SimilarAds";
-import HomeHeader from "../../CustomComponents/UmairComponents/Homeheader";
+// import HomeHeader from "../../CustomComponents/UmairComponents/Homeheader";
 import SellerProfileCard from "../../CustomComponents/UmairComponents/SellerProfileCard";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
 import SectionHeader from "../../CustomComponents/SectionHeader";
 const AdDetails = () => {
   return (
     <>
-      <HomeHeader />
+      {/* <HomeHeader /> */}
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
