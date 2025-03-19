@@ -5,68 +5,72 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
 import { CheckBox } from "react-native-elements";
-import {useCar} from "../../../R1_Contexts/carContext";
 
-const CarDetails9 = () => {
+const CarDetails13 = () => {
   const navigation = useNavigation(); // Initialize navigation
 
   const {carState, dispatch} = useCar();
 
-  const options = [
-    { id: 1, label: "Manual" },
-    { id: 3, label: "CVT" }, // Continuously Variable Transmission
-    { id: 4, label: "DCT" }, // Dual-Clutch Transmission
-    { id: 5, label: "AGS" }, // Auto Gear Shift
-    { id: 6, label: "AMT" }, // Automated Manual Transmission
-    // { id: 7, label: "Torque Converter" },
-    // { id: 8, label: "Tiptronic" },
-    // { id: 9, label: "Sequential" },
-    { id: 10, label: "EV Single-Speed" }, // Electric Vehicle Transmission
-  ];
-
-  const toggleSelection = (value) => {
+  function onChangeCarMake (value) {
     dispatch({
       type: 'UPDATE_FIELD',
       section: 'carDetails',
-      field: 'transmission',
+      field: 'condition',
       value,
     });
   };
+
+  const options = [
+    { id: 1, label: "Poor" },
+    { id: 2, label: "Fair" },
+    { id: 3, label: "Good" },
+    { id: 4, label: "Excellent" },
+  ];
 
   return (
     <View style={styles.container}>
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 9 of 14</Text>
+        <Text style={styles.lineText}>Step 13 of 14</Text>
         <View style={styles.line} />
       </View>
 
       {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>Transmission</Text>
+        <Text style={styles.lineText2}>Condition</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Clickable List with Checkboxes */}
+      {/* Clickable List */}
       <FlatList
         data={options}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => toggleSelection(item.label)}>
+          <TouchableOpacity onPress={() => onChangeCarMake(item.label)}>
             <View style={styles.optionContainer}>
               <CheckBox
-                checked={carState.carDetails.transmission === item.label}
-                onPress={() => toggleSelection(item.label)}
+                checked={carState.carDetails.condition === item.label}
+                onPress={() => onChangeCarMake(item.label)}
                 checkedColor="#007BFF"
               />
-              <Text style={styles.entityText}>{item.label}</Text>
+              <Text
+                style={[
+                  styles.entityText,
+                  carState.carDetails.condition === item.label && styles.selectedText,
+                ]}
+              >
+                {item.label}
+              </Text>
             </View>
+            <View style={styles.separator} />
           </TouchableOpacity>
         )}
       />
@@ -76,14 +80,14 @@ const CarDetails9 = () => {
         <CustomButton
           style={styles.button}
           title="Next"
-          onPress={() => navigation.navigate("CarDetails10")}
+          onPress={() => navigation.navigate("CarDetails14")}
         />
         <View style={{ height: 10 }} />
         <CustomButton
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate("VehicleInfo")}
         />
       </View>
     </View>
@@ -95,6 +99,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingBottom: 20,
+  },
+  optionContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 4,
+    paddingHorizontal: 10,
   },
   lineContainer: {
     flexDirection: "row",
@@ -137,15 +147,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
   },
-  optionContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-  },
   entityText: {
     fontSize: 16,
     color: "#000",
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+  },
+  selectedText: {
+    color: "#007BFF", // Blue color for selected text
+    fontWeight: "700",
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "#ccc",
+    marginHorizontal: 15,
   },
   buttonContainer: {
     alignItems: "center",
@@ -165,4 +180,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CarDetails9;
+export default CarDetails13;

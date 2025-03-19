@@ -4,8 +4,8 @@ import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
 
-const CarDetails10 = () => {
-  const years = Array.from({ length: (15 + 4) - 1 + 1 }, (_, i) => 1 + i);
+const CarDetails3 = () => {
+  const years = Array.from({ length: (new Date().getFullYear() + 4) - 1980 + 1 }, (_, i) => 1980 + i);
   const scrollY = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
   const flatListRef = useRef(null);
@@ -13,7 +13,7 @@ const CarDetails10 = () => {
   const {carState, dispatch} = useCar();
 
   useEffect(() => {
-    const index = years.indexOf(carState.carDetails.noOfOwners);
+    const index = years.indexOf(carState.carDetails.model);
     if (index !== -1) {
       setTimeout(() => {
         flatListRef.current?.scrollToOffset({
@@ -63,7 +63,7 @@ const CarDetails10 = () => {
     dispatch({
       type: 'UPDATE_FIELD',
       section: 'carDetails',
-      field: 'noOfOwners',
+      field: 'model',
       value: parseInt(years[index]),
     })
   };
@@ -72,13 +72,13 @@ const CarDetails10 = () => {
     <View style={styles.container}>
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 10 of 14</Text>
+        <Text style={styles.lineText}>Step 3 of 10</Text>
         <View style={styles.line} />
       </View>
 
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>No Of Owners</Text>
+        <Text style={styles.lineText2}>Model Year</Text>
         <View style={styles.line} />
       </View>
 
@@ -107,14 +107,14 @@ const CarDetails10 = () => {
         <CustomButton
           style={styles.button}
           title="Next"
-          onPress={() => navigation.navigate("CarDetails11")}
+          onPress={() => navigation.navigate("CarDetails4")}
         />
         <View style={{ height: 10 }} />
         <CustomButton
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate("CarDetails2")}
         />
       </View>
     </View>
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 40,
-    height: 235,
+    height: 265,
     overflow: "hidden",
   },
   yearContainer: {
@@ -190,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CarDetails10;
+export default CarDetails3;

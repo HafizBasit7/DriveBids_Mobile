@@ -9,11 +9,23 @@ import {
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
 
 const CarDetails7 = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const navigation = useNavigation(); // Initialize navigation
+
+  const {carState, dispatch} = useCar();
+
+  const toggleColor = (value) => {
+    dispatch({
+      type: 'UPDATE_FIELD',
+      section: 'carDetails',
+      field: 'color',
+      value,
+    });
+  };
 
   const options = [
     { id: 1, label: "Red" },
@@ -33,7 +45,7 @@ const CarDetails7 = () => {
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 7 of 10</Text>
+        <Text style={styles.lineText}>Step 7 of 14</Text>
         <View style={styles.line} />
       </View>
 
@@ -50,8 +62,8 @@ const CarDetails7 = () => {
           style={styles.input}
           placeholder="Enter custom Colour"
           placeholderTextColor="#999"
-          value={inputValue}
-          onChangeText={setInputValue}
+          value={carState.carDetails.color}
+          onChangeText={toggleColor}
         />
       </View>
 
@@ -60,11 +72,11 @@ const CarDetails7 = () => {
         data={options}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => setSelectedOption(item.id)}>
+          <TouchableOpacity onPress={() => toggleColor(item.label)}>
             <Text
               style={[
                 styles.entityText,
-                selectedOption === item.id && styles.selectedText,
+                carState.carDetails.color === item.label && styles.selectedText,
               ]}
             >
               {item.label}
@@ -86,7 +98,7 @@ const CarDetails7 = () => {
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.navigate("CarDetails6")}
+          onPress={() => navigation.goBack()}
         />
       </View>
     </View>
@@ -161,6 +173,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: 15,
+    marginBottom: 80,
   },
   button: {
     marginBottom: 5,

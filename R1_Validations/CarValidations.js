@@ -66,15 +66,15 @@ export const carDetailsValidation = zod.object({
     model: zod.number({required_error: 'model is missing'}),
     variant: zod.string({required_error: 'variant is missing'}),
     city: zod.string({required_error: 'city is missing'}),
-    mileage: zod.string({required_error: ' mileage is missing'}),
-    fuel: zod.enum(['Petrol', 'Diesel', 'HI-Octane', 'Electricity']),
+    mileage: zod.number({required_error: ' mileage is missing'}),
+    fuel: zod.enum(['Petrol', 'Diesel', 'HI-Octane', 'Electric', 'Hybrid']),
     color: zod.string({required_error: 'color is missing'}),
     engineSize: zod.number({required_error: 'engine size is missing'}),
-    transmission: zod.enum(['AGS', 'Manual', 'CVT', 'DCT']),
+    transmission: zod.enum(['AGS', 'Manual', 'CVT', 'DCT', 'AMT', 'EV Single-Speed']),
     noOfOwners: zod.number({required_error: "no of owners missing"}),
     horsePower: zod.number({required_error: 'horse power missing'}),
     accidentHistory: zod.string({required_error: 'accident history is missing'}),
-    condition: zod.enum(['Poor', 'Fair', 'Good', 'Excellent']),
+    condition: zod.enum(['Poor', 'Fair', 'Good', 'Excellent']), //13
 });
 
 //car images
@@ -89,3 +89,27 @@ export const imagesValidation = zod.object({
     wheels: wheelsImageValidation,
     tyreTreads: tyreTreadsValidation,
 });
+
+//Damage report
+const damageReportEnum = [
+    'Scratches',
+    'Dents/Cracks',
+    'Rust',
+];
+export const carDamageReportValidation = zod.object({
+    damageReport: zod.array(zod.object({
+        imageIndex: zod.number(),
+        x: zod.number(),
+        y: zod.number(),
+        damageType: zod.enum(damageReportEnum),
+        imageUrl: zod.string(),
+        description: zod.string(),
+    })).min(1, 'min one item for damage report')
+});
+
+//Car features
+export const carFeaturesValidation = zod.object({
+    exterior: zod.array(zod.string()).min(1),
+    interior: zod.array(zod.string()).min(1),
+}).optional();
+

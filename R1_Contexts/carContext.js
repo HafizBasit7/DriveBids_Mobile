@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import {saveDraft} from "../API_Callings/R1_API/Car";
+import {postAd, saveDraft} from "../API_Callings/R1_API/Car";
 
 //State
 const initialState = {
@@ -28,6 +28,7 @@ const initialState = {
     },
     features: {
         exterior: [],
+        interior: [],
     },
     images: {
         exterior: [],
@@ -81,6 +82,28 @@ const initialState = {
 };
 const carReducerFunction = (state, action) => {
     switch(action.type) {
+        case 'INSERT_DAMAGE': {
+            if(!state.carDamageReport) {
+                return {
+                    ...state,
+                    carDamageReport: {
+                        damageReport: [
+                            action.value,
+                        ],
+                    }
+                }
+            }
+
+            return {
+                ...state,
+                carDamageReport: {
+                    damageReport: [
+                        ...state.carDamageReport.damageReport,
+                        action.value,
+                    ],
+                }
+            }
+        }
         case 'SET_DRAFT': {
             return action.payload;
         }
@@ -106,6 +129,42 @@ const carReducerFunction = (state, action) => {
                 ...state,
                 images,
             };
+        }
+        case 'REMOVE_FEATURE': {
+            const filtered = state.features[action.section].filter(val => val !== action.value);
+            return {
+                ...state,
+                features: {
+                    ...state.features,
+                    [action.section]: filtered,
+                },
+            }
+        }
+        case 'UPDATE_FEATURE': {
+            if(state.features && state.features[action.section]) {
+                return {
+                    ...state,
+                    features: {
+                        ...state.features,
+                        [action.section]: [
+                            ...state.features[action.section],
+                            action.value,
+                        ],
+                    },
+                };
+            }
+
+            return {
+                ...state,
+                features: {
+                    ...state.features,
+                    [action.section]: [
+                        action.value,
+                    ],
+                },
+            };
+
+            
         }
         case 'UPDATE_FIELD': {
             if(action.section && action.subSection) {
@@ -140,7 +199,7 @@ const carReducerFunction = (state, action) => {
 };
 
 //Context
-const CarContext = createContext({carState: initialState, dispatch: () => {}, draftSave: async (section) => {}, resetDraftState: () => {}});
+const CarContext = createContext({carState: initialState, dispatch: () => {}, draftSave: async (section) => {}, resetDraftState: () => {}, carPostAd: async () => {}});
 export const useCar = () => useContext(CarContext);
 
 export default function CarContextProvider({children}) {
@@ -173,8 +232,13 @@ export default function CarContextProvider({children}) {
         dispatch({type: 'RESET_STATE'});
     };
 
+    const carPostAd = async () => {
+        await postAd(carState.draftId);
+        resetDraftState();
+    };
+
     return (
-        <CarContext.Provider value={{carState, dispatch, draftSave, resetDraftState}}>
+        <CarContext.Provider value={{carState, dispatch, draftSave, resetDraftState, carPostAd}}>
             {children}
         </CarContext.Provider>
     );

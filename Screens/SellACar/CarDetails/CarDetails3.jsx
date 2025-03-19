@@ -72,7 +72,7 @@ const CarDetails3 = () => {
     <View style={styles.container}>
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 3 of 10</Text>
+        <Text style={styles.lineText}>Step 3 of 14</Text>
         <View style={styles.line} />
       </View>
 
@@ -114,7 +114,7 @@ const CarDetails3 = () => {
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.navigate("CarDetails2")}
+          onPress={() => navigation.goBack()}
         />
       </View>
     </View>
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 40,
-    height: 265,
+    height: 240,
     overflow: "hidden",
   },
   yearContainer: {
@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: "1%",
+    
   },
   button: {
     marginBottom: 5,

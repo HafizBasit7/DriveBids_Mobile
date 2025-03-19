@@ -9,33 +9,20 @@ import {
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
-import { CheckBox } from "react-native-elements"; // Importing CheckBox
+import { useCar } from "../../../R1_Contexts/carContext";
 
-const ExteriorFeature2 = () => {
-  const [selectedOptions, setSelectedOptions] = useState([]); // Multiple selections
-  const [inputValue, setInputValue] = useState("");
+const CarDetails12 = () => {
   const navigation = useNavigation(); // Initialize navigation
 
-  const options = [
-    { id: 1, label: "Leather Seats" },
-    { id: 2, label: "Power Steering" },
-    { id: 3, label: "Power Windows" },
-    { id: 4, label: "Climate Control" },
-    { id: 5, label: "Heated Seats" },
-    { id: 6, label: "Push Start Button" },
-    { id: 7, label: "Touchscreen Infotainment" },
-    { id: 8, label: "Rear AC Vents" },
-    { id: 9, label: "Cruise Control" },
-    { id: 10, label: "Wireless Charging" },
-  ];
+  const {carState, dispatch} = useCar();
 
-  const toggleSelection = (id) => {
-    setSelectedOptions(
-      (prevSelected) =>
-        prevSelected.includes(id)
-          ? prevSelected.filter((item) => item !== id) // Deselect if already selected
-          : [...prevSelected, id] // Select otherwise
-    );
+  function onChangeCarCity (value) {
+    dispatch({
+      type: 'UPDATE_FIELD',
+      section: 'carDetails',
+      field: 'accidentHistory',
+      value,
+    });
   };
 
   return (
@@ -43,48 +30,41 @@ const ExteriorFeature2 = () => {
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 2 of 3</Text>
+        <Text style={styles.lineText}>Step 12 of 14</Text>
         <View style={styles.line} />
       </View>
 
       {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>Exterior Features</Text>
+        <Text style={styles.lineText2}>Accident History</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Clickable List with Checkboxes */}
-      <FlatList
-        data={options}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => toggleSelection(item.id)}>
-            <View style={styles.optionContainer}>
-              <CheckBox
-                checked={selectedOptions.includes(item.id)}
-                onPress={() => toggleSelection(item.id)}
-                checkedColor="#007BFF"
-              />
-              <Text style={styles.entityText}>{item.label}</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
-
+      {/* Input Field */}
+      <View style={styles.inputWrapper}>
+        <TextInput
+          style={[styles.input, { height: 150 }]}
+          placeholder="Enter accident history..."
+          placeholderTextColor="#999"
+          value={carState.carDetails.accidentHistory}
+          onChangeText={onChangeCarCity}
+          multiline
+        />
+      </View>
       {/* Buttons */}
       <View style={styles.buttonContainer}>
         <CustomButton
           style={styles.button}
           title="Next"
-          onPress={() => navigation.navigate("ExteriorFeature3")}
+          onPress={() => navigation.navigate("CarDetails13")}
         />
         <View style={{ height: 10 }} />
         <CustomButton
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.navigate("ExteriorFeature1")}
+          onPress={() => navigation.goBack()}
         />
       </View>
     </View>
@@ -130,7 +110,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 15,
     marginHorizontal: 20,
-    height: 55,
+    // height: 55,
     marginTop: 10,
   },
   input: {
@@ -138,22 +118,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
   },
-  optionContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-  },
   entityText: {
     fontSize: 16,
     color: "#000",
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+  },
+  selectedText: {
+    color: "#007BFF", // Blue color for selected text
+    fontWeight: "700",
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "#ccc",
+    marginHorizontal: 15,
   },
   buttonContainer: {
     alignItems: "center",
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: 15,
+    marginTop: "30%",
   },
   button: {
     marginBottom: 5,
@@ -165,4 +150,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ExteriorFeature2;
+export default CarDetails12;

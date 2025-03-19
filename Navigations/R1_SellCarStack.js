@@ -20,11 +20,11 @@ import CarDetails6 from "../Screens/SellACar/CarDetails/CarDetails6";
 import CarDetails7 from "../Screens/SellACar/CarDetails/CarDetails7";
 import CarDetails8 from "../Screens/SellACar/CarDetails/CarDetails8";
 import CarDetails9 from "../Screens/SellACar/CarDetails/CarDetails9";
-import CarDetails10 from "../Screens/SellACar/CarDetails/CarDetails10";
+import CarDetails14 from "../Screens/SellACar/CarDetails/CarDetails14";
 // Exterior Features
 import ExteriorFeature1 from "../Screens/SellACar/ExteriorFeatures/ExteriorFeature1";
-import ExteriorFeature2 from "../Screens/SellACar/ExteriorFeatures/ExteriorFeature2";
-import ExteriorFeature3 from "../Screens/SellACar/ExteriorFeatures/ExteriorFeature3";
+import InteriorFeature1 from "../Screens/SellACar/ExteriorFeatures/InteriorFeature1";
+// import ExteriorFeature3 from "../Screens/SellACar/ExteriorFeatures/ExteriorFeature3";
 // Exterior
 import Exterior1 from "../Screens/SellACar/CarExteriorImages/Exterior1";
 import Exterior2 from "../Screens/SellACar/CarExteriorImages/Exterior2";
@@ -58,7 +58,11 @@ import PriceRange2 from "../Screens/SellACar/PriceRange/PriceRange2";
 import PriceRange3 from "../Screens/SellACar/PriceRange/PriceRange3";
 import PriceRange4 from "../Screens/SellACar/PriceRange/PriceRange4";
 import CarContextProvider from "../R1_Contexts/carContext";
-
+import CarDetails10 from "../Screens/SellACar/CarDetails/CarDetails10";
+import CarDetails11 from "../Screens/SellACar/CarDetails/CarDetails11";
+import CarDetails12 from "../Screens/SellACar/CarDetails/CarDetails12";
+import DamageInspection from "../Screens/SellACar/DamageLabels/DamageLabels";
+import CarDetails13 from "../Screens/SellACar/CarDetails/CarDetails13";
 const Stack = createStackNavigator();
 
 export default function R1_SellCarStack() {
@@ -82,6 +86,10 @@ export default function R1_SellCarStack() {
                 <Stack.Screen name="CarDetails8" component={CarDetails8} />
                 <Stack.Screen name="CarDetails9" component={CarDetails9} />
                 <Stack.Screen name="CarDetails10" component={CarDetails10} />
+                <Stack.Screen name="CarDetails11" component={CarDetails11} />
+                <Stack.Screen name="CarDetails12" component={CarDetails12} />
+                <Stack.Screen name="CarDetails13" component={CarDetails13} />
+                <Stack.Screen name="CarDetails14" component={CarDetails14} />
                 {/* <Stack.Screen name="SellCar" component={SellCar} /> */}
                 <Stack.Screen name="Draft" component={Draft} />
                 <Stack.Screen name="VehicleReg" component={VehicleReg} />
@@ -89,8 +97,7 @@ export default function R1_SellCarStack() {
                 <Stack.Screen name="CarImages" component={CarImages} />
                 {/* Exterior Features */}
                 <Stack.Screen name="ExteriorFeature1" component={ExteriorFeature1} />
-                <Stack.Screen name="ExteriorFeature2" component={ExteriorFeature2} />
-                <Stack.Screen name="ExteriorFeature3" component={ExteriorFeature3} />
+                <Stack.Screen name="InteriorFeature1" component={InteriorFeature1} />
                 {/* Exterior Screens */}
                 <Stack.Screen name="Exterior1" component={Exterior1} />
                 <Stack.Screen name="Exterior2" component={Exterior2} />
@@ -118,6 +125,8 @@ export default function R1_SellCarStack() {
                 <Stack.Screen name="InspectionReport1" component={InspectionReport1} />
                 <Stack.Screen name="InspectionReport2" component={InspectionReport2} />
                 <Stack.Screen name="InspectionReport3" component={InspectionReport3} />
+                {/* Damage report */}
+                <Stack.Screen name="DamageInspection" component={DamageInspection} />
                 {/* Price Range */}
                 <Stack.Screen name="PriceRange1" component={PriceRange1} />
                 <Stack.Screen name="PriceRange2" component={PriceRange2} />

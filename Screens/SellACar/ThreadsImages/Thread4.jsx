@@ -14,7 +14,7 @@ const Thread4 = () => {
   const {carState, dispatch, draftSave} = useCar();
   const index = 3;
 
-   const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
   const navigation = useNavigation();

@@ -5,37 +5,36 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  TextInput,
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { CheckBox } from "react-native-elements"; // Importing CheckBox
+import { useCar } from "../../../R1_Contexts/carContext";
 
 const CarDetails6 = () => {
-  const [selectedOptions, setSelectedOptions] = useState([]); // Multiple selections
-  const [inputValue, setInputValue] = useState("");
   const navigation = useNavigation(); // Initialize navigation
+  const {carState, dispatch} = useCar();
 
   const options = [
     { id: 1, label: "Petrol" },
     { id: 2, label: "Diesel" },
-    { id: 3, label: "Electric" },
-    { id: 4, label: "Hybrid" },
-    { id: 5, label: "CNG" },
-    { id: 6, label: "LPG" },
-    { id: 7, label: "Hydrogen" },
-    { id: 8, label: "Biofuel" },
-    { id: 9, label: "Ethanol" },
-    { id: 10, label: "Methanol" },
+    { id: 3, label: "HI-Octane" },
+    { id: 4, label: "Electricity" },
+    { id: 5, label: "Hybrid" },
+    // { id: 6, label: "LPG" },
+    // { id: 7, label: "Hydrogen" },
+    // { id: 8, label: "Biofuel" },
+    // { id: 9, label: "Ethanol" },
+    // { id: 10, label: "Methanol" },
   ];
 
-  const toggleSelection = (id) => {
-    setSelectedOptions(
-      (prevSelected) =>
-        prevSelected.includes(id)
-          ? prevSelected.filter((item) => item !== id) // Deselect if already selected
-          : [...prevSelected, id] // Select otherwise
-    );
+  const toggleSelection = (value) => {
+    dispatch({
+      type: 'UPDATE_FIELD',
+      section: 'carDetails',
+      field: 'fuel',
+      value,
+    });
   };
 
   return (
@@ -43,7 +42,7 @@ const CarDetails6 = () => {
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 6 of 10</Text>
+        <Text style={styles.lineText}>Step 6 of 14</Text>
         <View style={styles.line} />
       </View>
 
@@ -59,11 +58,11 @@ const CarDetails6 = () => {
         data={options}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => toggleSelection(item.id)}>
+          <TouchableOpacity onPress={() => toggleSelection(item.label)}>
             <View style={styles.optionContainer}>
               <CheckBox
-                checked={selectedOptions.includes(item.id)}
-                onPress={() => toggleSelection(item.id)}
+                checked={carState.carDetails.fuel == item.label}
+                onPress={() => toggleSelection(item.label)}
                 checkedColor="#007BFF"
               />
               <Text style={styles.entityText}>{item.label}</Text>
@@ -84,7 +83,7 @@ const CarDetails6 = () => {
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.navigate("CarDetails5")}
+          onPress={() => navigation.goBack()}
         />
       </View>
     </View>
@@ -153,7 +152,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: 15,
+    marginTop: 5,
+    marginBottom: 80
   },
   button: {
     marginBottom: 5,

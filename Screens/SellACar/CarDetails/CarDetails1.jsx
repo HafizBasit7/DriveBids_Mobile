@@ -45,7 +45,7 @@ const CarDetails1 = () => {
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 1 of 10</Text>
+        <Text style={styles.lineText}>Step 1 of 14</Text>
         <View style={styles.line} />
       </View>
 
@@ -98,7 +98,7 @@ const CarDetails1 = () => {
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.navigate("VehicleInfo")}
+          onPress={() => navigation.goBack()}
         />
       </View>
     </View>
@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: 15,
+    marginBottom: 80
   },
   button: {
     marginBottom: 5,

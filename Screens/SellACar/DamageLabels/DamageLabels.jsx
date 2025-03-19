@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Modal,
-  TextInput,
   Image,
 } from "react-native";
 import { Svg, Circle } from "react-native-svg";
-import { MaterialIcons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import {uploadImage} from "../../../utils/upload";
+
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
-import DamageReportModal from "../../../CustomComponents/DamageReportModal";
+// import DamageReportModal from "../../../CustomComponents/DamageReportModal";
+import DamageReportModal from "../../../CustomComponents/DamageReportModal"
+import { useCar } from "../../../R1_Contexts/carContext";
+import DialogBox from "../../../CustomComponents/DialogBox";
+import { useNavigation } from "@react-navigation/native";
 
 const damageOptions = [
   { label: "Scratches", icon: "gesture", color: "#2D8CFF" },
@@ -22,87 +25,122 @@ const damageOptions = [
   { label: "Rust", icon: "coronavirus", color: "#D35400" },
 ];
 
+const carSides = [
+  require("../../../assets/tahirAssets/CarFront.png"),
+  require("../../../assets/tahirAssets/CarRight.png"),
+  require("../../../assets/tahirAssets/CarLeft.png"),
+  require("../../../assets/tahirAssets/CarBack.png"),
+];
+
 const DamageInspection = () => {
-  const carSides = [
-    require("../../assets/tahirAssets/CarFront.png"),
-    require("../../assets/tahirAssets/CarRight.png"),
-    require("../../assets/tahirAssets/CarLeft.png"),
-    require("../../assets/tahirAssets/CarBack.png"),
-  ];
-  const [selectedDamage, setSelectedDamage] = useState(damageOptions[0]);
-  const [markers, setMarkers] = useState([]);
+
   const [modalVisible, setModalVisible] = useState(false);
-  const [damageDescription, setDamageDescription] = useState("");
-  const [image, setImage] = useState(null);
-  const [selectedMarker, setSelectedMarker] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
   const [carFacing, setCarFacing] = useState(0);
-  const openGallery = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Sorry, we need camera roll permissions to make this work!");
-      return;
-    }
 
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
-      // allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  const navigation = useNavigation();
+  
+  //Loading
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
-    if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
-    }
-  };
-  const handleSelectDamage = (damage) => {
-    setSelectedDamage(damage);
-  };
+  //Draft State
+  const {carState, dispatch, draftSave} = useCar();
+  const location = useRef({locationX: 0, locationY: 0});
+  
 
   const handleCarPress = (event) => {
-    if (!selectedDamage) return;
     const { locationX, locationY } = event.nativeEvent;
-    const newMarker = {
-      x: locationX,
-      y: locationY,
-      type: selectedDamage,
-      description: "",
-      image: null,
-    };
-    setSelectedMarker(newMarker);
+    location.current = {locationX, locationY};
     setModalVisible(true);
   };
 
-  const handleSaveDamage = () => {
-    setMarkers([...markers, selectedMarker]);
+  const handleSaveDamage = async (damageReport) => {
+    //Hide modal
     setModalVisible(false);
-    setDamageDescription("");
-    setImage(null);
-    setSelectedMarker(null);
+
+    let imgUrl = false;
+    //Upload image
+    try {
+      setLoading(true);
+      imgUrl = await uploadImage(damageReport.imageUrl);
+    }
+    catch(e) {
+      setMessage({type: 'error', message: 'Error uploading image', title: 'Error'});
+    } finally {
+      setLoading(false);
+    }
+
+    if(!imgUrl) return;
+
+    //Save new damage report
+    dispatch({
+      type: 'INSERT_DAMAGE',
+      value: {
+        imageIndex: carFacing,
+        x: location.current.locationX,
+        y: location.current.locationY,
+        imageUrl: imgUrl,
+        damageType: damageReport.damageType,
+        description: damageReport.description,
+      },
+    });
   };
+
   const dismissModal = () => {
     setModalVisible(false);
   };
+
+  const handleSaveDraft = async () => {
+    setLoading(true);
+    try {
+        await draftSave('carDamageReport');
+        setMessage({type: 'success', message: 'Car Saved', title: 'Success'});
+    }
+    catch(e) {
+        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onOk = () => {
+    if(message?.type === 'error') {
+      setMessage(null);
+    } else {
+      setMessage(null); navigation.popTo("VehicleInfo");
+    }
+  };
+
   return (
     <View style={styles.container}>
+      {/* Loading Dialog */}
+      <DialogBox
+        visible={loading ? true : message ? true : false}
+        message={message?.message}
+        onOkPress={onOk}
+        type={message?.type}
+        loading={loading}
+        title={message?.title || ''}
+      />
+
       <SectionHeader title={`Step ${carFacing + 1} of 4`} />
       <Text style={styles.instruction}>
-        Please pick the damage label and place it on the front part of the car
-        that is damaged
+        Click on the part of car where damage exists
       </Text>
 
+      {/* Damage Info */}
       <View style={styles.damageSelector}>
         {damageOptions.map((option, index) => (
           <TouchableOpacity
             key={index}
             style={[
               styles.damageOption,
-              selectedDamage?.label === option.label && {
-                backgroundColor: "#E8F0FF",
-                fontWeight: "700",
-              },
+              // selectedDamage?.label === option.label && {
+              //   backgroundColor: "#E8F0FF",
+              //   fontWeight: "700",
+              // },
             ]}
-            onPress={() => handleSelectDamage(option)}
+            // onPress={() => handleSelectDamage(option)}
           >
             <View
               style={[
@@ -112,10 +150,10 @@ const DamageInspection = () => {
                   borderRadius: 8,
                   padding: 2,
                 },
-                selectedDamage?.label === option.label && {
-                  borderColor: GlobalStyles.colors.ButtonColor,
-                  borderWidth: 2,
-                },
+                // selectedDamage?.label === option.label && {
+                //   borderColor: GlobalStyles.colors.ButtonColor,
+                //   borderWidth: 2,
+                // },
               ]}
             >
               <MaterialIcons
@@ -127,7 +165,7 @@ const DamageInspection = () => {
             <Text
               style={[
                 styles.optionText,
-                selectedDamage?.label === option.label && { fontWeight: "700" },
+                // selectedDamage?.label === option.label && { fontWeight: "700" },
               ]}
             >
               {option.label}
@@ -135,6 +173,7 @@ const DamageInspection = () => {
           </TouchableOpacity>
         ))}
       </View>
+
       <View
         style={{
           flex: 1,
@@ -146,17 +185,29 @@ const DamageInspection = () => {
         <TouchableOpacity style={styles.carContainer} onPress={handleCarPress}>
           <Svg width={250} height={200} viewBox="0 0 250 200">
             <Image source={carSides[carFacing]} style={styles.carImage} />
-            {markers.map((marker, index) => (
-              <Circle
-                key={index}
-                cx={marker.x}
-                cy={marker.y}
-                r={8}
-                fill={marker.type.color}
-              />
-            ))}
+              {carState.carDamageReport?.damageReport.map((marker, index) => {
+                if(marker.imageIndex === carFacing) {
+                  const option = damageOptions.find(val => val.label === marker.damageType);
+                  return (
+                    <MaterialIcons
+                      key={index}
+                      name={option.icon}
+                      size={20}
+                      color={option.color}
+                      style={{
+                        position: "absolute",
+                        left: marker.x - 20 / 2, // Center the icon at x
+                        top: marker.y - 20 / 2,  // Center the icon at y
+                      }}
+                    />
+                    
+                  );
+                }
+              })}
           </Svg>
         </TouchableOpacity>
+
+        {/* Instruction */}
         <Text style={[styles.instruction, { fontSize: 15, marginTop: 7 }]}>
           {carFacing === 0
             ? "[ Front Side ]"
@@ -167,7 +218,8 @@ const DamageInspection = () => {
             : "[ Back Side ]"}
         </Text>
 
-        <View style={styles.buttonContainer}>
+        {/* Button */}
+        <View style={[styles.buttonContainer, {marginBottom: carFacing > 0 ? 95 : 80}]}>
           {carFacing < 3 ? (
             <CustomButton
               title="Next"
@@ -176,7 +228,7 @@ const DamageInspection = () => {
           ) : (
             <CustomButton
               title="Finish"
-              onPress={() => console.log("All Marks Completed!")}
+              onPress={handleSaveDraft}
             />
           )}
           {carFacing > 0 && (
@@ -189,11 +241,8 @@ const DamageInspection = () => {
           )}
         </View>
       </View>
+
       <DamageReportModal
-        damageDescription={damageDescription}
-        openGallery={openGallery}
-        setDamageDescription={setDamageDescription}
-        selectedImage={selectedImage}
         styles={styles}
         modalVisible={modalVisible}
         handleSaveDamage={handleSaveDamage}
@@ -216,15 +265,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
 
     textAlign: "center",
-    marginBottom: 15,
+    marginBottom: 5,
   },
   damageSelector: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
-    marginBottom: 10,
-  },
+    width: "100%",  },
   damageOption: {
     flexDirection: "row",
     alignItems: "center",

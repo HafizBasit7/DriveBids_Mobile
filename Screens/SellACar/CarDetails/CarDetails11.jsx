@@ -4,8 +4,8 @@ import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
 
-const MIN_VALUE = 500;
-const MAX_VALUE = 8000;
+const MIN_VALUE = 20;
+const MAX_VALUE = 600;
 
 const mapProgressToMileage = (progressValue) => {
   return Math.round((progressValue / 100) * (MAX_VALUE - MIN_VALUE) + MIN_VALUE);
@@ -15,13 +15,11 @@ const mapMileageToProgress = (mileageValue) => {
   return Math.round(((mileageValue - MIN_VALUE) / (MAX_VALUE - MIN_VALUE)) * 100);
 };
 
-
-const CarDetails8 = () => {
+const CarDetails11 = () => {
   const navigation = useNavigation();
-
   const {carState, dispatch} = useCar();
-  const [progress] = useState(new Animated.Value(carState.carDetails.engineSize ? mapMileageToProgress(carState.carDetails.engineSize) : 0));
-
+  const [progress] = useState(new Animated.Value(carState.carDetails.horsePower ? mapMileageToProgress(carState.carDetails.horsePower) : 0));
+  
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderGrant: () => {
@@ -30,13 +28,13 @@ const CarDetails8 = () => {
         dispatch({
           type: 'UPDATE_FIELD',
           section: 'carDetails',
-          field: 'engineSize',
+          field: 'horsePower',
           value: mapProgressToMileage(value)
         });
       });
     },
     onPanResponderMove: (event, gestureState) => {
-      let newValue = Math.max(0, Math.min(100, mapMileageToProgress(carState.carDetails.engineSize) + gestureState.dx / 4));
+      let newValue = Math.max(0, Math.min(100, mapMileageToProgress(carState.carDetails.horsePower) + gestureState.dx / 4));
       progress.setValue(newValue);
     },
     onPanResponderRelease: () => {
@@ -45,7 +43,7 @@ const CarDetails8 = () => {
         dispatch({
           type: 'UPDATE_FIELD',
           section: 'carDetails',
-          field: 'engineSize',
+          field: 'horsePower',
           value: mapProgressToMileage(value)
         });
       });
@@ -57,51 +55,51 @@ const CarDetails8 = () => {
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 8 of 14</Text>
+        <Text style={styles.lineText}>Step 11 of 14</Text>
         <View style={styles.line} />
       </View>
 
       {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>Engine Size</Text>
+        <Text style={styles.lineText2}>Horse Power</Text>
         <View style={styles.line} />
       </View>
 
       {/* Progress Bar Container */}
       <View style={styles.progressContainer}>
-        <Text style={styles.progressHeading}>Engine Size(CCs): {carState.carDetails.engineSize || 0}</Text>
-                <View style={styles.progressBar}>
-                  <Animated.View
-                    style={[
-                      styles.filledBar,
-                      {
-                        width: progress.interpolate({
-                          inputRange: [0, 100],
-                          outputRange: ["0%", "100%"],
-                        }),
-                      },
-                    ]}
-                  />
-                  <Animated.View
-                    style={[
-                      styles.progressCircle,
-                      {
-                        left: progress.interpolate({
-                          inputRange: [0, 100],
-                          outputRange: ["0%", "100%"],
-                        }),
-                      },
-                    ]}
-                    {...panResponder.panHandlers}
-                  />
-                </View>
+        <Text style={styles.progressHeading}>Horse Power: {carState.carDetails.horsePower || 0}</Text>
+         <View style={styles.progressBar}>
+            <Animated.View
+              style={[
+                styles.filledBar,
+                {
+                  width: progress.interpolate({
+                    inputRange: [0, 100],
+                    outputRange: ["0%", "100%"],
+                  }),
+                },
+              ]}
+            />
+            <Animated.View
+              style={[
+                styles.progressCircle,
+                {
+                  left: progress.interpolate({
+                    inputRange: [0, 100],
+                    outputRange: ["0%", "100%"],
+                  }),
+                },
+              ]}
+              {...panResponder.panHandlers}
+            />
+          </View>
         <View style={styles.rangeLabels}>
-          <Text style={styles.rangeText}>500</Text>
-          <Text style={styles.rangeText}>2000</Text>
-          <Text style={styles.rangeText}>4000</Text>
-          <Text style={styles.rangeText}>6000</Text>
-          <Text style={styles.rangeText}>8000</Text>
+          <Text style={styles.rangeText}>20</Text>
+          <Text style={styles.rangeText}>100</Text>
+          <Text style={styles.rangeText}>200</Text>
+          <Text style={styles.rangeText}>400</Text>
+          <Text style={styles.rangeText}>600</Text>
         </View>
       </View>
 
@@ -110,7 +108,7 @@ const CarDetails8 = () => {
         <CustomButton
           style={styles.button}
           title="Next"
-          onPress={() => navigation.navigate("CarDetails9")}
+          onPress={() => navigation.navigate("CarDetails12")}
         />
         <View style={{ height: 10 }} />
         <CustomButton
@@ -211,4 +209,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CarDetails8;
+export default CarDetails11;

@@ -1,53 +1,72 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, PanResponder, Animated } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { useCar } from "../../../R1_Contexts/carContext";
+
+const MIN_VALUE = 8;
+const MAX_VALUE = 30;
+
+const mapProgressToMileage = (progressValue) => {
+  return Math.round((progressValue / 100) * (MAX_VALUE - MIN_VALUE) + MIN_VALUE);
+};
+
+const mapMileageToProgress = (mileageValue) => {
+  return Math.round(((mileageValue - MIN_VALUE) / (MAX_VALUE - MIN_VALUE)) * 100);
+};
+
 const CarDetails5 = () => {
   
-  const [progress] = useState(new Animated.Value(0));
-  const [lastProgress, setLastProgress] = useState(0); // Store last valid progress
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation();
+  const {carState, dispatch} = useCar();
+  const [progress] = useState(new Animated.Value(carState.carDetails.mileage ? mapMileageToProgress(carState.carDetails.mileage) : 0));
+
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderGrant: () => {
-      // Store last progress when dragging starts
       progress.stopAnimation((value) => {
-        setLastProgress(value);
+        //Update in state
+        dispatch({
+          type: 'UPDATE_FIELD',
+          section: 'carDetails',
+          field: 'mileage',
+          value: mapProgressToMileage(value)
+        });
       });
     },
     onPanResponderMove: (event, gestureState) => {
-      let newValue = Math.max(
-        0,
-        Math.min(100, lastProgress + gestureState.dx / 4)
-      ); // Add dx to last progress
-      progress.setValue(newValue); // Update progress
+      let newValue = Math.max(0, Math.min(100, mapMileageToProgress(carState.carDetails.mileage) + gestureState.dx / 4));
+      progress.setValue(newValue);
     },
     onPanResponderRelease: () => {
       progress.stopAnimation((value) => {
-        setLastProgress(value); // Save the last position
+        //Update in state
+        dispatch({
+          type: 'UPDATE_FIELD',
+          section: 'carDetails',
+          field: 'mileage',
+          value: mapProgressToMileage(value)
+        });
       });
     },
   });
 
   return (
     <View style={styles.container}>
-      {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 5 of 10</Text>
+        <Text style={styles.lineText}>Step 5 of 14</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>Milage</Text>
+        <Text style={styles.lineText2}>Mileage</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Progress Bar Container */}
       <View style={styles.progressContainer}>
-        <Text style={styles.progressHeading}>Mileage</Text>
+        <Text style={styles.progressHeading}>Mileage: {carState.carDetails.mileage || 0}</Text>
         <View style={styles.progressBar}>
           <Animated.View
             style={[
@@ -74,16 +93,15 @@ const CarDetails5 = () => {
           />
         </View>
         <View style={styles.rangeLabels}>
-          <Text style={styles.rangeText}>10k</Text>
-          <Text style={styles.rangeText}>20k</Text>
-          <Text style={styles.rangeText}>40k</Text>
-          <Text style={styles.rangeText}>80k</Text>
-          <Text style={styles.rangeText}>160k</Text>
-          <Text style={styles.rangeText}>320k</Text>
+          <Text style={styles.rangeText}>8</Text>
+          <Text style={styles.rangeText}>12</Text>
+          <Text style={styles.rangeText}>15</Text>
+          <Text style={styles.rangeText}>18</Text>
+          <Text style={styles.rangeText}>23</Text>
+          <Text style={styles.rangeText}>30</Text>
         </View>
       </View>
 
-      {/* Buttons */}
       <View style={styles.buttonContainer}>
         <CustomButton
           style={styles.button}
@@ -95,7 +113,7 @@ const CarDetails5 = () => {
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.navigate("CarDetails4")}
+          onPress={() => navigation.goBack()}
         />
       </View>
     </View>
@@ -177,7 +195,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: "60%",
+    marginTop: "42%",
   },
   button: {
     marginBottom: 5,

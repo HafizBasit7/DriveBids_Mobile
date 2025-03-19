@@ -75,3 +75,28 @@ export const loadDraft = async (draftId) => {
         throw e;
     }
 };
+
+export const postAd = async (carId) => {
+    try {
+        const result = await apiClient.post(`/car/postAd`, {carId});
+        const resultData = result.data;
+
+        if(!resultData.status) {
+            throw {
+                name: 'app',
+                message: resultData.message,
+            };
+        }
+
+        return resultData; 
+    }
+    catch(e) {
+        if(e.response?.data) {
+            throw {
+                name: 'app',
+                ...e.response.data,
+            }
+        }
+        throw e;
+    }
+};

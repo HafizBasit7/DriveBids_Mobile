@@ -5,16 +5,16 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  TextInput,
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { CheckBox } from "react-native-elements"; // Importing CheckBox
+import {useCar} from "../../../R1_Contexts/carContext";
 
 const ExteriorFeature1 = () => {
-  const [selectedOptions, setSelectedOptions] = useState([]); // Multiple selections
-  const [inputValue, setInputValue] = useState("");
+
   const navigation = useNavigation(); // Initialize navigation
+  const {carState, dispatch} = useCar();
 
   const options = [
     { id: 1, label: "Sunroof" },
@@ -27,15 +27,27 @@ const ExteriorFeature1 = () => {
     { id: 8, label: "Daytime Running Lights (DRLs)" },
     { id: 9, label: "Power Folding Mirrors" },
     { id: 10, label: "Rain Sensing Wipers" },
+    { id: 10, label: "Parking Sensors" },
+    { id: 10, label: "3D Camera" },
+    { id: 10, label: "Reverse Camera" },
+    { id: 10, label: "Immoblizer" },
   ];
 
-  const toggleSelection = (id) => {
-    setSelectedOptions(
-      (prevSelected) =>
-        prevSelected.includes(id)
-          ? prevSelected.filter((item) => item !== id) // Deselect if already selected
-          : [...prevSelected, id] // Select otherwise
-    );
+  const toggleSelection = (value) => {
+    if(carState.features?.exterior?.includes(value)) {
+      dispatch({
+        type: 'REMOVE_FEATURE',
+        section: 'exterior',
+        value,
+      });
+      return;
+    };
+
+    dispatch({
+      type: 'UPDATE_FEATURE',
+      section: 'exterior',
+      value,
+    });
   };
 
   return (
@@ -43,7 +55,7 @@ const ExteriorFeature1 = () => {
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 1 of 3</Text>
+        <Text style={styles.lineText}>Step 1 of 2</Text>
         <View style={styles.line} />
       </View>
 
@@ -59,11 +71,11 @@ const ExteriorFeature1 = () => {
         data={options}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => toggleSelection(item.id)}>
+          <TouchableOpacity onPress={() => toggleSelection(item.label)}>
             <View style={styles.optionContainer}>
               <CheckBox
-                checked={selectedOptions.includes(item.id)}
-                onPress={() => toggleSelection(item.id)}
+                checked={carState.features?.exterior?.includes(item.label)}
+                onPress={() => toggleSelection(item.label)}
                 checkedColor="#007BFF"
               />
               <Text style={styles.entityText}>{item.label}</Text>
@@ -77,14 +89,14 @@ const ExteriorFeature1 = () => {
         <CustomButton
           style={styles.button}
           title="Next"
-          onPress={() => navigation.navigate("ExteriorFeature2")}
+          onPress={() => navigation.navigate("InteriorFeature1")}
         />
         <View style={{ height: 10 }} />
         <CustomButton
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.navigate("VehicleInfo")}
+          onPress={() => navigation.goBack()}
         />
       </View>
     </View>
@@ -153,7 +165,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: 15,
+    marginTop: 10,
+    marginBottom: 80,
   },
   button: {
     marginBottom: 5,

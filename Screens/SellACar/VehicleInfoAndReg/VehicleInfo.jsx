@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
@@ -6,20 +6,61 @@ import CustomButton from "../../../CustomComponents/CustomButton";
 import VehicleInfoCard from "../../../CustomComponents/VehicleInfoCard";
 import { useNavigation } from "@react-navigation/native";
 import {useCar} from "../../../R1_Contexts/carContext";
-import { carDetailsValidation, carInspectionReportValidation, carPricingValidation, imagesValidation } from "../../../R1_Validations/CarValidations";
+import DialogBox from "../../../CustomComponents/DialogBox";
+import { carDamageReportValidation, carDetailsValidation, carFeaturesValidation, carInspectionReportValidation, carPricingValidation, imagesValidation } from "../../../R1_Validations/CarValidations";
 
 const VehicleInfo = () => {
 
-  const {carState} = useCar();
+  const {carState, carPostAd} = useCar();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
   const carPricingCompletion = carPricingValidation.safeParse(carState.carPricing);
   const carInspectionReportCompletion = carInspectionReportValidation.safeParse(carState.carInspectionReport);
   const carDetailsCompletion = carDetailsValidation.safeParse(carState.carDetails);
   const imageCompletion = imagesValidation.safeParse(carState.images);
+  const carDamageReportComplection = carDamageReportValidation.safeParse(carState.carDamageReport);
+  const carFeaturesCompletion = carFeaturesValidation.safeParse(carState.features);
+
+  const postAdAllow = (carPricingCompletion.success && carInspectionReportCompletion.success && carDetailsCompletion.success && imageCompletion.success
+    && carDamageReportComplection.success && carFeaturesCompletion.success
+  );
+
+  const handleSaveDraft = async () => {
+    setLoading(true);
+    try {
+        await carPostAd();
+        setMessage({type: 'success', message: 'Car ad posted!', title: 'Success'});
+    }
+    catch(e) {
+        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onOk = () => {
+    if(message?.type === 'error') {
+      setMessage(null);
+    } else {
+      setMessage(null); navigation.popTo("SellCar");
+    }
+  };
 
   const navigation = useNavigation("");
   return (
     <View style={styles.container}>
+
+      {/* loading dialog */}
+      <DialogBox
+        visible={loading ? true : message ? true : false}
+        message={message?.message}
+        onOkPress={onOk}
+        type={message?.type}
+        loading={loading}
+        title={message?.title || ''}
+      />
+
       <SectionHeader title={"Vehicle Information"} />
 
       <ScrollView
@@ -28,16 +69,16 @@ const VehicleInfo = () => {
       >
         <VehicleInfoCard
           name="Car Details"
-          steps={9}
+          steps={14}
           iconName="file-document"
           completionStatus={carDetailsCompletion.success ? "Completed" : "Incomplete"}
           onPress={() => navigation.navigate("CarDetails1")}
         />
         <VehicleInfoCard
           name="Car Features"
-          steps={3}
+          steps={2}
           iconName="account"
-          completionStatus="Incomplete"
+          completionStatus={carFeaturesCompletion.success ? "Completed" : "Incomplete"}
           onPress={() => navigation.navigate("ExteriorFeature1")}
         />
         <VehicleInfoCard
@@ -58,8 +99,8 @@ const VehicleInfo = () => {
           name="Damage Report"
           steps={4}
           iconName="car-wrench"
-          completionStatus="Incomplete"
-          onPress={() => alert("Damage Report Clicked")}
+          completionStatus={carDamageReportComplection.success ? "Completed" : "Incomplete"}
+          onPress={() => navigation.navigate("DamageInspection")}
         />
         <VehicleInfoCard
           name="Car Pricing"
@@ -73,7 +114,7 @@ const VehicleInfo = () => {
 
       {/* Buttons placed outside the ScrollView */}
       <View style={styles.buttonContainer}>
-        <CustomButton title="Post Ad" style={styles.postAdButton} />
+        {postAdAllow && <CustomButton title="Post Ad" style={styles.postAdButton} onPress={handleSaveDraft}/>}
         {/* <CustomButton
           title="Save Draft"
           style={styles.saveDraftButton}
@@ -102,7 +143,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.ScreenBg,
   },
   postAdButton: {
-    marginBottom: 10,
+    marginBottom: 108,
   },
   saveDraftButton: {
     backgroundColor: "transparent",
