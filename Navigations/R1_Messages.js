@@ -13,8 +13,8 @@ export default function R1_Messages() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="ActiveChatBox" component={ActiveChatBox} />
       <Stack.Screen name="ChatHeads" component={ChatHeads} />
+      <Stack.Screen name="ActiveChatBox" component={ActiveChatBox} />
     </Stack.Navigator>
   );
 }

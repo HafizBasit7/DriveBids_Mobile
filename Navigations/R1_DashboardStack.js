@@ -4,16 +4,12 @@ import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import Icon from "react-native-vector-icons/Feather";
 import Svg, { Path } from "react-native-svg";
 import R1_HomeStack from "./R1_HomeStack";
+import R1_Messages from "./R1_Messages";
 
 // Dummy Screens
 const MyAdsScreen = () => (
   <View style={styles.screen}>
     <Text>My Ads</Text>
-  </View>
-);
-const MessagesScreen = () => (
-  <View style={styles.screen}>
-    <Text>Messages</Text>
   </View>
 );
 const SavedScreen = () => (
@@ -65,7 +61,7 @@ export default function R1_DashboardStack () {
                 component={R1_HomeStack}
                 options={{
                     tabBarIcon: ({ color }) => (
-                    <Icon name="home" size={24} color={color} />
+                      <Icon name="home" size={24} color={color} />
                     ),
                     tabBarLabel: "Home",
                 }}
@@ -92,7 +88,7 @@ export default function R1_DashboardStack () {
 
             <Tab.Screen
               name="Messages"
-              component={MessagesScreen}
+              component={R1_Messages}
               options={{
                 tabBarIcon: ({ color }) => (
                   <Icon name="message-square" size={24} color={color} />
