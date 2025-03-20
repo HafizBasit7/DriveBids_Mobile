@@ -1,0 +1,35 @@
+import { createStackNavigator } from "@react-navigation/stack";
+
+// Screens
+import ProfileScreen from "../Screens/Tahir-Screens/ProfileAndEditProfileScreen/ProfileScreen";
+import EditProfile from "../Screens/Tahir-Screens/ProfileAndEditProfileScreen/ProfileScreen";
+import MyBids from "../Screens/Tahir-Screens/MyBids/MyBids";
+import WatchList from "../Screens/Tahir-Screens/WatchList/WatchList";
+import Terms from "../Screens/Tahir-Screens/TermsAndConditions/Terms";
+import NotificationSettingsScreen from "../Screens/Tahir-Screens/NotificationSetting/NotificationSetting";
+import PasswordChangeScreen from "../Screens/Tahir-Screens/ChangePassword/ChangePassword";
+const Stack = createStackNavigator();
+
+export default function R1_Profile() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="MyBids" component={MyBids} />
+      <Stack.Screen name="WatchList" component={WatchList} />
+      <Stack.Screen name="Terms" component={Terms} />
+      <Stack.Screen
+        name="NotificationSettingsScreen"
+        component={NotificationSettingsScreen}
+      />
+      <Stack.Screen
+        name="PasswordChangeScreen"
+        component={PasswordChangeScreen}
+      />
+    </Stack.Navigator>
+  );
+}
