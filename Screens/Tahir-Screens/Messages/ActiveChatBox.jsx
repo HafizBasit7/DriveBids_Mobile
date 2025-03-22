@@ -10,10 +10,6 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
-<<<<<<< HEAD
-  SafeAreaView,
-=======
->>>>>>> 80399e4ab0c34903edfba04ffa02d44e182db82a
   StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -67,29 +63,20 @@ const ActiveChatBox = () => {
   );
 
   return (
-<<<<<<< HEAD
-   
-   
-<>
-
-<StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
-=======
     <View style={styles.container}>
       <StatusBar
         barStyle="dark-content"
         backgroundColor="transparent"
         translucent
       />
->>>>>>> 80399e4ab0c34903edfba04ffa02d44e182db82a
 
       {/* Header */}
       <View style={styles.header}>
-      
         <Image
           source={{ uri: "https://i.pravatar.cc/150?img=10" }}
           style={styles.avatar}
         />
-        <Text style={styles.username}>Bryans</Text>
+        <Text style={styles.username}>Bryan</Text>
         <Ionicons
           name="ellipsis-vertical"
           size={24}
@@ -98,11 +85,7 @@ const ActiveChatBox = () => {
         />
       </View>
 
-<<<<<<< HEAD
-    
-=======
       {/* Item Details */}
->>>>>>> 80399e4ab0c34903edfba04ffa02d44e182db82a
       <View style={styles.itemDetailsContainer}>
         <Image
           source={{
@@ -189,12 +172,7 @@ const ActiveChatBox = () => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-<<<<<<< HEAD
-     
-      </>
-=======
     </View>
->>>>>>> 80399e4ab0c34903edfba04ffa02d44e182db82a
   );
 };
 
@@ -206,7 +184,6 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     backgroundColor: GlobalStyles.colors.Default,
     paddingTop: Platform.OS === "ios" ? 50 : 32, // Extra padding for iOS status bar
     paddingBottom: 7,
