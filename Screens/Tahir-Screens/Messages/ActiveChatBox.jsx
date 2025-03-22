@@ -10,7 +10,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
+  StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { chatData } from "./DummyMessages";
@@ -19,19 +19,21 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 const ActiveChatBox = () => {
   const [messages, setMessages] = useState(chatData);
   const [newMessage, setNewMessage] = useState("");
-  const [keyboardStatus, setKeyboardStatus] = useState(0);
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
+
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-      setKeyboardStatus(1);
+      setKeyboardStatus(true);
     });
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      setKeyboardStatus(0);
+      setKeyboardStatus(false);
     });
     return () => {
       showSubscription.remove();
       hideSubscription.remove();
     };
   }, []);
+
   const sendMessage = () => {
     if (newMessage.trim().length > 0) {
       setMessages([
@@ -61,9 +63,14 @@ const ActiveChatBox = () => {
   );
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      {/* Fixed Header - Outside KeyboardAvoidingView */}
+    <View style={styles.container}>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
 
+      {/* Header */}
       <View style={styles.header}>
         <Image
           source={{ uri: "https://i.pravatar.cc/150?img=10" }}
@@ -78,7 +85,7 @@ const ActiveChatBox = () => {
         />
       </View>
 
-      {/* Fixed Item Details - Outside KeyboardAvoidingView */}
+      {/* Item Details */}
       <View style={styles.itemDetailsContainer}>
         <Image
           source={{
@@ -94,7 +101,6 @@ const ActiveChatBox = () => {
           <View
             style={{
               flexDirection: "row",
-
               alignItems: "center",
             }}
           >
@@ -103,8 +109,8 @@ const ActiveChatBox = () => {
               style={{
                 fontSize: 12,
                 fontFamily: "Inter-SemiBold",
-                color: "red",
-                marginTop: 4,
+                color: "green",
+                marginTop: 3,
               }}
             >
               AED 53,000
@@ -114,16 +120,15 @@ const ActiveChatBox = () => {
         <Ionicons name="chevron-forward" size={24} color="#999" />
       </View>
 
-      {/* Only the chat area and input are affected by KeyboardAvoidingView */}
+      {/* KeyboardAvoidingView for the chat and input */}
       <KeyboardAvoidingView
-        style={[
-          styles.keyboardAvoidingArea,
-          { flexGrow: keyboardStatus ? 0 : 1 },
-        ]}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardView}
+        behavior={
+          Platform.OS === "ios" ? "padding" : keyboardStatus ? "height" : null
+        }
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
       >
-        {/* Chat list */}
+        {/* Chat Messages */}
         <FlatList
           data={messages}
           keyExtractor={(item) => item.id}
@@ -131,9 +136,10 @@ const ActiveChatBox = () => {
           style={styles.chatList}
           contentContainerStyle={styles.chatListContent}
           inverted
+          showsVerticalScrollIndicator={false}
         />
 
-        {/* Input field */}
+        {/* Input Container */}
         <View style={styles.inputContainer}>
           <TouchableOpacity style={styles.plusButton}>
             <Ionicons
@@ -166,25 +172,27 @@ const ActiveChatBox = () => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
+  container: {
     flex: 1,
+    backgroundColor: "#FFFFFF",
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: GlobalStyles.colors.Default,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    zIndex: 10,
+    paddingTop: Platform.OS === "ios" ? 50 : 32, // Extra padding for iOS status bar
+    paddingBottom: 7,
+    paddingHorizontal: 5,
+    paddingLeft: 22,
   },
   avatar: {
-    width: 40,
-    height: 40,
+    width: 37,
+    height: 37,
     borderRadius: 20,
   },
   username: {
@@ -206,7 +214,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderBottomWidth: 1,
     borderColor: "#E0E0E0",
-    zIndex: 9,
   },
   itemImage: {
     width: 40,
@@ -229,12 +236,13 @@ const styles = StyleSheet.create({
     color: "#333",
     marginTop: 2,
   },
-  keyboardAvoidingArea: {
+  keyboardView: {
     flex: 1,
+    display: "flex",
+    flexDirection: "column",
   },
   chatList: {
     flex: 1,
-
     paddingHorizontal: 15,
   },
   chatListContent: {
@@ -271,14 +279,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 15,
-    paddingVertical: 5,
+    paddingVertical: 10,
     backgroundColor: "#FFFFFF",
     borderTopWidth: 1,
     borderColor: "#E0E0E0",
   },
   plusButton: {
-    marginRight: 5,
-    color: GlobalStyles.colors.ButtonColor,
+    marginRight: 10,
   },
   input: {
     flex: 1,
@@ -286,7 +293,8 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-Regular",
     paddingVertical: 8,
     color: "#333",
-    marginRight: 5,
+    marginRight: 10,
+    maxHeight: 100,
   },
   sendButton: {
     backgroundColor: GlobalStyles.colors.ButtonColor,

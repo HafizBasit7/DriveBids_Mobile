@@ -10,10 +10,10 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
-  return (    
+  return (
     <AuthContextProvider>
       <QueryClientProvider client={queryClient}>
-        <R1_App/>
+        <R1_App />
       </QueryClientProvider>
     </AuthContextProvider>
   );

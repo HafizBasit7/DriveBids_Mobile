@@ -2,7 +2,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 // Headers
 import HomeHeader from "../CustomComponents/UmairComponents/Homeheader";
-import Header from "../CustomComponents/UmairComponents/Header"; // Your second header
 
 // Screens
 import Home from "../Screens/Tahir-Screens/Home/Home";
@@ -11,6 +10,7 @@ import ReserveMet from "../Screens/UmairScreens/ReserveMet";
 import MyAdDetails from "../Screens/UmairScreens/MyAdDetails";
 import PlaceBid from "../Screens/UmairScreens/PlaceBid";
 import FiltersScreen from "../Screens/Tahir-Screens/FiltersScreen/Filters";
+import Header from "../CustomComponents/Header";
 const Stack = createStackNavigator();
 
 export default function R1_HomeStack() {
