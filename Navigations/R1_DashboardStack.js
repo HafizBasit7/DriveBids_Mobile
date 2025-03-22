@@ -59,7 +59,7 @@ export default function R1_DashboardStack () {
 
             <Tab.Screen
                 name="Home"
-                component={R1_Profile}
+                component={R1_HomeStack}
                 options={{
                     tabBarIcon: ({ color }) => (
                       <Icon name="home" size={24} color={color} />
