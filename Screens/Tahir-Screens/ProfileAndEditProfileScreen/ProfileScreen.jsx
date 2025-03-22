@@ -11,8 +11,16 @@ import {
 import { Icon } from "react-native-elements";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
+import { useAuth } from "../../../R1_Contexts/authContext";
+import { useNavigation } from "@react-navigation/native";
+import WrapperComponent from "../../../CustomComponents/WrapperComponent"
 
 const ProfileScreen = () => {
+
+  const {logoutUser, authState} = useAuth();
+  const navigation = useNavigation();
+  const user = authState.user;
+
   const menuItems = [
     {
       id: "bids",
@@ -20,6 +28,7 @@ const ProfileScreen = () => {
       icon: "gavel",
       iconType: "material",
       iconColor: GlobalStyles.colors.ButtonColor,
+      onClick: () => {},
     },
     {
       id: "watchlist",
@@ -27,6 +36,9 @@ const ProfileScreen = () => {
       icon: "favorite",
       iconType: "material",
       iconColor: GlobalStyles.colors.ButtonColor,
+      onClick: () => {
+        navigation.navigate('WatchList');
+      },
     },
     {
       id: "notifications",
@@ -34,6 +46,19 @@ const ProfileScreen = () => {
       icon: "settings",
       iconType: "material",
       iconColor: GlobalStyles.colors.ButtonColor,
+      onClick: () => {
+        navigation.navigate('NotificationSettingsScreen');
+      },
+    },
+    {
+      id: "changepassword",
+      title: "Change Password",
+      icon: "key",
+      iconType: "material",
+      iconColor: GlobalStyles.colors.ButtonColor,
+      onClick: () => {
+        navigation.navigate('PasswordChangeScreen');
+      },
     },
     {
       id: "terms",
@@ -41,6 +66,9 @@ const ProfileScreen = () => {
       icon: "help",
       iconType: "material",
       iconColor: GlobalStyles.colors.ButtonColor,
+      onClick: () => {
+        navigation.navigate('Terms');
+      },
     },
     {
       id: "logout",
@@ -49,6 +77,9 @@ const ProfileScreen = () => {
       iconType: "material",
       iconColor: "#dc2626",
       titleColor: "#dc2626",
+      onClick: () => {
+        logoutUser();
+      },
     },
   ];
 
@@ -56,7 +87,7 @@ const ProfileScreen = () => {
     <TouchableOpacity
       key={item.id}
       style={styles.menuItem}
-      onPress={() => console.log(`${item.title} pressed`)}
+      onPress={item.onClick}
     >
       <View style={styles.menuItemLeft}>
         <Icon
@@ -80,19 +111,19 @@ const ProfileScreen = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <WrapperComponent>
       <SectionHeader title={"Profile"} />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Profile Header */}
         <View style={styles.profileHeader}>
           <Image
-            source={{ uri: "https://i.pravatar.cc/150?img=10" }}
+            source={{ uri: user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }}
             style={styles.profileImage}
             defaultSource={{ uri: "https://i.pravatar.cc/150?img=10" }}
           />
           <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>James Anderson</Text>
-            <TouchableOpacity>
+            <Text style={styles.profileName}>{user.name}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}>
               <Text style={styles.editProfileText}>Edit Profile</Text>
             </TouchableOpacity>
           </View>
@@ -109,7 +140,7 @@ const ProfileScreen = () => {
           {menuItems.map(renderMenuItem)}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </WrapperComponent>
   );
 };
 

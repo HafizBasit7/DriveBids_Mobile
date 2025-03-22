@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/Feather";
 import Svg, { Path } from "react-native-svg";
 import R1_HomeStack from "./R1_HomeStack";
 import R1_Messages from "./R1_Messages";
+import R1_Profile from "./R1_Profile";
 
 // Dummy Screens
 const MyAdsScreen = () => (
@@ -58,7 +59,7 @@ export default function R1_DashboardStack () {
 
             <Tab.Screen
                 name="Home"
-                component={R1_HomeStack}
+                component={R1_Profile}
                 options={{
                     tabBarIcon: ({ color }) => (
                       <Icon name="home" size={24} color={color} />
@@ -118,18 +119,19 @@ const styles = StyleSheet.create({
       alignItems: "center",
     },
     tabBar: {
-      position: "absolute",
-      bottom: 20,
+      // position: "absolute",
+      bottom: 0,
       left: 20,
       right: 20,
-      height: 60,
-      borderRadius: 20,
+      height: '9%',
+      // borderRadius: 20,
       backgroundColor: "#fff",
       shadowColor: "#000",
       shadowOffset: { width: 0, height: 10 },
       shadowOpacity: 0.1,
       shadowRadius: 4,
       elevation: 5,
+      // paddingBottom:10
     },
     tabLabel: {
       fontSize: 12,

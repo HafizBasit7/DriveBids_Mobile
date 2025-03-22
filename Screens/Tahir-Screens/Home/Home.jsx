@@ -14,60 +14,36 @@ import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import HomeCarCard from "../../../CustomComponents/Tahir-Components/Home/HomeCarCard";
 import HomeBanner from "../../../CustomComponents/HomeBanner";
+import { useQuery } from "@tanstack/react-query";
+import { listCars } from "../../../API_Callings/R1_API/Car";
+import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 
 export default Home = () => {
-  const carData = [
-    {
-      id: "1",
-      image:
-        "https://media.architecturaldigest.com/photos/66a914f1a958d12e0cc94a8e/16:9/w_1280,c_limit/DSC_5903.jpg",
-      name: "Volkswagen Passat",
-      year: "1967",
-      engine: "34000",
-      transmission: "Manual",
-      topBid: "25k",
-      timeLeft: "10h:20m:11s",
-      favorite: false,
-    },
-    {
-      id: "2",
-      image:
-        "https://media.architecturaldigest.com/photos/66a914f1a958d12e0cc94a8e/16:9/w_1280,c_limit/DSC_5903.jpg",
-      name: "Volkswagen Passat",
-      year: "1967",
-      engine: "34000",
-      transmission: "Manual",
-      topBid: "25k",
-      timeLeft: "10h:20m:11s",
-      favorite: false,
-    },
-    {
-      id: "3",
-      image:
-        "https://media.architecturaldigest.com/photos/66a914f1a958d12e0cc94a8e/16:9/w_1280,c_limit/DSC_5903.jpg",
-      name: "Volkswagen Passat",
-      year: "1967",
-      engine: "34000",
-      transmission: "Manual",
-      topBid: "25k",
-      timeLeft: "10h:20m:11s",
-      favorite: false,
-    },
-    {
-      id: "4",
-      image:
-        "https://media.architecturaldigest.com/photos/66a914f1a958d12e0cc94a8e/16:9/w_1280,c_limit/DSC_5903.jpg",
-      name: "Volkswagen Passat",
-      year: "1967",
-      engine: "34000",
-      transmission: "Manual",
-      topBid: "25k",
-      timeLeft: "10h:20m:11s",
-      favorite: false,
-    },
 
-    // Add more car objects here...
-  ];
+  const {data, isLoading} = useQuery({
+    queryKey: ['cars'],
+    queryFn: () => listCars(1, 10, 'recent'),
+  });
+
+  const {data: carsInWatchList, isLoading: watchlistLoading} = useQuery({
+    queryKey: ['carsInWatchList'],
+    queryFn: getCarsIdInWatchList,
+  });
+
+  const {data: endingCarList, isLoading: endingCarListLoading} = useQuery({
+    queryKey: ['carsEnding'],
+    queryFn: () => listCars(1, 10, 'ending')
+  });
+  
+
+  if(isLoading) {
+    return null;
+  }
+
+  if(endingCarListLoading) {
+    return null;
+  }
+  
   const CARD_WIDTH = 230;
   const SEPARATOR_WIDTH = 10;
   const ITEM_WIDTH = CARD_WIDTH + SEPARATOR_WIDTH;
@@ -79,17 +55,18 @@ export default Home = () => {
         showsVerticalScrollIndicator={false}
       >
         <HomeBanner />
-        <SectionHeader marginCustom={20} title={"Recommended for you"} />
+        <SectionHeader marginCustom={20} title={"Spotlight Deals"} />
 
         <FlatList
-          data={carData}
-          keyExtractor={(item) => String(item.id)}
+          data={data.data.cars}
+          keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
             <HomeCarCard
               onViewPress={() => {
                 console.log("View Ad from Home");
               }}
-              {...item}
+              ad={item}
+              carsInWatchList={carsInWatchList}
             />
           )}
           horizontal
@@ -109,14 +86,15 @@ export default Home = () => {
         />
         <SectionHeader title={"Ending Soonest"} />
         <FlatList
-          data={carData}
-          keyExtractor={(item) => String(item.id)}
+          data={endingCarList.data.cars}
+          keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
             <HomeCarCard
               onViewPress={() => {
                 console.log("View Ad from Home");
               }}
-              {...item}
+              carsInWatchList={carsInWatchList}
+              ad={item}
             />
           )}
           horizontal
@@ -137,14 +115,15 @@ export default Home = () => {
 
         <SectionHeader title={"Newly Listed"} />
         <FlatList
-          data={carData}
-          keyExtractor={(item) => String(item.id)}
+          data={data.data.cars}
+          keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
             <HomeCarCard
               onViewPress={() => {
                 console.log("View Ad from Home");
               }}
-              {...item}
+              carsInWatchList={carsInWatchList}
+              ad={item}
             />
           )}
           horizontal

@@ -7,7 +7,7 @@ import {
   Image,
 } from "react-native";
 import { Svg, Circle } from "react-native-svg";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import {uploadImage} from "../../../utils/upload";
 
 import CustomButton from "../../../CustomComponents/CustomButton";

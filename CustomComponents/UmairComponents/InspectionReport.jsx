@@ -1,9 +1,70 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { getCarInspectionReport } from "../../API_Callings/R1_API/Car";
 
-const InspectionReport = () => {
+const inspectionReportEnum = [
+  { icon: "check-circle", color: "green", label: "OK" },
+  { icon: "block", color: "gray", label: "Not Tested" },
+  {
+    icon: "error",
+    color: "orange",
+    label: "Requires Some Attention",
+  },
+  {
+    icon: "error-outline",
+    color: "red",
+    label: "Requires Immediate Attention",
+  },
+];
+
+//Dynamic operations
+const dynamicOperations = [
+  {name: "Break Efficiency", target: "breakEfficiency"},
+  {name: "Hand Brake Test", target: "handBrakeTest"},
+  {name: "Static Gear Selection", target: "staticGearSelection"},
+  {name: "Reverse Clutch Slip", target: "reverseClutchSlip"},
+  {name: "Steering Noise", target: "steeringNoise"},
+  {name: "Suspension Ride Height", target: "suspensionRideHeight"},
+  {name: "Air Conditioning Power", target: "airconPower"},
+  {name: "Sat Nav Power", target: "satNavPower"},
+  {name: "Ice Power", target: "icePower"},
+  {name: "Central Locking", target: "centralLocking"},
+  {name: "Converitble Sunroof Electics", target: "convertibleSunroofElectrics"},
+  {name: "Horn", target: "horn"}
+];
+
+const essentialsChecks = [
+  {name: "Head lights", target: "headLight"},
+  {name: "Brake lights", target: "brakeLight"},
+  {name: "Side Lights", target: "sideLight"},
+  {name: "Fog lights", target: "fogLight"},
+  {name: "Indicators", target: "indicators"},
+  {name: "Electric Windows", target: "electricWindows"},
+  {name: "Electric Mirrors", target: "electricMirrors"},
+  {name: "Wipers", target: "wipers"},
+];
+
+const interiorChecks = [
+  {name: "Engine Management Light", target: "engineManagementLight"},
+  {name: "Brake Wear Indicator Light", target: "breakWearIndicatorLight"},
+  {name: "Abs Warning Light", target: "absWarningLight"},
+  {name: "Oil Warning Light", target: "oilWarningLight"},
+  {name: "Airbag warning light", target: "airbagWarningLight"},
+  {name: "Glow plug light", target: "glowPlugLight"},
+];
+
+const InspectionReport = ({car}) => {
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const {data, isLoading} = useQuery({
+    queryKey: ['inspectionReport', car],
+    queryFn: () => getCarInspectionReport(car),
+    enabled: isExpanded,
+  })
+
+  const inspectionReport = data?.data?.inspectionReport;
 
   return (
     <View style={styles.container}>
@@ -31,10 +92,10 @@ const InspectionReport = () => {
                   color: "red",
                   label: "Requires Immediate Attention",
                 },
-                { icon: "check-circle", color: "green", label: "Passed" },
-                { icon: "error", color: "orange", label: "Minor Issue" },
-                { icon: "error-outline", color: "red", label: "Major Issue" },
-                { icon: "block", color: "gray", label: "Not Applicable" },
+                // { icon: "check-circle", color: "green", label: "Passed" },
+                // { icon: "error", color: "orange", label: "Minor Issue" },
+                // { icon: "error-outline", color: "red", label: "Major Issue" },
+                // { icon: "block", color: "gray", label: "Not Applicable" },
               ])}
             </View>
           </View>
@@ -42,7 +103,18 @@ const InspectionReport = () => {
           <View style={styles.card}>
             <Text style={styles.cardHeader}>Dynamic Operations</Text>
             <View style={styles.cardContent}>
-              {renderGrid([
+              {inspectionReport?.dynamicOperations && renderGrid(Object.keys(inspectionReport.dynamicOperations).map(key => {
+
+                const test = inspectionReportEnum.find(value => value.label === inspectionReport.dynamicOperations[key]);
+                const label = dynamicOperations.find(val => val.target === key);
+                
+                return {
+                  icon: test.icon,
+                  color: test.color,
+                  label: label.name,
+                };
+              }))}
+              {/* {renderGrid([
                 {
                   icon: "check-circle",
                   color: "green",
@@ -73,32 +145,42 @@ const InspectionReport = () => {
                   color: "red",
                   label: "Engine Idle Stability",
                 },
-              ])}
+              ])} */}
             </View>
           </View>
 
           <View style={styles.card}>
             <Text style={styles.cardHeader}>Essential Checks</Text>
             <View style={styles.cardContent}>
-              {renderGrid([
-                { icon: "check-circle", color: "green", label: "Headlights" },
-                { icon: "error-outline", color: "red", label: "Brake Lights" },
-                { icon: "error", color: "orange", label: "Indicators" },
-                { icon: "block", color: "gray", label: "Fog Lights" },
-                {
-                  icon: "check-circle",
-                  color: "green",
-                  label: "Reverse Lights",
-                },
-                { icon: "error-outline", color: "red", label: "Hazard Lights" },
-              ])}
+              {inspectionReport?.essentialChecks && renderGrid(Object.keys(inspectionReport.essentialChecks).map(key => {
+
+                const test = inspectionReportEnum.find(value => value.label === inspectionReport.essentialChecks[key]);
+                const label = essentialsChecks.find(val => val.target === key);
+
+                return {
+                  icon: test.icon,
+                  color: test.color,
+                  label: label.name,
+                };
+              }))}
             </View>
           </View>
 
           <View style={styles.card}>
             <Text style={styles.cardHeader}>Interior Checks</Text>
             <View style={styles.cardContent}>
-              {renderGrid([
+              {inspectionReport?.interiorChecks && renderGrid(Object.keys(inspectionReport.interiorChecks).map(key => {
+
+                  const test = inspectionReportEnum.find(value => value.label === inspectionReport.interiorChecks[key]);
+                  const label = interiorChecks.find(val => val.target === key);
+
+                  return {
+                    icon: test.icon,
+                    color: test.color,
+                    label: label.name,
+                  };
+              }))}
+              {/* {renderGrid([
                 { icon: "check-circle", color: "green", label: "Seat Belts" },
                 {
                   icon: "error",
@@ -120,7 +202,7 @@ const InspectionReport = () => {
                   color: "gray",
                   label: "Radio/Multimedia System",
                 },
-              ])}
+              ])} */}
             </View>
           </View>
         </View>

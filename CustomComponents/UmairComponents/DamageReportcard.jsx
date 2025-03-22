@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import ReportModal from "./ReportModal"; // Import ReportModal
+import { useQuery } from "@tanstack/react-query";
+import { getCarDamageReport } from "../../API_Callings/R1_API/Car";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const carSides = [
   require("../../assets/tahirAssets/CarFront.png"),
@@ -10,12 +13,26 @@ const carSides = [
   require("../../assets/tahirAssets/CarBack.png"),
 ];
 
+const damageOptions = [
+  { label: "Scratches", icon: "gesture", color: "#2D8CFF" },
+  { label: "Dents/Cracks", icon: "build", color: "#FEE226" },
+  { label: "Rust", icon: "coronavirus", color: "#D35400" },
+];
+
 const descriptions = ["Front View", "Right View", "Left View", "Back View"];
 
-const DamageReportCarousel = () => {
+const DamageReportCarousel = ({car}) => {
+
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false); // State for modal visibility
+  const [damage, setDamage] = useState(null);
+
+  const {data, isLoading} = useQuery({
+    queryKey: ['damageReport', car],
+    queryFn: () => getCarDamageReport(car),
+    enabled: isExpanded
+  });
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % carSides.length);
@@ -25,6 +42,12 @@ const DamageReportCarousel = () => {
     setCurrentIndex(
       (prevIndex) => (prevIndex - 1 + carSides.length) % carSides.length
     );
+  };
+
+  const damageReport = data?.data?.damageReport?.damageReport;
+
+  const toggleDamage = (damage) => {
+    setDamage(damage);
   };
 
   return (
@@ -56,8 +79,28 @@ const DamageReportCarousel = () => {
             </TouchableOpacity>
 
             {/* Open Modal on Image Click */}
-            <TouchableOpacity onPress={() => setIsModalVisible(true)}>
+            <TouchableOpacity onPress={() => {}}>
               <Image source={carSides[currentIndex]} style={styles.carImage} />
+              {damageReport && damageReport.map((marker, index) => {
+                if(marker.imageIndex === currentIndex) {
+                  const option = damageOptions.find(val => val.label === marker.damageType);
+                  return (
+                    <MaterialIcons
+                      onPress={() => toggleDamage(marker)}
+                      key={index}
+                      name={option.icon}
+                      size={20}
+                      color={option.color}
+                      style={{
+                        position: "absolute",
+                        left: marker.x - 20 / 2, // Center the icon at x
+                        top: marker.y - 20 / 2,  // Center the icon at y
+                      }}
+                    />
+                    
+                  );
+                }
+              })}
             </TouchableOpacity>
 
             <TouchableOpacity onPress={handleNext}>
@@ -94,10 +137,13 @@ const DamageReportCarousel = () => {
       </TouchableOpacity>
 
       {/* Report Modal */}
-      <ReportModal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-      />
+      {damage && (
+        <ReportModal
+          visible={true}
+          damage={damage}
+          onClose={() => setDamage(null)}
+        />
+      )}
     </View>
   );
 };

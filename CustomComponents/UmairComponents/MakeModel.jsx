@@ -2,19 +2,22 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons"; // ✅ Import icons
 
-const carDetails = [
-  { icon: "pencil-alt", label: "MAKE", value: "Ford" },
-  { icon: "tools", label: "VARIANT", value: "Mustang" },
-  { icon: "car", label: "BODYTYPE", value: "Sedan" },
-  { icon: "tachometer-alt", label: "MILEAGE", value: "200,000" },
-  { icon: "palette", label: "COLOUR", value: "Red" },
-  { icon: "id-card", label: "REGISTERED", value: "1996, California" },
-  { icon: "cogs", label: "ENGINE", value: "Mustang" },
-  { icon: "gas-pump", label: "FUEL", value: "Sedan" },
-  { icon: "exchange-alt", label: "TRANSMISSION", value: "Manual" },
-];
 
-const MakeModel = () => {
+
+const MakeModel = ({car}) => {
+
+  const carDetails = [
+    { icon: "pencil-alt", label: "MAKE", value: car.make },
+    { icon: "tools", label: "VARIANT", value: car.variant },
+    { icon: "car", label: "MODEL", value: car.model },
+    { icon: "tachometer-alt", label: "MILEAGE", value: `${car.mileage} KM` },
+    { icon: "palette", label: "COLOUR", value: car.color },
+    { icon: "id-card", label: "Registration No", value: car.regNo },
+    { icon: "cogs", label: "ENGINE", value: `${car.engineSize} CC` },
+    { icon: "gas-pump", label: "FUEL", value: car.fuel },
+    { icon: "exchange-alt", label: "TRANSMISSION", value: car.transmission },
+  ];
+
   return (
     <View style={styles.container}>
       {carDetails.map((item, index) => (

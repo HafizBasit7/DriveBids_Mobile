@@ -7,64 +7,71 @@ import {
   StyleSheet,
 } from "react-native";
 import CustomButton from "../../CustomComponents/CustomButton";
+import WrapperComponent from "../../CustomComponents/WrapperComponent";
+import HomeHeader from "../../CustomComponents/UmairComponents/Homeheader";
 
-const PlaceBid = () => {
+const PlaceBid = ({route}) => {
   const [bidAmount, setBidAmount] = useState(""); // Empty at start
+
+  const car = route.params.car;
 
   const handleBidSelection = (amount) => {
     setBidAmount(amount.toString()); // Set bid when an option is selected
   };
 
   return (
-    <View style={styles.container}>
-      {/* Main Content */}
-      <View style={styles.content}>
-        {/* Title */}
-        <View style={styles.titleContainer}>
-          <View style={styles.line} />
-          <Text style={styles.title}>Place your bid</Text>
-          <View style={styles.line} />
+    <WrapperComponent>
+      <HomeHeader car={car}/>
+      <View style={styles.container}>
+        {/* Main Content */}
+        <View style={styles.content}>
+          {/* Title */}
+          <View style={styles.titleContainer}>
+            <View style={styles.line} />
+            <Text style={styles.title}>Place your bid</Text>
+            <View style={styles.line} />
+          </View>
+
+          <Text style={styles.subtitle}>
+            When you confirm your bid, it means you’re committing to buy this car
+            if you’re the winning bidder.
+          </Text>
+
+          {/* Input Box */}
+          <View style={styles.inputContainer}>
+            <Text style={styles.currencySymbol}>$</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter bid"
+              keyboardType="numeric"
+              value={bidAmount}
+              onChangeText={setBidAmount}
+            />
+          </View>
+
+          {/* Warning Text */}
+          <Text style={styles.warning}>Please bid $30,100 or higher.</Text>
+
+          {/* Predefined Bid Options */}
+          <View style={styles.buttonContainer}>
+            {[31000, 30500, 32000].map((amount) => (
+              <TouchableOpacity
+                key={amount}
+                style={styles.bidButton}
+                onPress={() => handleBidSelection(amount)}
+              >
+                <Text style={styles.bidText}>${amount.toLocaleString()}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
 
-        <Text style={styles.subtitle}>
-          When you confirm your bid, it means you’re committing to buy this car
-          if you’re the winning bidder.
-        </Text>
-
-        {/* Input Box */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.currencySymbol}>$</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter bid"
-            keyboardType="numeric"
-            value={bidAmount}
-            onChangeText={setBidAmount}
-          />
-        </View>
-
-        {/* Warning Text */}
-        <Text style={styles.warning}>Please bid $30,100 or higher.</Text>
-
-        {/* Predefined Bid Options */}
-        <View style={styles.buttonContainer}>
-          {[31000, 30500, 32000].map((amount) => (
-            <TouchableOpacity
-              key={amount}
-              style={styles.bidButton}
-              onPress={() => handleBidSelection(amount)}
-            >
-              <Text style={styles.bidText}>${amount.toLocaleString()}</Text>
-            </TouchableOpacity>
-          ))}
+        {/* Button at the Bottom */}
+        <View style={styles.buttonWrapper}>
+          <CustomButton title={"Place Bid Now"} />
         </View>
       </View>
-
-      {/* Button at the Bottom */}
-      <View style={styles.buttonWrapper}>
-        <CustomButton title={"Place Bid Now"} />
-      </View>
-    </View>
+    </WrapperComponent>
   );
 };
 

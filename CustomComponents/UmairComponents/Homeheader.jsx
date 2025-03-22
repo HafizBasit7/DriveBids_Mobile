@@ -15,21 +15,30 @@ import {
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg"; // Ensure correct path
 // import MsgIcon from "../../assets/UmairAssets/MsgSVG.svg"; // Ensure correct path
 import { GlobalStyles } from "../../Styles/GlobalStyles";
+import { calculateTimeLeft } from "../../utils/countdown";
 
 const { width } = Dimensions.get("window");
 
-const HomeHeader = () => {
+const HomeHeader = ({car}) => {
   const scrollViewRef = useRef(null);
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
+ 
+  const countdownInterval = useRef();
+  const [timeLeft, setTimeLeft] = useState('0hr:0m:0s');
 
-  const images = [
-    "https://picsum.photos/id/237/800/400", // Random car image
-    "https://picsum.photos/id/250/800/400",
-    "https://picsum.photos/id/175/800/400",
-  ];
+
+  useEffect(() => {
+    countdownInterval.current = setInterval(() => {
+      setTimeLeft(calculateTimeLeft(car.duration));
+    }, 1000);
+
+    return () => clearInterval(countdownInterval.current);
+  }, []);
+
+  const images = Object.values(car.images).flat().map(val => val.url);
 
   useEffect(() => {
     let index = 0;
@@ -120,14 +129,14 @@ const HomeHeader = () => {
       <View style={styles.yellowContainer}>
         <View style={styles.leftContainer}>
           <Text style={styles.labelText}>Buy Now price</Text>
-          <Text style={styles.priceText}>AED 30,000</Text>
+          <Text style={styles.priceText}>AED {car.buyNowPrice}</Text>
         </View>
         <View style={styles.verticalLine} />
         <View style={styles.rightContainer}>
           <Text style={styles.labelText}>Highest Bid</Text>
-          <Text style={styles.priceText}>$30,000</Text>
+          <Text style={styles.priceText}>AED {car.highestBid}</Text>
           <Text style={styles.labelText2}>Ends in</Text>
-          <Text style={styles.timerText}>73hr:23mn:11s</Text>
+          <Text style={styles.timerText}>{timeLeft}</Text>
         </View>
       </View>
 

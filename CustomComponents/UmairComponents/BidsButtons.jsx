@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
@@ -5,13 +6,17 @@ const BidsButtons = ({
   buyItNowTitle = "BUY IT NOW",
   placeBidTitle = "PLACE BID",
   quickBidTitle = "QUICK BID",
+  car
 }) => {
+
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       {/* Buy It Now Button */}
-      <TouchableOpacity style={[styles.button, styles.outlineButton]}>
+      <TouchableOpacity style={[styles.button, styles.outlineButton]} onPress={() => navigation.navigate('PlaceBid', {car})}>
         <Text style={styles.blueText}>{buyItNowTitle}</Text>
-        <Text style={styles.price}>$28000</Text>
+        <Text style={styles.price}>AED {car.buyNowPrice}</Text>
       </TouchableOpacity>
 
       {/* Place Bid Button */}
@@ -22,7 +27,7 @@ const BidsButtons = ({
       {/* Quick Bid Button */}
       <TouchableOpacity style={[styles.button, styles.outlineButton]}>
         <Text style={styles.blueText}>{quickBidTitle}</Text>
-        <Text style={styles.price}>$28100</Text>
+        <Text style={styles.price}>AED {car.highestBid ? car.highestBid + 1 : car.staringBidPrice}</Text>
       </TouchableOpacity>
     </View>
   );

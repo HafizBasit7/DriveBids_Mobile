@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { chatData } from "./DummyMessages";
@@ -61,15 +62,19 @@ const ActiveChatBox = () => {
   );
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      {/* Fixed Header - Outside KeyboardAvoidingView */}
+   
+   
+<>
+
+<StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
 
       <View style={styles.header}>
+      
         <Image
           source={{ uri: "https://i.pravatar.cc/150?img=10" }}
           style={styles.avatar}
         />
-        <Text style={styles.username}>Bryan</Text>
+        <Text style={styles.username}>Bryans</Text>
         <Ionicons
           name="ellipsis-vertical"
           size={24}
@@ -78,7 +83,7 @@ const ActiveChatBox = () => {
         />
       </View>
 
-      {/* Fixed Item Details - Outside KeyboardAvoidingView */}
+    
       <View style={styles.itemDetailsContainer}>
         <Image
           source={{
@@ -166,7 +171,8 @@ const ActiveChatBox = () => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+     
+      </>
   );
 };
 
@@ -177,6 +183,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     backgroundColor: GlobalStyles.colors.Default,
     paddingVertical: 15,
     paddingHorizontal: 20,

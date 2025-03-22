@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useContext, useEffect, useReducer } from "react";
-import apiClient, { setAuthToken } from "../API_Callings/R1_API/axios-client";
+import apiClient, { removeAuthToken, setAuthToken } from "../API_Callings/R1_API/axios-client";
 import { getUser, loginUser, signupUser } from "../API_Callings/R1_API/Auth";
 
 
@@ -27,6 +27,13 @@ const authReducerFunction = (state, action) => {
                 user: action.payload,
             }
         }
+        case 'logout': {
+            return {
+                ...state,
+                isAuthenticated: false,
+                user: null,
+            };
+        }
         default: {
             return state;
         }
@@ -34,7 +41,7 @@ const authReducerFunction = (state, action) => {
 };
 
 //Context
-const AuthContext = createContext({authState: intialState, onboardingComplete: () => {}, login: async (payload) => {}, signup: async (payload) => {}});
+const AuthContext = createContext({authState: intialState, onboardingComplete: () => {}, login: async (payload) => {}, logoutUser: async () => {}, signup: async (payload) => {}});
 export const useAuth = () => useContext(AuthContext);
 
 export default function AuthContextProvider ({children}) {
@@ -92,8 +99,13 @@ export default function AuthContextProvider ({children}) {
         await AsyncStorage.setItem('isFirstTime', 'true');
     };
 
+    const logoutUser = async () => {
+        dispatch({type: 'logout'});
+        await removeAuthToken();
+    };
+
     return (
-        <AuthContext.Provider value={{authState, onboardingComplete, login, signup}}>
+        <AuthContext.Provider value={{authState, onboardingComplete, login, signup, logoutUser, dispatch}}>
             {children}
         </AuthContext.Provider>
     )

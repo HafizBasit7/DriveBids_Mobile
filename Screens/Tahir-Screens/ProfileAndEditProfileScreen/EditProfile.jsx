@@ -14,22 +14,57 @@ import { Dropdown } from "react-native-element-dropdown";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
+import { useAuth } from "../../../R1_Contexts/authContext";
+import { useNavigation } from "@react-navigation/native";
+import { ActivityIndicator } from "react-native-paper";
+import DialogBox from "../../../CustomComponents/DialogBox";
+import { updateProfile } from "../../../API_Callings/R1_API/Auth";
 
 const ProfileEditScreen = () => {
-  const [formData, setFormData] = useState({
-    fullName: "James Anderson",
-    email: "jamesanderson@gmail.com",
-    phoneNumber: "01774",
-    countryCode: "+880",
-    location: "New York",
-  });
+
+  const {authState, dispatch} = useAuth();
+  const user = authState.user;
+
+  const [loading, setLoading] = useState();
+  const [message, setMessage] = useState(null);
+
+  const navigation = useNavigation();
+
+  const [formData, setFormData] = useState(user);
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleSaveData = async () => {
+    setLoading(true);
+    try {
+
+      const result = await updateProfile(formData);
+      dispatch({
+        type: 'setUser',
+        payload: result.data.user,
+      });
+      setMessage({type: 'success', message: 'Profile updated', title: 'Success'});
+
+    }
+    catch(e) {
+      setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+      <DialogBox
+        visible={message ? true : false}
+        message={message?.message}
+        onOkPress={() => setMessage(null)}
+        type={message?.type}
+        loading={false}
+        title={message?.title || ''}
+      />
       <SectionHeader title={"Edit Profile"} />
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -38,7 +73,7 @@ const ProfileEditScreen = () => {
         {/* Profile Image */}
         <View style={styles.profileImageContainer}>
           <Image
-            source={{ uri: "https://i.pravatar.cc/150?img=10" }}
+            source={{ uri: user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }}
             style={styles.profileImage}
             defaultSource={{ uri: "https://i.pravatar.cc/150?img=10" }}
           />
@@ -54,7 +89,7 @@ const ProfileEditScreen = () => {
         </View>
 
         {/* Profile Name */}
-        <Text style={styles.profileName}>James Anderson</Text>
+        <Text style={styles.profileName}>{user.name}</Text>
 
         {/* Form Fields */}
         <View style={styles.formContainer}>
@@ -62,8 +97,8 @@ const ProfileEditScreen = () => {
             <Text style={styles.label}>Full Name</Text>
             <TextInput
               style={styles.input}
-              value={formData.fullName}
-              onChangeText={(text) => handleChange("fullName", text)}
+              value={formData.name}
+              onChangeText={(text) => handleChange("name", text)}
             />
           </View>
 
@@ -72,9 +107,10 @@ const ProfileEditScreen = () => {
             <TextInput
               style={styles.input}
               value={formData.email}
-              onChangeText={(text) => handleChange("email", text)}
+              // onChangeText={(text) => handleChange("email", text)}
               keyboardType="email-address"
               autoCapitalize="none"
+            
             />
           </View>
 
@@ -105,24 +141,29 @@ const ProfileEditScreen = () => {
             <Text style={styles.label}>Location</Text>
             <TextInput
               style={styles.input}
-              value={formData.location}
-              onChangeText={(text) => handleChange("location", text)}
+              value={formData.city}
+              onChangeText={(text) => handleChange("city", text)}
             />
           </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <CustomButton
-            style={{ marginBottom: 10 }}
-            title="Save Changes"
-            onPress={() => console.log("Next save the data")}
-          />
-          <CustomButton
-            title="Back"
-            style={styles.nextButton}
-            textStyle={styles.nextButtonText}
-            onPress={() => console.log("Go bAck from profile")}
-          />
-        </View>
+        {loading && (
+          <ActivityIndicator/>
+        )}
+        {!loading && (
+          <View style={styles.buttonContainer}>
+            <CustomButton
+              style={{ marginBottom: 10 }}
+              title="Save Changes"
+              onPress={handleSaveData}
+            />
+            <CustomButton
+              title="Back"
+              style={styles.nextButton}
+              textStyle={styles.nextButtonText}
+              onPress={() => navigation.goBack()}
+            />
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

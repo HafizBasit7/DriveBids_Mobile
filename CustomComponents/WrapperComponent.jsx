@@ -1,4 +1,4 @@
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 
 export default function WrapperComponent({children}) {
     return (
@@ -11,5 +11,6 @@ export default function WrapperComponent({children}) {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
+        backgroundColor: '#f3f4f6',
     },
 });

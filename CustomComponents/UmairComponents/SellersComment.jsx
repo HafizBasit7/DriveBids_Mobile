@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-const SellersComment = () => {
+const SellersComment = ({car}) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -18,12 +18,7 @@ const SellersComment = () => {
       {isExpanded && (
         <View style={styles.commentBox}>
           <Text style={styles.commentText}>
-            Lorem ipsum dolor sit amet consectetur. Nunc arcu accumsan tortor
-            sit senectus interdum netus. Purus quis quam aliquam a mauris diam
-            purus malesuada sit. Posuere libero pretium maecenas et sociis a
-            etiam sed posuere. Fermentum fringilla ac quam auctor. Ante ut
-            sodales nisi congue. At felis odio sit in sollicitudin id
-            suspendisse dolor.
+            {car.description}
           </Text>
         </View>
       )}

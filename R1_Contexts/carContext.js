@@ -31,10 +31,10 @@ const initialState = {
         interior: [],
     },
     images: {
-        exterior: [],
-        interior: [],
-        wheels: [],
-        tyreTreads: [],
+        exterior: null,
+        interior: null,
+        wheels: null,
+        tyreTreads: null,
     },
     carInspectionReport: {
         dynamicOperations: {
@@ -167,29 +167,29 @@ const carReducerFunction = (state, action) => {
             
         }
         case 'UPDATE_FIELD': {
-            if(action.section && action.subSection) {
+            if (action.section && action.subSection) {
                 return {
                     ...state,
                     [action.section]: {
                         ...state[action.section],
                         [action.subSection]: {
-                            ...state[action.section][action.subSection],
+                            ...((state[action.section] && state[action.section][action.subSection]) || {}),
                             [action.field]: action.value,
-                        }
-
-                    }
+                        },
+                    },
                 };
             }
-
-            if(action.section) {
+        
+            if (action.section) {
                 return {
                     ...state,
                     [action.section]: {
-                        ...state[action.section],
+                        ...(state[action.section] || {}),
                         [action.field]: action.value,
-                    }
-                }
+                    },
+                };
             }
+        
             return {
                 ...state,
                 [action.field]: action.value,

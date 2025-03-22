@@ -9,23 +9,21 @@ import {
   StyleSheet,
 } from "react-native";
 
-const ReportModal = ({ visible, onClose }) => {
+const ReportModal = ({ visible, onClose, damage }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [expanded, setExpanded] = useState(false);
 
-  const description =
-    "There is a 6-inch scratch on the front passenger-side door, penetrating the clear coat and exposing the paint layer. While not deep enough to reach the primer, it is visible and may worsen over time.";
-
+  // const description =
+  //   "There is a 6-inch scratch on the front passenger-side door, penetrating the clear coat and exposing the paint layer. While not deep enough to reach the primer, it is visible and may worsen over time.";
   const damageImages = [
-    { uri: "https://picsum.photos/200/300" },
-    { uri: "https://picsum.photos/300/200" },
+    { uri: damage.imageUrl },
   ];
 
   // Function to limit words and add "See More" / "See Less"
   const maxWords = 15;
-  const words = description.split(" ");
+  const words = damage.description.split(" ");
   const truncatedText = expanded
-    ? description
+    ? damage.description
     : words.slice(0, maxWords).join(" ") + " ...";
 
   return (

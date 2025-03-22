@@ -13,17 +13,54 @@ import { Input, Icon } from "react-native-elements";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
+import { useNavigation } from "@react-navigation/native";
+import { useMutation } from "@tanstack/react-query";
+import { updatePassword } from "../../../API_Callings/R1_API/Auth";
+import { ActivityIndicator } from "react-native-paper";
+import DialogBox from "../../../CustomComponents/DialogBox";
 
 export default function PasswordChangeScreen() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  
+  // const [confirmPassword, setConfirmPassword] = useState("");
+
   const [oldPasswordVisible, setOldPasswordVisible] = useState(false);
   const [newPasswordVisible, setNewPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
+  const [message, setMessage] = useState(null);
+  
+  // const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
+  const navigation = useNavigation();
+
+  const mutation = useMutation({
+    mutationFn: updatePassword,
+  });
+
+  const changePassword = async () => {
+    try {
+      const result = await mutation.mutateAsync({oldPassword, newPassword});
+      setMessage({type: 'success', message: 'Password change success', title: 'Success'});
+      setOldPassword('');
+      setNewPassword('');
+    }
+    catch(e) {
+      setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
+      <DialogBox
+        visible={message ? true : false}
+        message={message?.message}
+        onOkPress={() => setMessage(null)}
+        type={message?.type}
+        loading={false}
+        title={message?.title || ''}
+      />
+
       <SectionHeader title={"Change Password"} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -74,7 +111,7 @@ export default function PasswordChangeScreen() {
               }
             />
 
-            <Text style={styles.labelText}>Confirm Password</Text>
+            {/* <Text style={styles.labelText}>Confirm Password</Text>
             <Input
               value={confirmPassword}
               onChangeText={setConfirmPassword}
@@ -96,22 +133,24 @@ export default function PasswordChangeScreen() {
                   }
                 />
               }
-            />
+            /> */}
           </View>
-
-          <View style={styles.buttonContainer}>
-            <CustomButton
-              style={{ marginBottom: 10 }}
-              title="Save Changes"
-              onPress={() => console.log("Update Password")}
-            />
-            <CustomButton
-              title="Back"
-              style={styles.nextButton}
-              textStyle={styles.nextButtonText}
-              onPress={() => console.log("Go bAck from changePassword")}
-            />
-          </View>
+          {mutation.isPending && (<ActivityIndicator/>)}
+          {!mutation.isPending && (
+            <View style={styles.buttonContainer}>
+              <CustomButton
+                style={{ marginBottom: 10 }}
+                title="Save Changes"
+                onPress={changePassword}
+              />
+              <CustomButton
+                title="Back"
+                style={styles.nextButton}
+                textStyle={styles.nextButtonText}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          )}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -161,7 +200,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-
+    marginTop: "5%",
     alignSelf: "center",
   },
   nextButton: {

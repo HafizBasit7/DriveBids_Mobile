@@ -97,11 +97,11 @@ const { height, width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: "white",
+    backgroundColor: "#f3f4f6",
   },
   header: {
     width: width,
-    height: height * 0.27,
+    height: height * 0.23,
     backgroundColor: "#FEE226",
     borderBottomLeftRadius: 60,
     borderBottomRightRadius: 60,

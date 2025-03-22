@@ -113,7 +113,7 @@ const InspectionReport3 = () => {
                   key={idx}
                   style={[
                     styles.option,
-                    carState.carInspectionReport.interiorChecks[test.target] === option.label && {
+                    (carState.carInspectionReport?.interiorChecks ?? {})[test.target] === option.label && {
                       backgroundColor: "#F5F5F5",
                       fontWeight: "700",
                     },
@@ -127,7 +127,7 @@ const InspectionReport3 = () => {
                         borderWidth: 2,
                         borderRadius: 8,
                       },
-                      carState.carInspectionReport.interiorChecks[test.target] === option.label && {
+                      (carState.carInspectionReport?.interiorChecks ?? {})[test.target] === option.label && {
                         borderColor: GlobalStyles.colors.ButtonColor,
                         borderWidth: 1,
                       },
@@ -137,7 +137,7 @@ const InspectionReport3 = () => {
                       name={option.icon}
                       size={18}
                       color={
-                        carState.carInspectionReport.interiorChecks[test.target] === option.label
+                        (carState.carInspectionReport?.interiorChecks ?? {})[test.target] === option.label
                           ? option.color
                           : "#B0B0B0"
                       }
@@ -146,7 +146,7 @@ const InspectionReport3 = () => {
                   <Text
                     style={[
                       styles.optionText,
-                      carState.carInspectionReport.interiorChecks[test.target] === option.label && {
+                      (carState.carInspectionReport?.interiorChecks ?? {})[test.target]=== option.label && {
                         fontWeight: "700",
                       },
                     ]}

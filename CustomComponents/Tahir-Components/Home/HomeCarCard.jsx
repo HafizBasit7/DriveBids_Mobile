@@ -1,37 +1,89 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon, Button } from "react-native-elements";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toggleWatchList } from "../../../API_Callings/R1_API/Watchlist";
+import { calculateTimeLeft } from "../../../utils/countdown";
 
 const HomeCarCard = ({
-  image,
-  name,
-  year,
-  engine,
-  transmission,
-  topBid,
-  timeLeft,
-  favorite,
+  ad,
+  carsInWatchList,
   CardWidth = 250,
   imgHeight = 140,
   winning,
-  yourBid,
-  onViewPress,
   isFromMyBids = false,
   onIncreaseBid,
   onCancelBid,
 }) => {
+
+  const countdownInterval = useRef();
+  const [timeLeft, setTimeLeft] = useState('0hr:0m:0s');
+
+  const queryClient = useQueryClient();
+  const toggleWatchListMutation = useMutation({
+    mutationFn: toggleWatchList,
+    onMutate: async (carId) => {
+      await queryClient.cancelQueries(["carsInWatchList"]);
+      const previousWatchlist = queryClient.getQueryData(["carsInWatchList"]);
+
+      queryClient.setQueryData(["carsInWatchList"], (oldData) => {
+        if (!oldData) return { data: { carsInWatchList: [{ car: carId }] }, status: true, statusCode: 200 };
+        const isAlreadyInWatchlist = oldData.data.carsInWatchList.some((item) => item.car === carId);
+        return {
+          ...oldData,
+          data: {
+            ...oldData.data,
+            carsInWatchList: isAlreadyInWatchlist
+              ? oldData.data.carsInWatchList.filter((item) => item.car !== carId)
+              : [...oldData.data.carsInWatchList, { car: carId }],
+          },
+        };
+      });
+
+      return { previousWatchlist };
+    },
+    onError: (_error, _newMessage, context) => {
+      if (context?.previousWatchlist) {
+        queryClient.setQueryData(["carsInWatchList"], context.previousWatchlist);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["carsInWatchList"]);
+    },
+  });
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    countdownInterval.current = setInterval(() => {
+      setTimeLeft(calculateTimeLeft(ad.duration));
+    }, 1000);
+
+    return () => {
+      clearInterval(countdownInterval.current);
+    };
+  }, []);
+
+
+  const isCarInWatchList = (carsInWatchList?.data.carsInWatchList.findIndex(val => val.car === ad._id) !== -1);
+  const onViewAd = () => {
+    navigation.navigate('AdDetails', {carId: ad._id})
+  };
+
   return (
     <View style={[styles.card, { width: CardWidth }]}>
       <Image
-        source={{ uri: image }}
+        source={{ uri: ad.images.exterior[0].url }}
         style={[styles.image, { height: imgHeight }]}
         resizeMode="cover"
       />
       <Icon
-        name={favorite ? "favorite" : "favorite-border"}
+        onPress={() => toggleWatchListMutation.mutate(ad._id)}
+        name={isCarInWatchList ? "favorite" : "favorite-border"}
         type="material"
-        color={favorite ? "#E63946" : "rgba(244, 244, 244, 0.9)"}
+        color={isCarInWatchList ? "#E63946" : "rgba(244, 244, 244, 0.9)"}
         containerStyle={styles.favoriteIcon}
       />
       <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -51,22 +103,23 @@ const HomeCarCard = ({
         </Text>
       </View>
       <View style={styles.details}>
-        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.title}>{ad.variant}</Text>
         <View style={styles.infoRow}>
           <Icon name="calendar-today" type="material" size={16} color="black" />
-          <Text style={styles.infoText}>{year}</Text>
+          <Text style={styles.infoText}>{ad.model}</Text>
           <Text style={styles.separator}>|</Text>
 
           <Icon name="speed" type="material" size={16} color="black" />
-          <Text style={styles.infoText}>{engine} cc</Text>
+          <Text style={styles.infoText}>{ad.engineSize} cc</Text>
           <Text style={styles.separator}>|</Text>
           <Icon name="settings" type="material" size={16} color="black" />
-          <Text style={styles.infoText}>{transmission}</Text>
+          <Text style={styles.infoText}>{ad.transmission}</Text>
         </View>
         <Text style={styles.bidText}>
           {isFromMyBids ? "Your Bid" : "Top Bid"}{" "}
           <Text style={styles.bidAmount}>
-            $ {isFromMyBids ? yourBid : topBid}
+            {/* AED {isFromMyBids ? yourBid : topBid} */}
+            AED {ad.highestBid}
           </Text>
         </Text>
         <Text style={styles.timer}>{timeLeft}</Text>
@@ -133,7 +186,7 @@ const HomeCarCard = ({
               size: 18,
               color: "white",
             }}
-            onPress={onViewPress}
+            onPress={onViewAd}
             iconPosition="right"
           />
         </>

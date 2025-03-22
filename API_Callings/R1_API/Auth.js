@@ -76,3 +76,55 @@ export const loginUser = async (payload) => {
     }
 };
 
+export const updatePassword = async (payload) => {
+    try {
+        const result = await apiClient.post('/auth/updatePassword', payload);
+        const resultData = result.data;
+
+        if(!resultData.status) {
+            throw {
+                name: 'app',
+                message: resultData.message,
+            };
+        }
+
+        return resultData;
+    }
+    catch(e) {
+        if(e.response?.data) {
+            throw {
+                name: 'app',
+                ...e.response.data,
+            }
+        }
+
+        throw e;
+    }
+};
+
+export const updateProfile = async (payload) => {
+    try {
+        const result = await apiClient.post('/auth/updateProfile', payload);
+        const resultData = result.data;
+
+        if(!resultData.status) {
+            throw {
+                name: 'app',
+                message: resultData.message,
+            };
+        }
+
+        return resultData;
+    }
+    catch(e) {
+        if(e.response?.data) {
+            throw {
+                name: 'app',
+                ...e.response.data,
+            }
+        }
+
+        throw e;
+    }
+};
+

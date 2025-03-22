@@ -14,10 +14,29 @@ import SimilarAds from "../../CustomComponents/UmairComponents/SimilarAds";
 import SellerProfileCard from "../../CustomComponents/UmairComponents/SellerProfileCard";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
 import SectionHeader from "../../CustomComponents/SectionHeader";
-const AdDetails = () => {
+import HomeHeader from "../../CustomComponents/UmairComponents/Homeheader";
+import { useQuery } from "@tanstack/react-query";
+import { getCar } from "../../API_Callings/R1_API/Car";
+import WrapperComponent from "../../CustomComponents/WrapperComponent";
+
+const AdDetails = ({route}) => {
+  
+  const {carId} = route.params;
+
+  const {data, isLoading} = useQuery({
+    queryKey: ['car', carId],
+    queryFn: () => getCar(carId),
+  });
+
+
+  if(isLoading) {
+    return null;
+  }
+  const car = data.data.car;
+
   return (
-    <>
-      {/* <HomeHeader /> */}
+    <WrapperComponent>
+      <HomeHeader car={car}/>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -34,28 +53,30 @@ const AdDetails = () => {
           <View style={styles.boxedLineContainer}>
             <View style={styles.smallLine} />
             <View style={styles.centerBox}>
-              <Text style={styles.centerText}>RESERVE MET</Text>
+              <Text style={styles.centerText}>RESERVE {car.reserveMet ? '' : 'NOT'} MET</Text>
             </View>
             <View style={styles.smallLine} />
           </View>
-          <MakeModel />
-          <BidsButtons />
+          <MakeModel car={car}/>
+          <BidsButtons car={car}/>
           <SectionHeader title={"Owner Details"} />
           <SellerProfileCard
             onViewAllPress={() => {}}
-            name="ADAM WILLIAMS"
-            status="Private Seller"
-            profileImage="https://randomuser.me/api/portraits/men/32.jpg"
+            name={car.user.name}
+            status={car.user.type === 'trader' ? 'Trader' : 'Private Seller'}
+            profileImage={car.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png'}
           />
-          <InspectionReport />
-          <DamageReportCarousel />
+          <InspectionReport car={car._id}/>
+          <DamageReportCarousel car={car._id}/>
+          {/* //todo: do */}
           <BiddingHistory />
           <CarFeatures />
-          <SellersComment />
-          <SimilarAds />
+        <SellersComment car={car}/>
+        {/* todo: do */}
+        {/*           <SimilarAds /> */}
         </View>
       </ScrollView>
-    </>
+    </WrapperComponent>
   );
 };
 
