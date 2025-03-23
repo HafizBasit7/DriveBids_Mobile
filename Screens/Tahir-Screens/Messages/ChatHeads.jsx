@@ -10,12 +10,15 @@ import { Avatar } from "react-native-elements";
 import { messagesData } from "./DummyMessages";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
+import Header from "../../../CustomComponents/Header";
+import { useNavigation } from "@react-navigation/native";
 
 const ChatHeads = () => {
   const [activeTab, setActiveTab] = useState("Buying");
+  const navigation = useNavigation();
 
   const renderMessageItem = ({ item }) => (
-    <TouchableOpacity style={styles.messageItem}>
+    <TouchableOpacity style={styles.messageItem} onPress={() => {navigation.navigate('ActiveChatBox')}}>
       <Avatar rounded source={{ uri: item.avatar }} size={50} />
       <View style={styles.textContainer}>
         <View style={styles.header}>
@@ -62,6 +65,7 @@ const ChatHeads = () => {
 
   return (
     <View style={styles.container}>
+      <Header showSearch={false}/>
       <SectionHeader title={"Messages"} />
       <View style={styles.tabContainer}>
         <TouchableOpacity

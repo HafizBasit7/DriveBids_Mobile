@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator } from "react-native-paper";
 import DialogBox from "../../../CustomComponents/DialogBox";
 import { updateProfile } from "../../../API_Callings/R1_API/Auth";
+import Header from "../../../CustomComponents/Header";
 
 const ProfileEditScreen = () => {
 
@@ -56,7 +57,8 @@ const ProfileEditScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <>
+      <Header showSearch={false}/>
       <DialogBox
         visible={message ? true : false}
         message={message?.message}
@@ -165,7 +167,7 @@ const ProfileEditScreen = () => {
           </View>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </>
   );
 };
 

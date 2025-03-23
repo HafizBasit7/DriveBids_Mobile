@@ -11,6 +11,7 @@ import { Icon } from "react-native-elements";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
+import Header from "../../../CustomComponents/Header";
 
 export default function NotificationSettingsScreen() {
   // Common settings
@@ -40,7 +41,8 @@ export default function NotificationSettingsScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <>
+      <Header showSearch={false}/>
       <SectionHeader title={"Notifications Setting"} />
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -120,7 +122,7 @@ export default function NotificationSettingsScreen() {
           />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </>
   );
 }
 

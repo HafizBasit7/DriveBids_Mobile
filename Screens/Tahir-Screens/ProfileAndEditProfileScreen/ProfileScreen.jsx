@@ -13,7 +13,7 @@ import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import { useAuth } from "../../../R1_Contexts/authContext";
 import { useNavigation } from "@react-navigation/native";
-import WrapperComponent from "../../../CustomComponents/WrapperComponent"
+import Header from "../../../CustomComponents/Header";
 
 const ProfileScreen = () => {
 
@@ -23,12 +23,24 @@ const ProfileScreen = () => {
 
   const menuItems = [
     {
+      id: "ads",
+      title: "My Ads",
+      icon: "list",
+      iconType: "material",
+      iconColor: GlobalStyles.colors.ButtonColor,
+      onClick: () => {
+        navigation.navigate("MyAds");
+      },
+    },
+    {
       id: "bids",
       title: "My Bids",
       icon: "gavel",
       iconType: "material",
       iconColor: GlobalStyles.colors.ButtonColor,
-      onClick: () => {},
+      onClick: () => {
+        navigation.navigate("MyBids");
+      },
     },
     {
       id: "watchlist",
@@ -111,7 +123,8 @@ const ProfileScreen = () => {
   );
 
   return (
-    <WrapperComponent>
+    <>
+      <Header showSearch={false}/>
       <SectionHeader title={"Profile"} />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Profile Header */}
@@ -140,7 +153,7 @@ const ProfileScreen = () => {
           {menuItems.map(renderMenuItem)}
         </View>
       </ScrollView>
-    </WrapperComponent>
+    </>
   );
 };
 

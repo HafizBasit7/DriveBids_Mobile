@@ -14,13 +14,13 @@ const BidsButtons = ({
   return (
     <View style={styles.container}>
       {/* Buy It Now Button */}
-      <TouchableOpacity style={[styles.button, styles.outlineButton]} onPress={() => navigation.navigate('PlaceBid', {car})}>
+      <TouchableOpacity style={[styles.button, styles.outlineButton]}>
         <Text style={styles.blueText}>{buyItNowTitle}</Text>
         <Text style={styles.price}>AED {car.buyNowPrice}</Text>
       </TouchableOpacity>
 
       {/* Place Bid Button */}
-      <TouchableOpacity style={[styles.button, styles.primaryButton]}>
+      <TouchableOpacity style={[styles.button, styles.primaryButton]}  onPress={() => navigation.navigate('PlaceBid', {car})}>
         <Text style={styles.primaryText}>{placeBidTitle}</Text>
       </TouchableOpacity>
 

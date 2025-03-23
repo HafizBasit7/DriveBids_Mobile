@@ -14,6 +14,7 @@ import { CheckBox, Icon } from "react-native-elements";
 import SectionCheckBoxes from "./SectionCheckBoxes";
 import { FilterStyles } from "./StyleSheetFilters";
 import details from "./InitialDetails";
+import Header from "../../../CustomComponents/Header"; 
 
 const FiltersScreen = () => {
   const styles = FilterStyles;
@@ -340,6 +341,8 @@ const FiltersScreen = () => {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+
+      <Header/>
       <Text style={styles.header}>Filters</Text>
 
       <ScrollView

@@ -11,12 +11,16 @@ import WrapperComponent from "../../CustomComponents/WrapperComponent";
 import HomeHeader from "../../CustomComponents/UmairComponents/Homeheader";
 
 const PlaceBid = ({route}) => {
-  const [bidAmount, setBidAmount] = useState(""); // Empty at start
+  const [bidAmount, setBidAmount] = useState(""); 
+
+  const [loading, setLoading] = useState(false);
 
   const car = route.params.car;
 
+  const minBidPrice = car.highestBid ? car.highestBid + 1 : car.staringBidPrice + 1;
+
   const handleBidSelection = (amount) => {
-    setBidAmount(amount.toString()); // Set bid when an option is selected
+    setBidAmount(amount.toString());
   };
 
   return (
@@ -50,17 +54,17 @@ const PlaceBid = ({route}) => {
           </View>
 
           {/* Warning Text */}
-          <Text style={styles.warning}>Please bid $30,100 or higher.</Text>
+          <Text style={styles.warning}>Please bid AED {minBidPrice.toLocaleString()} or higher.</Text>
 
           {/* Predefined Bid Options */}
           <View style={styles.buttonContainer}>
-            {[31000, 30500, 32000].map((amount) => (
+            {[minBidPrice + 100, minBidPrice + 200, minBidPrice + 300].map((amount) => (
               <TouchableOpacity
                 key={amount}
                 style={styles.bidButton}
                 onPress={() => handleBidSelection(amount)}
               >
-                <Text style={styles.bidText}>${amount.toLocaleString()}</Text>
+                <Text style={styles.bidText}>AED {amount.toLocaleString()}</Text>
               </TouchableOpacity>
             ))}
           </View>

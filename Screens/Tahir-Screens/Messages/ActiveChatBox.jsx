@@ -15,11 +15,13 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { chatData } from "./DummyMessages";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const ActiveChatBox = () => {
   const [messages, setMessages] = useState(chatData);
   const [newMessage, setNewMessage] = useState("");
   const [keyboardStatus, setKeyboardStatus] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
@@ -33,6 +35,15 @@ const ActiveChatBox = () => {
       hideSubscription.remove();
     };
   }, []);
+
+  useEffect(() => {
+    navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
+    
+    return () => {
+      navigation.getParent()?.setOptions({ tabBarStyle: undefined });
+    };
+  }, []);
+
 
   const sendMessage = () => {
     if (newMessage.trim().length > 0) {

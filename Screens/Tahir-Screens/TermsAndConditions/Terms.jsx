@@ -3,10 +3,12 @@ import { StyleSheet, Text, View, ScrollView, SafeAreaView } from "react-native";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
+import Header from "../../../CustomComponents/Header";
 
 export default function Terms() {
   return (
-    <SafeAreaView style={styles.container}>
+    <>
+      <Header showSearch={false}/>
       <SectionHeader title={"Terms & Conditions"} />
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -72,7 +74,7 @@ export default function Terms() {
           />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </>
   );
 }
 

@@ -6,17 +6,25 @@ import { useNavigation } from "@react-navigation/native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toggleWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import { calculateTimeLeft } from "../../../utils/countdown";
+import { useAuth } from "../../../R1_Contexts/authContext";
 
 const HomeCarCard = ({
   ad,
   carsInWatchList,
   CardWidth = 250,
   imgHeight = 140,
-  winning,
   isFromMyBids = false,
-  onIncreaseBid,
-  onCancelBid,
+  bid,
 }) => {
+
+  //Calculate if from bids
+  let winning = false;
+  if(isFromMyBids) {
+    winning = bid.bigAmount === ad.highestBidAmount;
+  }
+
+  const {authState} = useAuth();
+  const user = authState.user;
 
   const countdownInterval = useRef();
   const [timeLeft, setTimeLeft] = useState('0hr:0m:0s');
@@ -25,6 +33,7 @@ const HomeCarCard = ({
   const toggleWatchListMutation = useMutation({
     mutationFn: toggleWatchList,
     onMutate: async (carId) => {
+      //For Car ids in watchlist
       await queryClient.cancelQueries(["carsInWatchList"]);
       const previousWatchlist = queryClient.getQueryData(["carsInWatchList"]);
 
@@ -50,7 +59,8 @@ const HomeCarCard = ({
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["carsInWatchList"]);
+      // queryClient.invalidateQueries(["carsInWatchList"]);
+      queryClient.invalidateQueries(["watchlist"]);
     },
   });
 
@@ -86,22 +96,24 @@ const HomeCarCard = ({
         color={isCarInWatchList ? "#E63946" : "rgba(244, 244, 244, 0.9)"}
         containerStyle={styles.favoriteIcon}
       />
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Text
-          style={{
-            backgroundColor: winning
-              ? "rgba(0,139,39,0.2)"
-              : "rgba(204,0,43,0.2)",
-            marginTop: 5,
-            paddingHorizontal: 10,
-            paddingVertical: 3,
-            borderRadius: 12,
-            color: winning ? "#008B27" : "#B3261E",
-          }}
-        >
-          {winning ? "Winning" : "Losing"}
-        </Text>
-      </View>
+      {ad.user !== user._id && (
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Text
+            style={{
+              backgroundColor: winning
+                ? "rgba(0,139,39,0.2)"
+                : "rgba(204,0,43,0.2)",
+              marginTop: 5,
+              paddingHorizontal: 10,
+              paddingVertical: 3,
+              borderRadius: 12,
+              color: winning ? "#008B27" : "#B3261E",
+            }}
+          >
+            {winning ? 'Winning' : 'Losing'}
+          </Text>
+        </View>
+      )}
       <View style={styles.details}>
         <Text style={styles.title}>{ad.variant}</Text>
         <View style={styles.infoRow}>
@@ -116,15 +128,38 @@ const HomeCarCard = ({
           <Text style={styles.infoText}>{ad.transmission}</Text>
         </View>
         <Text style={styles.bidText}>
-          {isFromMyBids ? "Your Bid" : "Top Bid"}{" "}
+          Top Bid{" "}
           <Text style={styles.bidAmount}>
             {/* AED {isFromMyBids ? yourBid : topBid} */}
             AED {ad.highestBid}
           </Text>
         </Text>
+        {isFromMyBids && (
+          <Text style={styles.bidText}>
+            Your Bid{" "}
+            <Text style={styles.bidAmount}>
+              {/* AED {isFromMyBids ? yourBid : topBid} */}
+              AED {bid.bidAmount}
+            </Text>
+          </Text>
+        )}
         <Text style={styles.timer}>{timeLeft}</Text>
       </View>
-      {isFromMyBids ? (
+      <Button
+            title="View Ad"
+            buttonStyle={styles.button}
+            titleStyle={styles.buttonText}
+            icon={{
+              name: "campaign",
+              type: "material",
+              size: 18,
+              color: "white",
+            }}
+            onPress={onViewAd}
+            iconPosition="right"
+          />
+          {/* todo: button add or no */}
+      {/* {isFromMyBids ? (
         <View
           style={{
             flexDirection: "row",
@@ -143,7 +178,7 @@ const HomeCarCard = ({
               borderRadius: 10,
               width: "48%",
             }}
-            onPress={onCancelBid}
+            onPress={() => {}}
           >
             <Text
               style={[
@@ -155,7 +190,7 @@ const HomeCarCard = ({
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={onIncreaseBid}
+            onPress={() => {}}
             style={{
               paddingHorizontal: 10,
               paddingVertical: 10,
@@ -190,7 +225,7 @@ const HomeCarCard = ({
             iconPosition="right"
           />
         </>
-      )}
+      )} */}
     </View>
   );
 };

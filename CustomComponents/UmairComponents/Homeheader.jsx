@@ -16,6 +16,7 @@ import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg"; // Ensure corr
 // import MsgIcon from "../../assets/UmairAssets/MsgSVG.svg"; // Ensure correct path
 import { GlobalStyles } from "../../Styles/GlobalStyles";
 import { calculateTimeLeft } from "../../utils/countdown";
+import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 
@@ -28,6 +29,8 @@ const HomeHeader = ({car}) => {
  
   const countdownInterval = useRef();
   const [timeLeft, setTimeLeft] = useState('0hr:0m:0s');
+
+  const navigation = useNavigation();
 
 
   useEffect(() => {
@@ -98,7 +101,7 @@ const HomeHeader = ({car}) => {
         </ScrollView>
 
         {/* Left Arrow Button */}
-        <TouchableOpacity style={styles.backIconContainer}>
+        <TouchableOpacity style={styles.backIconContainer} onPress={() => navigation.goBack()}>
           <BackIcon width={30} height={30} />
         </TouchableOpacity>
 

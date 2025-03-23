@@ -15,7 +15,7 @@ const CarFeatures = () => {
         <Text style={styles.lineText}>Car Features</Text>
         <View style={styles.fullLine} />
       </View>
-
+{/* //TODO : CAR FEATURES */}
       {/* Expandable Content */}
       {isExpanded && (
         <View style={styles.featuresContainer}>

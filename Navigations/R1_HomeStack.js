@@ -1,57 +1,63 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-// Headers
-import Header from "../CustomComponents/Header"; // Your second header
-
 // Screens
 import Home from "../Screens/Tahir-Screens/Home/Home";
 import AdDetails from "../Screens/UmairScreens/AdDetails";
-import ReserveMet from "../Screens/UmairScreens/ReserveMet";
-import MyAdDetails from "../Screens/UmairScreens/MyAdDetails";
+// import ReserveMet from "../Screens/UmairScreens/ReserveMet";
+// import MyAdDetails from "../Screens/UmairScreens/MyAdDetails";
 import PlaceBid from "../Screens/UmairScreens/PlaceBid";
 import FiltersScreen from "../Screens/Tahir-Screens/FiltersScreen/Filters";
+import OwnerProfile from "../Screens/Tahir-Screens/OwnerProfile/OwnerProfile";
+
 const Stack = createStackNavigator();
 
 export default function R1_HomeStack() {
   return (
     <Stack.Navigator >
-      
-      {/* Home Screen with "Header" */}
+
       <Stack.Screen
         name="Home"
         component={Home}
         options={{
-          header: () => <Header />,
+          headerShown: false,
         }}
       />
+
       <Stack.Screen
         name="FiltersScreen"
         component={FiltersScreen}
         options={{
-          header: () => <Header />,
+          headerShown: false,
         }}
       />
 
-      {/* Other Screens with "HomeHeader" */}
       <Stack.Screen
         name="AdDetails"
         component={AdDetails}
         options={{headerShown: false}}
       />
-      <Stack.Screen
+
+      {/* <Stack.Screen
         name="MyAdDetails"
         component={MyAdDetails}
-  
-      />
+      /> */}
+
       <Stack.Screen
         name="PlaceBid"
         component={PlaceBid}
         options={{headerShown: false}}
       />
+
       <Stack.Screen
+        name="OwnerProfile"
+        component={OwnerProfile}
+        options={{headerShown: false}}
+      />
+      
+      {/* <Stack.Screen
         name="ReserveMet"
         component={ReserveMet}
-      />
+      /> */}
     </Stack.Navigator>
   );
 }

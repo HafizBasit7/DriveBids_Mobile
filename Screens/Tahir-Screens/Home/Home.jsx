@@ -11,11 +11,12 @@ import {
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
+import Header from "../../../CustomComponents/Header"; 
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import HomeCarCard from "../../../CustomComponents/Tahir-Components/Home/HomeCarCard";
 import HomeBanner from "../../../CustomComponents/HomeBanner";
 import { useQuery } from "@tanstack/react-query";
-import { listCars } from "../../../API_Callings/R1_API/Car";
+import { listCars, listCarsByBidCount } from "../../../API_Callings/R1_API/Car";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 
 export default Home = () => {
@@ -34,6 +35,11 @@ export default Home = () => {
     queryKey: ['carsEnding'],
     queryFn: () => listCars(1, 10, 'ending')
   });
+
+  const {data: carsByBidCount, isLoading: carsByBidCountLoading} = useQuery({
+    queryKey: ['carsByBidCount'],
+    queryFn: () => listCarsByBidCount(1, 10)
+  });
   
 
   if(isLoading) {
@@ -43,6 +49,10 @@ export default Home = () => {
   if(endingCarListLoading) {
     return null;
   }
+
+  if(carsByBidCountLoading) {
+    return null;
+  }
   
   const CARD_WIDTH = 230;
   const SEPARATOR_WIDTH = 10;
@@ -50,6 +60,7 @@ export default Home = () => {
 
   return (
     <View style={styles.container}>
+      <Header/>
       <ScrollView
         style={{ flex: 1, paddingBottom: 10 }}
         showsVerticalScrollIndicator={false}
@@ -58,14 +69,14 @@ export default Home = () => {
         <SectionHeader marginCustom={20} title={"Spotlight Deals"} />
 
         <FlatList
-          data={data.data.cars}
+          data={carsByBidCount.data.cars}
           keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
             <HomeCarCard
               onViewPress={() => {
                 console.log("View Ad from Home");
               }}
-              ad={item}
+              ad={item.car}
               carsInWatchList={carsInWatchList}
             />
           )}

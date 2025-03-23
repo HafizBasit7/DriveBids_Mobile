@@ -15,6 +15,9 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import HomeCarCard from "../../../CustomComponents/Tahir-Components/Home/HomeCarCard";
 import HomeBanner from "../../../CustomComponents/HomeBanner";
 import SellerProfileCard from "../../../CustomComponents/UmairComponents/SellerProfileCard";
+import WrapperComponent from "../../../CustomComponents/WrapperComponent";
+import Header from "../../../CustomComponents/Header"; 
+
 
 export default OwnerProfile = () => {
   const carData = [
@@ -72,41 +75,44 @@ export default OwnerProfile = () => {
   var CARD_HEIGHT = 150;
 
   return (
-    <View style={styles.container}>
-      <SellerProfileCard />
-      <SectionHeader title={"Adam Listings"} />
+    <>
+      <Header showSearch={false}/>
+      <View style={styles.container}>
+        <SellerProfileCard />
+        <SectionHeader title={"Adam Listings"} />
+  {/* //TODO: OK */}
+        {/* <FlatList
+          data={carData}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={({ item }) => (
+            <HomeCarCard
+              CardWidth={280}
+              imgHeight={170}
+              onViewPress={() => {
+                console.log("Do Something from watchList");
+              }}
+              {...item}
+            />
+          )}
+          showsVerticalScrollIndicator={false} // Hide vertical scroll indicator
+          contentContainerStyle={{
+            paddingVertical: 10,
 
-      <FlatList
-        data={carData}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => (
-          <HomeCarCard
-            CardWidth={280}
-            imgHeight={170}
-            onViewPress={() => {
-              console.log("Do Something from watchList");
-            }}
-            {...item}
-          />
-        )}
-        showsVerticalScrollIndicator={false} // Hide vertical scroll indicator
-        contentContainerStyle={{
-          paddingVertical: 10,
-
-          justifyContent: "center",
-          alignItems: "center",
-        }} // Add vertical padding
-        ItemSeparatorComponent={() => (
-          <View style={{ height: 5 }} /> // Adjust spacing between items
-        )}
-        removeClippedSubviews={true}
-        getItemLayout={(data, index) => ({
-          length: CARD_HEIGHT, // Adjust to item height
-          offset: CARD_HEIGHT * index,
-          index,
-        })}
-      />
-    </View>
+            justifyContent: "center",
+            alignItems: "center",
+          }} // Add vertical padding
+          ItemSeparatorComponent={() => (
+            <View style={{ height: 5 }} /> // Adjust spacing between items
+          )}
+          removeClippedSubviews={true}
+          getItemLayout={(data, index) => ({
+            length: CARD_HEIGHT, // Adjust to item height
+            offset: CARD_HEIGHT * index,
+            index,
+          })}
+        /> */}
+      </View>
+    </>
   );
 };
 

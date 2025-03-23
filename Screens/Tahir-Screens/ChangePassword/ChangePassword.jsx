@@ -18,6 +18,7 @@ import { useMutation } from "@tanstack/react-query";
 import { updatePassword } from "../../../API_Callings/R1_API/Auth";
 import { ActivityIndicator } from "react-native-paper";
 import DialogBox from "../../../CustomComponents/DialogBox";
+import Header from "../../../CustomComponents/Header";
 
 export default function PasswordChangeScreen() {
   const [oldPassword, setOldPassword] = useState("");
@@ -51,7 +52,8 @@ export default function PasswordChangeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <>
+      <Header showSearch={false}/>
       <DialogBox
         visible={message ? true : false}
         message={message?.message}
@@ -153,7 +155,7 @@ export default function PasswordChangeScreen() {
           )}
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </>
   );
 }
 

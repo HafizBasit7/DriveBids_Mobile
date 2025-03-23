@@ -3,14 +3,18 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Icon } from "react-native-elements";
 import SectionHeader from "../SectionHeader";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const SellerProfileCard = ({
   name = "ADAM WILLIAMS",
+  user,
   status = "Private Seller",
   ShowChatOptions = false,
   profileImage = "https://randomuser.me/api/portraits/men/32.jpg",
-  onViewAllPress = () => {},
 }) => {
+
+  const navigation = useNavigation();
+
   return (
     <>
       <View style={styles.container}>
@@ -51,7 +55,7 @@ const SellerProfileCard = ({
           </View>
         ) : (
           <View>
-            <TouchableOpacity style={styles.viewAllButton} disabled={true}>
+            <TouchableOpacity style={styles.viewAllButton} onPress={() => navigation.navigate("OwnerProfile", {userId: user})}>
               <Text style={styles.viewAllText}>All Listings</Text>
               <Icon
                 name="chevron-right"

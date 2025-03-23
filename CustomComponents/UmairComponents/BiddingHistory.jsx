@@ -1,9 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { getCarBiddingHistory } from "../../API_Callings/R1_API/Car";
+import { ActivityIndicator } from "react-native-paper";
+import { formatAmount, formatDateTime } from "../../utils/R1_utils";
 
-const BiddingHistory = () => {
+const BiddingHistory = ({car}) => {
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const {data, isLoading} = useQuery({
+    queryKey: ['biddingHistory', car],
+    queryFn: () => getCarBiddingHistory(car),
+    enabled: isExpanded,
+  });
+
+  const bids = data?.data?.bids;
 
   return (
     <View style={styles.container}>
@@ -15,7 +27,8 @@ const BiddingHistory = () => {
       </View>
 
       {/* Expandable Content */}
-      {isExpanded && (
+      {(isExpanded && isLoading) && (<ActivityIndicator/>)}
+      {(isExpanded && !isLoading) && (
         <View style={styles.biddingList}>
           {bids.map((bid, index) => (
             <View key={index} style={styles.bidItem}>
@@ -24,10 +37,10 @@ const BiddingHistory = () => {
                   <Text style={styles.highestBidText}>Highest Bid</Text>
                 </View>
               )}
-              <Text style={styles.bidAmount}>Bid: {bid.amount}</Text>
-              <Text style={styles.bidRank}>{bid.rank} Bid</Text>
+              <Text style={styles.bidAmount}>Bid: AED {formatAmount(bid.bidAmount)}</Text>
+              {/* <Text style={styles.bidRank}>{index} Bid</Text> */}
               <Text style={styles.bidDate}>
-                Bided on {bid.date} at {bid.time}
+                Bided on {formatDateTime(bid.createdAt)}
               </Text>
               {index !== bids.length - 1 && <View style={styles.separator} />}
             </View>

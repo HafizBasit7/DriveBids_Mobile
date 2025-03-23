@@ -71,7 +71,8 @@ const NotificationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8F9FA",
+    margin: '10',
+    // backgroundColor: "#F8F9FA",
     justifyContent: "flex-start",
   },
   notificationItem: {

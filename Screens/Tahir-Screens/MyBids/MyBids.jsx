@@ -5,83 +5,39 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  TextInput,
-  ScrollView,
 } from "react-native";
-import CustomButton from "../../../CustomComponents/CustomButton";
-import { useNavigation } from "@react-navigation/native";
+// import CustomButton from "../../../CustomComponents/CustomButton";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import HomeCarCard from "../../../CustomComponents/Tahir-Components/Home/HomeCarCard";
-import HomeBanner from "../../../CustomComponents/HomeBanner";
+import Header from "../../../CustomComponents/Header";
+import { useQuery } from "@tanstack/react-query";
+import {listMyBids} from "../../../API_Callings/R1_API/Car";
+import { ActivityIndicator } from "react-native-paper";
+import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 
 export default MyBids = () => {
   const [activeTab, setActiveTab] = useState("Active");
+  const type = activeTab === 'Active' ? 'open' : activeTab === 'Won' ? 'won' : 'lost';
+  
+  const {data, isLoading} = useQuery({
+    queryKey: ['myBids', type],
+    queryFn: () => listMyBids(1, 10, type),
+  });
 
-  const carData = [
-    {
-      id: "1",
-      image:
-        "https://media.architecturaldigest.com/photos/66a914f1a958d12e0cc94a8e/16:9/w_1280,c_limit/DSC_5903.jpg",
-      name: "Volkswagen Passat",
-      year: "1967",
-      engine: "34000",
-      transmission: "Manual",
-      topBid: "25k",
-      timeLeft: "10h:20m:11s",
-      favorite: false,
-      yourBid: "30K",
-      winning: false,
-    },
-    {
-      id: "2",
-      image:
-        "https://media.architecturaldigest.com/photos/66a914f1a958d12e0cc94a8e/16:9/w_1280,c_limit/DSC_5903.jpg",
-      name: "Volkswagen Passat",
-      year: "1967",
-      engine: "34000",
-      transmission: "Manual",
-      topBid: "25k",
-      timeLeft: "10h:20m:11s",
-      yourBid: "40K",
-      favorite: true,
-      winning: true,
-    },
-    {
-      id: "3",
-      image:
-        "https://media.architecturaldigest.com/photos/66a914f1a958d12e0cc94a8e/16:9/w_1280,c_limit/DSC_5903.jpg",
-      name: "Volkswagen Passat",
-      year: "1967",
-      engine: "34000",
-      transmission: "Manual",
-      topBid: "25k",
-      timeLeft: "10h:20m:11s",
-      favorite: true,
-      yourBid: "30K",
-      winning: true,
-    },
-    {
-      id: "4",
-      image:
-        "https://media.architecturaldigest.com/photos/66a914f1a958d12e0cc94a8e/16:9/w_1280,c_limit/DSC_5903.jpg",
-      name: "Volkswagen Passat",
-      year: "1967",
-      engine: "34000",
-      transmission: "Manual",
-      topBid: "25k",
-      timeLeft: "10h:20m:11s",
-      favorite: true,
-      yourBid: "30K",
-      winning: false,
-    },
+  const {data: carsInWatchList, isLoading: watchlistLoading} = useQuery({
+    queryKey: ['carsInWatchList'],
+    queryFn: getCarsIdInWatchList,
+  });
 
-    // Add more car objects here...
-  ];
+  const bids = data?.data?.bids;
+
   var CARD_HEIGHT = 150;
 
   return (
-    <View style={styles.container}>
+    <>
+      <Header showSearch={false}/>
+      <View style={styles.container}>
       <SectionHeader title={"My Bids"} />
       <View style={styles.tabContainer}>
         <TouchableOpacity
@@ -117,24 +73,20 @@ export default MyBids = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <FlatList
-        data={carData}
+      
+      {isLoading && (<ActivityIndicator/>)}
+      {(!isLoading && bids) && (
+        <FlatList
+        data={bids}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
           <HomeCarCard
             isFromMyBids={true}
-            onIncreaseBid={() => {
-              console.log("Increase the bid");
-            }}
-            onCancelBid={() => {
-              console.log("Cencel the bid");
-            }}
             CardWidth={300}
             imgHeight={170}
-            onViewPress={() => {
-              console.log("Do Something from My Bids");
-            }}
-            {...item}
+            bid={item}
+            ad={item.car}
+            carsInWatchList={carsInWatchList}
           />
         )}
         showsVerticalScrollIndicator={false} // Hide vertical scroll indicator
@@ -154,7 +106,9 @@ export default MyBids = () => {
           index,
         })}
       />
+      )}
     </View>
+    </>
   );
 };
 

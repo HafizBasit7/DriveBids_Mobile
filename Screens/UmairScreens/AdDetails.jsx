@@ -61,15 +61,14 @@ const AdDetails = ({route}) => {
           <BidsButtons car={car}/>
           <SectionHeader title={"Owner Details"} />
           <SellerProfileCard
-            onViewAllPress={() => {}}
+            user={car.user._id}
             name={car.user.name}
             status={car.user.type === 'trader' ? 'Trader' : 'Private Seller'}
             profileImage={car.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png'}
           />
           <InspectionReport car={car._id}/>
           <DamageReportCarousel car={car._id}/>
-          {/* //todo: do */}
-          <BiddingHistory />
+          <BiddingHistory car={car._id}/>
           <CarFeatures />
         <SellersComment car={car}/>
         {/* todo: do */}

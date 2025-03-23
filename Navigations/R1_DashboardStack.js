@@ -6,19 +6,7 @@ import Svg, { Path } from "react-native-svg";
 import R1_HomeStack from "./R1_HomeStack";
 import R1_Messages from "./R1_Messages";
 import R1_Profile from "./R1_Profile";
-
-// Dummy Screens
-const MyAdsScreen = () => (
-  <View style={styles.screen}>
-    <Text>My Ads</Text>
-  </View>
-);
-const SavedScreen = () => (
-  <View style={styles.screen}>
-    <Text>Saved</Text>
-  </View>
-);
-  //Dummy
+import R1_Notification from "./R1_Notifications";
   
 //Custom button
 const CustomTabBarButton = ({ onPress }) => (
@@ -70,12 +58,12 @@ export default function R1_DashboardStack () {
 
             <Tab.Screen
               name="My Ads"
-              component={MyAdsScreen}
+              component={R1_Notification}
               options={{
                 tabBarIcon: ({ color }) => (
-                  <Icon name="list" size={24} color={color} />
+                  <Icon name="bell" size={24} color={color} />
                 ),
-                tabBarLabel: "My Ads",
+                tabBarLabel: "Notification",
               }}
             />
 
@@ -100,12 +88,12 @@ export default function R1_DashboardStack () {
 
             <Tab.Screen
               name="Saved"
-              component={SavedScreen}
+              component={R1_Profile}
               options={{
                 tabBarIcon: ({ color }) => (
-                  <Icon name="bookmark" size={24} color={color} />
+                  <Icon name="settings" size={24} color={color} />
                 ),
-                tabBarLabel: "Saved",
+                tabBarLabel: "Settings",
               }}
             />
         </Tab.Navigator>

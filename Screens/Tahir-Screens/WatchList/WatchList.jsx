@@ -17,6 +17,7 @@ import HomeBanner from "../../../CustomComponents/HomeBanner";
 import { useQuery } from "@tanstack/react-query";
 import { getWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import { ActivityIndicator } from "react-native-paper";
+import Header from "../../../CustomComponents/Header";
 
 export default WatchList = () => {
   const {data, isLoading} = useQuery({
@@ -24,96 +25,53 @@ export default WatchList = () => {
     queryFn: getWatchList,
   });
 
-  // const carData = [
-  //   {
-  //     id: "1",
-  //     image:
-  //       "https://media.architecturaldigest.com/photos/66a914f1a958d12e0cc94a8e/16:9/w_1280,c_limit/DSC_5903.jpg",
-  //     name: "Volkswagen Passat",
-  //     year: "1967",
-  //     engine: "34000",
-  //     transmission: "Manual",
-  //     topBid: "25k",
-  //     timeLeft: "10h:20m:11s",
-  //     favorite: false,
-  //   },
-  //   {
-  //     id: "2",
-  //     image:
-  //       "https://media.architecturaldigest.com/photos/66a914f1a958d12e0cc94a8e/16:9/w_1280,c_limit/DSC_5903.jpg",
-  //     name: "Volkswagen Passat",
-  //     year: "1967",
-  //     engine: "34000",
-  //     transmission: "Manual",
-  //     topBid: "25k",
-  //     timeLeft: "10h:20m:11s",
-  //     favorite: true,
-  //   },
-  //   {
-  //     id: "3",
-  //     image:
-  //       "https://media.architecturaldigest.com/photos/66a914f1a958d12e0cc94a8e/16:9/w_1280,c_limit/DSC_5903.jpg",
-  //     name: "Volkswagen Passat",
-  //     year: "1967",
-  //     engine: "34000",
-  //     transmission: "Manual",
-  //     topBid: "25k",
-  //     timeLeft: "10h:20m:11s",
-  //     favorite: true,
-  //   },
-  //   {
-  //     id: "4",
-  //     image:
-  //       "https://media.architecturaldigest.com/photos/66a914f1a958d12e0cc94a8e/16:9/w_1280,c_limit/DSC_5903.jpg",
-  //     name: "Volkswagen Passat",
-  //     year: "1967",
-  //     engine: "34000",
-  //     transmission: "Manual",
-  //     topBid: "25k",
-  //     timeLeft: "10h:20m:11s",
-  //     favorite: true,
-  //   },
-
-  //   // Add more car objects here...
-  // ];
   var CARD_HEIGHT = 150;
 
   const watchList = data?.data?.watchList
+  const carsInWatchList = {
+    data: {
+      carsInWatchList: watchList?.map(val => ({car: val.car._id})),
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <SectionHeader title={"Watch List"} />
-      {isLoading && (<ActivityIndicator/>)}
-      {watchList && (
-        <FlatList
-          data={watchList}
-          keyExtractor={(item) => String(item._id)}
-          renderItem={({ item }) => (
-            <HomeCarCard
-              CardWidth={280}
-              imgHeight={170}
-              ad={item.car}
-            />
-          )}
-          showsVerticalScrollIndicator={false} // Hide vertical scroll indicator
-          contentContainerStyle={{
-            paddingVertical: 10,
+    <>
+      <Header showSearch={false}/>
+      <View style={styles.container}>
+        <SectionHeader title={"Watch List"} />
+        {isLoading && (<ActivityIndicator/>)}
+        {watchList && (
+          <FlatList
+            data={watchList}
+            keyExtractor={(item) => String(item._id)}
+            renderItem={({ item }) => (
+              <HomeCarCard
+                CardWidth={280}
+                imgHeight={170}
+                ad={item.car}
+                carsInWatchList={carsInWatchList}
+              />
+            )}
+            showsVerticalScrollIndicator={false} // Hide vertical scroll indicator
+            contentContainerStyle={{
+              paddingVertical: 10,
 
-            justifyContent: "center",
-            alignItems: "center",
-          }} // Add vertical padding
-          ItemSeparatorComponent={() => (
-            <View style={{ height: 5 }} /> // Adjust spacing between items
-          )}
-          removeClippedSubviews={true}
-          getItemLayout={(data, index) => ({
-            length: CARD_HEIGHT, // Adjust to item height
-            offset: CARD_HEIGHT * index,
-            index,
-          })}
-        />
-      )}
-    </View>
+              justifyContent: "center",
+              alignItems: "center",
+            }} // Add vertical padding
+            ItemSeparatorComponent={() => (
+              <View style={{ height: 5 }} /> // Adjust spacing between items
+            )}
+            removeClippedSubviews={true}
+            getItemLayout={(data, index) => ({
+              length: CARD_HEIGHT, // Adjust to item height
+              offset: CARD_HEIGHT * index,
+              index,
+            })}
+          />
+        )}
+      </View>
+    </>
   );
 };
 

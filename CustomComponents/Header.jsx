@@ -9,23 +9,23 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import SvgHamburger from "../assets/SVG/TahirSvgs/Hamburger.svg";
+// import SvgHamburger from "../assets/SVG/TahirSvgs/Hamburger.svg";
+import SvgBack from "../assets/SVG/TahirSvgs/back.svg";
 import SvgLocation from "../assets/SVG/TahirSvgs/Location.svg";
 import SvgDown from "../assets/SVG/TahirSvgs/Down.svg";
 import SvgFilter from "../assets/SVG/TahirSvgs/Filter.svg";
 import SvgSearch from "../assets/SVG/TahirSvgs/Search.svg";
+import { useAuth } from "../R1_Contexts/authContext";
+import { useNavigation } from "@react-navigation/native";
 
-const Header = () => {
+
+const { height, width } = Dimensions.get("window");
+
+const Header = ({showSearch = true}) => {
   // State for search input
   const [searchText, setSearchText] = useState("");
-
-  // State for selected location
-  const [location, setLocation] = useState("Birmingham");
-
-  // State for profile image
-  const [profileImage, setProfileImage] = useState(
-    "https://your-profile-pic-url.com"
-  );
+  const {authState} = useAuth();
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -36,15 +36,17 @@ const Header = () => {
       />
 
       {/* Header Section */}
-      <View style={styles.header}>
+      <View style={[styles.header, {height: showSearch ? height * 0.23 : height * 0.14}]}>
         <View style={styles.rowContainer}>
           {/* Left Section: Hamburger Icon */}
-          <TouchableOpacity
-            style={styles.left}
-            onPress={() => console.log("Menu clicked")}
-          >
-            <SvgHamburger width={20} height={20} />
-          </TouchableOpacity>
+          {navigation.canGoBack() && (
+            <TouchableOpacity
+              style={styles.left}
+              onPress={() => navigation.goBack()}
+            >
+              <SvgBack width={30} height={28} />
+            </TouchableOpacity>
+          )}
 
           {/* Center Section: Location Selector */}
           <TouchableOpacity
@@ -52,7 +54,7 @@ const Header = () => {
             onPress={() => console.log("Change Location")}
           >
             <SvgLocation width={20} height={20} />
-            <Text style={styles.text}>{location}</Text>
+            <Text style={styles.text}>{authState.user.city}</Text>
             <SvgDown width={15} height={15} />
           </TouchableOpacity>
 
@@ -61,38 +63,39 @@ const Header = () => {
             style={styles.right}
             onPress={() => console.log("Profile Clicked")}
           >
-            <Image source={{ uri: profileImage }} style={styles.profilePic} />
+            <Image source={{ uri: authState.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }} style={styles.profilePic} />
           </TouchableOpacity>
         </View>
 
         {/* Search and Filter Section */}
-        <View style={styles.searchContainer}>
-          {/* Left: Search Bar */}
-          <View style={styles.searchBox}>
-            <SvgSearch width={18} height={18} style={styles.searchIcon} />
-            <TextInput
-              placeholder="Search for Honda Pilot 7-Passenger"
-              style={styles.searchInput}
-              placeholderTextColor="#888"
-              value={searchText}
-              onChangeText={setSearchText}
-            />
-          </View>
+        {showSearch && (
+          <View style={styles.searchContainer}>
+            {/* Left: Search Bar */}
+            <View style={styles.searchBox}>
+              <SvgSearch width={18} height={18} style={styles.searchIcon} />
+              <TextInput
+                placeholder="Search for Honda Pilot 7-Passenger"
+                style={styles.searchInput}
+                placeholderTextColor="#888"
+                value={searchText}
+                onChangeText={setSearchText}
+              />
+            </View>
 
-          {/* Right: Filter Icon */}
-          <TouchableOpacity
-            style={styles.filterIcon}
-            onPress={() => console.log("Filter Clicked")}
-          >
-            <SvgFilter width={25} height={25} />
-          </TouchableOpacity>
-        </View>
+            {/* Right: Filter Icon */}
+            <TouchableOpacity
+              style={styles.filterIcon}
+              onPress={() => navigation.navigate("FiltersScreen")}
+            >
+              <SvgFilter width={25} height={25} />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
 };
 
-const { height, width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -101,7 +104,6 @@ const styles = StyleSheet.create({
   },
   header: {
     width: width,
-    height: height * 0.23,
     backgroundColor: "#FEE226",
     borderBottomLeftRadius: 60,
     borderBottomRightRadius: 60,
