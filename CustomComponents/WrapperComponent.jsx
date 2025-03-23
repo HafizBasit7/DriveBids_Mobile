@@ -1,9 +1,14 @@
-import { SafeAreaView, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet } from "react-native";
 
 export default function WrapperComponent({children}) {
     return (
         <SafeAreaView style={styles.safeArea}>
-            {children}
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "padding"}
+                style={{ flex: 1 }}
+            >
+                {children}
+            </KeyboardAvoidingView>
         </SafeAreaView>
     );
 };

@@ -18,10 +18,12 @@ import HomeHeader from "../../CustomComponents/UmairComponents/Homeheader";
 import { useQuery } from "@tanstack/react-query";
 import { getCar } from "../../API_Callings/R1_API/Car";
 import WrapperComponent from "../../CustomComponents/WrapperComponent";
+import { useAuth } from "../../R1_Contexts/authContext";
 
 const AdDetails = ({route}) => {
   
   const {carId} = route.params;
+  const {authState} = useAuth();
 
   const {data, isLoading} = useQuery({
     queryKey: ['car', carId],
@@ -32,7 +34,11 @@ const AdDetails = ({route}) => {
   if(isLoading) {
     return null;
   }
+
   const car = data.data.car;
+  
+  //Calculation
+  const isMyBid = car.user._id === authState.user._id;
 
   return (
     <WrapperComponent>
@@ -58,14 +64,18 @@ const AdDetails = ({route}) => {
             <View style={styles.smallLine} />
           </View>
           <MakeModel car={car}/>
-          <BidsButtons car={car}/>
-          <SectionHeader title={"Owner Details"} />
-          <SellerProfileCard
-            user={car.user._id}
-            name={car.user.name}
-            status={car.user.type === 'trader' ? 'Trader' : 'Private Seller'}
-            profileImage={car.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png'}
-          />
+          {!isMyBid && (<BidsButtons car={car}/>)}
+          {!isMyBid && (
+            <>
+              <SectionHeader title={"Owner Details"} />
+              <SellerProfileCard
+                user={car.user._id}
+                name={car.user.name}
+                status={car.user.type === 'trader' ? 'Trader' : 'Private Seller'}
+                profileImage={car.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png'}
+              />
+            </>
+          )}
           <InspectionReport car={car._id}/>
           <DamageReportCarousel car={car._id}/>
           <BiddingHistory car={car._id}/>
@@ -130,7 +140,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2, // Shadow for Android
-    height: 90, // Increased height
+    height: 50, // Increased height
     justifyContent: "center", // Ensure text stays centered vertically
   },
   centerText: {

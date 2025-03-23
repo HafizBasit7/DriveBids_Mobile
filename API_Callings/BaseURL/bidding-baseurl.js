@@ -1,1 +1,1 @@
-export const baseurl = "http://192.168.100.5:3002";
+export const bidBaseUrl = "http://192.168.100.5:3002";
