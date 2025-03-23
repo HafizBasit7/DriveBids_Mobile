@@ -1,39 +1,53 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { getMyCarBiddingHistory } from "../../API_Callings/R1_API/Car";
+import { ActivityIndicator } from "react-native-paper";
+import { formatAmount, formatDateTime } from "../../utils/R1_utils";
+import { acceptBid } from "../../API_Callings/R1_API/Bid";
+import DialogBox from "../DialogBox";
 
-const bidders = [
-  {
-    id: 1,
-    name: "Jane Cooper",
-    bid: "£30,000",
-    date: "12 December",
-    image: "https://via.placeholder.com/50", // Replace with actual image URL
-    highest: true,
-  },
-  {
-    id: 2,
-    name: "Esther Howard",
-    bid: "£28,000",
-    date: "12 December",
-    image: "https://via.placeholder.com/50",
-    highest: false,
-  },
-  {
-    id: 3,
-    name: "Robert Fox",
-    bid: "£25,000",
-    date: "12 December",
-    image: "https://via.placeholder.com/50",
-    highest: false,
-  },
-];
-
-const BiddingList = () => {
+const BiddingList = ({car}) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [message, setMessage] = useState(null);
+  
+
+  const {data, isLoading} = useQuery({
+    queryKey: ['biddingHistory', car],
+    queryFn: () => getMyCarBiddingHistory(car),
+    enabled: isExpanded,
+  });
+
+  const mutation = useMutation({
+    mutationFn: acceptBid,
+  });
+
+  const bids = data?.data?.bids;
+
+  const handlePressAcceptBid = async (bidId) => {
+    if(mutation.isPending) return;
+
+    try {
+      const result = await mutation.mutateAsync({carId: car, bidId});
+      setMessage({type: 'success', message: result.message, title: 'Success'});
+    } catch (e) {
+      setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    }
+  };
 
   return (
     <View style={styles.container}>
+
+      <DialogBox
+        visible={message ? true : false}
+        message={message?.message}
+        onOkPress={() => setMessage(null)}
+        type={message?.type}
+        loading={false}
+        title={message?.title || ''}
+      />
+
       {/* Header Line */}
       <View style={styles.lineContainer}>
         <View style={styles.fullLine} />
@@ -41,23 +55,29 @@ const BiddingList = () => {
         <View style={styles.fullLine} />
       </View>
 
+      {(isExpanded && isLoading) && (<ActivityIndicator/>)}
+
       {/* Expandable Content */}
-      {isExpanded && (
+      {(isExpanded && !isLoading) && (
         <View style={styles.listContainer}>
-          {bidders.map((bidder) => (
-            <View key={bidder.id} style={styles.bidderCard}>
-              <Image source={{ uri: bidder.image }} style={styles.avatar} />
+          {bids.map((bidder, index) => (
+            <View key={bidder._id} style={styles.bidderCard}>
+              <Image source={{ uri: bidder.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }} style={styles.avatar} />
               <View style={styles.bidDetails}>
-                {bidder.highest && (
+                {index === 0 && (
                   <Text style={styles.highestBid}>Highest Bid</Text>
                 )}
-                <Text style={styles.bidAmount}>Bid: {bidder.bid}</Text>
-                <Text style={styles.bidderName}>by {bidder.name}</Text>
+                <Text style={styles.bidAmount}>Bid: AED {formatAmount(bidder.bidAmount)}</Text>
+                <Text style={styles.bidderName}>by {bidder.user.name}</Text>
               </View>
               <View style={styles.rightSection}>
-                <Text style={styles.bidDate}>Bidded on {bidder.date}</Text>
-                <TouchableOpacity style={styles.acceptButton}>
-                  <Text style={styles.acceptText}>Accept</Text>
+                <Text style={styles.bidDate}>{formatDateTime(bidder.createdAt)}</Text>
+                <TouchableOpacity style={styles.acceptButton} onPress={() => handlePressAcceptBid(bidder._id)}>
+                  
+                  {mutation.isPending && (<ActivityIndicator color="white"/>)}
+                  {!mutation.isPending && (
+                    <Text style={styles.acceptText}>Accept</Text>
+                  )}
                 </TouchableOpacity>
               </View>
             </View>

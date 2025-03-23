@@ -33,13 +33,20 @@ const HomeHeader = ({car}) => {
 
   const navigation = useNavigation();
 
+  const isCarSold = car.status === 'sold';
+
 
   useEffect(() => {
+    if(isCarSold) return;
     countdownInterval.current = setInterval(() => {
       setTimeLeft(calculateTimeLeft(car.duration));
     }, 1000);
 
-    return () => clearInterval(countdownInterval.current);
+    return () => {
+      if(countdownInterval.current) {
+        clearInterval(countdownInterval.current);
+      }
+    };
   }, []);
 
   const images = Object.values(car.images).flat().map(val => val.url);
@@ -140,8 +147,12 @@ const HomeHeader = ({car}) => {
         <View style={styles.rightContainer}>
           <Text style={styles.labelText}>Highest Bid</Text>
           <Text style={styles.priceText}>AED {formatAmount(car.highestBid)}</Text>
-          <Text style={styles.labelText2}>Ends in</Text>
-          <Text style={styles.timerText}>{timeLeft}</Text>
+          {!isCarSold && (
+            <>
+              <Text style={styles.labelText2}>Ends in</Text>
+              <Text style={styles.timerText}>{timeLeft}</Text>
+            </>
+          )}
         </View>
       </View>
 
