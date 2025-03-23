@@ -9,22 +9,50 @@ import {
 import CustomButton from "../../CustomComponents/CustomButton";
 import WrapperComponent from "../../CustomComponents/WrapperComponent";
 import HomeHeader from "../../CustomComponents/UmairComponents/Homeheader";
+import { useMutation } from "@tanstack/react-query";
+import { placeBidOnCar } from "../../API_Callings/R1_API/Bid";
+import DialogBox from "../../CustomComponents/DialogBox";
+import { ActivityIndicator } from "react-native-paper";
 
 const PlaceBid = ({route}) => {
   const [bidAmount, setBidAmount] = useState(""); 
+  const [message, setMessage] = useState(null);
 
-  const [loading, setLoading] = useState(false);
+  const mutation = useMutation({
+    mutationFn: placeBidOnCar,
+  });
 
   const car = route.params.car;
 
-  const minBidPrice = car.highestBid ? car.highestBid + 1 : car.staringBidPrice + 1;
+  const minBidPrice = car.highestBid ? car.highestBid + 1 : car.staringBidPrice;
 
   const handleBidSelection = (amount) => {
     setBidAmount(amount.toString());
   };
 
+  const handlePlaceBid = async () => {
+    try {
+      const result = await mutation.mutateAsync({carId: car._id, bidAmount: parseInt(bidAmount)});
+
+      setMessage({type: 'success', message: result.message, title: 'Success'});
+      setBidAmount(0);
+    } catch (e) {
+      setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    }
+  };
+
   return (
     <WrapperComponent>
+
+      <DialogBox
+        visible={message ? true : false}
+        message={message?.message}
+        onOkPress={() => setMessage(null)}
+        type={message?.type}
+        loading={false}
+        title={message?.title || ''}
+      />
+
       <HomeHeader car={car}/>
       <View style={styles.container}>
         {/* Main Content */}
@@ -70,10 +98,14 @@ const PlaceBid = ({route}) => {
           </View>
         </View>
 
+        {mutation.isPending && (<ActivityIndicator style={{marginBottom: 25}}/>)}
+
         {/* Button at the Bottom */}
-        <View style={styles.buttonWrapper}>
-          <CustomButton title={"Place Bid Now"} />
-        </View>
+        {!mutation.isPending && (
+          <View style={styles.buttonWrapper}>
+            <CustomButton title={"Place Bid Now"} onPress={handlePlaceBid} />
+          </View>
+        )}
       </View>
     </WrapperComponent>
   );

@@ -20,8 +20,10 @@ const HomeCarCard = ({
   //Calculate if from bids
   let winning = false;
   if(isFromMyBids) {
-    winning = bid.bigAmount === ad.highestBidAmount;
+    winning = bid.bidAmount === ad.highestBid;
   }
+
+  
 
   const {authState} = useAuth();
   const user = authState.user;
@@ -96,7 +98,7 @@ const HomeCarCard = ({
         color={isCarInWatchList ? "#E63946" : "rgba(244, 244, 244, 0.9)"}
         containerStyle={styles.favoriteIcon}
       />
-      {ad.user !== user._id && (
+      {(ad.user !== user._id && isFromMyBids) && (
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Text
             style={{

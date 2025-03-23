@@ -5,9 +5,12 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { getCarBiddingHistory } from "../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
 import { formatAmount, formatDateTime } from "../../utils/R1_utils";
+import { useAuth } from "../../R1_Contexts/authContext";
 
 const BiddingHistory = ({car}) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const {authState} = useAuth();
+  const user = authState.user;
 
   const {data, isLoading} = useQuery({
     queryKey: ['biddingHistory', car],
@@ -30,21 +33,32 @@ const BiddingHistory = ({car}) => {
       {(isExpanded && isLoading) && (<ActivityIndicator/>)}
       {(isExpanded && !isLoading) && (
         <View style={styles.biddingList}>
-          {bids.map((bid, index) => (
-            <View key={index} style={styles.bidItem}>
-              {index === 0 && (
-                <View style={styles.highestBidContainer}>
-                  <Text style={styles.highestBidText}>Highest Bid</Text>
+          {bids.map((bid, index) => {
+            const isOwnBid = bid.user === user._id;
+
+            return (
+              <View key={index} style={styles.bidItem}>
+                <View style={{flex: '1', flexDirection: 'row', gap: '8', marginBottom: '5'}}>
+                  {index === 0 && (
+                    <View style={styles.highestBidContainer}>
+                      <Text style={styles.highestBidText}>Highest Bid</Text>
+                    </View>
+                  )}
+                  {isOwnBid && (
+                    <View style={styles.myBidContainer}>
+                      <Text style={styles.highestBidText}>My Bid</Text>
+                    </View>
+                  )}
                 </View>
-              )}
-              <Text style={styles.bidAmount}>Bid: AED {formatAmount(bid.bidAmount)}</Text>
-              {/* <Text style={styles.bidRank}>{index} Bid</Text> */}
-              <Text style={styles.bidDate}>
-                Bided on {formatDateTime(bid.createdAt)}
-              </Text>
-              {index !== bids.length - 1 && <View style={styles.separator} />}
-            </View>
-          ))}
+                <Text style={styles.bidAmount}>Bid: AED {formatAmount(bid.bidAmount)}</Text>
+                {/* <Text style={styles.bidRank}>{index} Bid</Text> */}
+                <Text style={styles.bidDate}>
+                  Bided on {formatDateTime(bid.createdAt)}
+                </Text>
+                {index !== bids.length - 1 && <View style={styles.separator} />}
+              </View>
+            )
+          })}
         </View>
       )}
 
@@ -122,6 +136,14 @@ const styles = StyleSheet.create({
   },
   highestBidContainer: {
     backgroundColor: "#2A5DB0",
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    alignSelf: "flex-start",
+    marginBottom: 5,
+  },
+  myBidContainer: {
+    backgroundColor: "red",
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 10,

@@ -17,6 +17,7 @@ import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg"; // Ensure corr
 import { GlobalStyles } from "../../Styles/GlobalStyles";
 import { calculateTimeLeft } from "../../utils/countdown";
 import { useNavigation } from "@react-navigation/native";
+import { formatAmount } from "../../utils/R1_utils";
 
 const { width } = Dimensions.get("window");
 
@@ -79,6 +80,7 @@ const HomeHeader = ({car}) => {
         barStyle="dark-content"
         backgroundColor="transparent"
         translucent
+        
       />
       {/* Slider Section */}
       <View style={styles.container}>
@@ -132,12 +134,12 @@ const HomeHeader = ({car}) => {
       <View style={styles.yellowContainer}>
         <View style={styles.leftContainer}>
           <Text style={styles.labelText}>Buy Now price</Text>
-          <Text style={styles.priceText}>AED {car.buyNowPrice}</Text>
+          <Text style={styles.priceText}>AED {formatAmount(car.buyNowPrice)}</Text>
         </View>
         <View style={styles.verticalLine} />
         <View style={styles.rightContainer}>
           <Text style={styles.labelText}>Highest Bid</Text>
-          <Text style={styles.priceText}>AED {car.highestBid}</Text>
+          <Text style={styles.priceText}>AED {formatAmount(car.highestBid)}</Text>
           <Text style={styles.labelText2}>Ends in</Text>
           <Text style={styles.timerText}>{timeLeft}</Text>
         </View>
