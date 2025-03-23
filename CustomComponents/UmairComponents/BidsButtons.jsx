@@ -1,6 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { placeBidOnCar } from "../../API_Callings/R1_API/Bid";
+import { useMutation } from "@tanstack/react-query";
+import { ActivityIndicator } from "react-native-paper";
+import DialogBox from "../DialogBox";
 
 const BidsButtons = ({
   buyItNowTitle = "BUY IT NOW",
@@ -10,9 +14,33 @@ const BidsButtons = ({
 }) => {
 
   const navigation = useNavigation();
+  const [message, setMessage] = useState(null);
+
+  const mutation = useMutation({
+    mutationFn: placeBidOnCar,
+  });
+
+  const handleQuickBidPress = async () => {
+    try {
+      const result = await mutation.mutateAsync({carId: car._id, bidAmount: parseInt(car.highestBid ? car.highestBid + 1 : car.staringBidPrice)});
+      setMessage({type: 'success', message: result.message, title: 'Success'});
+    } catch (e) {
+      setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    }
+  };
 
   return (
     <View style={styles.container}>
+
+      <DialogBox
+        visible={message ? true : false}
+        message={message?.message}
+        onOkPress={() => setMessage(null)}
+        type={message?.type}
+        loading={false}
+        title={message?.title || ''}
+      />
+
       {/* Buy It Now Button */}
       <TouchableOpacity style={[styles.button, styles.outlineButton]}>
         <Text style={styles.blueText}>{buyItNowTitle}</Text>
@@ -25,9 +53,16 @@ const BidsButtons = ({
       </TouchableOpacity>
 
       {/* Quick Bid Button */}
-      <TouchableOpacity style={[styles.button, styles.outlineButton]}>
-        <Text style={styles.blueText}>{quickBidTitle}</Text>
-        <Text style={styles.price}>AED {car.highestBid ? car.highestBid + 1 : car.staringBidPrice}</Text>
+      <TouchableOpacity style={[styles.button, styles.outlineButton]} onPress={handleQuickBidPress}>
+        {!mutation.isPending && (
+          <>
+            <Text style={styles.blueText}>{quickBidTitle}</Text>
+            <Text style={styles.price}>AED {car.highestBid ? car.highestBid + 1 : car.staringBidPrice}</Text>
+          </>
+        )}
+        {mutation.isPending && (
+          <ActivityIndicator/>
+        )}
       </TouchableOpacity>
     </View>
   );

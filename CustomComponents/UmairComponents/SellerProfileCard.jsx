@@ -9,7 +9,7 @@ const SellerProfileCard = ({
   name = "ADAM WILLIAMS",
   user,
   status = "Private Seller",
-  ShowChatOptions = false,
+  ShowChatOptions = true,
   profileImage = "https://randomuser.me/api/portraits/men/32.jpg",
 }) => {
 
@@ -25,35 +25,7 @@ const SellerProfileCard = ({
             <Text style={styles.status}>{status}</Text>
           </View>
         </View>
-        {ShowChatOptions ? (
-          <View style={{ gap: 10 }}>
-            <TouchableOpacity
-              style={styles.viewAllButton}
-              onPress={onViewAllPress}
-            >
-              <Icon
-                name="visibility"
-                type="material"
-                size={20}
-                color={GlobalStyles.colors.ButtonColor}
-              />
-              <Text style={styles.viewAllText}>View All Cars</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.viewAllButton}
-              onPress={onViewAllPress}
-            >
-              <Icon
-                name="chat"
-                type="material"
-                size={20}
-                color={GlobalStyles.colors.ButtonColor}
-              />
-              <Text style={styles.viewAllText}>Chat Now</Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
+        {ShowChatOptions && (
           <View>
             <TouchableOpacity style={styles.viewAllButton} onPress={() => navigation.navigate("OwnerProfile", {userId: user})}>
               <Text style={styles.viewAllText}>All Listings</Text>
@@ -63,6 +35,9 @@ const SellerProfileCard = ({
                 size={20}
                 color={GlobalStyles.colors.ButtonColor}
               />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.viewAllButton} onPress={() => {}}>
+              <Text style={styles.viewAllText}>Chat Now</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -114,6 +89,7 @@ const styles = StyleSheet.create({
   viewAllButton: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: '1',
   },
   viewAllText: {
     fontFamily: "Inter-SemiBold",

@@ -226,6 +226,31 @@ export const getCarBiddingHistory = async (carId) => {
     }
 };
 
+export const getMyCarBiddingHistory = async (carId) => {
+    try {
+        const result = await apiClient.get(`/car/getMyCarBiddingHistory/${carId}`);
+        const resultData = result.data;
+
+        if(!resultData.status) {
+            throw {
+                name: 'app',
+                message: resultData.message,
+            };
+        }
+
+        return resultData; 
+    }
+    catch(e) {
+        if(e.response?.data) {
+            throw {
+                name: 'app',
+                ...e.response.data,
+            }
+        }
+        throw e;
+    }
+};
+
 export const listCarsByBidCount = async (page = 1, limit = 10) => {
     try {
         const result = await apiClient.get(`/car/listByBidCount?page=${page}&limit=${limit}`);
@@ -279,6 +304,31 @@ export const listMyAds = async (page = 1, limit = 10) => {
 export const listMyBids = async (page = 1, limit = 10, type = 'open') => {
     try {
         const result = await apiClient.get(`/car/myBids?page=${page}&limit=${limit}&type=${type}`);
+        const resultData = result.data;
+
+        if(!resultData.status) {
+            throw {
+                name: 'app',
+                message: resultData.message,
+            };
+        }
+
+        return resultData; 
+    }
+    catch(e) {
+        if(e.response?.data) {
+            throw {
+                name: 'app',
+                ...e.response.data,
+            }
+        }
+        throw e;
+    }
+};
+
+export const getCarOwnerCars = async (page = 1, limit = 10, userId) => {
+    try {
+        const result = await apiClient.get(`/car/getCarOwnerCars/${userId}?page=${page}&limit=${limit}`);
         const resultData = result.data;
 
         if(!resultData.status) {

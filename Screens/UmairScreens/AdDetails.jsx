@@ -19,6 +19,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getCar } from "../../API_Callings/R1_API/Car";
 import WrapperComponent from "../../CustomComponents/WrapperComponent";
 import { useAuth } from "../../R1_Contexts/authContext";
+import BiddingList from "../../CustomComponents/UmairComponents/BiddingList";
 
 const AdDetails = ({route}) => {
   
@@ -78,7 +79,9 @@ const AdDetails = ({route}) => {
           )}
           <InspectionReport car={car._id}/>
           <DamageReportCarousel car={car._id}/>
-          <BiddingHistory car={car._id}/>
+          {isMyBid && (<BiddingList car={car._id}/>)}
+          {!isMyBid && (<BiddingHistory car={car._id}/>)}
+          {/* todo: do */}
           <CarFeatures />
         <SellersComment car={car}/>
         {/* todo: do */}

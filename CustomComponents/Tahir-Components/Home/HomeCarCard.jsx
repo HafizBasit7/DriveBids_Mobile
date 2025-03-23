@@ -22,8 +22,7 @@ const HomeCarCard = ({
   if(isFromMyBids) {
     winning = bid.bidAmount === ad.highestBid;
   }
-
-  
+  const isCarSold = ad.status === 'sold';
 
   const {authState} = useAuth();
   const user = authState.user;
@@ -69,14 +68,16 @@ const HomeCarCard = ({
   const navigation = useNavigation();
 
   useEffect(() => {
+    if(isCarSold) return;
     countdownInterval.current = setInterval(() => {
       setTimeLeft(calculateTimeLeft(ad.duration));
     }, 1000);
 
     return () => {
+      if(!countdownInterval.current) return;
       clearInterval(countdownInterval.current);
     };
-  }, []);
+  }, [isCarSold]);
 
 
   const isCarInWatchList = (carsInWatchList?.data.carsInWatchList.findIndex(val => val.car === ad._id) !== -1);
@@ -145,7 +146,23 @@ const HomeCarCard = ({
             </Text>
           </Text>
         )}
-        <Text style={styles.timer}>{timeLeft}</Text>
+        {isCarSold && (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Text
+              style={{
+                backgroundColor: "rgba(107, 100, 102, 0.2)",
+                marginTop: 5,
+                paddingHorizontal: 10,
+                paddingVertical: 3,
+                borderRadius: 12,
+                color: "black",
+              }}
+            >
+              Sold
+            </Text>
+          </View>
+        )}
+        {!isCarSold && (<Text style={styles.timer}>{timeLeft}</Text>)}
       </View>
       <Button
             title="View Ad"
