@@ -8,10 +8,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import BannerCar from "../assets/UmairAssets/BannerCar.svg"; // Ensure correct path
+import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
 
 const HomeBanner = () => {
+
+  const navigation = useNavigation();
+
   return (
     <View style={styles.outerContainer}>
       <View style={styles.container}>
@@ -33,7 +37,7 @@ const HomeBanner = () => {
             </Text>
           </View>
           <View style={styles.bottomRight}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Sell", {screen: 'SellCar'})}}>
               <Text style={styles.buttonText}>Post Ad Now!</Text>
             </TouchableOpacity>
           </View>

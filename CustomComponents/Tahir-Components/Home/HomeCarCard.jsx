@@ -15,6 +15,7 @@ const HomeCarCard = ({
   imgHeight = 140,
   isFromMyBids = false,
   bid,
+  notHome = false,
 }) => {
 
   //Calculate if from bids
@@ -82,6 +83,10 @@ const HomeCarCard = ({
 
   const isCarInWatchList = (carsInWatchList?.data.carsInWatchList.findIndex(val => val.car === ad._id) !== -1);
   const onViewAd = () => {
+    if(notHome) {
+      navigation.navigate('Home', {screen: 'AdDetails', params: {carId: ad._id}})
+      return;
+    }
     navigation.navigate('AdDetails', {carId: ad._id})
   };
 

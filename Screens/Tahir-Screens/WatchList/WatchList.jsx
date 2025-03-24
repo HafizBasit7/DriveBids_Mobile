@@ -49,6 +49,7 @@ export default WatchList = () => {
                 CardWidth={280}
                 imgHeight={170}
                 ad={item.car}
+                notHome={true}
                 carsInWatchList={carsInWatchList}
               />
             )}

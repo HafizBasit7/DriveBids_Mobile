@@ -86,6 +86,7 @@ export default MyBids = () => {
             imgHeight={170}
             bid={item}
             ad={item.car}
+            notHome={true}
             carsInWatchList={carsInWatchList}
           />
         )}
