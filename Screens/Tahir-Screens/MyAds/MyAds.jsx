@@ -54,6 +54,7 @@ export default MyAds = () => {
               CardWidth={280}
               imgHeight={170}
               ad={item}
+              notHome={true}
               carsInWatchList={carsInWatchList}
             />
           )}

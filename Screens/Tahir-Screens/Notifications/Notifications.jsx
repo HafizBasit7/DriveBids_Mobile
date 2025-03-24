@@ -1,37 +1,65 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
   FlatList,
-  Image,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getMyNotifications } from "../../../API_Callings/R1_API/Auth";
 import { ActivityIndicator } from "react-native-paper";
 import { timeAgo } from "../../../utils/R1_utils";
+import { useNavigation } from "@react-navigation/native";
+
+const LIMIT = 10;
 
 const NotificationScreen = () => {
+  const navigation = useNavigation();
 
-  const {data, isLoading, error} = useQuery({
-    queryKey: ['notifications'],
-    queryFn: () => getMyNotifications(1, 10),
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["notifications"],
+    queryFn: ({ pageParam = 1 }) => getMyNotifications(pageParam, LIMIT),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.data?.notifications?.length === LIMIT
+        ? allPages.length + 1
+        : undefined;
+    },
   });
 
-  const notifications = data?.data?.notifications;
+
+  const notifications = data?.pages.flatMap((page) => page?.data?.notifications) || [];
 
   const renderNotificationItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
-        console.log("Notification Pressed Id: " + item.id);
+        if (item.notificationType === "car") {
+          navigation.navigate("Home", {
+            screen: "AdDetails",
+            params: { carId: item.metaData.car },
+          });
+        }
       }}
       style={styles.notificationItem}
     >
-      <Avatar rounded source={{ uri: item.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }} size={45} />
+      <Avatar
+        rounded
+        source={{
+          uri:
+            item.user.imgUrl ||
+            "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png",
+        }}
+        size={45}
+      />
       <View style={styles.textContainer}>
         <Text style={styles.name}>{item.user.name}</Text>
         <Text style={styles.message}>{item.body}</Text>
@@ -43,7 +71,8 @@ const NotificationScreen = () => {
   return (
     <View style={styles.container}>
       <SectionHeader title={"Notifications"} />
-      {isLoading && (<ActivityIndicator/>)}
+      
+      {isLoading && <ActivityIndicator />}
 
       {!isLoading && notifications.length > 0 && (
         <FlatList
@@ -51,6 +80,15 @@ const NotificationScreen = () => {
           keyExtractor={(item) => item._id}
           renderItem={renderNotificationItem}
           showsVerticalScrollIndicator={false}
+          onEndReached={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+          }
         />
       )}
 
@@ -67,10 +105,8 @@ const NotificationScreen = () => {
               borderRadius: 100,
             }}
           />
-          <View style={{ gap: 10, padding: 10, paddingHorizontal: 20, alignItems: 'center' }}>
-            <Text style={styles.emptyText}>
-              There are no notifications yet!
-            </Text>
+          <View style={styles.emptyContent}>
+            <Text style={styles.emptyText}>There are no notifications yet!</Text>
             <Text style={styles.emptySubText}>
               Your notifications will appear on this page
             </Text>
@@ -84,8 +120,7 @@ const NotificationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: '10',
-    // backgroundColor: "#F8F9FA",
+    margin: 10,
     justifyContent: "flex-start",
   },
   notificationItem: {
@@ -121,10 +156,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  emptyImage: {
-    width: 100,
-    height: 100,
-    marginBottom: 10,
+  emptyContent: {
+    gap: 10,
+    padding: 10,
+    paddingHorizontal: 20,
+    alignItems: "center",
   },
   emptyText: {
     fontFamily: "Inter-SemiBold",
