@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: "1%",
     backgroundColor: GlobalStyles.colors.ScreenBg,
   },
   scrollContent: {
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.ScreenBg,
   },
   postAdButton: {
-    marginBottom: 108,
+    marginBottom: "8%",
   },
   saveDraftButton: {
     backgroundColor: "transparent",

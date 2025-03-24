@@ -68,20 +68,24 @@ const CarDetails10 = () => {
     })
   };
 
-  return (
-    <View style={styles.container}>
+  return (<View style={styles.container}>
+    {/* Content */}
+    <View style={{ flex: 1 }}>
+      {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText}>Step 10 of 14</Text>
         <View style={styles.line} />
       </View>
-
+  
+      {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText2}>No Of Owners</Text>
         <View style={styles.line} />
       </View>
-
+  
+      {/* Scrollable Number Selector */}
       <View style={styles.yearSelectorContainer}>
         <FlatList
           ref={flatListRef}
@@ -103,21 +107,25 @@ const CarDetails10 = () => {
           )}
         />
       </View>
-      <View style={styles.buttonContainer}>
-        <CustomButton
-          style={styles.button}
-          title="Next"
-          onPress={() => navigation.navigate("CarDetails11")}
-        />
-        <View style={{ height: 10 }} />
-        <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
-        />
-      </View>
     </View>
+  
+    {/* Buttons */}
+    <View style={styles.buttonContainer}>
+      <CustomButton
+        style={styles.button}
+        title="Next"
+        onPress={() => navigation.navigate("CarDetails11")}
+      />
+      <View style={{ height: 10 }} />
+      <CustomButton
+        title="Back"
+        style={styles.backButton}
+        textStyle={{ color: "#007BFF" }}
+        onPress={() => navigation.goBack()}
+      />
+    </View>
+  </View>
+  
   );
 };
 
@@ -165,21 +173,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   yearText: {
-    fontWeight: "bold",
-  },
-  selectedYearText: {
-    textAlign: "center",
     fontSize: 18,
     fontWeight: "bold",
-    marginVertical: 20,
+    color: "#333",
   },
   buttonContainer: {
     alignItems: "center",
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: "1%",
+    marginBottom: "3%",
   },
+  
   button: {
     marginBottom: 5,
   },

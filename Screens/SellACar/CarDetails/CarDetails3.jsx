@@ -69,55 +69,66 @@ const CarDetails3 = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <Text style={styles.lineText}>Step 3 of 14</Text>
-        <View style={styles.line} />
-      </View>
+<View style={styles.container}>
 
-      <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <Text style={styles.lineText2}>Model Year</Text>
-        <View style={styles.line} />
-      </View>
+{/* Content */}
+<View style={{ flex: 1 }}>
+  {/* Step Progress Indicator */}
+  <View style={styles.lineContainer}>
+    <View style={styles.line} />
+    <Text style={styles.lineText}>Step 3 of 14</Text>
+    <View style={styles.line} />
+  </View>
 
-      <View style={styles.yearSelectorContainer}>
-        <FlatList
-          ref={flatListRef}
-          data={years}
-          keyExtractor={(item) => item.toString()}
-          renderItem={renderItem}
-          snapToAlignment="center"
-          snapToInterval={50}
-          decelerationRate="fast"
-          showsVerticalScrollIndicator={false}
-          getItemLayout={(data, index) => ({
-            length: 50,
-            offset: 50 * index,
-            index,
-          })}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: false, listener: handleScroll }
-          )}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <CustomButton
-          style={styles.button}
-          title="Next"
-          onPress={() => navigation.navigate("CarDetails4")}
-        />
-        <View style={{ height: 10 }} />
-        <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
-        />
-      </View>
-    </View>
+  {/* Section Title */}
+  <View style={styles.lineContainer}>
+    <View style={styles.line} />
+    <Text style={styles.lineText2}>Model Year</Text>
+    <View style={styles.line} />
+  </View>
+
+  {/* Year Selector */}
+  <View style={styles.yearSelectorContainer}>
+    <FlatList
+      ref={flatListRef}
+      data={years}
+      keyExtractor={(item) => item.toString()}
+      renderItem={renderItem}
+      snapToAlignment="center"
+      snapToInterval={50}
+      decelerationRate="fast"
+      showsVerticalScrollIndicator={false}
+      getItemLayout={(data, index) => ({
+        length: 50,
+        offset: 50 * index,
+        index,
+      })}
+      onScroll={Animated.event(
+        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+        { useNativeDriver: false, listener: handleScroll }
+      )}
+    />
+  </View>
+</View>
+
+{/* Buttons */}
+<View style={styles.buttonContainer}>
+  <CustomButton
+    style={styles.button}
+    title="Next"
+    onPress={() => navigation.navigate("CarDetails4")}
+  />
+  <View style={{ height: 10 }} />
+  <CustomButton
+    title="Back"
+    style={styles.backButton}
+    textStyle={{ color: "#007BFF" }}
+    onPress={() => navigation.goBack()}
+  />
+</View>
+
+</View>
+
   );
 };
 
@@ -178,9 +189,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: "1%",
-    
+    marginBottom: "3%"  
   },
+  
   button: {
     marginBottom: 5,
   },

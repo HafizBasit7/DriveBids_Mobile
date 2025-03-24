@@ -18,21 +18,23 @@ const PriceRange1 = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Step Progress Indicator */}
+  <View style={styles.container}>
+      {/* Content */}
+      <View style={styles.content}>
+        {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText}>Step 1 of 4</Text>
         <View style={styles.line} />
       </View>
-
+  
       {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText2}>Starting Bid</Text>
         <View style={styles.line} />
       </View>
-
+  
       {/* Input Container */}
       <View style={styles.inputContainer}>
         <Text style={styles.inputHeading}>
@@ -48,23 +50,25 @@ const PriceRange1 = () => {
           />
         </View>
       </View>
-
-      {/* Buttons */}
-      <View style={styles.buttonContainer}>
-        <CustomButton
-          style={styles.button}
-          title="Next"
-          onPress={() => navigation.navigate("PriceRange2")}
-        />
-        <View style={{ height: 10 }} />
-        <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
-        />
-      </View>
     </View>
+  
+    {/* Buttons Fixed at Bottom */}
+    <View style={styles.buttonContainer}>
+      <CustomButton
+        style={styles.button}
+        title="Next"
+        onPress={() => navigation.navigate("PriceRange2")}
+      />
+      <View style={{ height: 10 }} />
+      <CustomButton
+        title="Back"
+        style={styles.backButton}
+        textStyle={{ color: "#007BFF" }}
+        onPress={() => navigation.goBack()}
+      />
+    </View>
+  </View>
+  
   );
 };
 
@@ -74,6 +78,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingBottom: 20,
   },
+  
+ 
+  
   lineContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -108,7 +115,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
     color: "#000",
-    marginBottom: 20,
+    marginBottom: 35,
     alignSelf: "center",
     fontFamily: "Inter-Regular",
   },
@@ -118,11 +125,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 10,
-    paddingHorizontal: 15,
-    height: 100,
-    width: "60%",
+    paddingHorizontal: 25,
+    height: 80,
+    width: "90%",
     justifyContent: "center",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#fff",
   },
   currencyText: {
     fontSize: 16,
@@ -136,13 +143,20 @@ const styles = StyleSheet.create({
     color: "#000",
     textAlign: "center",
   },
-  buttonContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "90%",
-    alignSelf: "center",
-    marginTop: "40%",
-  },
+  
+content: {
+  flex: 1,
+  paddingHorizontal: 20,
+},
+
+buttonContainer: {
+  width: "90%",
+  alignSelf: "center",
+  alignItems: "center",
+  justifyContent: "center",
+marginBottom:"3%"
+},
+
   button: {
     marginBottom: 5,
   },

@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 4,
     paddingHorizontal: 10,
+    marginTop:"4%"
   },
   lineContainer: {
     flexDirection: "row",
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: 15,
-    marginBottom: 80,
+    marginBottom: "3%"
   },
   button: {
     marginBottom: 5,

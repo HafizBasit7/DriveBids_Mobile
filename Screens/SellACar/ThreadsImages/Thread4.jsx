@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#fff",
     borderRadius: 10,
     overflow: "hidden",
     position: "relative",
@@ -165,6 +165,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     justifyContent: "flex-end",
+     marginBottom:"8%"
   },
   nextButton: {
     backgroundColor: "transparent",

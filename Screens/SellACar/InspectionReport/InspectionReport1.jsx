@@ -144,16 +144,18 @@ const InspectionReport1 = () => {
         </View>
       </ScrollView>
 
-      <CustomButton
-        title="Next"
-        onPress={() => navigation.navigate("InspectionReport2")}
-      />
-      <CustomButton
-        onPress={() => navigation.goBack()}
-        title="Back"
-        style={styles.nextButton}
-        textStyle={styles.nextButtonText}
-      />
+      <View style={styles.buttonContainer}>
+  <CustomButton
+    title="Next"
+    onPress={() => navigation.navigate("InspectionReport2")}
+  />
+  <CustomButton
+    onPress={() => navigation.goBack()}
+    title="Back"
+    style={styles.nextButton}
+    textStyle={styles.nextButtonText}
+  />
+</View>
     </View>
   );
 };
@@ -216,6 +218,11 @@ const styles = StyleSheet.create({
     color: GlobalStyles.colors.ButtonColor,
     fontFamily: "Inter-SemiBold",
   },
+  buttonContainer: {
+    width: "100%",
+    marginBottom: "9%"
+  },
+  
 });
 
 export default InspectionReport1;

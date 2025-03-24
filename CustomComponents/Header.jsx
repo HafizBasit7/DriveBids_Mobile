@@ -100,7 +100,7 @@ const Header = ({showSearch = true}) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: "#f3f4f6",
+    backgroundColor: "#fff",
   },
   header: {
     width: width,

@@ -17,40 +17,42 @@ const PriceRange3 = () => {
       value: parseInt(value),
     });
   };
-
   return (
     <View style={styles.container}>
-      {/* Step Progress Indicator */}
-      <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <Text style={styles.lineText}>Step 3 of 4</Text>
-        <View style={styles.line} />
-      </View>
+      {/* Content */}
+      <View style={styles.content}>
+        {/* Step Progress Indicator */}
+        <View style={styles.lineContainer}>
+          <View style={styles.line} />
+          <Text style={styles.lineText}>Step 3 of 4</Text>
+          <View style={styles.line} />
+        </View>
 
-      {/* Section Title */}
-      <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <Text style={styles.lineText2}>Buy Now Price</Text>
-        <View style={styles.line} />
-      </View>
+        {/* Section Title */}
+        <View style={styles.lineContainer}>
+          <View style={styles.line} />
+          <Text style={styles.lineText2}>Buy Now Price</Text>
+          <View style={styles.line} />
+        </View>
 
-      {/* Input Container */}
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputHeading}>
-          Enter Buying Now Price price for your car
-        </Text>
-        <View style={styles.inputBox}>
-          <Text style={styles.currencyText}>AED</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            value={(carState.carPricing.buyNowPrice || 0).toString() || 0}
-            onChangeText={setBuynowPrice}
-          />
+        {/* Input Container */}
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputHeading}>
+            Enter Buy Now price for your car
+          </Text>
+          <View style={styles.inputBox}>
+            <Text style={styles.currencyText}>AED</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              value={(carState.carPricing.buyNowPrice || 0).toString()}
+              onChangeText={setBuynowPrice}
+            />
+          </View>
         </View>
       </View>
 
-      {/* Buttons */}
+      {/* Buttons Fixed at Bottom */}
       <View style={styles.buttonContainer}>
         <CustomButton
           style={styles.button}
@@ -75,17 +77,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingBottom: 20,
   },
+
+  content: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+
   lineContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     marginTop: "5%",
   },
+
   line: {
     flex: 1,
     height: 1,
     backgroundColor: "#000",
   },
+
   lineText: {
     marginHorizontal: 4,
     fontSize: 20,
@@ -93,6 +103,7 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "700",
   },
+
   lineText2: {
     marginHorizontal: 4,
     fontSize: 16,
@@ -100,53 +111,61 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "700",
   },
+
   inputContainer: {
     marginHorizontal: 20,
     marginTop: 20,
     alignItems: "center",
   },
+
   inputHeading: {
     fontSize: 16,
     fontWeight: "700",
     color: "#000",
-    marginBottom: 20,
+    marginBottom: 35,
     alignSelf: "center",
     fontFamily: "Inter-Regular",
   },
+
   inputBox: {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 10,
-    paddingHorizontal: 15,
-    height: 100,
-    width: "60%",
+    paddingHorizontal: 25,
+    height: 80,
+    width: "90%",
     justifyContent: "center",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#fff",
   },
+
   currencyText: {
     fontSize: 16,
     color: "#000",
     fontWeight: "600",
     marginRight: 10,
   },
+
   input: {
     flex: 1,
     fontSize: 26,
     color: "#000",
     textAlign: "center",
   },
+
   buttonContainer: {
-    alignItems: "center",
-    justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: "40%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: "3%",
   },
+
   button: {
     marginBottom: 5,
   },
+
   backButton: {
     backgroundColor: "#fff",
     borderWidth: 1,

@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: 5,
-    marginBottom: 80
+    marginBottom: "3%"
   },
   button: {
     marginBottom: 5,

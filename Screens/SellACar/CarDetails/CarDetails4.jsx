@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
     paddingVertical: 12,
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
   },
   selectedText: {
     color: "#007BFF", // Blue color for selected text
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   separator: {
     height: 1,
     backgroundColor: "#ccc",
-    marginHorizontal: 15,
+    marginHorizontal: 21,
   },
   buttonContainer: {
     alignItems: "center",
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: 15,
-    marginBottom: 80
+    marginBottom: "2%"
   },
   button: {
     marginBottom: 5,

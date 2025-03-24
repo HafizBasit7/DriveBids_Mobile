@@ -68,7 +68,7 @@ const CarImages = () => {
       >
         <CustomButton
           style={{
-            marginBottom: 10,
+            marginBottom: "10%"
           }}
           title="Back"
           onPress={() => navigation.goBack()}

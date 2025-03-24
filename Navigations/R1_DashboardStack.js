@@ -147,13 +147,13 @@ const styles = StyleSheet.create({
       textAlign: "center",
     },
     plusContainer: {
-      width: 60,
-      height: 60,
+      width: 55,
+      height: 55,
       borderRadius: 30,
       backgroundColor: "#2C6BED",
       justifyContent: "center",
       alignItems: "center",
-      shadowColor: "#2C6BED", // Match button color
+      shadowColor: "#2C6BED", 
       shadowOffset: { width: 0, height: 6 },
       shadowOpacity: 0.3,
       shadowRadius: 5,

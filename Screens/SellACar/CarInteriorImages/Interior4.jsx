@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     justifyContent: "flex-end",
+     marginBottom:"8%"
   },
   nextButton: {
     backgroundColor: "transparent",

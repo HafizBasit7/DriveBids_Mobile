@@ -53,6 +53,7 @@ const CarDetails5 = () => {
 
   return (
     <View style={styles.container}>
+       <View style={styles.content}>
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText}>Step 5 of 14</Text>
@@ -66,7 +67,9 @@ const CarDetails5 = () => {
       </View>
 
       <View style={styles.progressContainer}>
-        <Text style={styles.progressHeading}>Mileage: {carState.carDetails.mileage || 0}</Text>
+        <Text style={styles.progressHeading}>
+          Mileage: {carState.carDetails.mileage || 0} km
+        </Text>
         <View style={styles.progressBar}>
           <Animated.View
             style={[
@@ -101,110 +104,116 @@ const CarDetails5 = () => {
           <Text style={styles.rangeText}>30</Text>
         </View>
       </View>
-
-      <View style={styles.buttonContainer}>
-        <CustomButton
-          style={styles.button}
-          title="Next"
-          onPress={() => navigation.navigate("CarDetails6")}
-        />
-        <View style={{ height: 10 }} />
-        <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
-        />
-      </View>
     </View>
-  );
+
+    {/* Bottom Buttons */}
+    <View style={styles.buttonContainer}>
+      <CustomButton
+        style={styles.button}
+        title="Next"
+        onPress={() => navigation.navigate("CarDetails6")}
+      />
+      <View style={{ height: 10 }} />
+      <CustomButton
+        title="Back"
+        style={styles.backButton}
+        textStyle={{ color: "#007BFF" }}
+        onPress={() => navigation.goBack()}
+      />
+    </View>
+  </View>
+);
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingBottom: 20,
-  },
-  lineContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: "5%",
-  },
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#000",
-  },
-  lineText: {
-    marginHorizontal: 4,
-    fontSize: 20,
-    paddingHorizontal: 10,
-    color: "#000",
-    fontWeight: "700",
-  },
-  lineText2: {
-    marginHorizontal: 4,
-    fontSize: 16,
-    paddingHorizontal: 10,
-    color: "#000",
-    fontWeight: "700",
-  },
-  progressContainer: {
-    marginTop: 40,
-    paddingHorizontal: 20,
-  },
-  progressHeading: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  progressBar: {
-    height: 8,
-    backgroundColor: "#ccc",
-    borderRadius: 4,
-    position: "relative",
-  },
-  filledBar: {
-    height: 8,
-    backgroundColor: "#007BFF",
-    borderRadius: 4,
-    position: "absolute",
-    left: 0,
-  },
-  progressCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: "#007BFF",
-    position: "absolute",
-    top: -6,
-  },
-  rangeLabels: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-  },
-  rangeText: {
-    fontSize: 14,
-    color: "#000",
-  },
-  buttonContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "90%",
-    alignSelf: "center",
-    marginTop: "42%",
-  },
-  button: {
-    marginBottom: 5,
-  },
-  backButton: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#007BFF",
-  },
+container: {
+  flex: 1,
+  backgroundColor: "#fff",
+},
+content: {
+  flex: 1,
+  paddingBottom: 20,
+},
+lineContainer: {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
+  marginTop: "5%",
+},
+line: {
+  flex: 1,
+  height: 1,
+  backgroundColor: "#000",
+},
+lineText: {
+  marginHorizontal: 4,
+  fontSize: 20,
+  paddingHorizontal: 10,
+  color: "#000",
+  fontWeight: "700",
+},
+lineText2: {
+  marginHorizontal: 4,
+  fontSize: 16,
+  paddingHorizontal: 10,
+  color: "#000",
+  fontWeight: "700",
+},
+progressContainer: {
+  marginTop: 40,
+  paddingHorizontal: 22,
+},
+progressHeading: {
+  fontSize: 18,
+  fontWeight: "bold",
+  marginBottom: 10,
+},
+progressBar: {
+  height: 8,
+  backgroundColor: "#ccc",
+  borderRadius: 4,
+  position: "relative",
+},
+filledBar: {
+  height: 8,
+  backgroundColor: "#007BFF",
+  borderRadius: 4,
+  position: "absolute",
+  left: 0,
+},
+progressCircle: {
+  width: 20,
+  height: 20,
+  borderRadius: 10,
+  backgroundColor: "#007BFF",
+  position: "absolute",
+  top: -6,
+},
+rangeLabels: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  marginTop: 20,
+},
+rangeText: {
+  fontSize: 14,
+  color: "#000",
+},
+buttonContainer: {
+  alignItems: "center",
+  justifyContent: "center",
+  width: "90%",
+  alignSelf: "center",
+  marginBottom:"7%",
+ 
+},
+button: {
+  marginBottom: 5,
+},
+backButton: {
+  backgroundColor: "#fff",
+  borderWidth: 1,
+  borderColor: "#007BFF",
+},
 });
 
 export default CarDetails5;

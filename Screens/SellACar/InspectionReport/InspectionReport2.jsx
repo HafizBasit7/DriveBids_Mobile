@@ -137,6 +137,8 @@ const InspectionReport2 = () => {
           ))}
         </View>
       </ScrollView>
+   
+         <View style={styles.buttonContainer}>
 
       <CustomButton
         title="Next"
@@ -148,6 +150,7 @@ const InspectionReport2 = () => {
         style={styles.nextButton}
         textStyle={styles.nextButtonText}
       />
+    </View>
     </View>
   );
 };
@@ -209,6 +212,10 @@ const styles = StyleSheet.create({
   nextButtonText: {
     color: GlobalStyles.colors.ButtonColor,
     fontFamily: "Inter-SemiBold",
+  },
+  buttonContainer: {
+    width: "100%",
+    marginBottom: "9%"
   },
 });
 

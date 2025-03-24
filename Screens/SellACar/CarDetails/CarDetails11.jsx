@@ -52,48 +52,52 @@ const CarDetails11 = () => {
 
   return (
     <View style={styles.container}>
+
+    {/* Top Content */}
+    <View style={{ flex: 1 }}>
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText}>Step 11 of 14</Text>
         <View style={styles.line} />
       </View>
-
+  
       {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText2}>Horse Power</Text>
         <View style={styles.line} />
       </View>
-
-      {/* Progress Bar Container */}
+  
+      {/* Progress Bar */}
       <View style={styles.progressContainer}>
         <Text style={styles.progressHeading}>Horse Power: {carState.carDetails.horsePower || 0}</Text>
-         <View style={styles.progressBar}>
-            <Animated.View
-              style={[
-                styles.filledBar,
-                {
-                  width: progress.interpolate({
-                    inputRange: [0, 100],
-                    outputRange: ["0%", "100%"],
-                  }),
-                },
-              ]}
-            />
-            <Animated.View
-              style={[
-                styles.progressCircle,
-                {
-                  left: progress.interpolate({
-                    inputRange: [0, 100],
-                    outputRange: ["0%", "100%"],
-                  }),
-                },
-              ]}
-              {...panResponder.panHandlers}
-            />
-          </View>
+        <View style={styles.progressBar}>
+          <Animated.View
+            style={[
+              styles.filledBar,
+              {
+                width: progress.interpolate({
+                  inputRange: [0, 100],
+                  outputRange: ["0%", "100%"],
+                }),
+              },
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.progressCircle,
+              {
+                left: progress.interpolate({
+                  inputRange: [0, 100],
+                  outputRange: ["0%", "100%"],
+                }),
+              },
+            ]}
+            {...panResponder.panHandlers}
+          />
+        </View>
+  
         <View style={styles.rangeLabels}>
           <Text style={styles.rangeText}>20</Text>
           <Text style={styles.rangeText}>100</Text>
@@ -102,23 +106,26 @@ const CarDetails11 = () => {
           <Text style={styles.rangeText}>600</Text>
         </View>
       </View>
-
-      {/* Buttons */}
-      <View style={styles.buttonContainer}>
-        <CustomButton
-          style={styles.button}
-          title="Next"
-          onPress={() => navigation.navigate("CarDetails12")}
-        />
-        <View style={{ height: 10 }} />
-        <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
-        />
-      </View>
     </View>
+  
+    {/* Button Container */}
+    <View style={styles.buttonContainer}>
+      <CustomButton
+        style={styles.button}
+        title="Next"
+        onPress={() => navigation.navigate("CarDetails12")}
+      />
+      <View style={{ height: 10 }} />
+      <CustomButton
+        title="Back"
+        style={styles.backButton}
+        textStyle={{ color: "#007BFF" }}
+        onPress={() => navigation.goBack()}
+      />
+    </View>
+  
+  </View>
+  
   );
 };
 
@@ -160,7 +167,7 @@ const styles = StyleSheet.create({
   progressHeading: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 25,
   },
   progressBar: {
     height: 8,
@@ -197,7 +204,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: "41%",
+    marginBottom: "3%",
   },
   button: {
     marginBottom: 5,

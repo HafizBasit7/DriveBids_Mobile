@@ -70,7 +70,7 @@ export default function R1_SellCarStack() {
     <CarContextProvider>
       <Stack.Navigator
         screenOptions={{
-          header: () => <Header />, // Default header for all screens
+          header: () => <Header  showSearch={false} />, 
         }}
       >
         {/* Sell Car */}

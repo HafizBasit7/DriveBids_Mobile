@@ -10,6 +10,7 @@ import {
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
+import { GlobalStyles } from "../../../Styles/GlobalStyles";
 
 const CarDetails1 = () => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -97,7 +98,7 @@ const CarDetails1 = () => {
         <CustomButton
           title="Back"
           style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
+          textStyle={{ color: GlobalStyles.colors.ButtonColor }}
           onPress={() => navigation.goBack()}
         />
       </View>
@@ -156,16 +157,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
     paddingVertical: 12,
-    paddingHorizontal: 15,
+    paddingHorizontal: 25,
   },
   selectedText: {
-    color: "#007BFF", // Blue color for selected text
+    color: "#007BFF", 
     fontWeight: "700",
   },
   separator: {
     height: 1,
     backgroundColor: "#ccc",
-    marginHorizontal: 15,
+    marginHorizontal: 22,
   },
   buttonContainer: {
     alignItems: "center",
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: 15,
-    marginBottom: 80
+    marginBottom:"2%"
   },
   button: {
     marginBottom: 5,
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
   backButton: {
     backgroundColor: "#fff",
     borderWidth: 1,
-    borderColor: "#007BFF",
+    borderColor:  GlobalStyles.colors.ButtonColor ,
   },
 });
 

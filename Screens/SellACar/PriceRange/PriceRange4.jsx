@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
     alignSelf: "center",
-    marginTop: "60%",
+    marginTop: "70%",
   },
   button: {
     marginBottom: 5,

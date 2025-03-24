@@ -84,7 +84,7 @@ const InteriorFeature1 = () => {
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText}>Step 2 of 3</Text>
+        <Text style={styles.lineText}>Step 2 of 2</Text>
         <View style={styles.line} />
       </View>
 
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: 10,
-    marginBottom: 80,
+    marginBottom:"3%"
   },
   button: {
     marginBottom: 5,

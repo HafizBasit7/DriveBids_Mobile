@@ -79,7 +79,7 @@ const CarDetails14 = () => {
           {/* Section Title */}
           <View style={styles.lineContainer}>
             <View style={styles.line} />
-            <Text style={styles.lineText2}>Model</Text>
+            <Text style={styles.lineText2}>Ads Description</Text>
             <View style={styles.line} />
           </View>
 
@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     marginBottom: 15,
+    marginTop:"6%"
   },
   label: {
     fontSize: 16,
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 90,
+    marginBottom: "3%",
   },
   button: {
     width: "90%",

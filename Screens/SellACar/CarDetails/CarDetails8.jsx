@@ -51,61 +51,67 @@ const CarDetails8 = () => {
       });
     },
   });
-
   return (
     <View style={styles.container}>
-      {/* Step Progress Indicator */}
-      <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <Text style={styles.lineText}>Step 8 of 14</Text>
-        <View style={styles.line} />
-      </View>
+      {/* Content */}
+      <View style={styles.content}>
+        {/* Step Progress Indicator */}
+        <View style={styles.lineContainer}>
+          <View style={styles.line} />
+          <Text style={styles.lineText}>Step 8 of 14</Text>
+          <View style={styles.line} />
+        </View>
 
-      {/* Section Title */}
-      <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <Text style={styles.lineText2}>Engine Size</Text>
-        <View style={styles.line} />
-      </View>
+        {/* Section Title */}
+        <View style={styles.lineContainer}>
+          <View style={styles.line} />
+          <Text style={styles.lineText2}>Engine Size</Text>
+          <View style={styles.line} />
+        </View>
 
-      {/* Progress Bar Container */}
-      <View style={styles.progressContainer}>
-        <Text style={styles.progressHeading}>Engine Size(CCs): {carState.carDetails.engineSize || 0}</Text>
-                <View style={styles.progressBar}>
-                  <Animated.View
-                    style={[
-                      styles.filledBar,
-                      {
-                        width: progress.interpolate({
-                          inputRange: [0, 100],
-                          outputRange: ["0%", "100%"],
-                        }),
-                      },
-                    ]}
-                  />
-                  <Animated.View
-                    style={[
-                      styles.progressCircle,
-                      {
-                        left: progress.interpolate({
-                          inputRange: [0, 100],
-                          outputRange: ["0%", "100%"],
-                        }),
-                      },
-                    ]}
-                    {...panResponder.panHandlers}
-                  />
-                </View>
-        <View style={styles.rangeLabels}>
-          <Text style={styles.rangeText}>500</Text>
-          <Text style={styles.rangeText}>2000</Text>
-          <Text style={styles.rangeText}>4000</Text>
-          <Text style={styles.rangeText}>6000</Text>
-          <Text style={styles.rangeText}>8000</Text>
+        {/* Progress Bar Container */}
+        <View style={styles.progressContainer}>
+          <Text style={styles.progressHeading}>
+            Engine Size(CCs): {carState.carDetails.engineSize || 0}
+          </Text>
+
+          <View style={styles.progressBar}>
+            <Animated.View
+              style={[
+                styles.filledBar,
+                {
+                  width: progress.interpolate({
+                    inputRange: [0, 100],
+                    outputRange: ["0%", "100%"],
+                  }),
+                },
+              ]}
+            />
+            <Animated.View
+              style={[
+                styles.progressCircle,
+                {
+                  left: progress.interpolate({
+                    inputRange: [0, 100],
+                    outputRange: ["0%", "100%"],
+                  }),
+                },
+              ]}
+              {...panResponder.panHandlers}
+            />
+          </View>
+
+          <View style={styles.rangeLabels}>
+            <Text style={styles.rangeText}>500</Text>
+            <Text style={styles.rangeText}>2000</Text>
+            <Text style={styles.rangeText}>4000</Text>
+            <Text style={styles.rangeText}>6000</Text>
+            <Text style={styles.rangeText}>8000</Text>
+          </View>
         </View>
       </View>
 
-      {/* Buttons */}
+      {/* Bottom Buttons */}
       <View style={styles.buttonContainer}>
         <CustomButton
           style={styles.button}
@@ -128,7 +134,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    justifyContent: "space-between",
     paddingBottom: 20,
+  },
+  content: {
+    paddingHorizontal: 20,
   },
   lineContainer: {
     flexDirection: "row",
@@ -157,12 +167,11 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     marginTop: 40,
-    paddingHorizontal: 20,
   },
   progressHeading: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 25,
   },
   progressBar: {
     height: 8,
@@ -199,7 +208,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: "41%",
+    marginBottom:"2%"
   },
   button: {
     marginBottom: 5,

@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
 
 const CarDetails12 = () => {
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation(); 
 
   const {carState, dispatch} = useCar();
 
@@ -27,24 +27,27 @@ const CarDetails12 = () => {
 
   return (
     <View style={styles.container}>
+
+    {/* Content */}
+    <View style={{ flex: 1 }}>
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText}>Step 12 of 14</Text>
         <View style={styles.line} />
       </View>
-
+  
       {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText2}>Accident History</Text>
         <View style={styles.line} />
       </View>
-
+  
       {/* Input Field */}
       <View style={styles.inputWrapper}>
         <TextInput
-          style={[styles.input, { height: 150 }]}
+          style={[styles.input, { height: 150,textAlignVertical: 'top', textAlign: 'left',paddingTop:15 }]}
           placeholder="Enter accident history..."
           placeholderTextColor="#999"
           value={carState.carDetails.accidentHistory}
@@ -52,22 +55,26 @@ const CarDetails12 = () => {
           multiline
         />
       </View>
-      {/* Buttons */}
-      <View style={styles.buttonContainer}>
-        <CustomButton
-          style={styles.button}
-          title="Next"
-          onPress={() => navigation.navigate("CarDetails13")}
-        />
-        <View style={{ height: 10 }} />
-        <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
-        />
-      </View>
     </View>
+  
+    {/* Buttons */}
+    <View style={styles.buttonContainer}>
+      <CustomButton
+        style={styles.button}
+        title="Next"
+        onPress={() => navigation.navigate("CarDetails13")}
+      />
+      <View style={{ height: 10 }} />
+      <CustomButton
+        title="Back"
+        style={styles.backButton}
+        textStyle={{ color: "#007BFF" }}
+        onPress={() => navigation.goBack()}
+      />
+    </View>
+  
+  </View>
+  
   );
 };
 
@@ -82,6 +89,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: "5%",
+    
   },
   line: {
     flex: 1,
@@ -111,8 +119,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginHorizontal: 20,
     // height: 55,
-    marginTop: 10,
-  },
+    marginTop: "15%",  },
   input: {
     flex: 1,
     fontSize: 16,
@@ -138,8 +145,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: "30%",
+    marginBottom: "3%"
   },
+  
   button: {
     marginBottom: 5,
   },

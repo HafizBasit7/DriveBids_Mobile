@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   optionContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 4,
+    paddingVertical: 0.1,
     paddingHorizontal: 10,
   },
   entityText: {
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: 10,
-    marginBottom: 80,
+    marginBottom: "3%"
   },
   button: {
     marginBottom: 5,
