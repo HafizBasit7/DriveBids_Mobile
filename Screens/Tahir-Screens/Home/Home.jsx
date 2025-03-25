@@ -82,12 +82,12 @@ export default Home = () => {
           )}
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 5 }} // Add padding instead of fixed height
+          contentContainerStyle={{ paddingHorizontal: 5 }} 
           ItemSeparatorComponent={() => (
             <View style={{ width: SEPARATOR_WIDTH }} />
           )}
           snapToInterval={ITEM_WIDTH}
-          decelerationRate="fast" // Makes snapping more obvious
+          decelerationRate="fast" 
           removeClippedSubviews={true}
           getItemLayout={(data, index) => ({
             length: CARD_WIDTH,
@@ -160,5 +160,8 @@ export default Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:"#fff",
+    
+    
   },
 });

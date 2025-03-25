@@ -15,10 +15,14 @@ import SectionCheckBoxes from "./SectionCheckBoxes";
 import { FilterStyles } from "./StyleSheetFilters";
 import details from "./InitialDetails";
 import Header from "../../../CustomComponents/Header"; 
+import { useNavigation } from '@react-navigation/native';
+
 
 const FiltersScreen = () => {
   const styles = FilterStyles;
   const scrollViewRef = useRef(null);
+  const navigation = useNavigation();
+
 
   // State for filter values
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
@@ -332,8 +336,8 @@ const FiltersScreen = () => {
       ),
       sellerType: Object.keys(sellerType).filter((type) => sellerType[type]),
     });
-    // You could also navigate back to results screen
-    // navigation.goBack();
+    
+    navigation.navigate('Filters_ViewAll');
   };
 
   return (
@@ -342,8 +346,8 @@ const FiltersScreen = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
 
-      <Header/>
-      <Text style={styles.header}>Filters</Text>
+      <Header showSearch={false}/>
+      <Text style={styles.header} >Filters</Text>
 
       <ScrollView
         ref={scrollViewRef}
@@ -647,6 +651,7 @@ const FiltersScreen = () => {
         <TouchableOpacity
           style={[styles.button, styles.applyButton]}
           onPress={applyFilters}
+          
         >
           <Text style={styles.applyButtonText}>Apply</Text>
         </TouchableOpacity>

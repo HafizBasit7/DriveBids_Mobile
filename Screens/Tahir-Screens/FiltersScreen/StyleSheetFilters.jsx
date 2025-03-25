@@ -4,6 +4,7 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 export const FilterStyles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:"#fff"
   },
   header: {
     fontFamily: "Inter-SemiBold",
@@ -118,6 +119,7 @@ export const FilterStyles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 5,
+    paddingBottom:80
   },
   button: {
     width: "48%",

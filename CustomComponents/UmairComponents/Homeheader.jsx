@@ -89,7 +89,6 @@ const HomeHeader = ({car}) => {
         translucent
         
       />
-      {/* Slider Section */}
       <View style={styles.container}>
         <ScrollView
           ref={scrollViewRef}
@@ -177,6 +176,7 @@ const styles = StyleSheet.create({
     height: 170,
     backgroundColor: GlobalStyles.colors.HomeHeaderColour,
     position: "relative",
+    
   },
   image: {
     width: width,
@@ -215,8 +215,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   yellowContainer: {
-    backgroundColor: "yellow",
-    height: 100,
+    backgroundColor: "#FEE226",
+    height: 90,
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     flexDirection: "row",
@@ -236,28 +236,28 @@ const styles = StyleSheet.create({
   },
   verticalLine: {
     position: "absolute",
-    left: "50%",
+    left: "55%",
     transform: [{ translateX: -1 }],
     width: 2,
     height: "80%",
     backgroundColor: "black",
   },
   labelText: {
-    fontSize: 17,
-    fontWeight: "bold",
+    fontSize: 20,
+    fontWeight: "900",
     color: "black",
   },
   labelText2: {
-    fontSize: 16,
+    fontSize: 11,
     color: "black",
   },
   priceText: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 14,
+    fontWeight: "700",
     color: "black",
   },
   timerText: {
-    fontSize: 12,
+    fontSize: 13,
     color: "red",
   },
   modalOverlay: {

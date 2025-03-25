@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     height: height * 0.2, // Increased height for the new section
     backgroundColor: "#FEE226",
     borderRadius: 20,
-    marginTop: 50,
+    marginTop: 25,
     padding: 15,
   },
   topSection: {
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: Platform.OS === "ios" ? -1 : 1 }],
   },
   text: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: "600",
     fontFamily: "Inter-SemiBold", // Ensure the font is properly loaded
   },

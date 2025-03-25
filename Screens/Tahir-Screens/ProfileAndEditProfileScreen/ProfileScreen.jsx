@@ -125,7 +125,7 @@ const ProfileScreen = () => {
   return (
     <>
       <Header showSearch={false}/>
-      <SectionHeader title={"Profile"} />
+      {/* <SectionHeader title={"Profile"} /> */}
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Profile Header */}
         <View style={styles.profileHeader}>
@@ -160,10 +160,11 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f3f4f6",
+    backgroundColor: "#fff",
   },
   scrollContent: {
     padding: 16,
+    backgroundColor: "#fff",
   },
   profileHeader: {
     flexDirection: "row",

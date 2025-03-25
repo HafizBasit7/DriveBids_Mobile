@@ -62,8 +62,8 @@ export default function PasswordChangeScreen() {
         loading={false}
         title={message?.title || ''}
       />
-
-      <SectionHeader title={"Change Password"} />
+<View style={{backgroundColor:"#fff"}}><SectionHeader title={"Change Password"} /></View>
+      
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingView}
@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
   },
   keyboardAvoidingView: {
     flex: 1,
+    backgroundColor:"#fff"
   },
   scrollContainer: {
     flexGrow: 1,
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: "5%",
+    marginTop: "45%",
     alignSelf: "center",
   },
   nextButton: {

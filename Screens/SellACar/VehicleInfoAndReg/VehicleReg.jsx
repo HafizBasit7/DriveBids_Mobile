@@ -49,8 +49,8 @@ const VehicleReg = () => {
         <CustomButton
           title="Sell my car"
           onPress={nextPage}
-          disabled={carState.regNo.trim() === ''}
-          backgroundColor={carState.regNo.trim() === '' ? '#ccc' : GlobalStyles.colors.primary}
+          disabled={carState.regNo?.trim() === ''}
+          backgroundColor={carState.regNo?.trim() === '' ? '#ccc' : GlobalStyles.colors.primary}
         />
       </View>
     </View>

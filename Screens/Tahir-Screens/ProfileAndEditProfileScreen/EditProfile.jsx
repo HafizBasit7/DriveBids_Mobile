@@ -16,12 +16,35 @@ import CustomButton from "../../../CustomComponents/CustomButton";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import { useAuth } from "../../../R1_Contexts/authContext";
 import { useNavigation } from "@react-navigation/native";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Modal } from "react-native";
 import DialogBox from "../../../CustomComponents/DialogBox";
 import { updateProfile } from "../../../API_Callings/R1_API/Auth";
 import Header from "../../../CustomComponents/Header";
+import { FlatList } from "react-native-gesture-handler";
 
 const ProfileEditScreen = () => {
+
+
+  const [countryModalVisible, setCountryModalVisible] = useState(false);
+
+const countryCodes = [
+  { code: '+1', country: 'USA' },
+  { code: '+91', country: 'India' },
+  { code: '+44', country: 'UK' },
+  { code: '+971', country: 'UAE' },
+  { code: '+61', country: 'Australia' },
+  { code: '+1', country: 'USA' },
+  { code: '+91', country: 'India' },
+  { code: '+44', country: 'UK' },
+  { code: '+971', country: 'UAE' },
+  { code: '+61', country: 'Australia' },
+  // Add more countries here
+];
+
+const handleCountrySelect = (item) => {
+  setFormData((prev) => ({ ...prev, countryCode: item.code }));
+  setCountryModalVisible(false);
+};
 
   const {authState, dispatch} = useAuth();
   const user = authState.user;
@@ -67,7 +90,8 @@ const ProfileEditScreen = () => {
         loading={false}
         title={message?.title || ''}
       />
-      <SectionHeader title={"Edit Profile"} />
+      <View style={{backgroundColor:"#fff"}}>       <SectionHeader title={"Edit Profile"} />
+      </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
@@ -119,17 +143,14 @@ const ProfileEditScreen = () => {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Mobile Number</Text>
             <View style={styles.phoneInputContainer}>
-              <TouchableOpacity style={styles.countryCodePicker}>
-                <Text style={styles.countryCodeText}>
-                  {formData.countryCode}
-                </Text>
-                <Icon
-                  name="arrow-drop-down"
-                  type="material"
-                  size={20}
-                  color="#333"
-                />
-              </TouchableOpacity>
+            <TouchableOpacity
+  style={styles.countryCodePicker}
+  onPress={() => setCountryModalVisible(true)}
+>
+  <Text style={styles.countryCodeText}>{formData.countryCode}</Text>
+  <Icon name="arrow-drop-down" type="material" size={20} color="#333" />
+</TouchableOpacity>
+
               <TextInput
                 style={styles.phoneInput}
                 value={formData.phoneNumber}
@@ -167,6 +188,38 @@ const ProfileEditScreen = () => {
           </View>
         )}
       </ScrollView>
+      <Modal
+  visible={countryModalVisible}
+  animationType="slide"
+  transparent={true}
+>
+  <View style={styles.modalOverlay}>
+    <View style={styles.modalContent}>
+      <Text style={styles.modalTitle}>Select Country Code</Text>
+      <FlatList
+        data={countryCodes}
+        keyExtractor={(item, index) => index.toString()}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.modalItem}
+            onPress={() => handleCountrySelect(item)}
+          >
+            <Text style={styles.modalText}>{item.country} ({item.code})</Text>
+          </TouchableOpacity>
+        )}
+      />
+      <TouchableOpacity
+        style={styles.modalCloseButton}
+        onPress={() => setCountryModalVisible(false)}
+      >
+        <Text style={styles.modalCloseText}>Close</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
+
+
     </>
   );
 };
@@ -174,11 +227,12 @@ const ProfileEditScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f9fafb",
+    backgroundColor: "#fff",
   },
   scrollContent: {
     padding: 16,
     alignItems: "center",
+    backgroundColor: "#fff",
   },
   profileImageContainer: {
     position: "relative",
@@ -267,6 +321,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
 
     alignSelf: "center",
+    marginBottom:25
   },
   nextButton: {
     backgroundColor: "transparent",
@@ -278,6 +333,47 @@ const styles = StyleSheet.create({
     color: GlobalStyles.colors.ButtonColor,
     fontFamily: "Inter-SemiBold",
   },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 20,
+    maxHeight: '60%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontFamily: 'Inter-SemiBold',
+    marginBottom: 15,
+  },
+  modalItem: {
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  modalText: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+  },
+  modalCloseButton: {
+    marginTop: 20,
+    paddingVertical: 12,
+    backgroundColor: '#2F61BF',
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  modalCloseText: {
+    color: '#fff',
+    fontFamily: 'Inter-SemiBold',
+    fontSize: 16,
+  },
+  
+  
 });
 
 export default ProfileEditScreen;

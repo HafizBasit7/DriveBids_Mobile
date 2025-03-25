@@ -25,6 +25,8 @@ const AdDetails = ({route}) => {
   
   const {carId} = route.params;
   const {authState} = useAuth();
+ 
+
 
   const {data, isLoading} = useQuery({
     queryKey: ['car', carId],
@@ -37,6 +39,16 @@ const AdDetails = ({route}) => {
   }
 
   const car = data.data.car;
+  console.log("car",car);
+  
+  const reservePrice = car.reserveBidPrice;
+const highestBid = car.highestBid;
+const percentageMet = Math.min((highestBid / reservePrice) * 100, 100);
+
+
+const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
+ 
+  
   
   //Calculation
   const isMyBid = car.user._id === authState.user._id;
@@ -49,21 +61,36 @@ const AdDetails = ({route}) => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.container}>
-          {/* Step Progress Container (Lines should extend fully) */}
           <View style={styles.lineContainer}>
             <View style={styles.fullLine} />
             <Text style={styles.lineText}>Car Details</Text>
             <View style={styles.fullLine} />
           </View>
 
-          {/* Second Line Container with Centered Box */}
-          <View style={styles.boxedLineContainer}>
-            <View style={styles.smallLine} />
-            <View style={styles.centerBox}>
-              <Text style={styles.centerText}>RESERVE {car.reserveMet ? '' : 'NOT'} MET</Text>
-            </View>
-            <View style={styles.smallLine} />
-          </View>
+  
+<View style={styles.boxedLineContainer}>
+  {/* Left Line - Fills left to right */}
+  <View style={styles.smallLine}>
+    <View style={[styles.progressFill, { width: progressWidth }]} />
+  </View>
+
+  {/* Center Box */}
+  <View style={styles.centerBox}>
+  <Text
+    style={[
+      styles.centerText,
+      car.reserveMet && { color: '#3BBF2F' } 
+    ]}
+  >
+    RESERVE {car.reserveMet ? '' : 'NOT'} MET
+  </Text>
+  </View>
+
+  {/* Right Line - Fills right to left */}
+  <View style={styles.smallLine}>
+    <View style={[styles.progressFill, styles.rightProgress, { width: progressWidth }]} />
+  </View>
+</View>
           <MakeModel car={car}/>
           {!isMyBid && (<BidsButtons car={car}/>)}
           {!isMyBid && (
@@ -93,6 +120,8 @@ const AdDetails = ({route}) => {
 };
 
 const styles = StyleSheet.create({
+
+ 
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -104,18 +133,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 30, // Space before the next section
+    marginBottom: 25, // Space before the next section
     width: width, // Make it full width
+    marginTop:15
   },
   fullLine: {
     flex: 1,
-    height: 1,
+    height: 2,
     backgroundColor: "#000",
     marginHorizontal: 0, // Ensure no gaps at the edges
   },
   lineText: {
     marginHorizontal: 8,
-    fontSize: 20,
+    fontSize: 25,
     paddingHorizontal: 10,
     color: "#000",
     fontWeight: "700",
@@ -125,32 +155,48 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%", // Keep a small margin from edges
+    width: "100%",
   },
   smallLine: {
     flex: 1,
-    height: 2,
-    backgroundColor: "#2a5db0",
+    height: 3,
+    backgroundColor: "#ccc", // Base gray line
+    borderRadius: 5,
+    overflow: 'hidden',
   },
+  
+  progressFill: {
+    height: '100%',
+    backgroundColor: '#3BBF2F',
+  },
+  
+  // This reverses the fill direction for the right side
+  rightProgress: {
+    alignSelf: 'flex-end',
+  },
+  
   centerBox: {
     backgroundColor: "#fff",
     paddingVertical: 8,
     paddingHorizontal: 20,
-    borderRadius: 10, // Rounded border
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: "#ccc",
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 2, // Shadow for Android
-    height: 50, // Increased height
-    justifyContent: "center", // Ensure text stays centered vertically
+    elevation: 2,
+    height: 50,
+    justifyContent: "center",
   },
+  
   centerText: {
-    fontSize: 16,
-    color: GlobalStyles.colors.ButtonColor, // Blue text
-    fontWeight: "bold",
+    fontSize: 15,
+    color: "#2a5db0",
+    fontWeight: "800",
   },
+  
+  
 });
 
 export default AdDetails;

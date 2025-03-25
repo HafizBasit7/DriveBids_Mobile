@@ -163,9 +163,12 @@ const HomeCarCard = ({
                 paddingVertical: 3,
                 borderRadius: 12,
                 color: "black",
+                minWidth: 50, 
+      textAlign: 'center', 
+                
               }}
             >
-              Sold
+            Sold 
             </Text>
           </View>
         )}

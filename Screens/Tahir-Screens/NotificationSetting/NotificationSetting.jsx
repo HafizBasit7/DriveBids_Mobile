@@ -43,11 +43,13 @@ export default function NotificationSettingsScreen() {
   return (
     <>
       <Header showSearch={false}/>
-      <SectionHeader title={"Notifications Setting"} />
+       <View style={{ backgroundColor: "#fff" }}>  <SectionHeader title={"Notifications Setting"} /></View>
+   
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}
       >
+          
         {/* Common Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Common</Text>
@@ -129,10 +131,11 @@ export default function NotificationSettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    
   },
   scrollView: {
     flex: 1,
+     backgroundColor:"#fff"
   },
   section: {
     marginBottom: 10,
@@ -169,6 +172,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
     alignSelf: "center",
+    marginBottom:"10%"
   },
   nextButton: {
     backgroundColor: "transparent",

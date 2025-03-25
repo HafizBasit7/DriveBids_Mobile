@@ -15,6 +15,7 @@ const BidsButtons = ({
 
   const navigation = useNavigation();
   const [message, setMessage] = useState(null);
+  const [buyNowDialogVisible, setBuyNowDialogVisible] = useState(false);
 
   const mutation = useMutation({
     mutationFn: placeBidOnCar,
@@ -22,16 +23,33 @@ const BidsButtons = ({
 
   const handleQuickBidPress = async () => {
     try {
-      const result = await mutation.mutateAsync({carId: car._id, bidAmount: parseInt(car.highestBid ? car.highestBid + 1 : car.staringBidPrice)});
-      setMessage({type: 'success', message: result.message, title: 'Success'});
+      const result = await mutation.mutateAsync({
+        carId: car._id,
+        bidAmount: parseInt(car.highestBid ? car.highestBid + 1 : car.staringBidPrice)
+      });
+      setMessage({ type: 'success', message: result.message, title: 'Success' });
     } catch (e) {
-      setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+      setMessage({ type: 'error', message: e.message || e.msg, title: 'Error' });
+    }
+  };
+
+  const handleBuyItNow = async () => {
+    try {
+      setBuyNowDialogVisible(false);
+      const result = await mutation.mutateAsync({
+        carId: car._id,
+        bidAmount: car.buyNowPrice
+      });
+      setMessage({ type: 'success', message: result.message, title: 'Success' });
+    } catch (e) {
+      setMessage({ type: 'error', message: e.message || e.msg, title: 'Error' });
     }
   };
 
   return (
     <View style={styles.container}>
 
+      {/* General Message Dialog */}
       <DialogBox
         visible={message ? true : false}
         message={message?.message}
@@ -41,27 +59,44 @@ const BidsButtons = ({
         title={message?.title || ''}
       />
 
+      {/* Buy Now Confirmation Dialog */}
+      <DialogBox
+        visible={buyNowDialogVisible}
+        message={`Are you sure you want to buy this car for AED ${car.buyNowPrice}?`}
+        onOkPress={handleBuyItNow}
+        onCancelPress={() => setBuyNowDialogVisible(false)}
+        title="Confirm Buy Now"
+      />
+
       {/* Buy It Now Button */}
-      <TouchableOpacity style={[styles.button, styles.outlineButton]}>
+      <TouchableOpacity
+        style={[styles.button, styles.outlineButton]}
+        onPress={() => setBuyNowDialogVisible(true)}
+      >
         <Text style={styles.blueText}>{buyItNowTitle}</Text>
         <Text style={styles.price}>AED {car.buyNowPrice}</Text>
       </TouchableOpacity>
 
       {/* Place Bid Button */}
-      <TouchableOpacity style={[styles.button, styles.primaryButton]}  onPress={() => navigation.navigate('PlaceBid', {car})}>
+      <TouchableOpacity
+        style={[styles.button, styles.primaryButton]}
+        onPress={() => navigation.navigate('PlaceBid', { car })}
+      >
         <Text style={styles.primaryText}>{placeBidTitle}</Text>
       </TouchableOpacity>
 
       {/* Quick Bid Button */}
-      <TouchableOpacity style={[styles.button, styles.outlineButton]} onPress={handleQuickBidPress}>
-        {!mutation.isPending && (
+      <TouchableOpacity
+        style={[styles.button, styles.outlineButton]}
+        onPress={handleQuickBidPress}
+      >
+        {!mutation.isPending ? (
           <>
             <Text style={styles.blueText}>{quickBidTitle}</Text>
             <Text style={styles.price}>AED {car.highestBid ? car.highestBid + 1 : car.staringBidPrice}</Text>
           </>
-        )}
-        {mutation.isPending && (
-          <ActivityIndicator/>
+        ) : (
+          <ActivityIndicator />
         )}
       </TouchableOpacity>
     </View>
@@ -97,7 +132,7 @@ const styles = StyleSheet.create({
   blueText: {
     fontSize: 12,
     fontWeight: "bold",
-    color: "#777", //
+    color: "#777",
   },
   primaryText: {
     fontSize: 12,
@@ -105,7 +140,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   price: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "bold",
     color: "#B22222",
   },

@@ -9,11 +9,15 @@ export default function Terms() {
   return (
     <>
       <Header showSearch={false}/>
-      <SectionHeader title={"Terms & Conditions"} />
+      <View style={{ backgroundColor: "#fff" }}>
+  <SectionHeader title={"Terms & Conditions"} />
+</View>
+    
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}
       >
+        
         <Text style={styles.headerText}>
           Please read these terms of service, carefully before using our app
           operated by us.
@@ -62,12 +66,12 @@ export default function Terms() {
         <View
           style={{
             width: "95%",
-            marginBottom: 5,
+            marginBottom: 45,
             alignSelf: "center",
           }}
         >
           <CustomButton
-            title="Aggree"
+            title="Agree"
             style={styles.nextButton}
             textStyle={styles.nextButtonText}
             onPress={() => console.log("Aggreed Terms Conditions")}
@@ -81,12 +85,13 @@ export default function Terms() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#fff",
   },
   scrollView: {
     flex: 1,
     backgroundColor: "#f5f5f5",
     padding: 20,
+    backgroundColor: "#fff",
   },
   headerText: {
     fontFamily: "Inter-Regular",
