@@ -209,7 +209,7 @@ export default function CarContextProvider({children}) {
         if(subSection) {
             const result = await saveDraft({
                 [section]: {
-                    ...carState[section],
+                    // ...carState[section], //TODO
                     [subSection]: carState[section][subSection],
                 },
                 draftId: carState.draftId,
