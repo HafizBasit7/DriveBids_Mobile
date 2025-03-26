@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon, Button } from "react-native-elements";
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toggleWatchList } from "../../../API_Callings/R1_API/Watchlist";
@@ -11,8 +10,8 @@ import { useAuth } from "../../../R1_Contexts/authContext";
 const HomeCarCard = ({
   ad,
   carsInWatchList,
-  CardWidth = 250,
-  imgHeight = 140,
+  CardWidth = 185,
+  imgHeight = 100,
   isFromMyBids = false,
   bid,
   notHome = false,
@@ -127,16 +126,25 @@ const HomeCarCard = ({
       <View style={styles.details}>
         <Text style={styles.title}>{ad.variant}</Text>
         <View style={styles.infoRow}>
-          <Icon name="calendar-today" type="material" size={16} color="black" />
-          <Text style={styles.infoText}>{ad.model}</Text>
-          <Text style={styles.separator}>|</Text>
+  <View style={styles.iconTextContainer}>
+    <Icon name="calendar-today" type="material" size={14} color="black" />
+    <Text style={styles.infoText} numberOfLines={1}>{ad.model}</Text>
+  </View>
 
-          <Icon name="speed" type="material" size={16} color="black" />
-          <Text style={styles.infoText}>{ad.engineSize} cc</Text>
-          <Text style={styles.separator}>|</Text>
-          <Icon name="settings" type="material" size={16} color="black" />
-          <Text style={styles.infoText}>{ad.transmission}</Text>
-        </View>
+  <Text style={styles.separator}>|</Text>
+
+  <View style={styles.iconTextContainer}>
+    <Icon name="speed" type="material" size={14} color="black" />
+    <Text style={styles.infoText}>{ad.engineSize} cc</Text>
+  </View>
+
+  <Text style={styles.separator}>|</Text>
+
+  <View style={styles.iconTextContainer}>
+    <Icon name="settings" type="material" size={14} color="black" />
+    <Text style={styles.infoText}>{ad.transmission}</Text>
+  </View>
+</View>
         <Text style={styles.bidText}>
           Top Bid{" "}
           <Text style={styles.bidAmount}>
@@ -160,7 +168,8 @@ const HomeCarCard = ({
                 backgroundColor: "rgba(107, 100, 102, 0.2)",
                 marginTop: 5,
                 paddingHorizontal: 10,
-                paddingVertical: 3,
+                paddingVertical: 1,
+                fontSize:12,
                 borderRadius: 12,
                 color: "black",
                 minWidth: 50, 
@@ -181,7 +190,7 @@ const HomeCarCard = ({
             icon={{
               name: "campaign",
               type: "material",
-              size: 18,
+              size: 15,
               color: "white",
             }}
             onPress={onViewAd}
@@ -262,34 +271,35 @@ const HomeCarCard = ({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
-    borderRadius: 12,
+    borderRadius: 15,
     overflow: "hidden",
-
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    width: 250,
-    elevation: 3,
-    marginVertical: 5,
+    shadowColor:"#000",
+    shadowOpacity: 0.5,
+    shadowRadius: 9, 
+    elevation: 2,
+    marginVertical: 10,
   },
   image: {
     width: "100%",
-    height: 140, // Reduced height
+    height: 140, 
   },
   favoriteIcon: {
     position: "absolute",
     top: 8,
-    right: 8,
+    right: 10,
     backgroundColor: "rgba(101, 101, 101, 0.8)",
-    padding: 6,
-    borderRadius: 15,
+    padding: 3,
+    borderRadius: 10,
+    width:30,
+    height:30
+    
   },
   details: {
-    padding: 5,
-    alignItems: "center", // Center align content
+    padding: 6,
+    alignItems: "center", 
   },
   title: {
-    fontSize: 17,
+    fontSize: 15,
     fontFamily: "Inter-SemiBold",
     color: "#333",
     textAlign: "center",
@@ -303,45 +313,46 @@ const styles = StyleSheet.create({
   },
 
   infoText: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: "Inter-Regular",
     color: "black",
     marginLeft: 3,
   },
 
   separator: {
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: "Inter-SemiBold",
     color: "black",
-    marginHorizontal: 6, // Space around separator
+    marginHorizontal: 6, 
   },
 
   bidText: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: "Inter-SemiBold",
     color: "#000",
-    marginTop: 5,
+    marginTop: 7,
   },
   bidAmount: {
     color: "#2F61BF",
   },
   timer: {
-    fontSize: 14,
+    fontSize: 11,
     fontFamily: "Inter-SemiBold",
     color: "#B3261E",
     marginTop: 3,
   },
   button: {
     backgroundColor: "#2F61BF",
-    marginHorizontal: 5,
-    marginBottom: 10,
+    
+    marginVertical: 3,
     borderRadius: 25,
     width: "50%",
+    
     alignSelf: "center",
   },
   buttonText: {
     fontFamily: "Inter-SemiBold",
-    fontSize: 12,
+    fontSize: 10,
   },
 });
 

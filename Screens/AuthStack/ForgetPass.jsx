@@ -71,7 +71,8 @@ const ForgetPass = () => {
             />
 
             <View style={styles.backIconContainer}>
-              <BackIcon width={30} height={30} />
+              <BackIcon width={30} height={30}   onPress={() => navigation.navigate("SignInScreen")}/>
+              
             </View>
             <View style={styles.topImage}>
               <Image
@@ -143,6 +144,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
+    backgroundColor:"#fff"
   },
   backIconContainer: {
     position: "absolute",
@@ -158,24 +160,27 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 10,
     paddingHorizontal: 15,
+    backgroundColor:"#fff"
   },
 
   heading: {
-    fontSize: 22,
+    fontSize: 28,
     fontFamily: "Inter-Bold",
     color: "#000",
+    marginBottom:10
   },
   description: {
     fontSize: 16,
     color: "#555",
-    marginTop: 5,
+ 
     width: "90%",
     fontFamily: "Inter-Regular",
+    marginBottom:15
   },
   activeTabIndicator: {
     marginTop: "5%",
     position: "absolute",
-    width: "55%",
+    width: "65%",
     height: 12,
     backgroundColor: "yellow",
     borderRadius: 10,
@@ -186,11 +191,11 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "bold",
     fontFamily: "Inter-Regular",
     color: "#000",
-    marginBottom: 5,
+    marginBottom: 10,
   },
   input: {
     width: "100%",
@@ -212,7 +217,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 0,
     marginBottom: 25
   },
   accountText: {

@@ -40,7 +40,7 @@ export default MyAds = () => {
 
   return (
     <>
-      <Header/>
+      <Header showSearch={false}/>
       <View style={styles.container}>
       <SectionHeader title={"My Ads"} />
       {isLoading && <ActivityIndicator/>}
@@ -66,7 +66,7 @@ export default MyAds = () => {
             alignItems: "center",
           }} // Add vertical padding
           ItemSeparatorComponent={() => (
-            <View style={{ height: 5 }} /> // Adjust spacing between items
+            <View style={{ height: 5 }} /> 
           )}
           removeClippedSubviews={true}
           getItemLayout={(data, index) => ({

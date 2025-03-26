@@ -92,7 +92,7 @@ const SignupScreen = () => {
         <BackIcon
           width={30}
           height={30}
-          onPress={() => navigation.navigate("onboardingScreen")}
+          onPress={() => navigation.navigate("SignInScreen")}
         />
       </View>
 
@@ -142,7 +142,8 @@ const SignupScreen = () => {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.inputContainer}
         >
-          <ScrollView>
+          <ScrollView         showsVerticalScrollIndicator={false} // Hide scrollbar
+          >
             <View>
               <View style={styles.inputWrapper}>
                   <Text style={styles.label}>Name</Text>
@@ -197,7 +198,7 @@ const SignupScreen = () => {
               <View style={styles.checkboxContainer}>
                 <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
                   <BouncyCheckbox
-                    size={20}
+                    size={21}
                     fillColor="#2F61BF"
                     unfillColor="#FFFFFF"
                     iconStyle={{ borderColor: "#2F61BF" }}
@@ -242,6 +243,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#fff",
+    
   },
   backIconContainer: {
     position: "absolute",
@@ -285,7 +287,7 @@ const styles = StyleSheet.create({
   },
   activeTabIndicator: {
     position: "absolute",
-    width: "55%",
+    width: "60%",
     height: 14,
     backgroundColor: "yellow",
     borderRadius: 10,
@@ -297,8 +299,8 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   boxText: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 20,
+    fontWeight: "900",
     color: "#000",
   },
   contentContainer: {
@@ -343,17 +345,18 @@ const styles = StyleSheet.create({
   checkboxContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 8,
+    marginTop: 7,
   },
   checkboxText: {
     fontSize: 14,
     color: "#333",
+    
   },
   clickableText: {
     color: "#2F61BF",
     textDecorationLine: "underline",
     position: "relative",
-    top: 3,
+    top: 4,
     fontFamily: "Inter-Regular",
   },
   bottomContainer: {
@@ -371,12 +374,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#000",
     fontFamily: "Inter-Regular",
+    fontWeight:"700"
   },
   loginLink: {
     fontSize: 14,
     color: "#2F61BF",
     fontFamily: "Inter-Regular",
     textDecorationLine: "underline",
+        fontWeight:"700",
   },
 });
 

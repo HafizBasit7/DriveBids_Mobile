@@ -120,8 +120,10 @@ const NotificationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    padding:10,
+    paddingHorizontal:20,
     justifyContent: "flex-start",
+    backgroundColor:"#fff",
   },
   notificationItem: {
     flexDirection: "row",

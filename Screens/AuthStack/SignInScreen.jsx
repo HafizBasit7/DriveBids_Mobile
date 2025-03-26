@@ -20,6 +20,7 @@ import CustomButton from "../../CustomComponents/CustomButton.js";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../R1_Contexts/authContext.js";
 import DialogBox from "../../CustomComponents/DialogBox.jsx";
+import { Icon } from "react-native-elements";
 
 const SignInScreen = () => {
 
@@ -29,7 +30,9 @@ const SignInScreen = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [clickedIcon, setClickedIcon] = useState(null); // State to track clicked social icon
+  const [clickedIcon, setClickedIcon] = useState(null); 
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
@@ -70,7 +73,7 @@ const SignInScreen = () => {
           backgroundColor="transparent"
           translucent
         />
-        <View style={{ height: "40%", width: "100%" }}>
+        <View style={{ height: "40%", width: "100%",backgroundColor:"#fff" }}>
           <Image
             source={require("../../assets/tahirAssets/AuthPngs/Signin.png")}
             style={styles.topImage}
@@ -105,23 +108,22 @@ const SignInScreen = () => {
                 onChangeText={setEmail}
               />
 
-              <Text style={styles.label}>Password</Text>
-              <TextInput
-                style={[
-                  styles.input,
-                  {
-                    borderColor:
-                      focusedInput === "password" ? "#2F61BF" : "#ccc",
-                  },
-                ]}
-                placeholder="Enter your password"
-                placeholderTextColor="#888"
-                secureTextEntry
-                onFocus={() => setFocusedInput("password")}
-                onBlur={() => setFocusedInput(null)}
-                value={password}
-                onChangeText={setPassword}
-              />
+<Text style={styles.label}>Password</Text>
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  style={[styles.input, { borderColor: focusedInput === "password" ? "#2F61BF" : "#ccc", paddingRight: 40 }]}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#888"
+                  secureTextEntry={!showPassword}
+                  onFocus={() => setFocusedInput("password")}
+                  onBlur={() => setFocusedInput(null)}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+                  <Icon name={showPassword ? "eye-off" : "eye"} type="feather" size={22} color="#888" />
+                </TouchableOpacity>
+              </View>
 
               <View style={styles.rememberContainer}>
                 <BouncyCheckbox
@@ -148,7 +150,7 @@ const SignInScreen = () => {
         <View style={styles.bottomContainer}>
           <CustomButton title="Login" onPress={handleLogin} />
           <View style={styles.signupContainer}>
-            <Text style={styles.accountText}>Don’t have an account?</Text>
+            <Text style={styles.accountText}>Don’t have an account? </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate("Signupscreen")}
             >
@@ -164,6 +166,8 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:"#fff",
+    
   },
   innerContainer: {
     flex: 1,
@@ -177,7 +181,8 @@ const styles = StyleSheet.create({
   overlayContainer: {
     width: "100%",
     paddingHorizontal: 20,
-    flex: 1, // Take up remaining space
+    flex: 1, 
+    backgroundColor:"#fff"
   },
   headingContainer: {
     alignItems: "Left",
@@ -185,9 +190,9 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   activeTabIndicator: {
-    marginTop: "2%",
+    marginTop: "8%",
     position: "absolute",
-    width: "35%",
+    width: "50%",
     height: 14,
     backgroundColor: "yellow",
     borderRadius: 10,
@@ -199,10 +204,11 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   heading: {
-    fontSize: 18,
+    fontSize: 28,
     textAlign: "Left",
     marginBottom: 10,
     color: "#000",
+    marginTop:15,
     fontFamily: "Inter-SemiBold",
   },
   inputContainer: {
@@ -256,12 +262,20 @@ const styles = StyleSheet.create({
     color: "#2F61BF",
     fontFamily: "Inter-Regular",
     textDecorationLine: "underline",
+        fontWeight:"700",
+    fontFamily:"Inter-Regular"
   },
   checkboxText: {
     textDecorationLine: "none",
     color: "#000",
     fontSize: 14,
     marginLeft: -5,
+
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: 10,
+    top: 15,
   },
 });
 

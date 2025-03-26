@@ -166,12 +166,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   heading: {
-    fontSize: 22,
+    fontSize: 28,
     fontFamily: "Inter-Semibold",
     color: "#000",
+    fontWeight:"800"
   },
   description: {
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: "Inter-Regular",
     color: "#555",
     marginTop: 5,
@@ -201,11 +202,12 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 8,
     textAlign: "center",
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: "Inter-Semibold",
     color: "#000",
     justifyContent: "center",
     alignItems: "center",
+    paddingTop:6
   },
   focusCell: {
     borderColor: "#000",
@@ -220,9 +222,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "Inter-Semibold",
     marginRight: 10,
+    fontWeight:700
   },
   resendDisabled: {
-    color: "#aaa",
+    color: "#8B8C8E",
   },
   timerText: {
     fontSize: 14,

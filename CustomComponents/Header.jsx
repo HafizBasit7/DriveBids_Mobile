@@ -8,8 +8,8 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Animated,
 } from "react-native";
-// import SvgHamburger from "../assets/SVG/TahirSvgs/Hamburger.svg";
 import SvgBack from "../assets/SVG/TahirSvgs/back.svg";
 import SvgLocation from "../assets/SVG/TahirSvgs/Location.svg";
 import SvgDown from "../assets/SVG/TahirSvgs/Down.svg";
@@ -21,24 +21,44 @@ import { useNavigation } from "@react-navigation/native";
 
 const { height, width } = Dimensions.get("window");
 
-const Header = ({showSearch = true}) => {
-  // State for search input
+// Animation Constants
+const MAX_HEADER_HEIGHT = height * 0.23;
+const MIN_HEADER_HEIGHT = height * 0.14;
+const SCROLL_RANGE = 150;
+
+const Header = ({ showSearch = true, scrollY }) => {
+  // Interpolations for animation
+  const headerHeight = scrollY?.interpolate({
+    inputRange: [0, SCROLL_RANGE],
+    outputRange: [MAX_HEADER_HEIGHT, MIN_HEADER_HEIGHT],
+    extrapolate: "clamp",
+  });
+
+  const searchOpacity = scrollY?.interpolate({
+    inputRange: [0, SCROLL_RANGE * 0.5],
+    outputRange: [1, 0],
+    extrapolate: "clamp",
+  });
+
+  const searchScale = scrollY?.interpolate({
+    inputRange: [0, SCROLL_RANGE * 0.5],
+    outputRange: [1, 0.9],
+    extrapolate: "clamp",
+  });
+
+  // Search input state
   const [searchText, setSearchText] = useState("");
-  const {authState} = useAuth();
+  const { authState } = useAuth();
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        translucent
-      />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
 
-      {/* Header Section */}
-      <View style={[styles.header, {height: showSearch ? height * 0.23 : height * 0.14}]}>
+      {/* Animated Header Section */}
+      <Animated.View style={[styles.header, { height: headerHeight }]}>
         <View style={styles.rowContainer}>
-          {/* Left Section: Hamburger Icon */}
+          {/* Back Button */}
           {navigation.canGoBack() && (
             <TouchableOpacity
               style={styles.left}
@@ -48,29 +68,40 @@ const Header = ({showSearch = true}) => {
             </TouchableOpacity>
           )}
 
-          {/* Center Section: Location Selector */}
+          {/* Location Selector */}
           <TouchableOpacity
             style={styles.center}
             onPress={() => console.log("Change Location")}
           >
             <SvgLocation width={20} height={20} />
-            <Text style={styles.text}>{authState.user.city}</Text>
+            <Text style={styles.text}>{authState?.user?.city || "Your City"}</Text>
             <SvgDown width={15} height={15} />
           </TouchableOpacity>
 
-          {/* Right Section: Profile Picture */}
+          {/* Profile */}
           <TouchableOpacity
             style={styles.right}
             onPress={() => console.log("Profile Clicked")}
           >
-            <Image source={{ uri: authState.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }} style={styles.profilePic} />
+            <Image
+              source={{
+                uri: authState?.user?.imgUrl ||
+                  'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
+              }}
+              style={styles.profilePic}
+            />
           </TouchableOpacity>
         </View>
 
-        {/* Search and Filter Section */}
+        {/* Animated Search Section */}
         {showSearch && (
-          <View style={styles.searchContainer}>
-            {/* Left: Search Bar */}
+          <Animated.View
+            style={[
+              styles.searchContainer,
+              { opacity: searchOpacity, transform: [{ scale: searchScale }] },
+            ]}
+          >
+          
             <View style={styles.searchBox}>
               <SvgSearch width={18} height={18} style={styles.searchIcon} />
               <TextInput
@@ -82,20 +113,19 @@ const Header = ({showSearch = true}) => {
               />
             </View>
 
-            {/* Right: Filter Icon */}
+           
             <TouchableOpacity
               style={styles.filterIcon}
               onPress={() => navigation.navigate("FiltersScreen")}
             >
               <SvgFilter width={25} height={25} />
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         )}
-      </View>
+      </Animated.View>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -144,8 +174,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "gray",
   },
-
-  // Search and Filter Section
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",

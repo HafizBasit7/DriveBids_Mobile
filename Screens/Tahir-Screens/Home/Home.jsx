@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Animated 
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
@@ -18,8 +19,10 @@ import HomeBanner from "../../../CustomComponents/HomeBanner";
 import { useQuery } from "@tanstack/react-query";
 import { listCars, listCarsByBidCount } from "../../../API_Callings/R1_API/Car";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
+import { Icon } from "react-native-elements";
 
 export default Home = () => {
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   const {data, isLoading} = useQuery({
     queryKey: ['cars'],
@@ -60,8 +63,13 @@ export default Home = () => {
 
   return (
     <View style={styles.container}>
-      <Header/>
-      <ScrollView
+      <Header scrollY={scrollY}/>
+      <Animated.ScrollView
+      onScroll={Animated.event(
+        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+        { useNativeDriver: false }
+      )}
+      scrollEventThrottle={16}
         style={{ flex: 1, paddingBottom: 10 }}
         showsVerticalScrollIndicator={false}
       >
@@ -82,7 +90,7 @@ export default Home = () => {
           )}
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 5 }} 
+          contentContainerStyle={{ paddingHorizontal: 7 }} 
           ItemSeparatorComponent={() => (
             <View style={{ width: SEPARATOR_WIDTH }} />
           )}
@@ -95,7 +103,15 @@ export default Home = () => {
             index,
           })}
         />
+           <TouchableOpacity
+  style={styles.viewAllButton}
+  onPress={() => navigation.navigate("AllCarsScreen", { type: "spotlight" })}
+>
+  <Text style={styles.viewAllText}>View All</Text>
+  <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
+</TouchableOpacity>
         <SectionHeader title={"Ending Soonest"} />
+
         <FlatList
           data={endingCarList.data.cars}
           keyExtractor={(item) => String(item._id)}
@@ -123,6 +139,13 @@ export default Home = () => {
             index,
           })}
         />
+           <TouchableOpacity
+  style={styles.viewAllButton}
+  onPress={() => navigation.navigate("AllCarsScreen", { type: "spotlight" })}
+>
+  <Text style={styles.viewAllText}>View All</Text>
+  <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
+</TouchableOpacity>
 
         <SectionHeader title={"Newly Listed"} />
         <FlatList
@@ -139,7 +162,7 @@ export default Home = () => {
           )}
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 5 }} // Add padding instead of fixed height
+          contentContainerStyle={{ paddingHorizontal: 5 }} 
           ItemSeparatorComponent={() => (
             <View style={{ width: SEPARATOR_WIDTH }} />
           )}
@@ -152,7 +175,15 @@ export default Home = () => {
             index,
           })}
         />
-      </ScrollView>
+        <TouchableOpacity
+  style={styles.viewAllButton}
+  onPress={() => navigation.navigate("AllCarsScreen", { type: "spotlight" })}
+>
+  <Text style={styles.viewAllText}>View All </Text>
+  <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
+  
+</TouchableOpacity>
+      </Animated.ScrollView>
     </View>
   );
 };
@@ -161,7 +192,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor:"#fff",
+    paddingBottom:40
     
     
+  },
+  viewAllButton: {
+    alignSelf: "flex-end",
+   marginHorizontal:"auto",
+   marginVertical:6,
+   flexDirection: "row",
+   alignItems: "center", 
+   alignSelf: "flex-end",
+   
+   
+    borderRadius: 5,
+   
+  },
+  viewAllText: {
+     color:"#2F61BF",
+    fontSize: 15,
+    fontWeight: "700",
+    fontFamily:"Inter-Regular"
   },
 });

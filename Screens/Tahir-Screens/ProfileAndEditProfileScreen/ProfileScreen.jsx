@@ -165,6 +165,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: 16,
     backgroundColor: "#fff",
+    flex: 1,
   },
   profileHeader: {
     flexDirection: "row",
