@@ -11,181 +11,45 @@ import {
   Platform,
 } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
-import SectionCheckBoxes from "./SectionCheckBoxes";
-import { FilterStyles } from "./StyleSheetFilters";
-import details from "./InitialDetails";
-import Header from "../../../CustomComponents/Header"; 
 import { useNavigation } from '@react-navigation/native';
-
+import Header from "../../../CustomComponents/Header"; 
+import { FilterStyles } from "./StyleSheetFilters";
 
 const FiltersScreen = () => {
   const styles = FilterStyles;
-  const scrollViewRef = useRef(null);
   const navigation = useNavigation();
-
 
   // State for filter values
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
-  const [yearRange, setYearRange] = useState({ from: "", to: "" });
-  const [mileageRange, setMileageRange] = useState({ min: "", max: "" });
   const [makeSearch, setMakeSearch] = useState("");
   const [selectedMakes, setSelectedMakes] = useState([]);
-  const [showMakeResults, setShowMakeResults] = useState(false);
+  const [model, setModel] = useState("");
+  const [selectedCondition, setSelectedCondition] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [mileageRange, setMileageRange] = useState({ min: "", max: "" });
+  const [selectedFuel, setSelectedFuel] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedTransmission, setSelectedTransmission] = useState("");
+  const [horsePowerRange, setHorsePowerRange] = useState({ min: "", max: "" });
 
-  // Location search
-  const [locationSearch, setLocationSearch] = useState("");
-  const [showLocationResults, setShowLocationResults] = useState(false);
-  const [selectedLocations, setSelectedLocations] = useState(["New York, NY"]);
+  // Predefined lists for filtering
+  const conditions = ['Poor', 'Fair', 'Good', 'Excellent'];
+  const cities = ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Al Ain"];
+  const fuelTypes = ['Petrol', 'Diesel', 'HI-Octane', 'Electric', 'Hybrid'];
+  const colors = ["White", "Black", "Silver", "Red", "Blue", "Grey"];
+  const transmissionTypes = ['AGS', 'Manual', 'CVT', 'DCT', 'AMT', 'EV Single-Speed'];
 
-  // Additional filters
-  const [bodyType, setBodyType] = useState(details.bodyType);
-  const [fuelType, setFuelType] = useState(details.fuelType);
-  const [transmission, setTransmission] = useState(details.transmission);
-  const [driveTrain, setDriveTrain] = useState(details.driveTrain);
-  const [condition, setCondition] = useState(details.condition);
-  const [auctionStatus, setAuctionStatus] = useState(details.auctionStatus);
-  const [sellerType, setSellerType] = useState(details.sellerType);
-  const [locations, setLocations] = useState(details.locations);
-  const [makes, setMakes] = useState(details.makes);
-  const [registeredIn, setRegisteredIn] = useState(details.registeredIn);
   // Dummy data for make suggestions
   const allMakes = [
-    "Toyota",
-    "Honda",
-    "Ford",
-    "Chevrolet",
-    "Nissan",
-    "Hyundai",
-    "Kia",
-    "Mazda",
-    "Subaru",
-    "Volkswagen",
-    "BMW",
-    "Mercedes-Benz",
-    "Audi",
-    "Lexus",
-    "Acura",
-    "Jeep",
-    "Chrysler",
-    "Dodge",
-    "GMC",
-    "Buick",
-    "Tesla",
-    "Porsche",
-    "Jaguar",
-    "Land Rover",
-    "Volvo",
-    "Lamborghini",
-    "Ferrari",
-    "Maserati",
-    "Bentley",
-    "Rolls-Royce",
+    "Toyota", "Honda", "Ford", "Chevrolet", "Nissan", "Hyundai", 
+    "Kia", "Mazda", "Subaru", "Volkswagen", "BMW", "Mercedes-Benz", 
+    "Audi", "Lexus", "Acura", "Jeep", "Tesla", "Porsche"
   ];
-
-  // Dummy data for location suggestions
-  const allLocations = Object.keys(locations);
 
   // Filter makes based on search input
   const filteredMakes = allMakes.filter((make) =>
     make.toLowerCase().includes(makeSearch.toLowerCase())
   );
-
-  // Filter locations based on search input
-  const filteredLocations = allLocations.filter((location) =>
-    location.toLowerCase().includes(locationSearch.toLowerCase())
-  );
-
-  // Toggle checkbox for body type
-  const toggleBodyType = (type) => {
-    setBodyType({
-      ...bodyType,
-      [type]: !bodyType[type],
-    });
-  };
-
-  // Toggle checkbox for fuel type
-  const toggleFuelType = (type) => {
-    setFuelType({
-      ...fuelType,
-      [type]: !fuelType[type],
-    });
-  };
-
-  // Toggle checkbox for transmission
-  const toggleTransmission = (type) => {
-    setTransmission({
-      ...transmission,
-      [type]: !transmission[type],
-    });
-  };
-
-  // Toggle checkbox for drive train
-  const toggleDriveTrain = (type) => {
-    setDriveTrain({
-      ...driveTrain,
-      [type]: !driveTrain[type],
-    });
-  };
-
-  // Toggle checkbox for condition
-  const toggleCondition = (type) => {
-    setCondition({
-      ...condition,
-      [type]: !condition[type],
-    });
-  };
-
-  // Toggle checkbox for auction status
-  const toggleAuctionStatus = (status) => {
-    setAuctionStatus({
-      ...auctionStatus,
-      [status]: !auctionStatus[status],
-    });
-  };
-
-  // Toggle checkbox for seller type
-  const toggleSellerType = (type) => {
-    setSellerType({
-      ...sellerType,
-      [type]: !sellerType[type],
-    });
-  };
-
-  // Toggle checkbox for locations
-  const toggleLocation = (location) => {
-    // Update the checkbox state
-    setLocations({
-      ...locations,
-      [location]: !locations[location],
-    });
-
-    // Update selected locations list
-    if (locations[location]) {
-      // If it was checked, now it's unchecked - remove from selected
-      setSelectedLocations(selectedLocations.filter((loc) => loc !== location));
-    } else {
-      // If it was unchecked, now it's checked - add to selected
-      if (!selectedLocations.includes(location)) {
-        setSelectedLocations([...selectedLocations, location]);
-      }
-    }
-  };
-
-  // Toggle checkbox for make
-  const toggleMake = (make) => {
-    setMakes({
-      ...makes,
-      [make]: !makes[make],
-    });
-  };
-
-  // Toggle checkbox for registered in
-  const toggleRegisteredIn = (state) => {
-    setRegisteredIn({
-      ...registeredIn,
-      [state]: !registeredIn[state],
-    });
-  };
 
   // Select a make from the dropdown
   const selectMake = (make) => {
@@ -193,23 +57,6 @@ const FiltersScreen = () => {
       setSelectedMakes([...selectedMakes, make]);
     }
     setMakeSearch("");
-    setShowMakeResults(false);
-    Keyboard.dismiss();
-  };
-
-  // Select a location from the dropdown
-  const selectLocation = (location) => {
-    if (!selectedLocations.includes(location)) {
-      setSelectedLocations([...selectedLocations, location]);
-
-      // Also update the checkbox
-      setLocations({
-        ...locations,
-        [location]: true,
-      });
-    }
-    setLocationSearch("");
-    setShowLocationResults(false);
     Keyboard.dismiss();
   };
 
@@ -218,126 +65,44 @@ const FiltersScreen = () => {
     setSelectedMakes(selectedMakes.filter((item) => item !== make));
   };
 
-  // Remove a selected location
-  const removeLocation = (location) => {
-    setSelectedLocations(selectedLocations.filter((loc) => loc !== location));
-
-    // Also update the checkbox
-    setLocations({
-      ...locations,
-      [location]: false,
-    });
-  };
-
   // Clear all filters
   const clearFilters = () => {
     setPriceRange({ min: "", max: "" });
-    setYearRange({ from: "", to: "" });
-    setMileageRange({ min: "", max: "" });
     setMakeSearch("");
     setSelectedMakes([]);
-    setLocationSearch("");
-    setSelectedLocations(["New York, NY"]);
-
-    // Reset all checkboxes
-    const resetLocations = Object.keys(locations).reduce((acc, location) => {
-      acc[location] = false;
-      return acc;
-    }, {});
-    resetLocations["New York, NY"] = true; // Keep default selected
-    setLocations(resetLocations);
-
-    setMakes(
-      Object.keys(makes).reduce((acc, make) => {
-        acc[make] = false;
-        return acc;
-      }, {})
-    );
-
-    setRegisteredIn(
-      Object.keys(registeredIn).reduce((acc, state) => {
-        acc[state] = false;
-        return acc;
-      }, {})
-    );
-
-    setBodyType(
-      Object.keys(bodyType).reduce((acc, type) => {
-        acc[type] = false;
-        return acc;
-      }, {})
-    );
-
-    setFuelType(
-      Object.keys(fuelType).reduce((acc, type) => {
-        acc[type] = false;
-        return acc;
-      }, {})
-    );
-
-    setTransmission(
-      Object.keys(transmission).reduce((acc, type) => {
-        acc[type] = false;
-        return acc;
-      }, {})
-    );
-
-    setDriveTrain(
-      Object.keys(driveTrain).reduce((acc, type) => {
-        acc[type] = false;
-        return acc;
-      }, {})
-    );
-
-    setCondition(
-      Object.keys(condition).reduce((acc, type) => {
-        acc[type] = false;
-        return acc;
-      }, {})
-    );
-
-    setAuctionStatus(
-      Object.keys(auctionStatus).reduce((acc, status) => {
-        acc[status] = false;
-        return acc;
-      }, {})
-    );
-
-    setSellerType(
-      Object.keys(sellerType).reduce((acc, type) => {
-        acc[type] = false;
-        return acc;
-      }, {})
-    );
+    setModel("");
+    setSelectedCondition("");
+    setSelectedCity("");
+    setMileageRange({ min: "", max: "" });
+    setSelectedFuel("");
+    setSelectedColor("");
+    setSelectedTransmission("");
+    setHorsePowerRange({ min: "", max: "" });
   };
 
   // Apply filters
   const applyFilters = () => {
-    // Here you would typically call an API or dispatch an action with the filters
-    console.log({
-      priceRange,
-      yearRange,
-      mileageRange,
-      selectedLocations,
-      makes: Object.keys(makes).filter((make) => makes[make]),
-      selectedMakes,
-      registeredIn: Object.keys(registeredIn).filter(
-        (state) => registeredIn[state]
-      ),
-      bodyType: Object.keys(bodyType).filter((type) => bodyType[type]),
-      fuelType: Object.keys(fuelType).filter((type) => fuelType[type]),
-      transmission: Object.keys(transmission).filter(
-        (type) => transmission[type]
-      ),
-      driveTrain: Object.keys(driveTrain).filter((type) => driveTrain[type]),
-      condition: Object.keys(condition).filter((type) => condition[type]),
-      auctionStatus: Object.keys(auctionStatus).filter(
-        (status) => auctionStatus[status]
-      ),
-      sellerType: Object.keys(sellerType).filter((type) => sellerType[type]),
-    });
-    
-    navigation.navigate('Filters_ViewAll');
+    // Prepare filter object to pass to next screen
+    const filters = {
+      make: selectedMakes.length > 0 ? selectedMakes[0] : undefined,
+      model: model || undefined,
+      minPrice: priceRange.min ? parseFloat(priceRange.min) : undefined,
+      maxPrice: priceRange.max ? parseFloat(priceRange.max) : undefined,
+      condition: selectedCondition || undefined,
+      city: selectedCity || undefined,
+      minMileage: mileageRange.min ? parseFloat(mileageRange.min) : undefined,
+      maxMileage: mileageRange.max ? parseFloat(mileageRange.max) : undefined,
+      fuel: selectedFuel || undefined,
+      color: selectedColor || undefined,
+      transmission: selectedTransmission || undefined,
+      minHorsePower: horsePowerRange.min ? parseFloat(horsePowerRange.min) : undefined,
+      maxHorsePower: horsePowerRange.max ? parseFloat(horsePowerRange.max) : undefined
+    };
+
+    // Remove undefined values
+    Object.keys(filters).forEach(key => filters[key] === undefined && delete filters[key]);
+
+    navigation.navigate('Filters_ViewAll', { filters });
   };
 
   return (
@@ -345,226 +110,43 @@ const FiltersScreen = () => {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-
       <Header showSearch={false}/>
-      <Text style={styles.header} >Filters</Text>
+      <Text style={styles.header}>Filters</Text>
 
       <ScrollView
-        ref={scrollViewRef}
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Title */}
+        {/* Price Range */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Title</Text>
-          {/* Title Search */}
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search for title..."
-            value={locationSearch}
-            onChangeText={(text) => {
-              setLocationSearch(text);
-            }}
-          />
-        </View>
-
-        {/* Staring bid Price Range */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Starting Bid Price Range (AED)</Text>
+          <Text style={styles.sectionTitle}>Price Range (AED)</Text>
           <View style={styles.rangeInputs}>
             <TextInput
               style={styles.input}
               placeholder="Min"
               value={priceRange.min}
-              onChangeText={(text) =>
-                setPriceRange({ ...priceRange, min: text })
-              }
+              onChangeText={(text) => setPriceRange({ ...priceRange, min: text })}
               keyboardType="numeric"
             />
             <TextInput
               style={styles.input}
               placeholder="Max"
               value={priceRange.max}
-              onChangeText={(text) =>
-                setPriceRange({ ...priceRange, max: text })
-              }
+              onChangeText={(text) => setPriceRange({ ...priceRange, max: text })}
               keyboardType="numeric"
             />
           </View>
         </View>
 
-        {/* Buy now Price Range */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Buy now Price Range (AED)</Text>
-          <View style={styles.rangeInputs}>
-            <TextInput
-              style={styles.input}
-              placeholder="Min"
-              value={priceRange.min}
-              onChangeText={(text) =>
-                setPriceRange({ ...priceRange, min: text })
-              }
-              keyboardType="numeric"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Max"
-              value={priceRange.max}
-              onChangeText={(text) =>
-                setPriceRange({ ...priceRange, max: text })
-              }
-              keyboardType="numeric"
-            />
-          </View>
-        </View>
-
-        {/* no of owners */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>No of owners</Text>
-          {/* no of owners */}
-          <TextInput
-            style={styles.searchInput}
-            placeholder="No of owners"
-            value={locationSearch}
-            onChangeText={(text) => {
-              setLocationSearch(text);
-            }}
-          />
-        </View>
-
-        {/* model Range */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Model</Text>
-          <View style={styles.rangeInputs}>
-            <TextInput
-              style={styles.input}
-              placeholder="From"
-              value={yearRange.from}
-              onChangeText={(text) =>
-                setYearRange({ ...yearRange, from: text })
-              }
-              keyboardType="numeric"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="To"
-              value={yearRange.to}
-              onChangeText={(text) => setYearRange({ ...yearRange, to: text })}
-              keyboardType="numeric"
-            />
-          </View>
-        </View>
-
-        {/* Mileage Range */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Mileage (KMs)</Text>
-          <View style={styles.rangeInputs}>
-            <TextInput
-              style={styles.input}
-              placeholder="Min"
-              value={mileageRange.min}
-              onChangeText={(text) =>
-                setMileageRange({ ...mileageRange, min: text })
-              }
-              keyboardType="numeric"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Max"
-              value={mileageRange.max}
-              onChangeText={(text) =>
-                setMileageRange({ ...mileageRange, max: text })
-              }
-              keyboardType="numeric"
-            />
-          </View>
-        </View>
-
-        {/* Locations */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Location</Text>
-
-          {/* Location Search */}
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search for location..."
-            value={locationSearch}
-            onChangeText={(text) => {
-              setLocationSearch(text);
-              setShowLocationResults(text.length > 0);
-            }}
-          />
-
-          {/* Selected Locations */}
-          {selectedLocations.length > 0 && (
-            <View style={styles.chipContainer}>
-              {selectedLocations.map((location) => (
-                <View key={location} style={styles.chip}>
-                  <Text style={styles.chipText}>{location}</Text>
-                  <TouchableOpacity onPress={() => removeLocation(location)}>
-                    <Icon name="close" type="material" size={16} color="#666" />
-                  </TouchableOpacity>
-                </View>
-              ))}
-            </View>
-          )}
-
-          {/* Location Search Results */}
-          {showLocationResults && filteredLocations.length > 0 && (
-            <View style={styles.searchResults}>
-              {filteredLocations.map((location) => (
-                <TouchableOpacity
-                  key={location}
-                  style={styles.searchResultItem}
-                  onPress={() => selectLocation(location)}
-                >
-                  <Text style={styles.searchResultText}>{location}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-
-          {/* Location Checkboxes */}
-          {Object.keys(locations).map((location) => (
-            <CheckBox
-              key={location}
-              title={location}
-              checked={locations[location]}
-              onPress={() => toggleLocation(location)}
-              containerStyle={styles.checkboxContainer}
-              textStyle={styles.checkboxText}
-              checkedIcon={
-                <Icon
-                  name="check-box"
-                  type="material"
-                  size={24}
-                  color="#0066cc"
-                />
-              }
-              uncheckedIcon={
-                <Icon
-                  name="check-box-outline-blank"
-                  type="material"
-                  size={24}
-                  color="#aaaaaa"
-                />
-              }
-            />
-          ))}
-        </View>
-
-        {/* Make Search */}
+        {/* Make */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Make</Text>
           <TextInput
             style={styles.searchInput}
             placeholder="Search for make..."
             value={makeSearch}
-            onChangeText={(text) => {
-              setMakeSearch(text);
-              setShowMakeResults(text.length > 0);
-            }}
+            onChangeText={setMakeSearch}
           />
 
           {/* Selected Makes */}
@@ -582,7 +164,7 @@ const FiltersScreen = () => {
           )}
 
           {/* Make Search Results */}
-          {showMakeResults && filteredMakes.length > 0 && (
+          {makeSearch.length > 0 && (
             <View style={styles.searchResults}>
               {filteredMakes.map((make) => (
                 <TouchableOpacity
@@ -595,85 +177,172 @@ const FiltersScreen = () => {
               ))}
             </View>
           )}
+        </View>
 
-          {/* Make Checkboxes */}
-          {Object.keys(makes).map((make) => (
-            <CheckBox
-              key={make}
-              title={make}
-              checked={makes[make]}
-              onPress={() => toggleMake(make)}
-              containerStyle={styles.checkboxContainer}
-              textStyle={styles.checkboxText}
-              checkedIcon={
-                <Icon
-                  name="check-box"
-                  type="material"
-                  size={24}
-                  color="#0066cc"
-                />
-              }
-              uncheckedIcon={
-                <Icon
-                  name="check-box-outline-blank"
-                  type="material"
-                  size={24}
-                  color="#aaaaaa"
-                />
-              }
-            />
+        {/* Model */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Model</Text>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Enter model..."
+            value={model}
+            onChangeText={setModel}
+          />
+        </View>
+
+        {/* Condition */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Condition</Text>
+          {conditions.map((condition) => (
+            <TouchableOpacity
+              key={condition}
+              style={styles.radioButton}
+              onPress={() => setSelectedCondition(condition)}
+            >
+              <Icon
+                name={selectedCondition === condition 
+                  ? "radio-button-checked" 
+                  : "radio-button-unchecked"}
+                type="material"
+                size={24}
+                color={selectedCondition === condition ? "#0066cc" : "#aaaaaa"}
+              />
+              <Text style={styles.radioButtonText}>{condition}</Text>
+            </TouchableOpacity>
           ))}
         </View>
 
-        <SectionCheckBoxes
-          Type={bodyType}
-          toogleType={toggleBodyType}
-          styles={styles}
-          title={"Body Type"}
-        />
+        {/* City */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>City</Text>
+          {cities.map((city) => (
+            <TouchableOpacity
+              key={city}
+              style={styles.radioButton}
+              onPress={() => setSelectedCity(city)}
+            >
+              <Icon
+                name={selectedCity === city 
+                  ? "radio-button-checked" 
+                  : "radio-button-unchecked"}
+                type="material"
+                size={24}
+                color={selectedCity === city ? "#0066cc" : "#aaaaaa"}
+              />
+              <Text style={styles.radioButtonText}>{city}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Mileage Range */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Mileage (KMs)</Text>
+          <View style={styles.rangeInputs}>
+            <TextInput
+              style={styles.input}
+              placeholder="Min"
+              value={mileageRange.min}
+              onChangeText={(text) => setMileageRange({ ...mileageRange, min: text })}
+              keyboardType="numeric"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Max"
+              value={mileageRange.max}
+              onChangeText={(text) => setMileageRange({ ...mileageRange, max: text })}
+              keyboardType="numeric"
+            />
+          </View>
+        </View>
 
         {/* Fuel Type */}
-        <SectionCheckBoxes
-          Type={fuelType}
-          toogleType={toggleFuelType}
-          styles={styles}
-          title={"Fuel Type"}
-        />
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Fuel Type</Text>
+          {fuelTypes.map((fuel) => (
+            <TouchableOpacity
+              key={fuel}
+              style={styles.radioButton}
+              onPress={() => setSelectedFuel(fuel)}
+            >
+              <Icon
+                name={selectedFuel === fuel 
+                  ? "radio-button-checked" 
+                  : "radio-button-unchecked"}
+                type="material"
+                size={24}
+                color={selectedFuel === fuel ? "#0066cc" : "#aaaaaa"}
+              />
+              <Text style={styles.radioButtonText}>{fuel}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Color */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Color</Text>
+          {colors.map((color) => (
+            <TouchableOpacity
+              key={color}
+              style={styles.radioButton}
+              onPress={() => setSelectedColor(color)}
+            >
+              <Icon
+                name={selectedColor === color 
+                  ? "radio-button-checked" 
+                  : "radio-button-unchecked"}
+                type="material"
+                size={24}
+                color={selectedColor === color ? "#0066cc" : "#aaaaaa"}
+              />
+              <Text style={styles.radioButtonText}>{color}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
         {/* Transmission */}
-        <SectionCheckBoxes
-          Type={transmission}
-          toogleType={toggleTransmission}
-          styles={styles}
-          title={"Transmission"}
-        />
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Transmission</Text>
+          {transmissionTypes.map((transmission) => (
+            <TouchableOpacity
+              key={transmission}
+              style={styles.radioButton}
+              onPress={() => setSelectedTransmission(transmission)}
+            >
+              <Icon
+                name={selectedTransmission === transmission 
+                  ? "radio-button-checked" 
+                  : "radio-button-unchecked"}
+                type="material"
+                size={24}
+                color={selectedTransmission === transmission ? "#0066cc" : "#aaaaaa"}
+              />
+              <Text style={styles.radioButtonText}>{transmission}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-        {/* Drive Train */}
-        <SectionCheckBoxes
-          Type={driveTrain}
-          toogleType={toggleDriveTrain}
-          styles={styles}
-          title={"Drive Train"}
-        />
+        {/* Horse Power Range */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Horse Power</Text>
+          <View style={styles.rangeInputs}>
+            <TextInput
+              style={styles.input}
+              placeholder="Min"
+              value={horsePowerRange.min}
+              onChangeText={(text) => setHorsePowerRange({ ...horsePowerRange, min: text })}
+              keyboardType="numeric"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Max"
+              value={horsePowerRange.max}
+              onChangeText={(text) => setHorsePowerRange({ ...horsePowerRange, max: text })}
+              keyboardType="numeric"
+            />
+          </View>
+        </View>
 
-        {/* Condition */}
-        <SectionCheckBoxes
-          Type={condition}
-          toogleType={toggleCondition}
-          styles={styles}
-          title={"Condition"}
-        />
-
-        {/* Auction Status */}
-        <SectionCheckBoxes
-          Type={auctionStatus}
-          toogleType={toggleAuctionStatus}
-          styles={styles}
-          title={"Auction Status"}
-        />
-
-
-        {/* Extra space at the bottom to accommodate floating buttons */}
+        {/* Extra space at the bottom */}
         <View style={styles.bottomPadding} />
       </ScrollView>
 
@@ -689,7 +358,6 @@ const FiltersScreen = () => {
         <TouchableOpacity
           style={[styles.button, styles.applyButton]}
           onPress={applyFilters}
-          
         >
           <Text style={styles.applyButtonText}>Apply</Text>
         </TouchableOpacity>

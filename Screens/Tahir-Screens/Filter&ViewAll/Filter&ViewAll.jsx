@@ -4,72 +4,96 @@ import ViewAllCarCard from './ViewAllCarCard';
 import Header from '../../../CustomComponents/Header';
 import SectionHeader from '../../../CustomComponents/SectionHeader';
 import { Icon } from 'react-native-elements';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { searchCars } from '../../../API_Callings/R1_API/Car';
+import { getCarsIdInWatchList } from '../../../API_Callings/R1_API/Watchlist';
+import { ActivityIndicator } from 'react-native-paper';
 
 
-const carData = [
-  {
-    id: '1',
-    image: 'https://static.vecteezy.com/system/resources/thumbnails/035/757/238/small_2x/ai-generated-sport-car-firewall-wallpaper-free-photo.jpg',
-    model: 'Volkswagen Passat TAHIR SAEED BRAND NEW OK A',
-    year: 1967,
-    engineSize: 3400,
-    transmission: 'Manual',
-    fuelType: 'Petrol',
-    mileage: 2000,
-    color: 'Black',
-    topBid: 25000,
-    timeRemaining: '10h:20m:15s',
-  },
-  {
-    id: '2',
-    image: 'https://static.vecteezy.com/system/resources/thumbnails/035/757/238/small_2x/ai-generated-sport-car-firewall-wallpaper-free-photo.jpg',
-    model: 'BMW M3 Competition',
-    year: 2022,
-    engineSize: 3000,
-    transmission: 'Automatic',
-    fuelType: 'Petrol',
-    mileage: 12000,
-    color: 'White',
-    topBid: 45000,
-    timeRemaining: '8h:15m:10s',
-  },
-  {
-    id: '3',
-    image: 'https://static.vecteezy.com/system/resources/thumbnails/035/757/238/small_2x/ai-generated-sport-car-firewall-wallpaper-free-photo.jpg',
-    model: 'و البريمير و الافد',
-    year: 2022,
-    engineSize: 3000,
-    transmission: 'Automatic',
-    fuelType: 'Petrol',
-    mileage: 12000,
-    color: 'White',
-    topBid: 45000,
-    timeRemaining: '8h:15m:10s',
-  },
-  {
-    id: '4',
-    image: 'https://static.vecteezy.com/system/resources/thumbnails/035/757/238/small_2x/ai-generated-sport-car-firewall-wallpaper-free-photo.jpg',
-    model: 'BMW M3 Competition',
-    year: 2022,
-    engineSize: 3000,
-    transmission: 'Automatic',
-    fuelType: 'Petrol',
-    mileage: 12000,
-    color: 'White',
-    topBid: 45000,
-    timeRemaining: '8h:15m:10s',
-  },
+const FilterChips = (filters) => {
+  if(Object.keys(filters.filters).length === 0) {
+    return null;
+  }
 
-];
-const FilterChips = () => {
-  const chips = [
-    { iconName: 'attach-money', label: '3000-10000', type: 'material' },
-    { iconName: 'calendar', label: '2016-2025', type: 'material-community' },
-    { iconName: 'speedometer', label: '3000-10000', type: 'material-community' },
-    { iconName: 'location-on', label: 'New York, NY', type: 'material' },
-    { iconName: 'file-document-outline', label: 'California', type: 'material-community' },
-    { iconName: 'car', label: 'Ford', type: 'font-awesome-5' },
-  ];
+  const getChips = () => {
+    const chipsList = [];
+
+    // Price Range Chip
+    if (filters.filters.minPrice || filters.filters.maxPrice) {
+      chipsList.push({ 
+        iconName: 'attach-money', 
+        label: `${filters.filters.minPrice || 0} - ${filters.filters.maxPrice || 'Max'} AED`, 
+        type: 'material' 
+      });
+    }
+
+    // Model Year Chip (if applicable)
+    if (filters.filters.model) {
+      chipsList.push({ 
+        iconName: 'calendar', 
+        label: filters.filters.model, 
+        type: 'material-community' 
+      });
+    }
+
+    // Mileage Range Chip
+    if (filters.filters.minMileage || filters.filters.maxMileage) {
+      chipsList.push({ 
+        iconName: 'speedometer', 
+        label: `${filters.filters.minMileage || 0} - ${filters.filters.maxMileage || 'Max'} KM`, 
+        type: 'material-community' 
+      });
+    }
+
+    // City Chip
+    if (filters.filters.city) {
+      chipsList.push({ 
+        iconName: 'location-on', 
+        label: filters.filters.city, 
+        type: 'material' 
+      });
+    }
+
+    // Condition Chip
+    if (filters.filters.condition) {
+      chipsList.push({ 
+        iconName: 'file-document-outline', 
+        label: filters.filters.condition, 
+        type: 'material-community' 
+      });
+    }
+
+    // Make Chip
+    if (filters.filters.make) {
+      chipsList.push({ 
+        iconName: 'car', 
+        label: filters.filters.make, 
+        type: 'font-awesome-5' 
+      });
+    }
+
+    // Additional chips can be added for other filters like transmission, fuel, etc.
+    // For example:
+    if (filters.filters.transmission) {
+      chipsList.push({ 
+        iconName: 'swap-vertical', 
+        label: filters.filters.transmission, 
+        type: 'material-community' 
+      });
+    }
+
+    if (filters.filters.fuel) {
+      chipsList.push({ 
+        iconName: 'gas-pump', 
+        label: filters.filters.fuel, 
+        type: 'font-awesome-5' 
+      });
+    }
+
+    return chipsList;
+  };
+
+  const chips = getChips();
 
   return (
     <View style={styles.chipContainer}>
@@ -89,43 +113,65 @@ const FilterChips = () => {
   );
 };
 
-const Filters_ViewAll = () => {
+const Filters_ViewAll = ({ route }) => {
+  const { filters } = route.params;
+
+  // Fetch cars with pagination
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["search", filters],
+    queryFn: ({ pageParam = 1 }) => searchCars(filters, pageParam, 10),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.data?.cars?.length ? allPages.length + 1 : undefined;
+    },
+  });
+
+  // Fetch watchlist car IDs
+  const { data: carsInWatchList } = useQuery({
+    queryKey: ["carsInWatchList"],
+    queryFn: getCarsIdInWatchList,
+  });
+
+  if (isLoading) return null;
+
+  // Flatten pages data
+  const filteredCars = data?.pages?.flatMap((page) => page.data.cars) || [];
+
   return (
     <>
-      <Header showSearch={false}  />
+      <Header showSearch={false} />
       <View style={styles.container}>
-       
-        <FilterChips />
-         <FlatList
-          data={carData}
-          keyExtractor={(item) => item.id.toString()} 
+        <FilterChips filters={filters} />
+        <FlatList
+          data={filteredCars}
+          keyExtractor={(item) => item._id.toString()}
           renderItem={({ item }) => (
-          
-            <ViewAllCarCard
-            image={item.image}
-            model={item.model}
-            year={item.year}
-            engineSize={item.engineSize}
-            transmission={item.transmission}
-            fuelType={item.fuelType}
-            mileage={item.mileage}
-            color={item.color}
-            topBid={item.topBid}
-            timeRemaining={item.timeRemaining}
-            onViewAdPress={() => console.log('View Ad Pressed for', item.model)}
-          />
-
-      )}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.contentContainer}
-      ItemSeparatorComponent={() => <View style={styles.separator} />}
-    />
-
+            <ViewAllCarCard ad={item} carsInWatchList={carsInWatchList} />
+          )}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.contentContainer}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          onEndReached={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }}
+          onEndReachedThreshold={0.5} // Adjust to trigger pagination sooner/later
+          ListFooterComponent={
+            isFetchingNextPage ? (
+              <ActivityIndicator size="small" color="#2A5DB0" style={styles.loadingIndicator} />
+            ) : null
+          }
+        />
       </View>
     </>
   );
 };
-
 const styles = StyleSheet.create({
   contentContainer: {
     paddingVertical: 10,

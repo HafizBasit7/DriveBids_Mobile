@@ -33,6 +33,21 @@ const details = {
     Good: false,
     Excelent: false,
   },
+  cities: {
+    Islamabad: false,
+    Rawalpindi: false,
+    Lahore: false,
+    Dubai: false,
+    'Abu-Dhabi': false,
+    Sharjah: false,
+  },
+  colors: {
+    Red: false,
+    Green: false,
+    Blue: false,
+    Yellow: false,
+    Black: false
+  },
   auctionStatus: {
     Active: false,
     "Ending Soon": false,

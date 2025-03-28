@@ -122,6 +122,7 @@ const ActiveChatBox = ({route}) => {
         />
         <Text style={styles.username}>{chatHeadDataReal?.user.name}</Text>
         <Ionicons
+       
           name="ellipsis-vertical"
           size={24}
           color="black"
@@ -161,7 +162,10 @@ const ActiveChatBox = ({route}) => {
             </Text>
           </View>
         </View>
-        <Ionicons name="chevron-forward" size={24} color="#999" />
+        <Ionicons  onPress={() => navigation.navigate("Home", {
+          screen: "AdDetails",
+          params: { carId: chatHeadDataReal?.car._id },
+        })} name="chevron-forward" size={24} color="#999" />
       </View>
 
       {/* KeyboardAvoidingView for the chat and input */}

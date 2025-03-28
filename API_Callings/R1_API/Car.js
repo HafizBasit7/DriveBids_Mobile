@@ -375,3 +375,28 @@ export const getSimilarCars = async (page = 1, limit = 10, make) => {
         throw e;
     }
 };
+
+export const searchCars = async (params = {}, page = 1, limit = 10) => {
+    try {
+        const queryString = new URLSearchParams(params).toString();
+        const result = await apiClient.get(`/car/searchCars?page=${page}&limit=${limit}&${queryString}`);
+        const resultData = result.data;
+
+        if (!resultData.status) {
+            throw {
+                name: 'app',
+                message: resultData.message,
+            };
+        }
+
+        return resultData;
+    } catch (e) {
+        if (e.response?.data) {
+            throw {
+                name: 'app',
+                ...e.response.data,
+            };
+        }
+        throw e;
+    }
+};
