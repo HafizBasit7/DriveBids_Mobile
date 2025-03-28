@@ -42,6 +42,7 @@ export default function R1_DashboardStack () {
                 tabBarLabelStyle: styles.tabLabel,
                 tabBarActiveTintColor: "#2C6BED",
                 headerShown: false,
+                 backgroundColor: "#fff"
             }}
         >
 

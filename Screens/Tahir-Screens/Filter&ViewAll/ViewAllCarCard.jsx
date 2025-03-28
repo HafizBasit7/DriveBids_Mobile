@@ -73,9 +73,12 @@ const ViewAllCarCard = ({
   //Calcuations
   const isCarSold = ad.status === 'sold';
   const isCarInWatchList = (carsInWatchList?.data.carsInWatchList.findIndex(val => val.car === ad._id) !== -1);
-  let winning = false;
+  let winning = '';
+  let winningBool = false;
   if(isFromMyBids) {
     winning = bid.status === 'lost' ? 'Bid Lost' : bid.bidAmount === ad.highestBid ? isCarSold ? 'Bid Won' : 'Winning' : isCarSold ? 'Bid Lost' : 'Losing';
+    winningBool = bid.status === 'lost' ? false : bid.bidAmount === ad.highestBid ? isCarSold ? true : true : isCarSold ? false : false;
+
   }
 
   const handleViewAd = () => {
@@ -107,29 +110,30 @@ const ViewAllCarCard = ({
       </View>
       
       <View style={styles.infoContainer}>
-        <Text style={styles.modelText} numberOfLines={1} ellipsizeMode="tail">
-          {ad.title}
+  <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+    <Text style={styles.modelText} numberOfLines={1} ellipsizeMode="tail">
+      {ad.title}
+    </Text>
+    {isFromMyBids && (
+      <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 0,marginBottom:3 }}>
+        <Text
+          style={{
+            backgroundColor: winningBool ? "rgba(0,139,39,0.2)" : "rgba(224, 26, 69, 0.2)",
+            paddingHorizontal: 10,
+            paddingVertical: 3,
+            borderRadius: 6,
+            color: winningBool ? "#008B27" : "#B3261E",
+            fontSize: 10,
+            width:60,
+          }}
+        >
+           {winning} 
         </Text>
+      </View>
+    )}
+  </View>
 
-{/* //TODO: ADAN DO */}
-        {/* {isFromMyBids && (
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text
-              style={{
-                backgroundColor: winning
-                  ? "rgba(0,139,39,0.2)"
-                  : "rgba(204,0,43,0.2)",
-                marginTop: 5,
-                paddingHorizontal: 10,
-                paddingVertical: 3,
-                borderRadius: 12,
-                color: winning ? "#008B27" : "#B3261E",
-              }}
-            >
-              {winning}
-            </Text>
-          </View>
-        )} */}
+
         
         <View style={styles.detailsRow}>
           <View style={styles.iconTextContainer}>

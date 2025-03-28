@@ -22,8 +22,8 @@ import { useNavigation } from "@react-navigation/native";
 const { height, width } = Dimensions.get("window");
 
 // Animation Constants
-const MAX_HEADER_HEIGHT = height * 0.23;
-const MIN_HEADER_HEIGHT = height * 0.14;
+const MAX_HEADER_HEIGHT = height * 0.22;
+const MIN_HEADER_HEIGHT = height * 0.13;
 const SCROLL_RANGE = 150;
 
 const Header = ({ showSearch = true, scrollY }) => {
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 60,
     alignItems: "center",
     justifyContent: "flex-start",
-    paddingVertical: 15,
+    paddingVertical: 6,
   },
   rowContainer: {
     flexDirection: "row",
@@ -169,8 +169,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   profilePic: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     borderRadius: 20,
     backgroundColor: "gray",
   },
