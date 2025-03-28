@@ -40,17 +40,19 @@ const VehicleReg = () => {
             style={styles.input}
             value={carState.regNo}
             onChangeText={onChangeTextReg}
+            placeholder="A12345"
+            placeholderTextColor={"#ccc"}
           />
-          {carState.regNo === '' && (
+          {/* {carState.regNo === '' && (
             <Text style={styles.placeholder}> A12345</Text>
-          )}
+          )} */}
         </View>
 
         <CustomButton
           title="Sell my car"
           onPress={nextPage}
-          disabled={carState.regNo?.trim() === ''}
-          backgroundColor={carState.regNo?.trim() === '' ? '#ccc' : GlobalStyles.colors.primary}
+          disabled={carState.regNo ? false: true}
+          backgroundColor={carState.regNo ? '#ccc' : GlobalStyles.colors.primary}
         />
       </View>
     </View>

@@ -80,12 +80,12 @@ const ExteriorFeature3 = () => {
           onPress={() => navigation.navigate("VehicleInfo")}
         />
         <View style={{ height: 10 }} />
-        <CustomButton
+        {/* <CustomButton
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
           onPress={() => navigation.navigate("ExteriorFeature2")}
-        />
+        /> */}
       </View>
     </View>
   );

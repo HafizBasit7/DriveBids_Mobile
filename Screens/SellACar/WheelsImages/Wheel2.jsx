@@ -88,12 +88,12 @@ const Wheel2 = () => {
           title="Next"
           onPress={() => navigation.navigate("Wheel3")}
         />
-        <CustomButton
+        {/* <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
           onPress={() => navigation.goBack()}
-        />
+        /> */}
       </View>
     </View>
   );

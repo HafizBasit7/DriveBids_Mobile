@@ -91,12 +91,12 @@ const Interior4 = () => {
           title="Next"
           onPress={() => navigation.navigate("Interior5")}
         />
-        <CustomButton
+        {/* <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
           onPress={() => navigation.goBack()}
-        />
+        /> */}
       </View>
     </View>
   );

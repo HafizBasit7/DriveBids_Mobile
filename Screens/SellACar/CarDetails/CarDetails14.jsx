@@ -118,13 +118,13 @@ const CarDetails14 = () => {
             title="Finish"
             onPress={handleSaveDraft}
           />
-          {/* <View style={{ height: 10 }} /> */}
-          <CustomButton
+          <View style={{ height: 10 }} />
+          {/* <CustomButton
             title="Back"
             style={styles.backButton}
             textStyle={{ color: "#007BFF" }}
             onPress={() => navigation.goBack()}
-          />
+          /> */}
         </View>
       </View>
     </KeyboardAvoidingView>

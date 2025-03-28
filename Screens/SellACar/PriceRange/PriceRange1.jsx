@@ -3,72 +3,90 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
-const PriceRange1 = () => {
-  const [inputValue, setInputValue] = useState("");
-  const navigation = useNavigation(); // Initialize navigation
-  const {carState, dispatch} = useCar();
 
-  function setStartingBidPrice (value) {
+const PriceRange1 = () => {
+  const navigation = useNavigation();
+  const { carState, dispatch } = useCar();
+  
+
+ // Function to format numbers with commas
+ const formatNumberWithCommas = (num) => {
+  return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+
+  const [formattedBidPrice, setFormattedBidPrice] = useState(
+    formatNumberWithCommas(carState.carPricing.staringBidPrice?.toString() || "0")
+  );
+
+  
+
+ 
+  // Function to handle input change
+  const handleBidInput = (text) => {
+    // Remove non-numeric characters
+    const rawNumber = text.replace(/[^0-9]/g, "");
+
+    // Format the number with commas
+    const formattedNumber = formatNumberWithCommas(rawNumber);
+
+
+    // Update state for display
+    setFormattedBidPrice(formattedNumber);
+    // Dispatch raw numeric value to context
     dispatch({
-      type: 'UPDATE_FIELD',
-      section: 'carPricing',
-      field: 'staringBidPrice',
-      value: parseInt(value),
+      type: "UPDATE_FIELD",
+      section: "carPricing",
+      field: "staringBidPrice",
+      value: rawNumber ? parseInt(rawNumber) : 0,
     });
   };
 
   return (
-  <View style={styles.container}>
+    <View style={styles.container}>
       {/* Content */}
       <View style={styles.content}>
         {/* Step Progress Indicator */}
-      <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <Text style={styles.lineText}>Step 1 of 4</Text>
-        <View style={styles.line} />
-      </View>
-  
-      {/* Section Title */}
-      <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <Text style={styles.lineText2}>Starting Bid</Text>
-        <View style={styles.line} />
-      </View>
-  
-      {/* Input Container */}
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputHeading}>
-          Enter starting bid price for your car
-        </Text>
-        <View style={styles.inputBox}>
-          <Text style={styles.currencyText}>AED</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            value={(carState.carPricing.staringBidPrice || 0).toString() || 0}
-            onChangeText={setStartingBidPrice}
-          />
+        <View style={styles.lineContainer}>
+          <View style={styles.line} />
+          <Text style={styles.lineText}>Step 1 of 4</Text>
+          <View style={styles.line} />
+        </View>
+
+        {/* Section Title */}
+        <View style={styles.lineContainer}>
+          <View style={styles.line} />
+          <Text style={styles.lineText2}>Starting Bid</Text>
+          <View style={styles.line} />
+        </View>
+
+        {/* Input Container */}
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputHeading}>
+            Enter starting bid price for your car
+          </Text>
+          <View style={styles.inputBox}>
+            <Text style={styles.currencyText}>AED</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              value={formattedBidPrice}
+              onChangeText={handleBidInput}
+            />
+          </View>
         </View>
       </View>
+
+      {/* Buttons Fixed at Bottom */}
+      <View style={styles.buttonContainer}>
+        <CustomButton
+          style={styles.button}
+          title="Next"
+          onPress={() => navigation.navigate("PriceRange2")}
+        />
+        <View style={{ height: 10 }} />
+      </View>
     </View>
-  
-    {/* Buttons Fixed at Bottom */}
-    <View style={styles.buttonContainer}>
-      <CustomButton
-        style={styles.button}
-        title="Next"
-        onPress={() => navigation.navigate("PriceRange2")}
-      />
-      <View style={{ height: 10 }} />
-      <CustomButton
-        title="Back"
-        style={styles.backButton}
-        textStyle={{ color: "#007BFF" }}
-        onPress={() => navigation.goBack()}
-      />
-    </View>
-  </View>
-  
   );
 };
 
@@ -78,9 +96,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingBottom: 20,
   },
-  
- 
-  
   lineContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -143,20 +158,17 @@ const styles = StyleSheet.create({
     color: "#000",
     textAlign: "center",
   },
-  
-content: {
-  flex: 1,
-  paddingHorizontal: 20,
-},
-
-buttonContainer: {
-  width: "90%",
-  alignSelf: "center",
-  alignItems: "center",
-  justifyContent: "center",
-marginBottom:"3%"
-},
-
+  content: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+  buttonContainer: {
+    width: "90%",
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: "3%",
+  },
   button: {
     marginBottom: 5,
   },

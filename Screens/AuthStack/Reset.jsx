@@ -15,7 +15,6 @@ import { confirmResetPassword } from "../../API_Callings/R1_API/Reset.js";
 import DialogBox from "../../CustomComponents/DialogBox.jsx";
 import { Icon } from "react-native-elements";
 
-
 const { width, height } = Dimensions.get("window");
 
 const Reset = ({route}) => {
@@ -63,16 +62,13 @@ const Reset = ({route}) => {
         translucent
       />
 
-      {/* Full-width Image at the very top */}
       <Image
         source={require("../../assets/tahirAssets/AuthPngs/ResetPass.png")}
         style={styles.topImage}
         resizeMode="cover"
       />
 
-      {/* Content Section */}
       <View style={styles.overlayContainer}>
-        {/* Heading */}
         <View style={styles.headingContainer}>
           <View style={styles.activeTabIndicator} />
           <Text style={styles.heading}>Reset Password</Text>
@@ -82,7 +78,6 @@ const Reset = ({route}) => {
           Please type something you’ll remember
         </Text>
 
-        {/* Input Fields */}
         <View style={styles.inputContainer}>
           <Text style={styles.label}>New Password</Text>
           <TextInput
@@ -90,12 +85,12 @@ const Reset = ({route}) => {
       styles.input,
       {
         borderColor: focusedInput === "password" ? "#2F61BF" : "black",
-        paddingRight: 40, // Ensure space for the eye icon
+        paddingRight: 40, 
       },
     ]}
     placeholder="Must be at least 8 characters"
     placeholderTextColor="#888"
-    secureTextEntry={!showNewPassword} // Toggle visibility
+    secureTextEntry={!showNewPassword} 
     value={password}
     onChangeText={setPassword}
     onFocus={() => setFocusedInput("password")}
@@ -185,7 +180,7 @@ const styles = StyleSheet.create({
   activeTabIndicator: {
     marginTop: "4%",
     position: "absolute",
-    width: "63%",
+    width: "61%",
     height: 14,
     backgroundColor: "yellow",
     borderRadius: 10,

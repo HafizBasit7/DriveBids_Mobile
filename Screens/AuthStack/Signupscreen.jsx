@@ -17,12 +17,13 @@ import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
-import {useAuth} from "../../R1_Contexts/authContext";
+import { useAuth } from "../../R1_Contexts/authContext";
 import DialogBox from "../../CustomComponents/DialogBox";
+import { Icon } from "react-native-elements";
 const { width, height } = Dimensions.get("window");
 
 const SignupScreen = () => {
-  const {signup} = useAuth();
+  const { signup } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
@@ -34,6 +35,8 @@ const SignupScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
   //Trader
   const [businessAddress, setBusinessAddress] = useState('');
 
@@ -61,10 +64,10 @@ const SignupScreen = () => {
         businessAddress,
         type: selectedTab === 'private' ? 'individual' : 'trader'
       });
-      setMessage({type: 'success', message: 'Signup successful, Log in now', title: 'Success'});
+      setMessage({ type: 'success', message: 'Signup successful, Log in now', title: 'Success' });
     }
-    catch(e) {
-        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+    catch (e) {
+      setMessage({ type: 'error', message: e.message || e.msg, title: 'Error' });
     } finally {
       setLoading(false);
     }
@@ -142,32 +145,32 @@ const SignupScreen = () => {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.inputContainer}
         >
-          <ScrollView         showsVerticalScrollIndicator={false} // Hide scrollbar
+          <ScrollView showsVerticalScrollIndicator={false} 
           >
             <View>
               <View style={styles.inputWrapper}>
-                  <Text style={styles.label}>Name</Text>
-                  <TextInput style={styles.input} placeholder="Enter your name" value={name} onChangeText={setName}/>
-                </View>
+                <Text style={styles.label}>Name</Text>
+                <TextInput style={styles.input} placeholder="Enter your name" value={name} onChangeText={setName} />
+              </View>
 
-                <View style={styles.inputWrapper}>
-                  <Text style={styles.label}>City</Text>
-                  <TextInput style={styles.input} placeholder="Enter your city" value={city} onChangeText={setCity}/>
-                </View>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>City</Text>
+                <TextInput style={styles.input} placeholder="Enter your city" value={city} onChangeText={setCity} />
+              </View>
 
-                <View style={styles.inputWrapper}>
-                  <Text style={styles.label}>Country</Text>
-                  <TextInput style={styles.input} placeholder="Enter your country" value={country} onChangeText={setCountry}/>
-                </View>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>Country</Text>
+                <TextInput style={styles.input} placeholder="Enter your country" value={country} onChangeText={setCountry} />
+              </View>
 
-                <View style={styles.inputWrapper}>
-                  <Text style={styles.label}>Phone Number</Text>
-                  <TextInput style={styles.input} placeholder="Enter your phone number" keyboardType="phone-pad" value={phoneNumber} onChangeText={setPhoneNumber}/>
-                </View>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>Phone Number</Text>
+                <TextInput style={styles.input} placeholder="Enter your phone number" keyboardType="phone-pad" value={phoneNumber} onChangeText={setPhoneNumber} />
+              </View>
 
               <View style={styles.inputWrapper}>
                 <Text style={styles.label}>Email</Text>
-                <TextInput style={styles.input} placeholder="Enter your email" value={email} onChangeText={setEmail}/>
+                <TextInput style={styles.input} placeholder="Enter your email" value={email} onChangeText={setEmail} />
               </View>
 
               <View style={styles.inputWrapper}>
@@ -175,12 +178,15 @@ const SignupScreen = () => {
                 <TextInput
                   style={styles.input}
                   placeholder="Enter your password"
-                  secureTextEntry
+                  secureTextEntry={!showPassword}
+                  
                   value={password} onChangeText={setPassword}
                 />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+                  <Icon name={showPassword ? "eye-off" : "eye"} type="feather" size={22} color="#888" />
+                </TouchableOpacity>
               </View>
 
-              {/* Extra Input Field for Trade Seller */}
               {selectedTab === "trade" && (
                 <View style={styles.inputWrapper}>
                   <Text style={styles.label}>Business Address</Text>
@@ -189,33 +195,36 @@ const SignupScreen = () => {
                     onChangeText={setBusinessAddress}
                     style={styles.input}
                     placeholder="Enter your business address"
-                    
+
                   />
                 </View>
               )}
 
               {/* Checkbox */}
+              
               <View style={styles.checkboxContainer}>
                 <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
                   <BouncyCheckbox
-                    size={21}
+                    size={20}
                     fillColor="#2F61BF"
                     unfillColor="#FFFFFF"
-                    iconStyle={{ borderColor: "#2F61BF" }}
+                  
+                    iconStyle={{ borderColor: "#2F61BF"}}
                     isChecked={isChecked}
                     disableBuiltInState={true}
                     onPress={() => setIsChecked(!isChecked)}
+                    style={{ marginTop: 5 }} 
                   />
                 </TouchableOpacity>
 
                 <Text style={styles.checkboxText}>
-                  I agree to the{" "}
+                  I agree to the{"  "}
                   <TouchableOpacity onPress={handleTermsClick}>
-                    <Text style={styles.clickableText}>terms</Text>
-                  </TouchableOpacity>{" "}
-                  and{" "}
-                  <TouchableOpacity onPress={handleConditionsClick}>
-                    <Text style={styles.clickableText}>conditions</Text>
+                    <Text style={styles.clickableText}>terms&conditions</Text>
+                  </TouchableOpacity>{""}
+                  
+                  <TouchableOpacity  onPress={handleTermsClick}>
+                    <Text style={styles.clickableText}></Text>
                   </TouchableOpacity>
                 </Text>
               </View>
@@ -243,7 +252,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#fff",
-    
+
   },
   backIconContainer: {
     position: "absolute",
@@ -287,7 +296,7 @@ const styles = StyleSheet.create({
   },
   activeTabIndicator: {
     position: "absolute",
-    width: "60%",
+    width: "64%",
     height: 14,
     backgroundColor: "yellow",
     borderRadius: 10,
@@ -350,7 +359,7 @@ const styles = StyleSheet.create({
   checkboxText: {
     fontSize: 14,
     color: "#333",
-    
+
   },
   clickableText: {
     color: "#2F61BF",
@@ -374,14 +383,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#000",
     fontFamily: "Inter-Regular",
-    fontWeight:"700"
+    fontWeight: "700"
   },
   loginLink: {
     fontSize: 14,
     color: "#2F61BF",
     fontFamily: "Inter-Regular",
     textDecorationLine: "underline",
-        fontWeight:"700",
+    fontWeight: "700",
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: 10,
+    top: 45,
   },
 });
 

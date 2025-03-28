@@ -1,79 +1,71 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, PanResponder, Animated } from "react-native";
+import { View, Text, StyleSheet, PanResponder, Animated, Dimensions } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
 
 const MIN_VALUE = 500;
 const MAX_VALUE = 8000;
+const STEP = 500; // Ensures values are in increments of 500
+const SLIDER_WIDTH = Dimensions.get("window").width - 50; // Adjust to fit screen
 
-const mapProgressToMileage = (progressValue) => {
-  return Math.round((progressValue / 100) * (MAX_VALUE - MIN_VALUE) + MIN_VALUE);
+const mapProgressToEngineSize = (progressValue) => {
+  const rawValue = Math.round((progressValue / 100) * (MAX_VALUE - MIN_VALUE) + MIN_VALUE);
+  return Math.round(rawValue / STEP) * STEP; // Round to nearest step (500)
 };
 
-const mapMileageToProgress = (mileageValue) => {
-  return Math.round(((mileageValue - MIN_VALUE) / (MAX_VALUE - MIN_VALUE)) * 100);
+const mapEngineSizeToProgress = (engineSizeValue) => {
+  return ((engineSizeValue - MIN_VALUE) / (MAX_VALUE - MIN_VALUE)) * 100;
 };
-
 
 const CarDetails8 = () => {
   const navigation = useNavigation();
+  const { carState, dispatch } = useCar();
 
-  const {carState, dispatch} = useCar();
-  const [progress] = useState(new Animated.Value(carState.carDetails.engineSize ? mapMileageToProgress(carState.carDetails.engineSize) : 0));
+  const initialEngineSize = carState.carDetails.engineSize || MIN_VALUE;
+  const [engineSize, setEngineSize] = useState(initialEngineSize);
+  const [progress] = useState(new Animated.Value(mapEngineSizeToProgress(initialEngineSize)));
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
-    onPanResponderGrant: () => {
-      progress.stopAnimation((value) => {
-        //Update in state
-        dispatch({
-          type: 'UPDATE_FIELD',
-          section: 'carDetails',
-          field: 'engineSize',
-          value: mapProgressToMileage(value)
-        });
-      });
-    },
     onPanResponderMove: (event, gestureState) => {
-      let newValue = Math.max(0, Math.min(100, mapMileageToProgress(carState.carDetails.engineSize) + gestureState.dx / 4));
-      progress.setValue(newValue);
+      let newProgress = Math.max(0, Math.min(100, mapEngineSizeToProgress(engineSize) + (gestureState.dx / SLIDER_WIDTH) * 100));
+      let newEngineSize = mapProgressToEngineSize(newProgress);
+
+      progress.setValue(newProgress);
+      setEngineSize(newEngineSize);
     },
     onPanResponderRelease: () => {
       progress.stopAnimation((value) => {
-        //Update in state
+        const finalEngineSize = mapProgressToEngineSize(value);
+        setEngineSize(finalEngineSize);
         dispatch({
-          type: 'UPDATE_FIELD',
-          section: 'carDetails',
-          field: 'engineSize',
-          value: mapProgressToMileage(value)
+          type: "UPDATE_FIELD",
+          section: "carDetails",
+          field: "engineSize",
+          value: finalEngineSize,
         });
       });
     },
   });
+
   return (
     <View style={styles.container}>
-      {/* Content */}
       <View style={styles.content}>
-        {/* Step Progress Indicator */}
         <View style={styles.lineContainer}>
           <View style={styles.line} />
           <Text style={styles.lineText}>Step 8 of 14</Text>
           <View style={styles.line} />
         </View>
 
-        {/* Section Title */}
         <View style={styles.lineContainer}>
           <View style={styles.line} />
           <Text style={styles.lineText2}>Engine Size</Text>
           <View style={styles.line} />
         </View>
 
-        {/* Progress Bar Container */}
         <View style={styles.progressContainer}>
-          <Text style={styles.progressHeading}>
-            Engine Size(CCs): {carState.carDetails.engineSize || 0}
-          </Text>
+          <Text style={styles.progressHeading}>Engine Size (CCs): {engineSize}</Text>
 
           <View style={styles.progressBar}>
             <Animated.View
@@ -101,29 +93,21 @@ const CarDetails8 = () => {
             />
           </View>
 
-          <View style={styles.rangeLabels}>
+          <View style={[styles.rangeLabels,{}]}>
             <Text style={styles.rangeText}>500</Text>
             <Text style={styles.rangeText}>2000</Text>
             <Text style={styles.rangeText}>4000</Text>
-            <Text style={styles.rangeText}>6000</Text>
+            <Text style={[styles.rangeText, {  }]}>6000</Text>
             <Text style={styles.rangeText}>8000</Text>
           </View>
         </View>
       </View>
 
-      {/* Bottom Buttons */}
       <View style={styles.buttonContainer}>
         <CustomButton
           style={styles.button}
           title="Next"
           onPress={() => navigation.navigate("CarDetails9")}
-        />
-        <View style={{ height: 10 }} />
-        <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
         />
       </View>
     </View>
@@ -198,6 +182,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 25,
+    
   },
   rangeText: {
     fontSize: 14,
@@ -208,7 +193,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginBottom:"2%"
+    marginBottom:"5%"
   },
   button: {
     marginBottom: 5,

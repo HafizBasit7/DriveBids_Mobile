@@ -3,20 +3,35 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
+
 const PriceRange2 = () => {
   const [inputValue, setInputValue] = useState("");
   const navigation = useNavigation(); // Initialize navigation
+  const { carState, dispatch } = useCar();
 
-  const {carState, dispatch} = useCar();
+  function formatNumberWithCommas(num) {
+    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
-  function setReservedBidPrice (value) {
+  function setReservedBidPrice(value) {
+    // Remove non-numeric characters
+    const rawNumber = value.replace(/[^0-9]/g, "");
+    
+    // Format number with commas
+    const formattedNumber = formatNumberWithCommas(rawNumber);
+
+    // Update state in context
     dispatch({
-      type: 'UPDATE_FIELD',
-      section: 'carPricing',
-      field: 'reserveBidPrice',
-      value: parseInt(value),
+      type: "UPDATE_FIELD",
+      section: "carPricing",
+      field: "reserveBidPrice",
+      value: parseInt(rawNumber) || 0, // Store as raw number for calculations
     });
-  };
+
+    // Store formatted number for display
+    setInputValue(formattedNumber);
+  }
+
   return (
     <View style={styles.container}>
       {/* Content */}
@@ -27,14 +42,14 @@ const PriceRange2 = () => {
           <Text style={styles.lineText}>Step 2 of 4</Text>
           <View style={styles.line} />
         </View>
-  
+
         {/* Section Title */}
         <View style={styles.lineContainer}>
           <View style={styles.line} />
           <Text style={styles.lineText2}>Reserved Bid</Text>
           <View style={styles.line} />
         </View>
-  
+
         {/* Input Container */}
         <View style={styles.inputContainer}>
           <Text style={styles.inputHeading}>
@@ -45,13 +60,13 @@ const PriceRange2 = () => {
             <TextInput
               style={styles.input}
               keyboardType="numeric"
-              value={(carState.carPricing.reserveBidPrice || 0).toString() || 0}
+              value={inputValue} // Use formatted value
               onChangeText={setReservedBidPrice}
             />
           </View>
         </View>
       </View>
-  
+
       {/* Buttons Fixed at Bottom */}
       <View style={styles.buttonContainer}>
         <CustomButton
@@ -60,16 +75,10 @@ const PriceRange2 = () => {
           onPress={() => navigation.navigate("PriceRange3")}
         />
         <View style={{ height: 10 }} />
-        <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
-        />
       </View>
     </View>
   );
-};  
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -77,25 +86,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingBottom: 20,
   },
-
   content: {
     flex: 1,
     paddingHorizontal: 20,
   },
-
   lineContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     marginTop: "5%",
   },
-
   line: {
     flex: 1,
     height: 1,
     backgroundColor: "#000",
   },
-
   lineText: {
     marginHorizontal: 4,
     fontSize: 20,
@@ -103,7 +108,6 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "700",
   },
-
   lineText2: {
     marginHorizontal: 4,
     fontSize: 16,
@@ -111,13 +115,11 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "700",
   },
-
   inputContainer: {
     marginHorizontal: 20,
     marginTop: 20,
     alignItems: "center",
   },
-
   inputHeading: {
     fontSize: 16,
     fontWeight: "700",
@@ -126,7 +128,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: "Inter-Regular",
   },
-
   inputBox: {
     flexDirection: "row",
     alignItems: "center",
@@ -139,21 +140,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#fff",
   },
-
   currencyText: {
     fontSize: 16,
     color: "#000",
     fontWeight: "600",
     marginRight: 10,
   },
-
   input: {
     flex: 1,
     fontSize: 26,
     color: "#000",
     textAlign: "center",
   },
-
   buttonContainer: {
     width: "90%",
     alignSelf: "center",
@@ -161,17 +159,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: "3%",
   },
-
   button: {
     marginBottom: 5,
   },
-
-  backButton: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#007BFF",
-  },
 });
-
 
 export default PriceRange2;

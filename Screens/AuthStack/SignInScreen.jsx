@@ -126,22 +126,26 @@ const SignInScreen = () => {
               </View>
 
               <View style={styles.rememberContainer}>
-                <BouncyCheckbox
-                  size={18}
-                  fillColor="#2F61BF"
-                  unfillColor="#FFFFFF"
-                  text="Remember Me"
-                  iconStyle={{ borderColor: "#2F61BF" }}
-                  textStyle={styles.checkboxText}
-                  isChecked={rememberMe}
-                  onPress={(isChecked) => setRememberMe(isChecked)}
-                />
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("ForgetPass")}
-                >
-                  <Text style={styles.forgotPassword}>Forgot Password?</Text>
-                </TouchableOpacity>
-              </View>
+  <View style={styles.checkboxWrapper}>
+    <BouncyCheckbox
+      size={18}
+      fillColor="#2F61BF"
+      unfillColor="#FFFFFF"
+      iconStyle={{ borderColor: "#2F61BF" }}
+      isChecked={rememberMe}
+      disableText={true}
+      onPress={(isChecked) => setRememberMe(isChecked)}
+      style={{marginRight:10}}
+    />
+    <Text style={styles.checkboxText}>Remember Me </Text>
+  </View>
+
+  <TouchableOpacity onPress={() => navigation.navigate("ForgetPass")}>
+    <Text style={styles.forgotPassword}>Forgot Password?</Text>
+  </TouchableOpacity>
+</View>
+
+
             </View>
           </KeyboardAvoidingView>
         </View>
@@ -234,14 +238,24 @@ const styles = StyleSheet.create({
   rememberContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between", // Keeps "Forgot Password?" on the right
+    width: "100%",
+    marginTop:5
+  },
+  checkboxWrapper: {
+    flexDirection: "row",
+    alignItems: "center", // Aligns checkbox and text properly
+  },
+  checkboxText: {
+    fontSize: 14,
+    fontFamily: "Inter-Regular",
+    color: "#000",
   },
   forgotPassword: {
     color: "#2F61BF",
     textDecorationLine: "underline",
-    fontSize: 12,
+    fontSize: 13,
     fontFamily: "Inter-Regular",
-    marginLeft: -100,
   },
   bottomContainer: {
     width: "100%",

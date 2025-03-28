@@ -144,12 +144,12 @@ const InspectionReport2 = () => {
         title="Next"
         onPress={() => navigation.navigate("InspectionReport3")}
       />
-      <CustomButton
+      {/* <CustomButton
         onPress={() => navigation.goBack()}
         title="Back"
         style={styles.nextButton}
         textStyle={styles.nextButtonText}
-      />
+      /> */}
     </View>
     </View>
   );

@@ -89,12 +89,12 @@ const Thread3 = () => {
           title="Next"
           onPress={() => navigation.navigate("Thread4")}
         />
-        <CustomButton
+        {/* <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
           onPress={() => navigation.goBack()}
-        />
+        /> */}
       </View>
     </View>
   );

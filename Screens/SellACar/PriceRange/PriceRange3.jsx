@@ -3,20 +3,36 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
+
 const PriceRange3 = () => {
   const [inputValue, setInputValue] = useState("");
   const navigation = useNavigation(); // Initialize navigation
 
-  const {carState, dispatch} = useCar();
-  
-  function setBuynowPrice (value) {
+  const { carState, dispatch } = useCar();
+
+  function formatNumberWithCommas(num) {
+    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function setBuynowPrice(value) {
+    // Remove non-numeric characters
+    const rawNumber = value.replace(/[^0-9]/g, "");
+
+    // Format number with commas
+    const formattedNumber = formatNumberWithCommas(rawNumber);
+
+    // Update state in context
     dispatch({
-      type: 'UPDATE_FIELD',
-      section: 'carPricing',
-      field: 'buyNowPrice',
-      value: parseInt(value),
+      type: "UPDATE_FIELD",
+      section: "carPricing",
+      field: "buyNowPrice",
+      value: parseInt(rawNumber) || 0,
     });
-  };
+
+    // Store formatted number for display
+    setInputValue(formattedNumber);
+  }
+
   return (
     <View style={styles.container}>
       {/* Content */}
@@ -37,15 +53,13 @@ const PriceRange3 = () => {
 
         {/* Input Container */}
         <View style={styles.inputContainer}>
-          <Text style={styles.inputHeading}>
-            Enter Buy Now price for your car
-          </Text>
+          <Text style={styles.inputHeading}>Enter Buy Now price for your car</Text>
           <View style={styles.inputBox}>
             <Text style={styles.currencyText}>AED</Text>
             <TextInput
               style={styles.input}
               keyboardType="numeric"
-              value={(carState.carPricing.buyNowPrice || 0).toString()}
+              value={inputValue}
               onChangeText={setBuynowPrice}
             />
           </View>
@@ -60,12 +74,12 @@ const PriceRange3 = () => {
           onPress={() => navigation.navigate("PriceRange4")}
         />
         <View style={{ height: 10 }} />
-        <CustomButton
+        {/* <CustomButton
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
           onPress={() => navigation.goBack()}
-        />
+        /> */}
       </View>
     </View>
   );

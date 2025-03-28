@@ -95,12 +95,12 @@ const CarDetails1 = () => {
           onPress={() => navigation.navigate("CarDetails2")}
         />
         <View style={{ height: 10 }} />
-        <CustomButton
+        {/* <CustomButton
           title="Back"
           style={styles.backButton}
           textStyle={{ color: GlobalStyles.colors.ButtonColor }}
           onPress={() => navigation.goBack()}
-        />
+        /> */}
       </View>
     </View>
   );

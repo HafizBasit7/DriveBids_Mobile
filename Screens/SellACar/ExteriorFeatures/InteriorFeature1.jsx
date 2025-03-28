@@ -121,12 +121,12 @@ const InteriorFeature1 = () => {
           onPress={handleSaveDraft}
         />
         <View style={{ height: 10 }} />
-        <CustomButton
+        {/* <CustomButton
           title="Back"
           style={styles.backButton}
           textStyle={{ color: "#007BFF" }}
           onPress={() => navigation.goBack()}
-        />
+        /> */}
       </View>
     </View>
   );

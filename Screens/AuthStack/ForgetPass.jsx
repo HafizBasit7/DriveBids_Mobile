@@ -113,7 +113,7 @@ const ForgetPass = () => {
                 <CustomButton
                   title="Send Code"
                   onPress={handleSendCode}
-                  style={{ marginTop: "40%" }}
+                  style={{ marginTop: "35%" }}
                 />
 
                 {/* {isCodeSent && (
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   activeTabIndicator: {
     marginTop: "5%",
     position: "absolute",
-    width: "65%",
+    width: "67%",
     height: 12,
     backgroundColor: "yellow",
     borderRadius: 10,

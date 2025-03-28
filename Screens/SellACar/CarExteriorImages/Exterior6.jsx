@@ -113,12 +113,12 @@ const Exterior6 = () => {
           title="Save"
           onPress={handleSaveDraft}
         />
-        <CustomButton
+        {/* <CustomButton
           title="Back"
           style={styles.nextButton}
           textStyle={styles.nextButtonText}
           onPress={() =>navigation.goBack()}
-        />
+        /> */}
       </View>
     </View>
   );

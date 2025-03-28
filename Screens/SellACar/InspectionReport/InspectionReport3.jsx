@@ -177,12 +177,12 @@ const InspectionReport3 = () => {
         title="Save"
         onPress={handleSaveDraft}
       />
-      <CustomButton
+      {/* <CustomButton
         onPress={() => navigation.goBack()}
         title="Back"
         style={styles.nextButton}
         textStyle={styles.nextButtonText}
-      />
+      /> */}
     </View>
     </View>
   );
