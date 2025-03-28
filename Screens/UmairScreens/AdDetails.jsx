@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
 
 const { width } = Dimensions.get("window"); // Get screen width
@@ -20,12 +20,24 @@ import { getCar } from "../../API_Callings/R1_API/Car";
 import WrapperComponent from "../../CustomComponents/WrapperComponent";
 import { useAuth } from "../../R1_Contexts/authContext";
 import BiddingList from "../../CustomComponents/UmairComponents/BiddingList";
+import {useBidSocket} from "../../R1_Contexts/bidContext";
 
 const AdDetails = ({route}) => {
   
   const {carId} = route.params;
   const {authState} = useAuth();
  
+  const socket = useBidSocket();
+
+  useEffect(() => {
+    if(socket) {
+      socket.emit('join-room', {roomId: carId});
+    }
+
+    return () => {
+      socket.emit('leave-room', {roomId: carId});
+    };
+  }, [socket]);
 
 
   const {data, isLoading} = useQuery({
@@ -98,6 +110,7 @@ const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
               <SellerProfileCard
                 user={car.user._id}
                 name={car.user.name}
+                car={car}
                 status={car.user.type === 'trader' ? 'Trader' : 'Private Seller'}
                 profileImage={car.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png'}
               />

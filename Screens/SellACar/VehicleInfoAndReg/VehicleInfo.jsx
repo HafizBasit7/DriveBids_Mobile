@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import {useCar} from "../../../R1_Contexts/carContext";
 import DialogBox from "../../../CustomComponents/DialogBox";
 import { carDamageReportValidation, carDetailsValidation, carFeaturesValidation, carInspectionReportValidation, carPricingValidation, imagesValidation } from "../../../R1_Validations/CarValidations";
+import { useQueryClient } from "@tanstack/react-query";
 
 const VehicleInfo = () => {
 
@@ -26,10 +27,15 @@ const VehicleInfo = () => {
     && carDamageReportComplection.success && carFeaturesCompletion.success
   );
 
+  const queryClient = useQueryClient();
+
   const handleSaveDraft = async () => {
     setLoading(true);
     try {
         await carPostAd();
+        queryClient.invalidateQueries('cars');
+        queryClient.invalidateQueries('carsEnding');
+        queryClient.invalidateQueries('carsByBidCount');
         setMessage({type: 'success', message: 'Car ad posted!', title: 'Success'});
     }
     catch(e) {

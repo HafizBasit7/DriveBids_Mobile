@@ -4,16 +4,35 @@ import { Icon } from "react-native-elements";
 import SectionHeader from "../SectionHeader";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import { useMutation } from "@tanstack/react-query";
+import { getChatId } from "../../API_Callings/R1_API/Chat";
 
 const SellerProfileCard = ({
   name = "ADAM WILLIAMS",
   user,
+  car,
   status = "Private Seller",
   ShowChatOptions = true,
   profileImage = "https://randomuser.me/api/portraits/men/32.jpg",
 }) => {
 
   const navigation = useNavigation();
+
+  const chatNowMutation = useMutation({
+    mutationFn: getChatId,
+  });
+
+  const handleChatNow = async () => {
+    try {
+      const result = await chatNowMutation.mutateAsync({userId: car.user._id, carId: car._id});
+      console.log(result);
+      navigation.navigate('Messages');
+      navigation.navigate('Messages' , {screen: 'ActiveChatBox', params: {chatId: result.data.chatId}})
+    }
+    catch(e) {
+      console.log(e);
+    }
+  };
 
   return (
     <>
@@ -36,8 +55,8 @@ const SellerProfileCard = ({
                 color={GlobalStyles.colors.ButtonColor}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.viewAllButton} onPress={() => {}}>
-              <Text style={styles.viewAllText}>Chat Now</Text>
+            <TouchableOpacity style={styles.viewAllButton} onPress={handleChatNow}>
+              <Text style={styles.viewAllText}>{chatNowMutation.isPending ? 'Please wait...' : 'Chat Now'}</Text>
             </TouchableOpacity>
           </View>
         )}

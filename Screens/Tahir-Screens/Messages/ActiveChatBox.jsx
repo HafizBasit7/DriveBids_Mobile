@@ -16,17 +16,30 @@ import { Ionicons } from "@expo/vector-icons";
 import { chatData } from "./DummyMessages";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
-import {useQuery} from "@tanstack/react-query";
-import { getChatCarHead } from "../../../API_Callings/R1_API/Chat";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import { getChatCarHead, getChatMessages, sendMessage } from "../../../API_Callings/R1_API/Chat";
 import { formatAmount } from "../../../utils/R1_utils";
+import { useAuth } from "../../../R1_Contexts/authContext";
+import {useChatSocket} from "../../../R1_Contexts/chatContext";
 
 const ActiveChatBox = ({route}) => {
-  const [messages, setMessages] = useState(chatData);
   const [newMessage, setNewMessage] = useState("");
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const navigation = useNavigation();
+  const socket = useChatSocket();
 
   const {chatId} = route.params;
+  useEffect(() => {
+    if(socket) {
+      socket.emit('join-room', {roomId: chatId});
+    }
+    return () => {
+      try {socket?.emit('leave-room', {roomId: chatId});}
+       catch(e) {
+ 
+       }
+    };
+  }, [socket]);
 
   const {data: chatHeadData, isLoadingChatHead} = useQuery({
     queryKey: ['chatCarHead', chatId],
@@ -34,6 +47,19 @@ const ActiveChatBox = ({route}) => {
   });
   const chatHeadDataReal = chatHeadData?.data.chatHead;
 
+  const {data: messagesTmp, isLoading: messagesLoading} = useQuery({
+    queryKey: ['messages', chatId],
+    queryFn: () => getChatMessages(chatId, 1, 30),
+  });
+
+  const mutation = useMutation({
+    mutationFn: () => sendMessage(chatId, newMessage),
+  });
+
+  const {authState} = useAuth();
+  const user = authState.user;
+
+  const messages = messagesTmp?.data.messages;
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
@@ -57,30 +83,25 @@ const ActiveChatBox = ({route}) => {
   }, []);
 
 
-  const sendMessage = () => {
-    if (newMessage.trim().length > 0) {
-      setMessages([
-        { id: Date.now().toString(), text: newMessage, sender: "user" },
-        ...messages,
-      ]);
-      setNewMessage("");
-    }
+  const sendMessageNew = async () => {
+    await mutation.mutateAsync();
+    setNewMessage('');
   };
 
   const renderMessage = ({ item }) => (
     <View
       style={[
         styles.messageContainer,
-        item.sender === "user" ? styles.userMessage : styles.agentMessage,
+        item.sender === user._id ? styles.userMessage : styles.agentMessage,
       ]}
     >
       <Text
         style={[
           styles.messageText,
-          item.sender === "user" ? styles.userText : styles.agentText,
+          item.sender === user._id  ? styles.userText : styles.agentText,
         ]}
       >
-        {item.text}
+        {item.message}
       </Text>
     </View>
   );
@@ -154,7 +175,7 @@ const ActiveChatBox = ({route}) => {
         {/* Chat Messages */}
         <FlatList
           data={messages}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item._id}
           renderItem={renderMessage}
           style={styles.chatList}
           contentContainerStyle={styles.chatListContent}
@@ -190,7 +211,7 @@ const ActiveChatBox = ({route}) => {
             value={newMessage}
             onChangeText={setNewMessage}
           />
-          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+          <TouchableOpacity style={styles.sendButton} onPress={sendMessageNew}>
             <Ionicons name="send" size={20} color="white" />
           </TouchableOpacity>
         </View>
