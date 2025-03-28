@@ -96,26 +96,24 @@ const Filters_ViewAll = () => {
       <View style={styles.container}>
        
         <FilterChips />
-
-
          <FlatList
-      data={carData}
-      keyExtractor={(item) => item.id.toString()} 
-      renderItem={({ item }) => (
-      
-        <ViewAllCarCard
-        image={item.image}
-        model={item.model}
-        year={item.year}
-        engineSize={item.engineSize}
-        transmission={item.transmission}
-        fuelType={item.fuelType}
-        mileage={item.mileage}
-        color={item.color}
-        topBid={item.topBid}
-        timeRemaining={item.timeRemaining}
-        onViewAdPress={() => console.log('View Ad Pressed for', item.model)}
-      />
+          data={carData}
+          keyExtractor={(item) => item.id.toString()} 
+          renderItem={({ item }) => (
+          
+            <ViewAllCarCard
+            image={item.image}
+            model={item.model}
+            year={item.year}
+            engineSize={item.engineSize}
+            transmission={item.transmission}
+            fuelType={item.fuelType}
+            mileage={item.mileage}
+            color={item.color}
+            topBid={item.topBid}
+            timeRemaining={item.timeRemaining}
+            onViewAdPress={() => console.log('View Ad Pressed for', item.model)}
+          />
 
       )}
       showsVerticalScrollIndicator={false}

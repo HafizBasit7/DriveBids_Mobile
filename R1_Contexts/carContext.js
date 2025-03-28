@@ -207,14 +207,16 @@ export default function CarContextProvider({children}) {
 
     const draftSave = async (section, subSection) => {
         if(subSection) {
+            const cleanedSubSection = (carState[section][subSection] || []).filter(item => item !== null);
             const result = await saveDraft({
                 [section]: {
-                    // ...carState[section], //TODO
-                    [subSection]: carState[section][subSection],
+                    ...carState[section],
+                    [subSection]: cleanedSubSection,
                 },
                 draftId: carState.draftId,
                 regNo: carState.regNo,
             });
+
             const resultData = result.data;
             dispatch({type: 'DRAFT_ID', payload: resultData.draftId});
         } else {

@@ -28,10 +28,10 @@ const details = {
     "4WD": false,
   },
   condition: {
-    New: false,
-    Used: false,
-    "Certified Pre-Owned": false,
-    Salvage: false,
+    Poor: false,
+    Fair: false,
+    Good: false,
+    Excelent: false,
   },
   auctionStatus: {
     Active: false,

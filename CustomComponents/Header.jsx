@@ -81,7 +81,7 @@ const Header = ({ showSearch = true, scrollY }) => {
           {/* Profile */}
           <TouchableOpacity
             style={styles.right}
-            onPress={() => console.log("Profile Clicked")}
+            onPress={() => navigation.navigate("Profile")}
           >
             <Image
               source={{

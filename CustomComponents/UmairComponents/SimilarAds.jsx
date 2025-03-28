@@ -8,9 +8,28 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import HomeCarCard from "../Tahir-Components/Home/HomeCarCard";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getSimilarCars } from "../../API_Callings/R1_API/Car";
+import { getCarsIdInWatchList } from "../../API_Callings/R1_API/Watchlist";
 
-const SimilarAds = () => {
+const SimilarAds = ({make}) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const queryClient = useQueryClient();
+
+  const {data, isLoading} = useQuery({
+    queryKey: ['similarCars'],
+    queryFn: () => getSimilarCars(1, 10, make),
+  });
+
+  
+  const {data: carsInWatchList, isLoading: watchlistLoading} = useQuery({
+      queryKey: ['carsInWatchList'],
+      queryFn: getCarsIdInWatchList,
+      enabled: false,
+  });
+
+
+  const cars = data?.data.cars;
 
   return (
     <View style={styles.container}>
@@ -29,9 +48,9 @@ const SimilarAds = () => {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContent}
       >
-        {similarAds.map((ad, index) => (
+        {cars?.map((ad, index) => (
           <View key={index} style={styles.cardSpacing}>
-            <HomeCarCard {...ad} />
+            <HomeCarCard ad={ad} carsInWatchList={carsInWatchList}/>
           </View>
         ))}
       </ScrollView>
@@ -54,41 +73,6 @@ const SimilarAds = () => {
     </View>
   );
 };
-
-const similarAds = [
-  {
-    image: "https://via.placeholder.com/250",
-    name: "Tesla Model S",
-    year: 2022,
-    engine: 1000,
-    transmission: "Autom",
-    topBid: 45000,
-    timeLeft: "2h 30m",
-    favorite: true,
-    winning: false,
-    yourBid: 42000,
-    isFromMyBids: false,
-    onViewPress: () => alert("View Ad Pressed"),
-    onIncreaseBid: () => alert("Increase Bid Pressed"),
-    onCancelBid: () => alert("Cancel Bid Pressed"),
-  },
-  {
-    image: "https://via.placeholder.com/250",
-    name: "BMW i8",
-    year: 2021,
-    engine: 1500,
-    transmission: "Auto",
-    topBid: 50000,
-    timeLeft: "3h 15m",
-    favorite: false,
-    winning: true,
-    yourBid: 47000,
-    isFromMyBids: false,
-    onViewPress: () => alert("View Ad Pressed"),
-    onIncreaseBid: () => alert("Increase Bid Pressed"),
-    onCancelBid: () => alert("Cancel Bid Pressed"),
-  },
-];
 
 const styles = StyleSheet.create({
   container: {

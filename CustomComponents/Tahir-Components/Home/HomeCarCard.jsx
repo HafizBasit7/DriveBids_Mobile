@@ -24,8 +24,6 @@ const HomeCarCard = ({
   }
   const isCarSold = ad.status === 'sold';
 
-  
-
   const {authState} = useAuth();
   const user = authState.user;
 
@@ -148,15 +146,15 @@ const HomeCarCard = ({
         <Text style={styles.bidText}>
           Top Bid{" "}
           <Text style={styles.bidAmount}>
-            {/* AED {isFromMyBids ? yourBid : topBid} */}
+           
             AED {ad.highestBid}
           </Text>
         </Text>
         {isFromMyBids && (
           <Text style={styles.bidText}>
-            Your Bid{" "}
+            My Bid{" "}
             <Text style={styles.bidAmount}>
-              {/* AED {isFromMyBids ? yourBid : topBid} */}
+  
               AED {bid.bidAmount}
             </Text>
           </Text>

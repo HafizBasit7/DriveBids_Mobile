@@ -350,3 +350,28 @@ export const getCarOwnerCars = async (page = 1, limit = 10, userId) => {
         throw e;
     }
 };
+
+export const getSimilarCars = async (page = 1, limit = 10, make) => {
+    try {
+        const result = await apiClient.get(`/car/getSimilarCars/${make}?page=${page}&limit=${limit}`);
+        const resultData = result.data;
+
+        if(!resultData.status) {
+            throw {
+                name: 'app',
+                message: resultData.message,
+            };
+        }
+
+        return resultData; 
+    }
+    catch(e) {
+        if(e.response?.data) {
+            throw {
+                name: 'app',
+                ...e.response.data,
+            }
+        }
+        throw e;
+    }
+};

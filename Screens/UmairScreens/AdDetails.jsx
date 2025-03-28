@@ -39,7 +39,6 @@ const AdDetails = ({route}) => {
   }
 
   const car = data.data.car;
-  console.log("car",car);
   
   const reservePrice = car.reserveBidPrice;
 const highestBid = car.highestBid;
@@ -109,10 +108,9 @@ const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
           {isMyBid && (<BiddingList car={car._id}/>)}
           {!isMyBid && (<BiddingHistory car={car._id}/>)}
           {/* todo: do */}
-          <CarFeatures />
+          <CarFeatures features={car.features}/>
         <SellersComment car={car}/>
-        {/* todo: do */}
-        {/*           <SimilarAds /> */}
+          <SimilarAds make={car.make}/>
         </View>
       </ScrollView>
     </WrapperComponent>

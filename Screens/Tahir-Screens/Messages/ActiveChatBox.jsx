@@ -16,12 +16,24 @@ import { Ionicons } from "@expo/vector-icons";
 import { chatData } from "./DummyMessages";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import {useQuery} from "@tanstack/react-query";
+import { getChatCarHead } from "../../../API_Callings/R1_API/Chat";
+import { formatAmount } from "../../../utils/R1_utils";
 
-const ActiveChatBox = () => {
+const ActiveChatBox = ({route}) => {
   const [messages, setMessages] = useState(chatData);
   const [newMessage, setNewMessage] = useState("");
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const navigation = useNavigation();
+
+  const {chatId} = route.params;
+
+  const {data: chatHeadData, isLoadingChatHead} = useQuery({
+    queryKey: ['chatCarHead', chatId],
+    queryFn: () => getChatCarHead(chatId)
+  });
+  const chatHeadDataReal = chatHeadData?.data.chatHead;
+
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
@@ -84,10 +96,10 @@ const ActiveChatBox = () => {
       {/* Header */}
       <View style={styles.header}>
         <Image
-          source={{ uri: "https://i.pravatar.cc/150?img=10" }}
+          source={{ uri: chatHeadDataReal?.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }}
           style={styles.avatar}
         />
-        <Text style={styles.username}>Bryan</Text>
+        <Text style={styles.username}>{chatHeadDataReal?.user.name}</Text>
         <Ionicons
           name="ellipsis-vertical"
           size={24}
@@ -100,7 +112,7 @@ const ActiveChatBox = () => {
       <View style={styles.itemDetailsContainer}>
         <Image
           source={{
-            uri: "https://wpassets.graana.com/blog/wp-content/uploads/2023/01/bmw-i8-in-blue-colours-with-opened-doors.jpg",
+            uri: chatHeadDataReal?.car.images.exterior[0].url,
           }}
           style={styles.itemImage}
           defaultSource={{
@@ -108,7 +120,7 @@ const ActiveChatBox = () => {
           }}
         />
         <View style={styles.itemDetails}>
-          <Text style={styles.itemTitle}>Honda Civic Oriel</Text>
+          <Text style={styles.itemTitle}>{chatHeadDataReal?.car.title}</Text>
           <View
             style={{
               flexDirection: "row",
@@ -124,7 +136,7 @@ const ActiveChatBox = () => {
                 marginTop: 3,
               }}
             >
-              AED 53,000
+              AED {chatHeadDataReal ? formatAmount(chatHeadDataReal?.car.highestBid) : 0}
             </Text>
           </View>
         </View>

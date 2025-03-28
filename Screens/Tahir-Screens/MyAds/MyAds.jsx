@@ -19,6 +19,7 @@ import { useQuery } from "@tanstack/react-query";
 import { listMyAds } from "../../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
+import ViewAllCarCard from "../Filter&ViewAll/ViewAllCarCard";
 
 export default MyAds = () => {
   
@@ -48,32 +49,17 @@ export default MyAds = () => {
       {(!isLoading && cars) && (
         <FlatList
           data={cars}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
-            <HomeCarCard
-              CardWidth={280}
-              imgHeight={170}
+            <ViewAllCarCard
               ad={item}
               notHome={true}
               carsInWatchList={carsInWatchList}
             />
           )}
-          showsVerticalScrollIndicator={false} // Hide vertical scroll indicator
-          contentContainerStyle={{
-            paddingVertical: 10,
-
-            justifyContent: "center",
-            alignItems: "center",
-          }} // Add vertical padding
-          ItemSeparatorComponent={() => (
-            <View style={{ height: 5 }} /> 
-          )}
-          removeClippedSubviews={true}
-          getItemLayout={(data, index) => ({
-            length: CARD_HEIGHT, // Adjust to item height
-            offset: CARD_HEIGHT * index,
-            index,
-          })}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.contentContainer}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
       )}
       </View>
@@ -85,5 +71,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor:"#fff"
+  },
+  contentContainer: {
+    paddingVertical: 10,
+    flex:1,
+    paddingHorizontal: 10, 
+    backgroundColor: '#fff',
+    paddingBottom:40 
+   
+  },
+  separator: {
+    height: 15, 
   },
 });

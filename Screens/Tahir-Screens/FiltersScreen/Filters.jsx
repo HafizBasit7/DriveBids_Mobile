@@ -355,9 +355,23 @@ const FiltersScreen = () => {
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Price Range */}
+        {/* Title */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Price Range ($)</Text>
+          <Text style={styles.sectionTitle}>Title</Text>
+          {/* Title Search */}
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search for title..."
+            value={locationSearch}
+            onChangeText={(text) => {
+              setLocationSearch(text);
+            }}
+          />
+        </View>
+
+        {/* Staring bid Price Range */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Starting Bid Price Range (AED)</Text>
           <View style={styles.rangeInputs}>
             <TextInput
               style={styles.input}
@@ -380,9 +394,48 @@ const FiltersScreen = () => {
           </View>
         </View>
 
-        {/* Year Range */}
+        {/* Buy now Price Range */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Year</Text>
+          <Text style={styles.sectionTitle}>Buy now Price Range (AED)</Text>
+          <View style={styles.rangeInputs}>
+            <TextInput
+              style={styles.input}
+              placeholder="Min"
+              value={priceRange.min}
+              onChangeText={(text) =>
+                setPriceRange({ ...priceRange, min: text })
+              }
+              keyboardType="numeric"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Max"
+              value={priceRange.max}
+              onChangeText={(text) =>
+                setPriceRange({ ...priceRange, max: text })
+              }
+              keyboardType="numeric"
+            />
+          </View>
+        </View>
+
+        {/* no of owners */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>No of owners</Text>
+          {/* no of owners */}
+          <TextInput
+            style={styles.searchInput}
+            placeholder="No of owners"
+            value={locationSearch}
+            onChangeText={(text) => {
+              setLocationSearch(text);
+            }}
+          />
+        </View>
+
+        {/* model Range */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Model</Text>
           <View style={styles.rangeInputs}>
             <TextInput
               style={styles.input}
@@ -619,21 +672,6 @@ const FiltersScreen = () => {
           title={"Auction Status"}
         />
 
-        {/* Seller Type */}
-        <SectionCheckBoxes
-          Type={sellerType}
-          toogleType={toggleSellerType}
-          styles={styles}
-          title={"Seller Type"}
-        />
-
-        {/* Registered In */}
-        <SectionCheckBoxes
-          Type={registeredIn}
-          toogleType={toggleRegisteredIn}
-          styles={styles}
-          title={"Seller Type"}
-        />
 
         {/* Extra space at the bottom to accommodate floating buttons */}
         <View style={styles.bottomPadding} />

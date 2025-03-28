@@ -9,17 +9,13 @@ const SellCar = () => {
 
   const {resetDraftState} = useCar();
 
-  useEffect(() => {
-    resetDraftState();
-  }, []);
-
   const navigation = useNavigation(); // Initialize navigation
   return (
     <View style={styles.container}>
       <SectionHeader title={"Sell Car"} />
       <TouchableOpacity
         style={styles.buttonPrimary}
-        onPress={() => navigation.navigate("VehicleReg")}
+        onPress={() => {navigation.navigate("VehicleReg"); resetDraftState();}}
       >
         <FontAwesome5 name="car" size={24} color="white" />
         <Text style={styles.buttonText}>Post a new ad</Text>

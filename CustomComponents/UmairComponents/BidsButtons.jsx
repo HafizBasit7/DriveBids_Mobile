@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { placeBidOnCar } from "../../API_Callings/R1_API/Bid";
+import { buyNowCar, placeBidOnCar } from "../../API_Callings/R1_API/Bid";
 import { useMutation } from "@tanstack/react-query";
 import { ActivityIndicator } from "react-native-paper";
 import DialogBox from "../DialogBox";
+import { formatAmount } from "../../utils/R1_utils";
 
 const BidsButtons = ({
   buyItNowTitle = "BUY IT NOW",
@@ -19,6 +20,10 @@ const BidsButtons = ({
 
   const mutation = useMutation({
     mutationFn: placeBidOnCar,
+  });
+
+  const buyNowMutation = useMutation({
+    mutationFn: buyNowCar,
   });
 
   const handleQuickBidPress = async () => {
@@ -36,11 +41,8 @@ const BidsButtons = ({
   const handleBuyItNow = async () => {
     try {
       setBuyNowDialogVisible(false);
-      const result = await mutation.mutateAsync({
-        carId: car._id,
-        bidAmount: car.buyNowPrice
-      });
-      setMessage({ type: 'success', message: result.message, title: 'Success' });
+     await buyNowMutation.mutateAsync(car._id);
+      setMessage({ type: 'success', message: 'Succesfully bought!', title: 'Success' });
     } catch (e) {
       setMessage({ type: 'error', message: e.message || e.msg, title: 'Error' });
     }
@@ -62,7 +64,7 @@ const BidsButtons = ({
       {/* Buy Now Confirmation Dialog */}
       <DialogBox
         visible={buyNowDialogVisible}
-        message={`Are you sure you want to buy this car for AED ${car.buyNowPrice}?`}
+        message={`Are you sure you want to buy this car for AED ${formatAmount(car.buyNowPrice)}?`}
         onOkPress={handleBuyItNow}
         onCancelPress={() => setBuyNowDialogVisible(false)}
         title="Confirm Buy Now"
@@ -73,8 +75,14 @@ const BidsButtons = ({
         style={[styles.button, styles.outlineButton]}
         onPress={() => setBuyNowDialogVisible(true)}
       >
-        <Text style={styles.blueText}>{buyItNowTitle}</Text>
-        <Text style={styles.price}>AED {car.buyNowPrice}</Text>
+        {!buyNowMutation.isPending ? (
+          <>
+            <Text style={styles.blueText}>{buyItNowTitle}</Text>
+            <Text style={styles.price}>AED {formatAmount(car.buyNowPrice)}</Text>
+          </>
+        ) : (
+          <ActivityIndicator />
+        )}
       </TouchableOpacity>
 
       {/* Place Bid Button */}

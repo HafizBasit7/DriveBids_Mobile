@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import {listMyBids} from "../../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
+import ViewAllCarCard from "../Filter&ViewAll/ViewAllCarCard";
 
 export default MyBids = () => {
   const [activeTab, setActiveTab] = useState("Active");
@@ -77,36 +78,21 @@ export default MyBids = () => {
       {isLoading && (<ActivityIndicator/>)}
       {(!isLoading && bids) && (
         <FlatList
-        data={bids}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => (
-          <HomeCarCard
-            isFromMyBids={true}
-            CardWidth={300}
-            imgHeight={170}
-            bid={item}
-            ad={item.car}
-            notHome={true}
-            carsInWatchList={carsInWatchList}
-          />
-        )}
-        showsVerticalScrollIndicator={false} // Hide vertical scroll indicator
-        contentContainerStyle={{
-          paddingVertical: 10,
-
-          justifyContent: "center",
-          alignItems: "center",
-        }} // Add vertical padding
-        ItemSeparatorComponent={() => (
-          <View style={{ height: 5 }} /> // Adjust spacing between items
-        )}
-        removeClippedSubviews={true}
-        getItemLayout={(data, index) => ({
-          length: CARD_HEIGHT, // Adjust to item height
-          offset: CARD_HEIGHT * index,
-          index,
-        })}
-      />
+          data={bids}
+          keyExtractor={(item) => String(item._id)}
+          renderItem={({ item }) => (
+            <ViewAllCarCard
+              ad={item.car}
+              isFromMyBids={true}
+              bid={item}
+              notHome={true}
+              carsInWatchList={carsInWatchList}
+            />
+          )}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.contentContainer}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+        />
       )}
     </View>
     </>
@@ -142,5 +128,16 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-SemiBold",
     fontSize: 16,
     color: "black",
+  },
+  contentContainer: {
+    paddingVertical: 10,
+    flex:1,
+    paddingHorizontal: 10, 
+    backgroundColor: '#fff',
+    paddingBottom:40 
+   
+  },
+  separator: {
+    height: 15, 
   },
 });

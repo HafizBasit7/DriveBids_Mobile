@@ -12,56 +12,70 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import Header from "../../../CustomComponents/Header";
 import { useNavigation } from "@react-navigation/native";
+import {useQuery} from "@tanstack/react-query";
+import { getChats } from "../../../API_Callings/R1_API/Chat";
+import { ActivityIndicator } from "react-native-paper";
+import {timeAgo} from "../../../utils/R1_utils";
 
 const ChatHeads = () => {
   const [activeTab, setActiveTab] = useState("Buying");
   const navigation = useNavigation();
 
-  const renderMessageItem = ({ item }) => (
-    <TouchableOpacity style={styles.messageItem} onPress={() => {navigation.navigate('ActiveChatBox')}}>
-      <Avatar rounded source={{ uri: item.avatar }} size={50} />
-      <View style={styles.textContainer}>
-        <View style={styles.header}>
-          <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.time}>{item.time}</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            gap: 5,
-          }}
-        >
-          <Text
-            style={{ fontFamily: "Inter-SemiBold", fontSize: 14, opacity: 0.8 }}
-          >
-            {"Honda Civic Oriel "}
-          </Text>
-          <Text
+  const type = activeTab === 'Buying' ? 'buying' : 'selling';
+
+  const {data, isLoading} = useQuery({
+    queryKey: ['chats', type],
+    queryFn: () => getChats(1, 10, type),
+  });
+  const chats = data?.data.chats;
+
+  const renderMessageItem = ({ item }) => {
+    return (
+      <TouchableOpacity style={styles.messageItem} onPress={() => {navigation.navigate('ActiveChatBox', {chatId: item._id})}}>
+        <Avatar rounded source={{ uri: item.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }} size={50} />
+        <View style={styles.textContainer}>
+          <View style={styles.header}>
+            <Text style={styles.name}>{item.user.name}</Text>
+            <Text style={styles.time}>{timeAgo(item.updatedAt)}</Text>
+          </View>
+          <View
             style={{
-              fontFamily: "Inter-SemiBold",
-              fontSize: 12,
-              marginTop: 2,
-              opacity: 0.8,
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              gap: 5,
             }}
           >
-            {"|"}
-          </Text>
-          <Text
-            style={{
-              fontFamily: "Inter-SemiBold",
-              fontSize: 12,
-              marginTop: 2,
-              opacity: 0.8,
-            }}
-          >
-            {"1994"}
-          </Text>
+            <Text
+              style={{ fontFamily: "Inter-SemiBold", fontSize: 14, opacity: 0.8 }}
+            >
+              {item.car.title}
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Inter-SemiBold",
+                fontSize: 12,
+                marginTop: 2,
+                opacity: 0.8,
+              }}
+            >
+              {"|"}
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Inter-SemiBold",
+                fontSize: 12,
+                marginTop: 2,
+                opacity: 0.8,
+              }}
+            >
+              {item.car.model}
+            </Text>
+          </View>
+          <Text style={styles.message}>{item.lastMessage || 'Start a Conversation...'}</Text>
         </View>
-        <Text style={styles.message}>{item.message}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -95,12 +109,18 @@ const ChatHeads = () => {
       </View>
 
       {/* Messages List */}
-      <FlatList
-        data={messagesData}
-        keyExtractor={(item) => item.id}
-        renderItem={renderMessageItem}
-        showsVerticalScrollIndicator={false}
-      />
+      {isLoading && (
+        <ActivityIndicator style={{margin: '10'}}/>
+      )}
+
+      {!isLoading && (
+        <FlatList
+          data={chats}
+          keyExtractor={(item) => item._id}
+          renderItem={renderMessageItem}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 };

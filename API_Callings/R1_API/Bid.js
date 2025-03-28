@@ -49,3 +49,28 @@ export const acceptBid = async (payload) => {
         throw e;
     }
 };
+
+export const buyNowCar = async (carId) => {
+    try {
+        const result = await bidApiClient.post(`/bid/buyNow`, {carId});
+        const resultData = result.data;
+
+        if(!resultData.status) {
+            throw {
+                name: 'app',
+                message: resultData.message,
+            };
+        }
+
+        return resultData; 
+    }
+    catch(e) {
+        if(e.response?.data) {
+            throw {
+                name: 'app',
+                ...e.response.data,
+            }
+        }
+        throw e;
+    }
+};

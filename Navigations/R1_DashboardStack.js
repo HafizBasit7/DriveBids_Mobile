@@ -87,7 +87,7 @@ export default function R1_DashboardStack () {
             />
 
             <Tab.Screen
-              name="Saved"
+              name="Profile"
               component={R1_Profile}
               options={{
                 tabBarIcon: ({ color }) => (

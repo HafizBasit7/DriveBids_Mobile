@@ -1,42 +1,106 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { GlobalStyles } from '../../../Styles/GlobalStyles';
+import {formatAmount} from "../../../utils/R1_utils";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toggleWatchList } from '../../../API_Callings/R1_API/Watchlist';
+import { calculateTimeLeft } from '../../../utils/countdown';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
 const ViewAllCarCard = ({ 
-  image, 
-  model, 
-  year, 
-  engineSize, 
-  transmission, 
-  fuelType, 
-  mileage, 
-  color, 
-  topBid, 
-  timeRemaining,
-  onViewAdPress 
+  ad,
+  carsInWatchList,
+  notHome = false,
+  isFromMyBids = false,
+  bid,
 }) => {
-  const [isFavorite, setIsFavorite] = useState(false); 
 
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
+  const navigation = useNavigation();
+
+  const countdownInterval = useRef();
+  const [timeLeft, setTimeLeft] = useState('0hr:0m:0s');
+
+  useEffect(() => {
+      if(isCarSold) return;
+      countdownInterval.current = setInterval(() => {
+        setTimeLeft(calculateTimeLeft(ad.duration));
+      }, 1000);
+  
+      return () => {
+        if(!countdownInterval.current) return;
+        clearInterval(countdownInterval.current);
+      };
+  }, [isCarSold]);
+
+  const queryClient = useQueryClient();
+  const toggleWatchListMutation = useMutation({
+    mutationFn: toggleWatchList,
+    onMutate: async (carId) => {
+      //For Car ids in watchlist
+      await queryClient.cancelQueries(["carsInWatchList"]);
+      const previousWatchlist = queryClient.getQueryData(["carsInWatchList"]);
+
+      queryClient.setQueryData(["carsInWatchList"], (oldData) => {
+        if (!oldData) return { data: { carsInWatchList: [{ car: carId }] }, status: true, statusCode: 200 };
+        const isAlreadyInWatchlist = oldData.data.carsInWatchList.some((item) => item.car === carId);
+        return {
+          ...oldData,
+          data: {
+            ...oldData.data,
+            carsInWatchList: isAlreadyInWatchlist
+              ? oldData.data.carsInWatchList.filter((item) => item.car !== carId)
+              : [...oldData.data.carsInWatchList, { car: carId }],
+          },
+        };
+      });
+
+      return { previousWatchlist };
+    },
+    onError: (_error, _newMessage, context) => {
+      if (context?.previousWatchlist) {
+        queryClient.setQueryData(["carsInWatchList"], context.previousWatchlist);
+      }
+    },
+    onSettled: () => {
+      // queryClient.invalidateQueries(["carsInWatchList"]);
+      queryClient.invalidateQueries(["watchlist"]);
+    },
+  });
+
+  //Calcuations
+  const isCarSold = ad.status === 'sold';
+  const isCarInWatchList = (carsInWatchList?.data.carsInWatchList.findIndex(val => val.car === ad._id) !== -1);
+  let winning = false;
+  if(isFromMyBids) {
+    winning = bid.status === 'lost' ? 'Bid Lost' : bid.bidAmount === ad.highestBid ? isCarSold ? 'Bid Won' : 'Winning' : isCarSold ? 'Bid Lost' : 'Losing';
+  }
+
+  const handleViewAd = () => {
+    if(notHome) {
+      navigation.navigate('Home', {screen: 'AdDetails', params: {carId: ad._id}});
+      return;
+    }
+    navigation.navigate('AdDetails', {carId: ad._id})
   };
+
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-      <TouchableOpacity style={styles.favoriteIcon} onPress={toggleFavorite}>
+      <TouchableOpacity style={styles.favoriteIcon} onPress={() => toggleWatchListMutation.mutate(ad._id)}>
           <Icon
-            name={isFavorite ? 'heart' : 'heart-outline'} 
+            name={isCarInWatchList ? 'heart' : 'heart-outline'} 
             type="material-community"
-            color={isFavorite ? '#FF0000' : '#FFFFFF'} 
+            color={isCarInWatchList ? '#FF0000' : '#FFFFFF'} 
             size={18}
           />
         </TouchableOpacity>
         
         <Image 
-          source={{ uri: image }} 
+          source={{ uri: ad.images.exterior[0].url }} 
           style={styles.carImage} 
           resizeMode="cover" 
         />
@@ -44,8 +108,28 @@ const ViewAllCarCard = ({
       
       <View style={styles.infoContainer}>
         <Text style={styles.modelText} numberOfLines={1} ellipsizeMode="tail">
-          {model}
+          {ad.title}
         </Text>
+
+{/* //TODO: ADAN DO */}
+        {/* {isFromMyBids && (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Text
+              style={{
+                backgroundColor: winning
+                  ? "rgba(0,139,39,0.2)"
+                  : "rgba(204,0,43,0.2)",
+                marginTop: 5,
+                paddingHorizontal: 10,
+                paddingVertical: 3,
+                borderRadius: 12,
+                color: winning ? "#008B27" : "#B3261E",
+              }}
+            >
+              {winning}
+            </Text>
+          </View>
+        )} */}
         
         <View style={styles.detailsRow}>
           <View style={styles.iconTextContainer}>
@@ -55,7 +139,7 @@ const ViewAllCarCard = ({
               size={12} 
               color="#000000" 
             />
-            <Text style={styles.detailText}>{year}</Text>
+            <Text style={styles.detailText}>{ad.model}</Text>
           </View>
           <View style={styles.divider} />
           <View style={styles.iconTextContainer}>
@@ -65,7 +149,7 @@ const ViewAllCarCard = ({
               size={12} 
               color="#000000" 
             />
-            <Text style={styles.detailText}>{engineSize} cc</Text>
+            <Text style={styles.detailText}>{ad.engineSize} cc</Text>
           </View>
           <View style={styles.divider} />
           <View style={styles.iconTextContainer}>
@@ -75,7 +159,7 @@ const ViewAllCarCard = ({
               size={12} 
               color="#000000" 
             />
-            <Text style={styles.detailText}>{transmission}</Text>
+            <Text style={styles.detailText}>{ad.transmission}</Text>
           </View>
         </View>
         
@@ -87,7 +171,7 @@ const ViewAllCarCard = ({
               size={12} 
               color="#000000" 
             />
-            <Text style={styles.detailText}>{fuelType}</Text>
+            <Text style={styles.detailText}>{ad.fuel}</Text>
           </View>
           <View style={styles.divider} />
           <View style={styles.iconTextContainer}>
@@ -97,7 +181,7 @@ const ViewAllCarCard = ({
               size={12} 
               color="#000000" 
             />
-            <Text style={styles.detailText}>{mileage} km</Text>
+            <Text style={styles.detailText}>{ad.mileage} km</Text>
           </View>
           <View style={styles.divider} />
           <View style={styles.iconTextContainer}>
@@ -107,7 +191,7 @@ const ViewAllCarCard = ({
               size={12} 
               color="#000000" 
             />
-            <Text style={styles.detailText}>{color}</Text>
+            <Text style={styles.detailText}>{ad.color}</Text>
           </View>
         </View>
         
@@ -115,16 +199,22 @@ const ViewAllCarCard = ({
           <View style={styles.bidTimeContainer}>
             <View>
               <Text style={styles.topBidText}>Top Bid</Text>
-              <Text style={styles.priceText}>${topBid}</Text>
+              <Text style={styles.priceText}>AED {formatAmount(ad.highestBid)}</Text>
             </View>
+            {isFromMyBids && (
+              <View>
+                <Text style={styles.topBidText}>My Bid</Text>
+                <Text style={styles.priceText}>AED {formatAmount(ad.highestBid)}</Text>
+              </View>
+            )}
             <View>
-              <Text style={styles.timeText}>{timeRemaining}</Text>
+              {isCarSold ? <Text style={{color: 'green'}}>Sold</Text>: (<Text style={styles.timeText}>{timeLeft}</Text>)}
             </View>
           </View>
           
           <TouchableOpacity 
             style={styles.viewAdButton}
-            onPress={onViewAdPress}
+            onPress={handleViewAd}
           >
             <Text style={styles.viewAdButtonText}>View Ad</Text>
             <Icon 

@@ -4,8 +4,10 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-const CarFeatures = () => {
+const CarFeatures = ({features}) => {
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const updatedFeatures = Object.values(features).flat();
 
   return (
     <View style={styles.container}>
@@ -21,29 +23,31 @@ const CarFeatures = () => {
         <View style={styles.featuresContainer}>
           {/* Available Features */}
           <View style={styles.column}>
-            {availableFeatures.map((feature, index) => (
-              <View key={index} style={styles.featureItem}>
-                <Icon name="check-circle" size={16} color="#2A5DB0" />
-                {feature.family === "FontAwesome5" ? (
-                  <FontAwesome5
-                    name={feature.icon}
-                    size={15}
-                    style={styles.featureIcon}
-                  />
-                ) : (
-                  <MaterialCommunityIcons
-                    name={feature.icon}
-                    size={15}
-                    style={styles.featureIcon}
-                  />
-                )}
-                <Text style={styles.featureText}>{feature.name}</Text>
-              </View>
-            ))}
+            {updatedFeatures.map((feature, index) => {
+              return (
+                <View key={index} style={styles.featureItem}>
+                  <Icon name="check-circle" size={16} color="#2A5DB0" />
+                  {/* {feature.family === "FontAwesome5" ? (
+                    <FontAwesome5
+                      name={feature.icon}
+                      size={15}
+                      style={styles.featureIcon}
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      name={feature.icon}
+                      size={15}
+                      style={styles.featureIcon}
+                    />
+                  )} */}
+                  <Text style={styles.featureText}>{feature}</Text>
+                </View>
+              )
+            })}
           </View>
 
           {/* Unavailable Features */}
-          <View style={styles.column}>
+          {/* <View style={styles.column}>
             {unavailableFeatures.map((feature, index) => (
               <View key={index} style={styles.featureItem}>
                 <Icon name="cancel" size={16} color="gray" />
@@ -65,7 +69,7 @@ const CarFeatures = () => {
                 </Text>
               </View>
             ))}
-          </View>
+          </View> */}
         </View>
       )}
 
@@ -88,25 +92,25 @@ const CarFeatures = () => {
   );
 };
 
-/* Features Data with Icons */
-const availableFeatures = [
-  { name: "ABS", icon: "car", family: "FontAwesome5" },
-  { name: "Air Conditioning", icon: "snowflake", family: "FontAwesome5" },
-  { name: "Immobilizer Key", icon: "key", family: "FontAwesome5" },
-  { name: "Air Bags", icon: "user-shield", family: "FontAwesome5" },
-  { name: "Navigation System", icon: "location-arrow", family: "FontAwesome5" },
-  {
-    name: "Power Steering",
-    icon: "steering",
-    family: "MaterialCommunityIcons",
-  }, // Fixed
-];
+// /* Features Data with Icons */
+// const availableFeatures = [
+//   { name: "ABS", icon: "car", family: "FontAwesome5" },
+//   { name: "Air Conditioning", icon: "snowflake", family: "FontAwesome5" },
+//   { name: "Immobilizer Key", icon: "key", family: "FontAwesome5" },
+//   { name: "Air Bags", icon: "user-shield", family: "FontAwesome5" },
+//   { name: "Navigation System", icon: "location-arrow", family: "FontAwesome5" },
+//   {
+//     name: "Power Steering",
+//     icon: "steering",
+//     family: "MaterialCommunityIcons",
+//   }, // Fixed
+// ];
 
-const unavailableFeatures = [
-  { name: "Power Locks", icon: "lock", family: "FontAwesome5" },
-  { name: "Power Windows", icon: "car-side", family: "FontAwesome5" },
-  { name: "AM/FM Radio", icon: "radio", family: "MaterialCommunityIcons" }, // Fixed
-];
+// const unavailableFeatures = [
+//   { name: "Power Locks", icon: "lock", family: "FontAwesome5" },
+//   { name: "Power Windows", icon: "car-side", family: "FontAwesome5" },
+//   { name: "AM/FM Radio", icon: "radio", family: "MaterialCommunityIcons" }, // Fixed
+// ];
 
 /* Styles */
 const styles = StyleSheet.create({

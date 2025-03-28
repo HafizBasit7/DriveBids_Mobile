@@ -9,6 +9,7 @@ import PlaceBid from "../Screens/UmairScreens/PlaceBid";
 import FiltersScreen from "../Screens/Tahir-Screens/FiltersScreen/Filters";
 import OwnerProfile from "../Screens/Tahir-Screens/OwnerProfile/OwnerProfile";
 import Filters_ViewAll from "../Screens/Tahir-Screens/Filter&ViewAll/Filter&ViewAll";
+import ViewAllCarsScreen from "../Screens/Tahir-Screens/Filter&ViewAll/ViewAllCarsScreen";
 
 const Stack = createStackNavigator();
 
@@ -33,7 +34,15 @@ export default function R1_HomeStack() {
       />
          <Stack.Screen
         name="Filters_ViewAll"
-        component={ Filters_ViewAll}
+        component={Filters_ViewAll}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="ViewAllCarsScreen"
+        component={ViewAllCarsScreen}
         options={{
           headerShown: false,
         }}

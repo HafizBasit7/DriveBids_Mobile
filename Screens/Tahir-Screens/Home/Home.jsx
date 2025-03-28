@@ -24,6 +24,8 @@ import { Icon } from "react-native-elements";
 export default Home = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
 
+  const navigation = useNavigation();
+
   const {data, isLoading} = useQuery({
     queryKey: ['cars'],
     queryFn: () => listCars(1, 10, 'recent'),
@@ -104,12 +106,12 @@ export default Home = () => {
           })}
         />
            <TouchableOpacity
-  style={styles.viewAllButton}
-  onPress={() => navigation.navigate("AllCarsScreen", { type: "spotlight" })}
->
-  <Text style={styles.viewAllText}>View All</Text>
-  <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
-</TouchableOpacity>
+            style={styles.viewAllButton}
+            onPress={() => navigation.navigate("ViewAllCarsScreen", { type: "spotlight" })}
+          >
+            <Text style={styles.viewAllText}>View All</Text>
+            <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
+          </TouchableOpacity>
         <SectionHeader title={"Ending Soonest"} />
 
         <FlatList
@@ -117,9 +119,6 @@ export default Home = () => {
           keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
             <HomeCarCard
-              onViewPress={() => {
-                console.log("View Ad from Home");
-              }}
               carsInWatchList={carsInWatchList}
               ad={item}
             />
@@ -141,7 +140,7 @@ export default Home = () => {
         />
            <TouchableOpacity
   style={styles.viewAllButton}
-  onPress={() => navigation.navigate("AllCarsScreen", { type: "spotlight" })}
+  onPress={() => navigation.navigate("ViewAllCarsScreen", { type: "ending" })}
 >
   <Text style={styles.viewAllText}>View All</Text>
   <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
@@ -153,9 +152,6 @@ export default Home = () => {
           keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
             <HomeCarCard
-              onViewPress={() => {
-                console.log("View Ad from Home");
-              }}
               carsInWatchList={carsInWatchList}
               ad={item}
             />
@@ -177,7 +173,7 @@ export default Home = () => {
         />
         <TouchableOpacity
   style={styles.viewAllButton}
-  onPress={() => navigation.navigate("AllCarsScreen", { type: "spotlight" })}
+  onPress={() => navigation.navigate("ViewAllCarsScreen", { type: "recent" })}
 >
   <Text style={styles.viewAllText}>View All </Text>
   <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
