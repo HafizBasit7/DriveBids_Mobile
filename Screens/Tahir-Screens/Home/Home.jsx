@@ -175,8 +175,8 @@ export default Home = () => {
   style={styles.viewAllButton}
   onPress={() => navigation.navigate("ViewAllCarsScreen", { type: "recent" })}
 >
-  <Text style={styles.viewAllText}>View All </Text>
-  <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
+  <Text style={[styles.viewAllText,{marginBottom:30}]}>View All </Text>
+  <Icon name="chevron-right" type="feather" size={18} color="#2F61BF"  style={{marginBottom:29}}/>
   
 </TouchableOpacity>
       </Animated.ScrollView>
@@ -188,7 +188,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor:"#fff",
-    paddingBottom:40,
     maxHeight:"100%"
     
     
@@ -209,6 +208,7 @@ const styles = StyleSheet.create({
      color:"#2F61BF",
     fontSize: 15,
     fontWeight: "700",
-    fontFamily:"Inter-Regular"
+    fontFamily:"Inter-Regular",
+    
   },
 });

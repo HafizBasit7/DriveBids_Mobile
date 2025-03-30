@@ -25,7 +25,7 @@ const PriceRange2 = () => {
       type: "UPDATE_FIELD",
       section: "carPricing",
       field: "reserveBidPrice",
-      value: parseInt(rawNumber) || 0, // Store as raw number for calculations
+      value: parseInt(rawNumber) || 0, 
     });
 
     // Store formatted number for display

@@ -20,13 +20,14 @@ export const FilterStyles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   scrollContent: {
-    paddingBottom: 20,
+    paddingBottom: 100,
   },
   section: {
     marginBottom: 5,
     borderBottomWidth: 1,
-    borderBottomColor: "#eeeeee",
+    borderBottomColor: "#ccc",
     paddingBottom: 15,
+    
   },
   sectionTitle: {
     fontFamily: "Inter-SemiBold",
@@ -147,4 +148,12 @@ export const FilterStyles = StyleSheet.create({
   bottomPadding: {
     height: 0, // Space for floating buttons
   },
+  radioButton: {
+    flexDirection: "row",  // Arrange items in a row
+    alignItems: "center",  // Align vertically
+    justifyContent: "flex-start", // Ensure alignment to the left
+    paddingVertical: 5,   // Add spacing for better appearance
+    gap: 10, // Add spacing between radio button and text
+  },
+  
 });

@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10, 
     backgroundColor: '#fff',
+    
     paddingBottom:40 
    
   },
@@ -185,6 +186,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+
     
   },
   chipContainer: {

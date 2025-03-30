@@ -11,8 +11,8 @@ import {
   Platform,
 } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
-import { useNavigation } from '@react-navigation/native';
-import Header from "../../../CustomComponents/Header"; 
+import { useNavigation } from "@react-navigation/native";
+import Header from "../../../CustomComponents/Header";
 import { FilterStyles } from "./StyleSheetFilters";
 
 const FiltersScreen = () => {
@@ -33,17 +33,39 @@ const FiltersScreen = () => {
   const [horsePowerRange, setHorsePowerRange] = useState({ min: "", max: "" });
 
   // Predefined lists for filtering
-  const conditions = ['Poor', 'Fair', 'Good', 'Excellent'];
+  const conditions = ["Poor", "Fair", "Good", "Excellent"];
   const cities = ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Al Ain"];
-  const fuelTypes = ['Petrol', 'Diesel', 'HI-Octane', 'Electric', 'Hybrid'];
+  const fuelTypes = ["Petrol", "Diesel", "HI-Octane", "Electric", "Hybrid"];
   const colors = ["White", "Black", "Silver", "Red", "Blue", "Grey"];
-  const transmissionTypes = ['AGS', 'Manual', 'CVT', 'DCT', 'AMT', 'EV Single-Speed'];
+  const transmissionTypes = [
+    "AGS",
+    "Manual",
+    "CVT",
+    "DCT",
+    "AMT",
+    "EV Single-Speed",
+  ];
 
   // Dummy data for make suggestions
   const allMakes = [
-    "Toyota", "Honda", "Ford", "Chevrolet", "Nissan", "Hyundai", 
-    "Kia", "Mazda", "Subaru", "Volkswagen", "BMW", "Mercedes-Benz", 
-    "Audi", "Lexus", "Acura", "Jeep", "Tesla", "Porsche"
+    "Toyota",
+    "Honda",
+    "Ford",
+    "Chevrolet",
+    "Nissan",
+    "Hyundai",
+    "Kia",
+    "Mazda",
+    "Subaru",
+    "Volkswagen",
+    "BMW",
+    "Mercedes-Benz",
+    "Audi",
+    "Lexus",
+    "Acura",
+    "Jeep",
+    "Tesla",
+    "Porsche",
   ];
 
   // Filter makes based on search input
@@ -95,14 +117,20 @@ const FiltersScreen = () => {
       fuel: selectedFuel || undefined,
       color: selectedColor || undefined,
       transmission: selectedTransmission || undefined,
-      minHorsePower: horsePowerRange.min ? parseFloat(horsePowerRange.min) : undefined,
-      maxHorsePower: horsePowerRange.max ? parseFloat(horsePowerRange.max) : undefined
+      minHorsePower: horsePowerRange.min
+        ? parseFloat(horsePowerRange.min)
+        : undefined,
+      maxHorsePower: horsePowerRange.max
+        ? parseFloat(horsePowerRange.max)
+        : undefined,
     };
 
     // Remove undefined values
-    Object.keys(filters).forEach(key => filters[key] === undefined && delete filters[key]);
+    Object.keys(filters).forEach(
+      (key) => filters[key] === undefined && delete filters[key]
+    );
 
-    navigation.navigate('Filters_ViewAll', { filters });
+    navigation.navigate("Filters_ViewAll", { filters });
   };
 
   return (
@@ -110,7 +138,7 @@ const FiltersScreen = () => {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <Header showSearch={false}/>
+      <Header showSearch={false} />
       <Text style={styles.header}>Filters</Text>
 
       <ScrollView
@@ -126,14 +154,18 @@ const FiltersScreen = () => {
               style={styles.input}
               placeholder="Min"
               value={priceRange.min}
-              onChangeText={(text) => setPriceRange({ ...priceRange, min: text })}
+              onChangeText={(text) =>
+                setPriceRange({ ...priceRange, min: text })
+              }
               keyboardType="numeric"
             />
             <TextInput
               style={styles.input}
               placeholder="Max"
               value={priceRange.max}
-              onChangeText={(text) => setPriceRange({ ...priceRange, max: text })}
+              onChangeText={(text) =>
+                setPriceRange({ ...priceRange, max: text })
+              }
               keyboardType="numeric"
             />
           </View>
@@ -163,7 +195,6 @@ const FiltersScreen = () => {
             </View>
           )}
 
-          {/* Make Search Results */}
           {makeSearch.length > 0 && (
             <View style={styles.searchResults}>
               {filteredMakes.map((make) => (
@@ -200,14 +231,16 @@ const FiltersScreen = () => {
               onPress={() => setSelectedCondition(condition)}
             >
               <Icon
-                name={selectedCondition === condition 
-                  ? "radio-button-checked" 
-                  : "radio-button-unchecked"}
+                name={
+                  selectedCondition === condition
+                    ? "radio-button-checked"
+                    : "radio-button-unchecked"
+                }
                 type="material"
-                size={24}
+                size={22}
                 color={selectedCondition === condition ? "#0066cc" : "#aaaaaa"}
               />
-              <Text style={styles.radioButtonText}>{condition}</Text>
+              <Text style={styles.radioButtonText}>{condition} </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -222,14 +255,16 @@ const FiltersScreen = () => {
               onPress={() => setSelectedCity(city)}
             >
               <Icon
-                name={selectedCity === city 
-                  ? "radio-button-checked" 
-                  : "radio-button-unchecked"}
+                name={
+                  selectedCity === city
+                    ? "radio-button-checked"
+                    : "radio-button-unchecked"
+                }
                 type="material"
-                size={24}
+                size={22}
                 color={selectedCity === city ? "#0066cc" : "#aaaaaa"}
               />
-              <Text style={styles.radioButtonText}>{city}</Text>
+              <Text style={styles.radioButtonText}>{city} </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -242,14 +277,18 @@ const FiltersScreen = () => {
               style={styles.input}
               placeholder="Min"
               value={mileageRange.min}
-              onChangeText={(text) => setMileageRange({ ...mileageRange, min: text })}
+              onChangeText={(text) =>
+                setMileageRange({ ...mileageRange, min: text })
+              }
               keyboardType="numeric"
             />
             <TextInput
               style={styles.input}
               placeholder="Max"
               value={mileageRange.max}
-              onChangeText={(text) => setMileageRange({ ...mileageRange, max: text })}
+              onChangeText={(text) =>
+                setMileageRange({ ...mileageRange, max: text })
+              }
               keyboardType="numeric"
             />
           </View>
@@ -265,14 +304,16 @@ const FiltersScreen = () => {
               onPress={() => setSelectedFuel(fuel)}
             >
               <Icon
-                name={selectedFuel === fuel 
-                  ? "radio-button-checked" 
-                  : "radio-button-unchecked"}
+                name={
+                  selectedFuel === fuel
+                    ? "radio-button-checked"
+                    : "radio-button-unchecked"
+                }
                 type="material"
-                size={24}
+                size={22}
                 color={selectedFuel === fuel ? "#0066cc" : "#aaaaaa"}
               />
-              <Text style={styles.radioButtonText}>{fuel}</Text>
+              <Text style={styles.radioButtonText}>{fuel} </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -287,14 +328,16 @@ const FiltersScreen = () => {
               onPress={() => setSelectedColor(color)}
             >
               <Icon
-                name={selectedColor === color 
-                  ? "radio-button-checked" 
-                  : "radio-button-unchecked"}
+                name={
+                  selectedColor === color
+                    ? "radio-button-checked"
+                    : "radio-button-unchecked"
+                }
                 type="material"
-                size={24}
+                size={22}
                 color={selectedColor === color ? "#0066cc" : "#aaaaaa"}
               />
-              <Text style={styles.radioButtonText}>{color}</Text>
+              <Text style={styles.radioButtonText}>{color} </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -309,14 +352,18 @@ const FiltersScreen = () => {
               onPress={() => setSelectedTransmission(transmission)}
             >
               <Icon
-                name={selectedTransmission === transmission 
-                  ? "radio-button-checked" 
-                  : "radio-button-unchecked"}
+                name={
+                  selectedTransmission === transmission
+                    ? "radio-button-checked"
+                    : "radio-button-unchecked"
+                }
                 type="material"
-                size={24}
-                color={selectedTransmission === transmission ? "#0066cc" : "#aaaaaa"}
+                size={22}
+                color={
+                  selectedTransmission === transmission ? "#0066cc" : "#aaaaaa"
+                }
               />
-              <Text style={styles.radioButtonText}>{transmission}</Text>
+              <Text style={styles.radioButtonText}>{transmission} </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -329,24 +376,26 @@ const FiltersScreen = () => {
               style={styles.input}
               placeholder="Min"
               value={horsePowerRange.min}
-              onChangeText={(text) => setHorsePowerRange({ ...horsePowerRange, min: text })}
+              onChangeText={(text) =>
+                setHorsePowerRange({ ...horsePowerRange, min: text })
+              }
               keyboardType="numeric"
             />
             <TextInput
               style={styles.input}
               placeholder="Max"
               value={horsePowerRange.max}
-              onChangeText={(text) => setHorsePowerRange({ ...horsePowerRange, max: text })}
+              onChangeText={(text) =>
+                setHorsePowerRange({ ...horsePowerRange, max: text })
+              }
               keyboardType="numeric"
             />
           </View>
         </View>
 
-        {/* Extra space at the bottom */}
         <View style={styles.bottomPadding} />
       </ScrollView>
 
-      {/* Floating Action Buttons */}
       <View style={styles.floatingButtonContainer}>
         <TouchableOpacity
           style={[styles.button, styles.clearButton]}

@@ -11,21 +11,21 @@ import R1_Notification from "./R1_Notifications";
 //Custom button
 const CustomTabBarButton = ({ onPress }) => (
   <View style={styles.sellButtonWrapper}>
-      <Svg
+      {/* <Svg
         width={90}
         height={85}
         viewBox="0 0 90 75"
         style={styles.curvedBackground}
       >
         <Path d="M0 40 Q45 -35 90 25 V75 H0 Z" fill="white" />
-      </Svg>
+      </Svg> */}
 
       <TouchableOpacity style={styles.plusButton} onPress={onPress}>
         <View style={styles.plusContainer}>
           <Icon name="plus" size={24} color="#fff" />
         </View>
       </TouchableOpacity>
-      <Text style={styles.sellLabel}>Sell</Text>
+      <Text style={styles.sellLabel}> Sell</Text>
   </View>
 );
 
@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
+      
     },
     tabBar: {
       // position: "absolute",
@@ -128,24 +129,28 @@ const styles = StyleSheet.create({
     },
     sellButtonWrapper: {
       position: "absolute",
-      top: -30,
+      top: -25,
       alignItems: "center",
+      
     },
     curvedBackground: {
       position: "absolute",
       top: -10,
       zIndex: -1,
+    
     },
     plusButton: {
       justifyContent: "center",
       alignItems: "center",
     },
     sellLabel: {
-      fontSize: 12,
+      fontSize: 13,
       fontWeight: "600",
       color: "#2C6BED",
       marginTop: 5,
       textAlign: "center",
+      marginLeft:5
+      
     },
     plusContainer: {
       width: 55,
