@@ -21,35 +21,38 @@ import { formatAmount } from "../../utils/R1_utils";
 
 const { width } = Dimensions.get("window");
 
-const HomeHeader = ({car}) => {
+const HomeHeader = ({ car }) => {
   const scrollViewRef = useRef(null);
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
- 
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+
   const countdownInterval = useRef();
-  const [timeLeft, setTimeLeft] = useState('0hr:0m:0s');
+  const [timeLeft, setTimeLeft] = useState("0hr:0m:0s");
 
   const navigation = useNavigation();
 
-  const isCarSold = car.status === 'sold';
-
+  const isCarSold = car.status === "sold";
 
   useEffect(() => {
-    if(isCarSold) return;
+    if (isCarSold) return;
     countdownInterval.current = setInterval(() => {
       setTimeLeft(calculateTimeLeft(car.duration));
     }, 1000);
 
     return () => {
-      if(countdownInterval.current) {
+      if (countdownInterval.current) {
         clearInterval(countdownInterval.current);
       }
     };
   }, []);
 
-  const images = Object.values(car.images).flat().map(val => val.url);
+  const images = Object.values(car.images)
+    .flat()
+    .map((val) => val.url);
 
   useEffect(() => {
     let index = 0;
@@ -80,6 +83,15 @@ const HomeHeader = ({car}) => {
   const closeModal = () => {
     setModalVisible(false);
   };
+  const nextImage = () => {
+    setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex(
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+    );
+  };
 
   return (
     <View>
@@ -87,7 +99,6 @@ const HomeHeader = ({car}) => {
         barStyle="dark-content"
         backgroundColor="transparent"
         translucent
-        
       />
       <View style={styles.container}>
         <ScrollView
@@ -109,7 +120,10 @@ const HomeHeader = ({car}) => {
         </ScrollView>
 
         {/* Left Arrow Button */}
-        <TouchableOpacity style={styles.backIconContainer} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backIconContainer}
+          onPress={() => navigation.goBack()}
+        >
           <BackIcon width={30} height={30} />
         </TouchableOpacity>
 
@@ -140,12 +154,16 @@ const HomeHeader = ({car}) => {
       <View style={styles.yellowContainer}>
         <View style={styles.leftContainer}>
           <Text style={styles.labelText}>Buy Now price</Text>
-          <Text style={styles.priceText}>AED {formatAmount(car.buyNowPrice)}</Text>
+          <Text style={styles.priceText}>
+            AED {formatAmount(car.buyNowPrice)}
+          </Text>
         </View>
         <View style={styles.verticalLine} />
         <View style={styles.rightContainer}>
           <Text style={styles.labelText}>Highest Bid</Text>
-          <Text style={styles.priceText}>AED {formatAmount(car.highestBid)}</Text>
+          <Text style={styles.priceText}>
+            AED {formatAmount(car.highestBid)}
+          </Text>
           {!isCarSold && (
             <>
               <Text style={styles.labelText2}>Ends in</Text>
@@ -163,7 +181,16 @@ const HomeHeader = ({car}) => {
       >
         <TouchableWithoutFeedback onPress={closeModal}>
           <View style={styles.modalOverlay}>
-            <Image source={{ uri: selectedImage }} style={styles.modalImage} />
+            <TouchableOpacity style={styles.leftButton} onPress={prevImage}>
+              <Text style={styles.navText}>❮</Text>
+            </TouchableOpacity>
+            <Image
+              source={{ uri: images[selectedImageIndex] }}
+              style={styles.modalImage}
+            />
+            <TouchableOpacity style={styles.rightButton} onPress={nextImage}>
+              <Text style={styles.navText}>❯</Text>
+            </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
@@ -176,7 +203,6 @@ const styles = StyleSheet.create({
     height: 170,
     backgroundColor: GlobalStyles.colors.HomeHeaderColour,
     position: "relative",
-    
   },
   image: {
     width: width,
@@ -265,13 +291,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.8)",
-    height: "100%",
   },
-  modalImage: {
-    width: width * 0.9,
-    height: width,
-    resizeMode: "contain",
-  },
+  modalImage: { width: width * 1, height: width, resizeMode: "contain" },
+  
+  leftButton: { position: "absolute", left: 20, zIndex: 10 },
+  rightButton: { position: "absolute", right: 20, zIndex: 10 },
+  navText: { fontSize: 40, color: "yellow" },
 });
 
 export default HomeHeader;

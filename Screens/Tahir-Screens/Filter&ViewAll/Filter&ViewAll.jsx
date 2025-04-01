@@ -208,10 +208,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     backgroundColor: '#fff',
-    width: '33%', 
+    width: 'auto', 
     marginBottom: 10,
+    
+    
   },
-  chipText: {
+  chipText:{
     color: '#6F6F6F',
     fontSize: 12,
     fontWeight:700,

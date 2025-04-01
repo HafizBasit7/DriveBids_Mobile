@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
 
-const { width } = Dimensions.get("window"); // Get screen width
+const { width } = Dimensions.get("window"); 
 import MakeModel from "../../CustomComponents/UmairComponents/MakeModel";
 import BidsButtons from "../../CustomComponents/UmairComponents/BidsButtons";
 import InspectionReport from "../../CustomComponents/UmairComponents/InspectionReport";
@@ -48,7 +48,7 @@ const ReserveMet = () => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 20, // Ensures enough space at the bottom when scrolling
+    paddingBottom: 20, 
   },
   container: {
     flex: 1,

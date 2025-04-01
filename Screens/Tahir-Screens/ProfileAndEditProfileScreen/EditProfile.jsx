@@ -179,12 +179,12 @@ const handleCountrySelect = (item) => {
               title="Save Changes"
               onPress={handleSaveData}
             />
-            <CustomButton
+            {/* <CustomButton
               title="Back"
               style={styles.nextButton}
               textStyle={styles.nextButtonText}
               onPress={() => navigation.goBack()}
-            />
+            /> */}
           </View>
         )}
       </ScrollView>
@@ -296,21 +296,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e5e7eb",
     borderRadius: 8,
-    padding: 12,
+    padding: 4,
     marginRight: 8,
-    width: 90,
+    width: "auto",
+    height:50
   },
   countryCodeText: {
     fontFamily: "Inter-Regular",
     fontSize: 16,
-    flex: 1,
+    
   },
   phoneInput: {
     fontFamily: "Inter-Regular",
     fontSize: 16,
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: "#3b82f6", // Blue border for active input
+    borderColor: "#3b82f6", 
     borderRadius: 8,
     padding: 12,
     flex: 1,

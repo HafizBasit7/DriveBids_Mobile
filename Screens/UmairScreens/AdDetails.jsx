@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     paddingHorizontal: 20,
+    
   },
   /* First Line Container (Full Width) */
   lineContainer: {

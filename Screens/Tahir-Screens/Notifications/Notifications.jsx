@@ -39,6 +39,8 @@ const NotificationScreen = () => {
 
   const notifications = data?.pages.flatMap((page) => page?.data?.notifications) || [];
 
+  console.log("no",notifications);
+  
   const renderNotificationItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
@@ -48,8 +50,12 @@ const NotificationScreen = () => {
             params: { carId: item.metaData.car },
           });
         }
+        // Optionally, mark as read when clicked
       }}
-      style={styles.notificationItem}
+      style={[
+        styles.notificationItem,
+        !item.isRead && styles.unreadNotification, // Apply different styles for unread notifications
+      ]}
     >
       <Avatar
         rounded
@@ -62,12 +68,14 @@ const NotificationScreen = () => {
       />
       <View style={styles.textContainer}>
         <Text style={styles.name}>{item.user.name}</Text>
-        <Text style={styles.message}>{item.body}</Text>
+        <Text style={[styles.message, !item.isRead && styles.unreadMessage]}>
+          {item.body}
+        </Text>
         <Text style={styles.time}>{timeAgo(item.createdAt)}</Text>
       </View>
     </TouchableOpacity>
   );
-
+  
   return (
     <View style={styles.container}>
       <SectionHeader title={"Notifications"} />
@@ -121,16 +129,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding:10,
-    paddingHorizontal:20,
+    paddingHorizontal:0,
     justifyContent: "flex-start",
     backgroundColor:"#fff",
   },
   notificationItem: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12,
+    padding: 12,
     borderBottomWidth: 1,
     borderBottomColor: "#E0E0E0",
+
   },
   textContainer: {
     marginLeft: 12,
@@ -176,6 +185,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     lineHeight: 20,
   },
+  unreadNotification: {
+    backgroundColor: "#E3F2FD", // Light blue background for unread notifications
+  },
+  unreadMessage: {
+    fontWeight: "bold", // Bold text for unread messages
+    color: "#000", // Darker text to highlight unread status
+  },
+  
 });
 
 export default NotificationScreen;

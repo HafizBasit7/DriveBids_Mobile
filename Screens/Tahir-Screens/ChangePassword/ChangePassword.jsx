@@ -23,15 +23,13 @@ import Header from "../../../CustomComponents/Header";
 export default function PasswordChangeScreen() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  
-  // const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [oldPasswordVisible, setOldPasswordVisible] = useState(false);
   const [newPasswordVisible, setNewPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const [message, setMessage] = useState(null);
-  
-  // const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const navigation = useNavigation();
 
@@ -41,19 +39,19 @@ export default function PasswordChangeScreen() {
 
   const changePassword = async () => {
     try {
-      const result = await mutation.mutateAsync({oldPassword, newPassword});
-      setMessage({type: 'success', message: 'Password change success', title: 'Success'});
+      const result = await mutation.mutateAsync({ oldPassword, newPassword });
+      setMessage({ type: 'success', message: 'Password change success', title: 'Success' });
       setOldPassword('');
       setNewPassword('');
-    }
-    catch(e) {
-      setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+      setConfirmPassword('');
+    } catch (e) {
+      setMessage({ type: 'error', message: e.message || e.msg, title: 'Error' });
     }
   };
 
   return (
     <>
-      <Header showSearch={false}/>
+      <Header showSearch={false} />
       <DialogBox
         visible={message ? true : false}
         message={message?.message}
@@ -62,8 +60,10 @@ export default function PasswordChangeScreen() {
         loading={false}
         title={message?.title || ''}
       />
-<View style={{backgroundColor:"#fff"}}><SectionHeader title={"Change Password"} /></View>
-      
+      <View style={{ backgroundColor: "#fff" }}>
+        <SectionHeader title={"Change Password"} />
+      </View>
+
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingView}
@@ -113,7 +113,7 @@ export default function PasswordChangeScreen() {
               }
             />
 
-            {/* <Text style={styles.labelText}>Confirm Password</Text>
+            <Text style={styles.labelText}>Confirm Password</Text>
             <Input
               value={confirmPassword}
               onChangeText={setConfirmPassword}
@@ -124,20 +124,16 @@ export default function PasswordChangeScreen() {
               placeholder="••••••••"
               rightIcon={
                 <Icon
-                  name={
-                    confirmPasswordVisible ? "visibility" : "visibility-off"
-                  }
+                  name={confirmPasswordVisible ? "visibility" : "visibility-off"}
                   type="material"
                   size={24}
                   color="#666"
-                  onPress={() =>
-                    setConfirmPasswordVisible(!confirmPasswordVisible)
-                  }
+                  onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
                 />
               }
-            /> */}
+            />
           </View>
-          {mutation.isPending && (<ActivityIndicator/>)}
+          {mutation.isPending && <ActivityIndicator />}
           {!mutation.isPending && (
             <View style={styles.buttonContainer}>
               <CustomButton
@@ -145,12 +141,12 @@ export default function PasswordChangeScreen() {
                 title="Save Changes"
                 onPress={changePassword}
               />
-              <CustomButton
+              {/* <CustomButton
                 title="Back"
                 style={styles.nextButton}
                 textStyle={styles.nextButtonText}
                 onPress={() => navigation.goBack()}
-              />
+              /> */}
             </View>
           )}
         </ScrollView>
@@ -166,7 +162,7 @@ const styles = StyleSheet.create({
   },
   keyboardAvoidingView: {
     flex: 1,
-    backgroundColor:"#fff"
+    backgroundColor: "#fff",
   },
   scrollContainer: {
     flexGrow: 1,
@@ -203,7 +199,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: "45%",
+    marginTop: "40%",
     alignSelf: "center",
   },
   nextButton: {

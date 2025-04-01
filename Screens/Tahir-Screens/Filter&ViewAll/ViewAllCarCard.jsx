@@ -253,12 +253,12 @@ const styles = StyleSheet.create({
   },
   favoriteIcon: {
     position: 'absolute',
-    top: 10,
-    right: 10,
+    top: 4,
+    right: 4,
     zIndex: 10,
     backgroundColor: 'rgba(0,0,0,0.3)',
     borderRadius: 20,
-    padding: 5,
+    padding: 3,
   },
   carImage: {
     width: '100%',

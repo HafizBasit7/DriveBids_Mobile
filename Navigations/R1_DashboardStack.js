@@ -57,16 +57,31 @@ export default function R1_DashboardStack () {
                 }}
             />
 
-            <Tab.Screen
-              name="My Ads"
-              component={R1_Notification}
-              options={{
-                tabBarIcon: ({ color }) => (
-                  <Icon name="bell" size={24} color={color} />
-                ),
-                tabBarLabel: "Notification",
-              }}
-            />
+<Tab.Screen
+  name="My Ads"
+  component={R1_Notification}
+  options={{
+    tabBarIcon: ({ color }) => (
+      <View>
+        <Icon name="bell" size={24} color={color} />
+        {/* Red Dot for Unread Notifications */}
+        <View
+          style={{
+            position: "absolute",
+            top: -2,
+            right: -3,
+            backgroundColor: "red",
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+          }}
+        />
+      </View>
+    ),
+    tabBarLabel: "Notification",
+  }}
+/>
+
 
             <Tab.Screen
               name="Sell"
