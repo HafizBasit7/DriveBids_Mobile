@@ -20,11 +20,12 @@ const ReportModal = ({ visible, onClose, damage }) => {
   ];
 
   // Function to limit words and add "See More" / "See Less"
-  const maxWords = 15;
-  const words = damage.description.split(" ");
-  const truncatedText = expanded
-    ? damage.description
-    : words.slice(0, maxWords).join(" ") + " ...";
+  const maxChars = 120; // Adjust to fit approx 3 lines
+const truncatedText = expanded
+  ? damage.description
+  : damage.description.length > maxChars
+  ? damage.description.substring(0, maxChars).trim() + "..."
+  : damage.description;
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -109,34 +110,41 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#2A5DB0",
-    padding: 12,
+    padding: 8,
     borderRadius: 10,
     marginBottom: 10,
   },
   headerText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: "bold",
   },
   descriptionBox: {
     backgroundColor: "#F2F2F2",
-    padding: 15,
+    padding: 12,
     borderRadius: 4,
     marginBottom: 10,
     maxWidth: "90%",
+    minHeight: 50, // Ensures 3 lines minimum
   },
   descriptionText: {
     fontSize: 14,
     textAlign: "left",
     color: "#000",
+    fontWeight: "400",
+    lineHeight: 20, // Adjust based on font
   },
+  
   seeMoreText: {
     color: "blue",
     fontWeight: "bold",
+    fontSize:10
   },
   seeLessText: {
     color: "red",
     fontWeight: "bold",
+    fontSize:10
+
   },
   imageContainer: {
     flexDirection: "row",

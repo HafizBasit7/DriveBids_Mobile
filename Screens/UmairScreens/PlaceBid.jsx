@@ -18,6 +18,7 @@ const PlaceBid = ({route}) => {
   const [bidAmount, setBidAmount] = useState(""); 
   const [message, setMessage] = useState(null);
 
+
   const mutation = useMutation({
     mutationFn: placeBidOnCar,
   });
@@ -74,9 +75,9 @@ const PlaceBid = ({route}) => {
             <Text style={styles.currencySymbol}>$</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter bid"
+              placeholder="Enter Bid"
               keyboardType="numeric"
-              value={bidAmount}
+              value={bidAmount} // Empty string shows placeholder, non-empty string hides it
               onChangeText={setBidAmount}
             />
           </View>
@@ -140,7 +141,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#777",
     textAlign: "center",
-    marginVertical: 8,
+    marginVertical: 15,
+    fontWeight:300
   },
   inputContainer: {
     flexDirection: "row",
@@ -149,8 +151,9 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 8,
     paddingHorizontal: 10,
-    height: 70, // Fixed size
+    height: 65, // Fixed size
     minWidth: 200, // Prevent shrinking
+    marginBottom:5
   },
   currencySymbol: {
     fontSize: 22,
@@ -165,26 +168,29 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
   },
   warning: {
-    color: "red",
-    fontSize: 14,
+    color: "#B3261E",
+    fontSize: 13,
     marginVertical: 10,
+    marginLeft:25
   },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 10,
+    flexWrap:"wrap",
+    gap:10
   },
   bidButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingVertical: 12,
+    paddingHorizontal: 5,
     borderRadius: 8,
-    marginHorizontal: 5,
+    marginHorizontal: 1,
     borderWidth: 1, // Add border width
     borderColor: "#D9D9D9", // Change this to any color you want
   },
 
   bidText: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: "Inter",
     color: "#2F61BF",
   },

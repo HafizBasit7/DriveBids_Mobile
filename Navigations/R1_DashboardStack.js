@@ -92,12 +92,27 @@ export default function R1_DashboardStack () {
             />
 
             <Tab.Screen
+            
               name="Messages"
               component={R1_Messages}
               options={{
                 tabBarIcon: ({ color }) => (
+                  <View>
                   <Icon name="message-square" size={24} color={color} />
+                  <View
+          style={{
+            position: "absolute",
+            top: -2,
+            right: -3,
+            backgroundColor: "red",
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+          }}
+        />
+                  </View>
                 ),
+                
                 tabBarLabel: "Messages",
               }}
             />
@@ -128,7 +143,7 @@ const styles = StyleSheet.create({
       bottom: 0,
       left: 20,
       right: 20,
-      height: '9%',
+      height: '8%',
       // borderRadius: 20,
       backgroundColor: "#fff",
       shadowColor: "#000",

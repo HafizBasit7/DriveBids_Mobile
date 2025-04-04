@@ -29,54 +29,44 @@ const ChatHeads = () => {
   });
   const chats = data?.data.chats;
 
+  
+  
   const renderMessageItem = ({ item }) => {
+    const isUnread = item.isRead; 
+  
     return (
-      <TouchableOpacity style={styles.messageItem} onPress={() => {navigation.navigate('ActiveChatBox', {chatId: item._id})}}>
-        <Avatar rounded source={{ uri: item.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }} size={50} />
+      <TouchableOpacity
+        style={[styles.messageItem, isUnread && { backgroundColor: "#f0f8ff" }]} 
+        onPress={() => {
+          navigation.navigate('ActiveChatBox', { chatId: item._id });
+        }}
+      >
+        <Avatar
+          rounded
+          source={{
+            uri: item.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
+          }}
+          size={50}
+        />
         <View style={styles.textContainer}>
           <View style={styles.header}>
             <Text style={styles.name}>{item.user.name}</Text>
             <Text style={styles.time}>{timeAgo(item.updatedAt)}</Text>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              gap: 5,
-            }}
-          >
-            <Text
-              style={{ fontFamily: "Inter-SemiBold", fontSize: 14, opacity: 0.8 }}
-            >
-              {item.car.title}
-            </Text>
-            <Text
-              style={{
-                fontFamily: "Inter-SemiBold",
-                fontSize: 12,
-                marginTop: 2,
-                opacity: 0.8,
-              }}
-            >
-              {"|"}
-            </Text>
-            <Text
-              style={{
-                fontFamily: "Inter-SemiBold",
-                fontSize: 12,
-                marginTop: 2,
-                opacity: 0.8,
-              }}
-            >
-              {item.car.model}
-            </Text>
+          <View style={{ flexDirection: "row", justifyContent: "flex-start", gap: 5 }}>
+            <Text style={styles.message}>{item.car.title}</Text>
+            <Text>{" | "}</Text>
+            <Text style={styles.message}>{item.car.model}</Text>
           </View>
-          <Text style={styles.message}>{item.lastMessage || 'Start a Conversation...'}</Text>
+          <Text style={[styles.message, isUnread && { fontWeight: "bold", color: "#000" }]}>
+            {item.lastMessage || 'Start a Conversation...'}
+          </Text>
         </View>
+        {/* {isUnread && <View style={styles.unreadBadge} />} */}
       </TouchableOpacity>
     );
-  }
-
+  };
+  
   return (
     <View style={styles.container}>
       <Header showSearch={false}/>
@@ -144,6 +134,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderBottomWidth: 3,
     borderBottomColor: GlobalStyles.colors.ButtonColor,
+    
   },
   tabText: {
     fontFamily: "Inter-Regular",
@@ -158,9 +149,11 @@ const styles = StyleSheet.create({
   messageItem: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 15,
+    padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#E0E0E0",
+    paddingHorizontal:15,
+    marginTop:5
   },
   textContainer: {
     marginLeft: 12,
@@ -186,6 +179,16 @@ const styles = StyleSheet.create({
     color: "#666",
     marginTop: 3,
   },
+  // unreadBadge: {
+  //   width: 10,
+  //   height: 10,
+  //   borderRadius: 5,
+  //   backgroundColor: "red", // Red dot for unread indicator
+  //   position: "absolute",
+  //   right: 15,
+  //   top: 20,
+  // },
+  
 });
 
 export default ChatHeads;

@@ -55,6 +55,8 @@ const handleCountrySelect = (item) => {
   const navigation = useNavigation();
 
   const [formData, setFormData] = useState(user);
+  const [imageModalVisible, setImageModalVisible] = useState(false);  // Image selection modal state
+  const [profileImage, setProfileImage] = useState(null);
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -77,6 +79,26 @@ const handleCountrySelect = (item) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleImageSelect = () => {
+    setImageModalVisible(true);  // Open modal to choose image
+  };
+
+  const handleCamera = () => {
+    launchCamera({ mediaType: "photo" }, (response) => {
+      if (response.didCancel) return;
+      setProfileImage(response.assets[0].uri);
+      setImageModalVisible(false);
+    });
+  };
+
+  const handleGallery = () => {
+    launchImageLibrary({ mediaType: "photo" }, (response) => {
+      if (response.didCancel) return;
+      setProfileImage(response.assets[0].uri);
+      setImageModalVisible(false);
+    });
   };
 
   return (
@@ -104,13 +126,10 @@ const handleCountrySelect = (item) => {
             defaultSource={{ uri: "https://i.pravatar.cc/150?img=10" }}
           />
           <View style={styles.editIconContainer}>
-            <Icon
-              name="edit"
-              type="material"
-              size={16}
-              color="#3b82f6"
-              containerStyle={styles.editIcon}
-            />
+          <TouchableOpacity onPress={handleImageSelect} style={styles.editIconContainer}>
+            <Icon name="edit" type="material" size={16} color="#3b82f6" containerStyle={styles.editIcon} />
+            
+          </TouchableOpacity>
           </View>
         </View>
 
@@ -188,6 +207,27 @@ const handleCountrySelect = (item) => {
           </View>
         )}
       </ScrollView>
+      <Modal visible={imageModalVisible} animationType="slide" transparent={true}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select or Take a Photo</Text>
+            <TouchableOpacity style={styles.modalItem} onPress={handleCamera}>
+              <Icon name="camera" type="material" size={24} color="#3b82f6" />
+              <Text style={styles.modalText}>Take a Picture</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalItem} onPress={handleGallery}>
+              <Icon name="image" type="material" size={24} color="#3b82f6" />
+              <Text style={styles.modalText}>Choose from Gallery</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalCloseButton}
+              onPress={() => setImageModalVisible(false)}
+            >
+              <Text style={styles.modalCloseText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <Modal
   visible={countryModalVisible}
   animationType="slide"
@@ -336,7 +376,7 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.0)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -353,6 +393,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   modalItem: {
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
@@ -360,6 +402,7 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: 16,
     fontFamily: 'Inter-Regular',
+    marginLeft: 10,
   },
   modalCloseButton: {
     marginTop: 20,

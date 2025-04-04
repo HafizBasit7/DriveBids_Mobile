@@ -16,10 +16,11 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
-import { ScrollView } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { useAuth } from "../../R1_Contexts/authContext";
 import DialogBox from "../../CustomComponents/DialogBox";
 import { Icon } from "react-native-elements";
+import { Modal } from "react-native-paper";
 const { width, height } = Dimensions.get("window");
 
 const SignupScreen = () => {
@@ -43,6 +44,25 @@ const SignupScreen = () => {
   const [selectedTab, setSelectedTab] = useState("private");
   const [isChecked, setIsChecked] = useState(false);
   const navigation = useNavigation("");
+  const [countryModalVisible, setCountryModalVisible] = useState(false);
+  const [countryCode, setCountryCode] = useState('+92');  // Default country code
+
+  // Country codes list
+  const countryCodes = [
+    { code: '+1', country: 'USA' },
+    { code: '+91', country: 'India' },
+    { code: '+44', country: 'UK' },
+    { code: '+971', country: 'UAE' },
+    { code: '+61', country: 'Australia' },
+    // Add more countries here
+  ];
+  
+  const handleCountrySelect = (item) => {
+    console.log("Selected Country: ", item);
+    setCountryCode(item.code);
+    setCountryModalVisible(false);  // Close the modal
+  };
+  
   const handleTermsClick = () => {
     Linking.openURL("https://example.com/terms");
   };
@@ -164,9 +184,25 @@ const SignupScreen = () => {
               </View>
 
               <View style={styles.inputWrapper}>
-                <Text style={styles.label}>Phone Number</Text>
-                <TextInput style={styles.input} placeholder="Enter your phone number" keyboardType="phone-pad" value={phoneNumber} onChangeText={setPhoneNumber} />
-              </View>
+        <Text style={styles.label}>Phone Number</Text>
+        <View style={styles.phoneInputContainer}>
+          <TouchableOpacity
+            style={styles.countryCodePicker}
+            onPress={() => setCountryModalVisible(true)}
+          >
+            <Text style={styles.countryCodeText}>{countryCode}</Text>
+            <Icon name="arrow-drop-down" type="material" size={20} color="#333" />
+          </TouchableOpacity>
+
+          <TextInput
+            style={styles.inputnum}
+            placeholder="Enter your phone number"
+            keyboardType="phone-pad"
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+          />
+        </View>
+      </View>
 
               <View style={styles.inputWrapper}>
                 <Text style={styles.label}>Email</Text>
@@ -243,6 +279,36 @@ const SignupScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+      <Modal
+        visible={countryModalVisible}
+        animationType="slide"
+        transparent={true}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select Country Code</Text>
+            <FlatList
+              data={countryCodes}
+              keyExtractor={(item, index) => index.toString()}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.modalItem}
+                  onPress={() => handleCountrySelect(item)}
+                >
+                  <Text style={styles.modalText}>{item.country} ({item.code})</Text>
+                </TouchableOpacity>
+              )}
+            />
+            <TouchableOpacity
+              style={styles.modalCloseButton}
+              onPress={() => setCountryModalVisible(false)}
+            >
+              <Text style={styles.modalCloseText}>Close </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -251,7 +317,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#fff",
+    // backgroundColor: "black",
 
   },
   backIconContainer: {
@@ -273,7 +339,7 @@ const styles = StyleSheet.create({
   },
   leftBox: {
     flex: 1,
-    backgroundColor: "#F1F1F1",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     borderTopRightRadius: 45,
@@ -293,6 +359,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+    backgroundColor:"#FEE226"
   },
   activeTabIndicator: {
     position: "absolute",
@@ -321,16 +388,17 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+   
   },
   privateBg: {
-    backgroundColor: "#F1F1F1",
+    backgroundColor: "#fff",
   },
   tradeBg: {
     backgroundColor: "#FFFFFF",
   },
   inputContainer: {
     marginTop: 10,
-    height: height * 0.41,
+    flexGrow:1
   },
   inputWrapper: {
     marginBottom: 15,
@@ -350,6 +418,38 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: "#fff",
     fontFamily: "Inter-Regular",
+    
+  },
+  inputnum: {
+    minWidth:"78%",
+    height: 55,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    backgroundColor: "#fff",
+    fontFamily: "Inter-Regular",
+    
+  },
+  phoneInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  countryCodePicker: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    borderRadius: 8,
+    padding: 4,
+    marginRight: 8,
+    width: "auto",
+    height: 50,
+  },
+  countryCodeText: {
+    fontSize: 16,
+    color: "#333",
   },
   checkboxContainer: {
     flexDirection: "row",
@@ -396,6 +496,41 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 10,
     top: 45,
+  },
+  modalOverlay: {
+    
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.0)",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 8,
+    width: "80%",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalItem: {
+    padding: 10,
+  },
+  modalText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  modalCloseButton: {
+    marginTop: 20,
+    padding: 10,
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
+    borderRadius: 8,
+  },
+  modalCloseText: {
+    fontSize: 16,
+    color: "#333",
   },
 });
 

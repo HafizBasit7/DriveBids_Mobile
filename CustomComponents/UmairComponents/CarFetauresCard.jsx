@@ -17,59 +17,32 @@ const CarFeatures = ({features}) => {
         <Text style={styles.lineText}>Car Features</Text>
         <View style={styles.fullLine} />
       </View>
-{/* //TODO : CAR FEATURES */}
+
       {/* Expandable Content */}
       {isExpanded && (
         <View style={styles.featuresContainer}>
-          {/* Available Features */}
+          {/* Available Features in Two Columns */}
           <View style={styles.column}>
-            {updatedFeatures.map((feature, index) => {
+            {updatedFeatures.slice(0, Math.ceil(updatedFeatures.length / 2)).map((feature, index) => {
               return (
                 <View key={index} style={styles.featureItem}>
                   <Icon name="check-circle" size={16} color="#2A5DB0" />
-                  {/* {feature.family === "FontAwesome5" ? (
-                    <FontAwesome5
-                      name={feature.icon}
-                      size={15}
-                      style={styles.featureIcon}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons
-                      name={feature.icon}
-                      size={15}
-                      style={styles.featureIcon}
-                    />
-                  )} */}
                   <Text style={styles.featureText}>{feature}</Text>
                 </View>
-              )
+              );
             })}
           </View>
 
-          {/* Unavailable Features */}
-          {/* <View style={styles.column}>
-            {unavailableFeatures.map((feature, index) => (
-              <View key={index} style={styles.featureItem}>
-                <Icon name="cancel" size={16} color="gray" />
-                {feature.family === "FontAwesome5" ? (
-                  <FontAwesome5
-                    name={feature.icon}
-                    size={15}
-                    style={styles.featureIcon}
-                  />
-                ) : (
-                  <MaterialCommunityIcons
-                    name={feature.icon}
-                    size={15}
-                    style={styles.featureIcon}
-                  />
-                )}
-                <Text style={[styles.featureText, styles.disabledText]}>
-                  {feature.name}
-                </Text>
-              </View>
-            ))}
-          </View> */}
+          <View style={styles.column}>
+            {updatedFeatures.slice(Math.ceil(updatedFeatures.length / 2)).map((feature, index) => {
+              return (
+                <View key={index} style={styles.featureItem}>
+                  <Icon name="check-circle" size={16} color="#2A5DB0" />
+                  <Text style={styles.featureText}>{feature}</Text>
+                </View>
+              );
+            })}
+          </View>
         </View>
       )}
 
@@ -91,26 +64,6 @@ const CarFeatures = ({features}) => {
     </View>
   );
 };
-
-// /* Features Data with Icons */
-// const availableFeatures = [
-//   { name: "ABS", icon: "car", family: "FontAwesome5" },
-//   { name: "Air Conditioning", icon: "snowflake", family: "FontAwesome5" },
-//   { name: "Immobilizer Key", icon: "key", family: "FontAwesome5" },
-//   { name: "Air Bags", icon: "user-shield", family: "FontAwesome5" },
-//   { name: "Navigation System", icon: "location-arrow", family: "FontAwesome5" },
-//   {
-//     name: "Power Steering",
-//     icon: "steering",
-//     family: "MaterialCommunityIcons",
-//   }, // Fixed
-// ];
-
-// const unavailableFeatures = [
-//   { name: "Power Locks", icon: "lock", family: "FontAwesome5" },
-//   { name: "Power Windows", icon: "car-side", family: "FontAwesome5" },
-//   { name: "AM/FM Radio", icon: "radio", family: "MaterialCommunityIcons" }, // Fixed
-// ];
 
 /* Styles */
 const styles = StyleSheet.create({
@@ -142,26 +95,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
-    // marginHorizontal: 16,
   },
   column: {
     flex: 1,
+    marginRight: 15, // Space between columns
   },
   featureItem: {
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 5,
   },
-  featureIcon: {
-    marginLeft: 8,
-    color: "black",
-  },
   featureText: {
     fontSize: 12,
     marginLeft: 10,
-  },
-  disabledText: {
-    color: "gray",
   },
   dropdownButton: {
     flexDirection: "row",

@@ -21,12 +21,28 @@ import { getChatCarHead, getChatMessages, sendMessage } from "../../../API_Calli
 import { formatAmount } from "../../../utils/R1_utils";
 import { useAuth } from "../../../R1_Contexts/authContext";
 import { useSocket } from "../../../R1_Contexts/socketContext";
+import moment from "moment"; 
+import SvgBack from "../../../assets/SVG/TahirSvgs/back.svg";
+
+
 
 const ActiveChatBox = ({route}) => {
   const [newMessage, setNewMessage] = useState("");
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const navigation = useNavigation();
   const {chatSocket: socket} = useSocket();
+
+  const [optionsVisible, setOptionsVisible] = useState(false); // Toggle for showing options
+
+  const toggleOptions = () => {
+    setOptionsVisible(!optionsVisible);
+  };
+
+  const handleReport = () => {
+    // Handle report action here
+    console.log("User reported");
+    setOptionsVisible(false); // Close options after reporting
+  };
 
   const {chatId} = route.params;
   useEffect(() => {
@@ -88,23 +104,31 @@ const ActiveChatBox = ({route}) => {
     setNewMessage('');
   };
 
-  const renderMessage = ({ item }) => (
-    <View
-      style={[
-        styles.messageContainer,
-        item.sender === user._id ? styles.userMessage : styles.agentMessage,
-      ]}
-    >
-      <Text
+  const renderMessage = ({ item }) => {
+    return (
+      <View
         style={[
-          styles.messageText,
-          item.sender === user._id  ? styles.userText : styles.agentText,
+          styles.messageContainer,
+          item.sender === user._id ? styles.userMessage : styles.agentMessage,
         ]}
       >
-        {item.message}
-      </Text>
-    </View>
-  );
+        {/* Message Text */}
+        <Text
+          style={[
+            styles.messageText,
+            item.sender === user._id ? styles.userText : styles.agentText,
+          ]}
+        >
+          {item.message}
+        </Text>
+  
+        {/* Timer (formatted time) */}
+        <Text style={[styles.timeText, item.sender === user._id ? styles.userTime : styles.agentTime]}>
+          {moment(item.createdAt).format("hh:mm A")} {/* Example: 02:15 PM */}
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -116,18 +140,34 @@ const ActiveChatBox = ({route}) => {
 
       {/* Header */}
       <View style={styles.header}>
+         {navigation.canGoBack() && (
+                    <TouchableOpacity
+                      onPress={() => navigation.goBack()}
+                    >
+                      <SvgBack width={25} height={30} style={{marginRight:10}} />
+                    </TouchableOpacity>
+                  )}
         <Image
           source={{ uri: chatHeadDataReal?.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }}
           style={styles.avatar}
         />
         <Text style={styles.username}>{chatHeadDataReal?.user.name}</Text>
-        <Ionicons
-       
-          name="ellipsis-vertical"
-          size={24}
-          color="black"
-          style={styles.optionsIcon}
-        />
+        <TouchableOpacity onPress={toggleOptions}>
+          <Ionicons
+            name="ellipsis-vertical"
+            size={24}
+            color="black"
+            style={styles.optionsIcon}
+          />
+        </TouchableOpacity>
+        {optionsVisible && (
+        <View style={styles.optionsBox}>
+          <TouchableOpacity onPress={handleReport} style={styles.option}>
+            <Text style={styles.optionText}>Report User</Text>
+          </TouchableOpacity>
+          {/* Add more options here if needed */}
+        </View>
+      )}
       </View>
 
       {/* Item Details */}
@@ -219,6 +259,7 @@ const ActiveChatBox = ({route}) => {
             <Ionicons name="send" size={20} color="white" />
           </TouchableOpacity>
         </View>
+ 
       </KeyboardAvoidingView>
     </View>
   );
@@ -236,7 +277,7 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "ios" ? 50 : 32, // Extra padding for iOS status bar
     paddingBottom: 7,
     paddingHorizontal: 5,
-    paddingLeft: 22,
+    paddingLeft: 18,
   },
   avatar: {
     width: 37,
@@ -299,8 +340,10 @@ const styles = StyleSheet.create({
   messageContainer: {
     maxWidth: "75%",
     borderRadius: 12,
-    padding: 10,
+    padding: 8,
     marginVertical: 5,
+    position: "relative", // Make the message container relative to position time
+    minWidth:"27%"
   },
   userMessage: {
     alignSelf: "flex-end",
@@ -313,15 +356,31 @@ const styles = StyleSheet.create({
     borderColor: "#E6E6E6",
   },
   messageText: {
-    fontSize: 14,
+    fontSize: 15,
     fontFamily: "Inter-Regular",
     color: "#333",
+    marginBottom:6
   },
   userText: {
     color: "white",
   },
   agentText: {
     color: "#333",
+  },
+  // Add time styles to position the time at the bottom-right
+  timeText: {
+    fontSize: 9,
+    fontFamily: "Inter-Regular",
+    color: "#999", // Color of the time text
+    position: "absolute", // Position time absolutely within the message bubble
+    bottom: 2, // Position at the bottom of the message bubble
+    right: 5, // Position at the right of the message bubble
+  },
+  userTime: {
+    color: "white", // White time for user messages
+  },
+  agentTime: {
+    color: "#999", // Gray time for agent messages
   },
   inputContainer: {
     flexDirection: "row",
@@ -349,6 +408,28 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 50,
   },
+  optionsBox: {
+    backgroundColor: "white",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+    position: "absolute",
+    right: 15,
+    top: 70, // Adjust position of options box
+    width: 150,
+    zIndex: 1,
+    elevation: 1,
+  },
+  option: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E0E0E0",
+  },
+  optionText: {
+    fontSize: 14,
+    color: "#007bff",
+  },
+
 });
 
 export default ActiveChatBox;

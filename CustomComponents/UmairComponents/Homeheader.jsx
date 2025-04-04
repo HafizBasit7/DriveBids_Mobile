@@ -18,6 +18,7 @@ import { GlobalStyles } from "../../Styles/GlobalStyles";
 import { calculateTimeLeft } from "../../utils/countdown";
 import { useNavigation } from "@react-navigation/native";
 import { formatAmount } from "../../utils/R1_utils";
+import WrapperComponent from "../WrapperComponent";
 
 const { width } = Dimensions.get("window");
 
@@ -36,6 +37,7 @@ const HomeHeader = ({ car }) => {
   const navigation = useNavigation();
 
   const isCarSold = car.status === "sold";
+  
 
   useEffect(() => {
     if (isCarSold) return;
@@ -104,11 +106,15 @@ const HomeHeader = ({ car }) => {
 
   return (
     <View>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        translucent
-      />
+    {modalVisible ? (
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor="rgba(0, 0, 0, 0.8)"
+          translucent
+        />
+      ) : (
+        <StatusBar barStyle="dark-content" backgroundColor="transparent" />
+      )}
       <View style={styles.container}>
         <ScrollView
           ref={scrollViewRef}
@@ -183,11 +189,13 @@ const HomeHeader = ({ car }) => {
       </View>
 
       {/* Modal for displaying larger image */}
+   
       <Modal
         transparent={true}
         visible={modalVisible}
         onRequestClose={closeModal}
       >
+        
         <TouchableWithoutFeedback onPress={closeModal}>
           <View style={styles.modalOverlay}>
             <TouchableOpacity style={styles.leftButton} onPress={prevImage}>
@@ -300,6 +308,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.8)",
+  
   },
   modalImage: { width: width * 1, height: width, resizeMode: "contain" },
   

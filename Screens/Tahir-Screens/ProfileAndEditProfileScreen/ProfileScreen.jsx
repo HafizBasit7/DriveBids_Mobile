@@ -140,12 +140,9 @@ const ProfileScreen = () => {
               <Text style={styles.editProfileText}>Edit Profile</Text>
             </TouchableOpacity>
           </View>
-          <Icon
-            name="chevron-right"
-            type="material"
-            color="#9ca3af"
-            size={24}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}>
+        <Icon name="chevron-right" size={24} color="#9ca3af" />
+      </TouchableOpacity>
         </View>
 
         {/* Menu Items */}
