@@ -20,13 +20,13 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import { getChatCarHead, getChatMessages, sendMessage } from "../../../API_Callings/R1_API/Chat";
 import { formatAmount } from "../../../utils/R1_utils";
 import { useAuth } from "../../../R1_Contexts/authContext";
-import {useChatSocket} from "../../../R1_Contexts/chatContext";
+import { useSocket } from "../../../R1_Contexts/socketContext";
 
 const ActiveChatBox = ({route}) => {
   const [newMessage, setNewMessage] = useState("");
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const navigation = useNavigation();
-  const socket = useChatSocket();
+  const {chatSocket: socket} = useSocket();
 
   const {chatId} = route.params;
   useEffect(() => {

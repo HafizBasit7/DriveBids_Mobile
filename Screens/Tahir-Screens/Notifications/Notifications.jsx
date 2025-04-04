@@ -38,8 +38,6 @@ const NotificationScreen = () => {
 
 
   const notifications = data?.pages.flatMap((page) => page?.data?.notifications) || [];
-
-  console.log("no",notifications);
   
   const renderNotificationItem = ({ item }) => (
     <TouchableOpacity
@@ -50,7 +48,6 @@ const NotificationScreen = () => {
             params: { carId: item.metaData.car },
           });
         }
-        
       }}
       style={[
         styles.notificationItem,

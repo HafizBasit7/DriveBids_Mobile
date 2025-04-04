@@ -113,10 +113,11 @@ const FilterChips = (filters) => {
   );
 };
 
+const LIMIT = 10;
+
 const Filters_ViewAll = ({ route }) => {
   const { filters } = route.params;
 
-  // Fetch cars with pagination
   const {
     data,
     isLoading,
@@ -125,13 +126,12 @@ const Filters_ViewAll = ({ route }) => {
     hasNextPage,
   } = useInfiniteQuery({
     queryKey: ["search", filters],
-    queryFn: ({ pageParam = 1 }) => searchCars(filters, pageParam, 10),
+    queryFn: ({ pageParam = 1 }) => searchCars(filters, pageParam, LIMIT),
     getNextPageParam: (lastPage, allPages) => {
-      return lastPage?.data?.cars?.length ? allPages.length + 1 : undefined;
+      return lastPage?.data?.cars?.length === LIMIT ? allPages.length + 1 : undefined;
     },
   });
 
-  // Fetch watchlist car IDs
   const { data: carsInWatchList } = useQuery({
     queryKey: ["carsInWatchList"],
     queryFn: getCarsIdInWatchList,
@@ -139,7 +139,6 @@ const Filters_ViewAll = ({ route }) => {
 
   if (isLoading) return null;
 
-  // Flatten pages data
   const filteredCars = data?.pages?.flatMap((page) => page.data.cars) || [];
 
   return (

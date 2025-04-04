@@ -2,8 +2,7 @@ import useLoadFonts from "./Hooks/useLoadFonts";
 import R1_App from "./R1_App";
 import AuthContextProvider from "./R1_Contexts/authContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import ChatSockerProvider from "./R1_Contexts/chatContext";
-import BidSocketProvider from "./R1_Contexts/bidContext";
+import SocketContextProvider from "./R1_Contexts/socketContext";
 
 const queryClient = new QueryClient();
 
@@ -15,11 +14,9 @@ export default function App() {
   return (    
     <AuthContextProvider>
       <QueryClientProvider client={queryClient}>
-        <BidSocketProvider>
-          <ChatSockerProvider>
-            <R1_App/>
-          </ChatSockerProvider>
-        </BidSocketProvider>
+        <SocketContextProvider>
+          <R1_App/>
+        </SocketContextProvider>
       </QueryClientProvider>
     </AuthContextProvider>
   );

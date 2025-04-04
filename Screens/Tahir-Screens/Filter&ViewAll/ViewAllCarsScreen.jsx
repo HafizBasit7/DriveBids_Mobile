@@ -31,9 +31,9 @@ const ViewAllCarsScreen = ({route}) => {
         queryKey: ['carsByBidCount'],
         queryFn: () => listCarsByBidCount(1, 10),
         enabled: type === 'spotlight',
-      });
+    });
 
-    if(isLoading || endingCarListLoading) {
+    if(isLoading || endingCarListLoading || carsByBidCountLoading) {
         return null;
     }
 
