@@ -54,35 +54,44 @@ const HomeHeader = ({ car }) => {
     .flat()
     .map((val) => val.url);
 
-  useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      if (scrollViewRef.current) {
-        scrollViewRef.current.scrollTo({
-          x: index * width,
-          animated: true,
-        });
+    const [isPaused, setIsPaused] = useState(false);
 
-        setCurrentIndex(index);
-        index++;
-
-        if (index >= images.length) {
-          index = 0;
-        }
+    useEffect(() => {
+      let index = 0;
+      let interval;
+    
+      if (!isPaused) {
+        interval = setInterval(() => {
+          if (scrollViewRef.current) {
+            scrollViewRef.current.scrollTo({
+              x: index * width,
+              animated: true,
+            });
+    
+            setCurrentIndex(index);
+            index++;
+    
+            if (index >= images.length) {
+              index = 0;
+            }
+          }
+        }, 3000);
       }
-    }, 3000);
+    
+      return () => clearInterval(interval);
+    }, [isPaused]); // 🔹 Depend on `isPaused` to start/stop the slider
 
-    return () => clearInterval(interval);
-  }, []);
 
-  const openModal = (image) => {
-    setSelectedImage(image);
-    setModalVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-  };
+    const openModal = (image) => {
+      setSelectedImage(image);
+      setModalVisible(true);
+      setIsPaused(true); // 🔹 Stop slider when modal opens
+    };
+    
+    const closeModal = () => {
+      setModalVisible(false);
+      setIsPaused(false); // 🔹 Resume slider when modal closes
+    };
   const nextImage = () => {
     setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
   };

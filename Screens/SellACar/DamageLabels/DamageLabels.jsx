@@ -182,9 +182,9 @@ const DamageInspection = () => {
           justifyContent: "space-between",
         }}
       >
-        <TouchableOpacity style={styles.carContainer} onPress={handleCarPress}>
+        <TouchableOpacity style={styles.carContainer} >
           <Svg width={250} height={200} viewBox="0 0 250 200">
-            <Image source={carSides[carFacing]} style={styles.carImage} />
+            <Image source={carSides[carFacing]} style={styles.carImage} onPress={handleCarPress} />
               {carState.carDamageReport?.damageReport.map((marker, index) => {
                 if(marker.imageIndex === carFacing) {
                   const option = damageOptions.find(val => val.label === marker.damageType);
@@ -293,9 +293,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   carImage: {
-    width: "100%",
-    height: "100%",
+    width: 200,
+    height: 200,
     resizeMode: "contain",
+  
+    marginHorizontal:"auto"
+  
   },
   modalContainer: {
     maxHeight: "85%",

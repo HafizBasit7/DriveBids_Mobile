@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import ReportModal from "./ReportModal"; // Import ReportModal
+import ReportModal from "./ReportModal"; 
 import { useQuery } from "@tanstack/react-query";
 import { getCarDamageReport } from "../../API_Callings/R1_API/Car";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   carImage: {
     width: 200,
-    height: 100,
+    height: 200,
     resizeMode: "contain",
   },
   dotsContainer: {

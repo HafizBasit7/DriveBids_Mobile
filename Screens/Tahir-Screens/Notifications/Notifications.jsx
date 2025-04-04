@@ -50,11 +50,11 @@ const NotificationScreen = () => {
             params: { carId: item.metaData.car },
           });
         }
-        // Optionally, mark as read when clicked
+        
       }}
       style={[
         styles.notificationItem,
-        !item.isRead && styles.unreadNotification, // Apply different styles for unread notifications
+        !item.isRead && styles.unreadNotification, 
       ]}
     >
       <Avatar
@@ -186,11 +186,11 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   unreadNotification: {
-    backgroundColor: "#E3F2FD", // Light blue background for unread notifications
+    backgroundColor: "#E3F2FD", 
   },
   unreadMessage: {
-    fontWeight: "bold", // Bold text for unread messages
-    color: "#000", // Darker text to highlight unread status
+    fontWeight: "bold", 
+    color: "#000",
   },
   
 });
