@@ -16,11 +16,13 @@ import HomeCarCard from "../../../CustomComponents/Tahir-Components/Home/HomeCar
 import HomeBanner from "../../../CustomComponents/HomeBanner";
 import SellerProfileCard from "../../../CustomComponents/UmairComponents/SellerProfileCard";
 import Header from "../../../CustomComponents/Header"; 
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import { getCarOwnerCars } from "../../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
 
+
+const LIMIT = 10;
 
 export default OwnerProfile = ({route}) => {
   var CARD_HEIGHT = 150;
@@ -32,13 +34,25 @@ export default OwnerProfile = ({route}) => {
     queryFn: getCarsIdInWatchList,
   });
 
-  const {data, isLoading} = useQuery({
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: ['carOwnerCars'],
-    queryFn: () => getCarOwnerCars(1, 10, userId),
+    queryFn: ({pageParam = 1}) => getCarOwnerCars(pageParam, LIMIT, userId),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.data?.cars?.cars.length === LIMIT
+        ? allPages.length + 1
+        : undefined;
+    },
   });
 
-  const cars = data?.data?.cars;
-  const user = data?.data;
+  const cars = data?.pages.flatMap((page) => page?.data?.cars.cars) || [];
+  const user = data?.pages[0].data.user;
+
   return (
     <>
       <Header showSearch={false}/>
@@ -67,6 +81,15 @@ export default OwnerProfile = ({route}) => {
                 carsInWatchList={carsInWatchList}
               />
             )}
+            onEndReached={() => {
+              if (hasNextPage && !isFetchingNextPage) {
+                fetchNextPage();
+              }
+            }}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={
+              isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+            }
             showsVerticalScrollIndicator={false} // Hide vertical scroll indicator
             contentContainerStyle={{
               paddingVertical: 10,

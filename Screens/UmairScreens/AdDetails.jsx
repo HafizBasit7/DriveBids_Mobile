@@ -20,14 +20,14 @@ import { getCar } from "../../API_Callings/R1_API/Car";
 import WrapperComponent from "../../CustomComponents/WrapperComponent";
 import { useAuth } from "../../R1_Contexts/authContext";
 import BiddingList from "../../CustomComponents/UmairComponents/BiddingList";
-import {useBidSocket} from "../../R1_Contexts/bidContext";
+import { useSocket } from "../../R1_Contexts/socketContext";
 
 const AdDetails = ({route}) => {
   
   const {carId} = route.params;
   const {authState} = useAuth();
  
-  const socket = useBidSocket();
+  const {bidSocket: socket} = useSocket();
 
   useEffect(() => {
     if(socket) {

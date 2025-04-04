@@ -1,8 +1,8 @@
 import apiClient from "./axios-client";
 
-export const getWatchList = async () => {
+export const getWatchList = async (page = 1, limit = 10) => {
     try {
-        const result = await apiClient.get(`/watchList/watchlist`);
+        const result = await apiClient.get(`/watchList/watchlist?page=${page}&limit=${limit}`);
         const resultData = result.data;
 
         if(!resultData.status) {

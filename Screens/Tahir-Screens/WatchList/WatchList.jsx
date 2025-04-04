@@ -14,21 +14,33 @@ import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import HomeCarCard from "../../../CustomComponents/Tahir-Components/Home/HomeCarCard";
 import HomeBanner from "../../../CustomComponents/HomeBanner";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import { ActivityIndicator } from "react-native-paper";
 import Header from "../../../CustomComponents/Header";
 import ViewAllCarCard from "../Filter&ViewAll/ViewAllCarCard";
 
+const LIMIT = 10;
+
 export default WatchList = () => {
-  const {data, isLoading} = useQuery({
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: ['watchlist'],
-    queryFn: getWatchList,
+    queryFn: ({pageParam = 1}) => getWatchList(pageParam, LIMIT),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.data?.watchList?.length === LIMIT
+        ? allPages.length + 1
+        : undefined;
+    },
   });
 
-  var CARD_HEIGHT = 150;
-
-  const watchList = data?.data?.watchList
+  // var CARD_HEIGHT = 150;
+  const watchList = data?.pages.flatMap((page) => page?.data?.watchList) || [];
   const carsInWatchList = {
     data: {
       carsInWatchList: watchList?.map(val => ({car: val.car._id})),
@@ -55,6 +67,15 @@ export default WatchList = () => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.contentContainer}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
+            onEndReached={() => {
+              if (hasNextPage && !isFetchingNextPage) {
+                fetchNextPage();
+              }
+            }}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={
+              isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+            }
           />
         )}
       </View>

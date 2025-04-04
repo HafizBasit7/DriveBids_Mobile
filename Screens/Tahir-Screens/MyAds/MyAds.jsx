@@ -1,43 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
-  Text,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
 } from "react-native";
-import CustomButton from "../../../CustomComponents/CustomButton";
-import { useNavigation } from "@react-navigation/native";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
-import HomeCarCard from "../../../CustomComponents/Tahir-Components/Home/HomeCarCard";
-import HomeBanner from "../../../CustomComponents/HomeBanner";
 import Header from "../../../CustomComponents/Header";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { listMyAds } from "../../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import ViewAllCarCard from "../Filter&ViewAll/ViewAllCarCard";
 
+const LIMIT = 10;
+
 export default MyAds = () => {
   
-  //My ads query
-  const {data, isLoading} = useQuery({
-    queryKey: ['myAds'],
-    queryFn: () => listMyAds(1, 10)
-  });
-
   //Car ids in watchlist
   const {data: carsInWatchList} = useQuery({
       queryKey: ['carsInWatchList'],
       queryFn: getCarsIdInWatchList,
   });
 
-  const cars = data?.data?.cars;
-
-  var CARD_HEIGHT = 150;
+  //My ads query
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['myAds1'],
+    queryFn: ({pageParam = 1}) => listMyAds(pageParam, LIMIT),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.data?.cars?.length === LIMIT
+        ? allPages.length + 1
+        : undefined;
+    },
+  });
+  const cars = data?.pages.flatMap((page) => page?.data?.cars) || [];
+  // var CARD_HEIGHT = 150;
 
   return (
     <>
@@ -60,6 +62,15 @@ export default MyAds = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainer}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
+          onEndReached={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+          }
         />
       )}
       </View>

@@ -11,19 +11,32 @@ import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import HomeCarCard from "../../../CustomComponents/Tahir-Components/Home/HomeCarCard";
 import Header from "../../../CustomComponents/Header";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {listMyBids} from "../../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import ViewAllCarCard from "../Filter&ViewAll/ViewAllCarCard";
 
+const LIMIT = 10;
+
 export default MyBids = () => {
   const [activeTab, setActiveTab] = useState("Active");
   const type = activeTab === 'Active' ? 'open' : activeTab === 'Won' ? 'won' : 'lost';
-  
-  const {data, isLoading} = useQuery({
+
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: ['myBids', type],
-    queryFn: () => listMyBids(1, 10, type),
+    queryFn: ({pageParam = 1}) => listMyBids(pageParam, LIMIT, type),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.data?.bids?.length === LIMIT
+        ? allPages.length + 1
+        : undefined;
+    },
   });
 
   const {data: carsInWatchList, isLoading: watchlistLoading} = useQuery({
@@ -31,9 +44,9 @@ export default MyBids = () => {
     queryFn: getCarsIdInWatchList,
   });
 
-  const bids = data?.data?.bids;
+  const bids = data?.pages.flatMap((page) => page?.data?.bids) || [];
 
-  var CARD_HEIGHT = 150;
+  // var CARD_HEIGHT = 150;
 
   return (
     <>
@@ -92,6 +105,15 @@ export default MyBids = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainer}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
+          onEndReached={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+          }
         />
       )}
     </View>
