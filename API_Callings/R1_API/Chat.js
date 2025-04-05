@@ -74,9 +74,9 @@ export const getChatMessages = async (chatId, page = 1, limit = 10) => {
     }
 };
 
-export const sendMessage = async (chatId, message) => {
+export const sendMessage = async ({chatId, message, attachments}) => {
     try {
-        const result = await chatApiClient.post(`/chat/sendMessage`, { chatId, message });
+        const result = await chatApiClient.post(`/chat/sendMessage`, { chatId, message, attachments });
         const resultData = result.data;
 
         if (!resultData.status) {

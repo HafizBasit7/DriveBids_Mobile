@@ -30,7 +30,7 @@ export default MyAds = () => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['myAds1'],
+    queryKey: ['myAds'],
     queryFn: ({pageParam = 1}) => listMyAds(pageParam, LIMIT),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage?.data?.cars?.length === LIMIT

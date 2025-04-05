@@ -12,7 +12,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getSimilarCars } from "../../API_Callings/R1_API/Car";
 import { getCarsIdInWatchList } from "../../API_Callings/R1_API/Watchlist";
 
-const SimilarAds = ({make}) => {
+const SimilarAds = ({make, carId}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const queryClient = useQueryClient();
 
@@ -29,7 +29,7 @@ const SimilarAds = ({make}) => {
   });
 
 
-  const cars = data?.data.cars;
+  const cars = data?.data.cars.filter(car => car._id !== carId);
 
   return (
     <View style={styles.container}>

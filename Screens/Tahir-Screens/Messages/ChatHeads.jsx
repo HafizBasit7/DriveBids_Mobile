@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,25 +12,108 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import Header from "../../../CustomComponents/Header";
 import { useNavigation } from "@react-navigation/native";
-import {useQuery} from "@tanstack/react-query";
+import {useInfiniteQuery, useQuery, useQueryClient} from "@tanstack/react-query";
 import { getChats } from "../../../API_Callings/R1_API/Chat";
 import { ActivityIndicator } from "react-native-paper";
 import {timeAgo} from "../../../utils/R1_utils";
+import { useAuth } from "../../../R1_Contexts/authContext";
+import { useSocket } from "../../../R1_Contexts/socketContext";
+
+const LIMIT = 10;
 
 const ChatHeads = () => {
   const [activeTab, setActiveTab] = useState("Buying");
-  const navigation = useNavigation();
-
   const type = activeTab === 'Buying' ? 'buying' : 'selling';
+  const navigation = useNavigation();
+  const {authState} = useAuth();
+  const {chatSocket: socket} = useSocket();
+  const queryClient = useQueryClient();
 
-  const {data, isLoading} = useQuery({
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: ['chats', type],
-    queryFn: () => getChats(1, 10, type),
+    queryFn: ({pageParam = 1}) => getChats(pageParam, LIMIT, type),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.data?.chats?.length === LIMIT
+        ? allPages.length + 1
+        : undefined;
+    },
   });
-  const chats = data?.data.chats;
 
-  
-  
+  useEffect(() => {
+    if(socket) {
+      socket.emit('join-room', {roomId: authState.user._id});
+      socket.on('new-message-chat', handleNewMessageUpdate);
+      socket.on('new-chat', handleNewChat);
+    }
+
+    return () => {
+      if(socket) {
+        socket?.emit('leave-room', {roomId: authState.user._id});
+        socket?.off('new-message-chat');
+        socket?.off('new-chat');
+      }
+    };
+  }, [socket]);
+
+  const chats = data?.pages.flatMap((page) => page?.data?.chats) || [];
+
+  const handleNewChat = (chat) => {
+    chat.updatedAt = new Date();
+    queryClient.setQueryData(['chats', chat.type], (oldData) => {
+      const newData = {...oldData};
+      const newPagesData = [
+        {
+          ...newData.pages[0],
+          data: {
+            chats: [
+              chat,
+              ...newData.pages[0].data.chats,
+            ]
+          }
+        },
+        ...newData.pages.slice(1),
+      ]
+      newData.pages = newPagesData;
+      return newData;
+    });
+  };
+
+  const handleNewMessageUpdate = (message) => {
+    const cacheData = queryClient.getQueryData(['chats', message.type]);
+    const oldPagesData = [...cacheData.pages];
+    let chatToUpdate;
+    let newPagesData = oldPagesData.map(page => {
+    const newPageChats = [...page.data?.chats.filter(chat => {
+        if(chat._id === message.chat) {
+          chatToUpdate = chat;
+          return false;
+        }
+        return true;
+      })]
+      return {...page, data: {chats: newPageChats}};
+    });
+    chatToUpdate.lastMessage = message.message;
+    chatToUpdate.updatedAt = new Date();
+    newPagesData = [
+      {
+        data: {
+          chats: [
+            chatToUpdate,
+            ...newPagesData[0].data.chats
+          ],
+        }
+      },
+      ...newPagesData.slice(1)
+    ];
+    queryClient.setQueryData(['chats', type], {pageParams: cacheData.pageParams, pages: newPagesData});
+  };
+
   const renderMessageItem = ({ item }) => {
     const isUnread = item.isRead; 
   
@@ -109,6 +192,15 @@ const ChatHeads = () => {
           keyExtractor={(item) => item._id}
           renderItem={renderMessageItem}
           showsVerticalScrollIndicator={false}
+          onEndReached={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+          }
         />
       )}
     </View>

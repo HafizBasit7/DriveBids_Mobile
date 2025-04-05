@@ -28,12 +28,15 @@ export default function SocketContextProvider ({children}) {
                     token: bidApiClient.defaults.headers.common['Authorization'].split(" ")[1],
                 },
             });
-            setBidSocket(newSocket);
-
+            
             //Events
             newSocket.on("connect", () => {
                 console.log("Connected to Bidding server");
+                setBidSocket(newSocket);
             });
+            newSocket.on('connect_error', err => console.log(err))
+            newSocket.on('connect_failed', err => console.log(err))
+            newSocket.on('disconnect', err => console.log(err))
 
             //bid update
             newSocket.on('bid-update', (carId) => {
@@ -61,22 +64,24 @@ export default function SocketContextProvider ({children}) {
                     token: bidApiClient.defaults.headers.common['Authorization'].split(" ")[1],
                 },
             });
-            setChatSocket(newSocket);
-
+           
             //Events
             newSocket.on("connect", () => {
                 console.log("Connected to Chat server");
+                setChatSocket(newSocket);
             });
-
-            // update
-            newSocket.on('new-chat', () => {
-                queryClient.invalidateQueries(['chats']);
+            newSocket.on('connect_error', err => {
+                console.log(err);
+                setChatSocket(null);
             });
-            newSocket.on('new-message', (chatId) => {
-                queryClient.invalidateQueries(['chats']);
-                queryClient.invalidateQueries(['messages', chatId]);
+            newSocket.on('connect_failed', err => {
+                console.log(err);
+                setChatSocket(null);
             });
-
+            newSocket.on('disconnect', err => {
+                console.log(err);
+                setChatSocket(null);
+            });
         }
 
         return () => {

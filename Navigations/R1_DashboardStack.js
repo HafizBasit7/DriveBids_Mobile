@@ -7,6 +7,8 @@ import R1_HomeStack from "./R1_HomeStack";
 import R1_Messages from "./R1_Messages";
 import R1_Profile from "./R1_Profile";
 import R1_Notification from "./R1_Notifications";
+import { useQuery } from "@tanstack/react-query";
+import { getNotificationCount } from "../API_Callings/R1_API/Auth";
   
 //Custom button
 const CustomTabBarButton = ({ onPress }) => (
@@ -34,6 +36,13 @@ const CustomTabBarButton = ({ onPress }) => (
 const Tab = createBottomTabNavigator();
 
 export default function R1_DashboardStack () {
+
+    const {data} = useQuery({
+      queryKey: ['notificationCount'],
+      queryFn: getNotificationCount,
+    });
+    const count = data?.data.count;
+
     return (
         <Tab.Navigator
             screenOptions={{
@@ -65,17 +74,19 @@ export default function R1_DashboardStack () {
       <View>
         <Icon name="bell" size={24} color={color} />
         {/* Red Dot for Unread Notifications */}
-        <View
-          style={{
-            position: "absolute",
-            top: -2,
-            right: -3,
-            backgroundColor: "red",
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-          }}
-        />
+        {count > 0 && (
+          <View
+            style={{
+              position: "absolute",
+              top: -2,
+              right: -3,
+              backgroundColor: "red",
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+            }}
+          />
+        )}
       </View>
     ),
     tabBarLabel: "Notification",

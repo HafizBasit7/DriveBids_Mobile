@@ -54,7 +54,6 @@ const SignupScreen = () => {
     { code: '+44', country: 'UK' },
     { code: '+971', country: 'UAE' },
     { code: '+61', country: 'Australia' },
-    // Add more countries here
   ];
   
   const handleCountrySelect = (item) => {
@@ -76,7 +75,10 @@ const SignupScreen = () => {
     try {
       await signup({
         name,
-        phoneNumber,
+        phoneNumber: {
+          phoneNo: Number(phoneNumber),
+          countryCode: Number(countryCode.replace('+', '')),
+        },
         city,
         country,
         email,

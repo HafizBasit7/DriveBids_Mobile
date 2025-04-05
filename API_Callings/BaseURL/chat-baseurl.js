@@ -1,1 +1,1 @@
-export const chatBaseUrl = "http://192.168.1.9:3002";
+export const chatBaseUrl = "http://192.168.1.14:3001";

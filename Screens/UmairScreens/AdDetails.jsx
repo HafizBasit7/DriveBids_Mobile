@@ -123,7 +123,7 @@ const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
           {/* todo: do */}
           <CarFeatures features={car.features}/>
         <SellersComment car={car}/>
-          <SimilarAds make={car.make}/>
+          <SimilarAds make={car.make} carId={car._id}/>
         </View>
       </ScrollView>
     </WrapperComponent>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
 import { Avatar, Icon } from "react-native-elements";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { getMyNotifications } from "../../../API_Callings/R1_API/Auth";
 import { ActivityIndicator } from "react-native-paper";
 import { timeAgo } from "../../../utils/R1_utils";
@@ -19,6 +19,7 @@ const LIMIT = 10;
 
 const NotificationScreen = () => {
   const navigation = useNavigation();
+  const queryClient = useQueryClient();
 
   const {
     data,
@@ -35,8 +36,8 @@ const NotificationScreen = () => {
         : undefined;
     },
   });
-
-
+  
+  queryClient.invalidateQueries(["notificationCount"]);
   const notifications = data?.pages.flatMap((page) => page?.data?.notifications) || [];
   
   const renderNotificationItem = ({ item }) => (

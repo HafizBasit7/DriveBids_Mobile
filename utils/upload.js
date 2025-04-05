@@ -1,12 +1,12 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
-export const uploadImage = async (asset) => {
+export const uploadImage = async (asset, fileName) => {
   try {
     
     const formData = new FormData();
     formData.append('file', {
       uri: asset.uri,
-      name: asset.fileName,
+      name: asset.fileName || fileName,
       type: asset.mimeType,
     });
 

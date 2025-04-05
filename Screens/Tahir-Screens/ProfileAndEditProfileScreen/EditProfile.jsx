@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Icon, DropDown } from "react-native-elements";
+import * as ImagePicker from "expo-image-picker";
 import { Dropdown } from "react-native-element-dropdown";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import CustomButton from "../../../CustomComponents/CustomButton";
@@ -21,6 +22,7 @@ import DialogBox from "../../../CustomComponents/DialogBox";
 import { updateProfile } from "../../../API_Callings/R1_API/Auth";
 import Header from "../../../CustomComponents/Header";
 import { FlatList } from "react-native-gesture-handler";
+import { uploadImage } from "../../../utils/upload";
 
 const ProfileEditScreen = () => {
 
@@ -42,7 +44,13 @@ const countryCodes = [
 ];
 
 const handleCountrySelect = (item) => {
-  setFormData((prev) => ({ ...prev, countryCode: item.code }));
+  setFormData((prev) => ({ 
+    ...prev, 
+    phoneNumber: {
+    ...(formData.phoneNumber || {}), 
+    countryCode: Number(item.code.replace('+', ''))
+  }
+}));
   setCountryModalVisible(false);
 };
 
@@ -52,21 +60,29 @@ const handleCountrySelect = (item) => {
   const [loading, setLoading] = useState();
   const [message, setMessage] = useState(null);
 
+  const [imageUploading, setImageUploading] = useState(false);
+
   const navigation = useNavigation();
 
   const [formData, setFormData] = useState(user);
-  const [imageModalVisible, setImageModalVisible] = useState(false);  // Image selection modal state
+  const [imageModalVisible, setImageModalVisible] = useState(false); 
   const [profileImage, setProfileImage] = useState(null);
 
   const handleChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => 
+      ({ ...prev, [field]: field === 'phoneNumber' ? {...(formData.phoneNumber || {}), phoneNo: Number(value)} : value })
+    );
   };
 
   const handleSaveData = async () => {
     setLoading(true);
     try {
+      const updatedData = {...formData};
+      if(profileImage) {
+        updatedData.imgUrl = profileImage;
+      }
 
-      const result = await updateProfile(formData);
+      const result = await updateProfile(updatedData);
       dispatch({
         type: 'setUser',
         payload: result.data.user,
@@ -78,6 +94,7 @@ const handleCountrySelect = (item) => {
       setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
     } finally {
       setLoading(false);
+      setProfileImage(null);
     }
   };
 
@@ -85,31 +102,80 @@ const handleCountrySelect = (item) => {
     setImageModalVisible(true);  // Open modal to choose image
   };
 
-  const handleCamera = () => {
-    launchCamera({ mediaType: "photo" }, (response) => {
-      if (response.didCancel) return;
-      setProfileImage(response.assets[0].uri);
-      setImageModalVisible(false);
+  const handleCamera = async () => {
+
+   const {status} = await ImagePicker.requestCameraPermissionsAsync();
+   if (status !== "granted") {
+    alert("Sorry, we need camera permissions to make this work!");
+    return;
+    }
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ["images"],
+      aspect: [4, 3],
+      quality: 1,
     });
+
+    if(!result.canceled) {
+      setImageModalVisible(false);
+      setImageUploading(true);
+      // setProfileImage(response.assets[0].uri);
+      try {
+        const imageResult = await uploadImage(result.assets[0], 'profile');
+        setProfileImage(imageResult);
+      }
+      catch(e) {
+        setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
+      } finally {
+        setImageUploading(false);
+      }
+    }
   };
 
-  const handleGallery = () => {
-    launchImageLibrary({ mediaType: "photo" }, (response) => {
-      if (response.didCancel) return;
-      setProfileImage(response.assets[0].uri);
+  const handleGallery = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ["images"],
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+    if(!result.canceled) {
       setImageModalVisible(false);
-    });
+      setImageUploading(true);
+      // setProfileImage(response.assets[0].uri);
+      try {
+        const imageResult = await uploadImage(result.assets[0], 'profile');
+        setProfileImage(imageResult);
+      }
+      catch(e) {
+        setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
+      } finally {
+        setImageUploading(false);
+      }
+    }  
+  };
+
+  const getImgUrl = () => {
+    if(profileImage) {
+      return profileImage;
+    }
+    return user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png';
   };
 
   return (
     <>
       <Header showSearch={false}/>
       <DialogBox
-        visible={message ? true : false}
+        visible={imageUploading ? true : message ? true : false}
         message={message?.message}
         onOkPress={() => setMessage(null)}
         type={message?.type}
-        loading={false}
+        loading={imageUploading}
         title={message?.title || ''}
       />
       <View style={{backgroundColor:"#fff"}}>       <SectionHeader title={"Edit Profile"} />
@@ -121,7 +187,7 @@ const handleCountrySelect = (item) => {
         {/* Profile Image */}
         <View style={styles.profileImageContainer}>
           <Image
-            source={{ uri: user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }}
+            source={{ uri: getImgUrl() }}
             style={styles.profileImage}
             defaultSource={{ uri: "https://i.pravatar.cc/150?img=10" }}
           />
@@ -166,13 +232,13 @@ const handleCountrySelect = (item) => {
   style={styles.countryCodePicker}
   onPress={() => setCountryModalVisible(true)}
 >
-  <Text style={styles.countryCodeText}>{formData.countryCode}</Text>
+  <Text style={styles.countryCodeText}>+{formData.phoneNumber?.countryCode}</Text>
   <Icon name="arrow-drop-down" type="material" size={20} color="#333" />
 </TouchableOpacity>
 
               <TextInput
                 style={styles.phoneInput}
-                value={formData.phoneNumber}
+                value={(formData.phoneNumber?.phoneNo || 0).toString()}
                 onChangeText={(text) => handleChange("phoneNumber", text)}
                 keyboardType="phone-pad"
               />
