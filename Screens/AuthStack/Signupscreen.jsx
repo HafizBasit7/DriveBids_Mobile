@@ -45,7 +45,7 @@ const SignupScreen = () => {
   const [isChecked, setIsChecked] = useState(false);
   const navigation = useNavigation("");
   const [countryModalVisible, setCountryModalVisible] = useState(false);
-  const [countryCode, setCountryCode] = useState('+92');  // Default country code
+  const [countryCode, setCountryCode] = useState('+92');  
 
   // Country codes list
   const countryCodes = [
@@ -169,7 +169,7 @@ const SignupScreen = () => {
         >
           <ScrollView showsVerticalScrollIndicator={false} 
           >
-            <View>
+            <View >
               <View style={styles.inputWrapper}>
                 <Text style={styles.label}>Name</Text>
                 <TextInput style={styles.input} placeholder="Enter your name" value={name} onChangeText={setName} />
@@ -185,33 +185,33 @@ const SignupScreen = () => {
                 <TextInput style={styles.input} placeholder="Enter your country" value={country} onChangeText={setCountry} />
               </View>
 
-              <View style={styles.inputWrapper}>
-        <Text style={styles.label}>Phone Number</Text>
-        <View style={styles.phoneInputContainer}>
-          <TouchableOpacity
-            style={styles.countryCodePicker}
-            onPress={() => setCountryModalVisible(true)}
-          >
-            <Text style={styles.countryCodeText}>{countryCode}</Text>
-            <Icon name="arrow-drop-down" type="material" size={20} color="#333" />
-          </TouchableOpacity>
+                  <View style={styles.inputWrapper}>
+                    <Text style={styles.label}>Phone Number</Text>
+                 <View style={styles.phoneInputContainer}>
+                   <TouchableOpacity
+                    style={styles.countryCodePicker}
+                   onPress={() => setCountryModalVisible(true)}
+                    >
+                 <Text style={styles.countryCodeText}>{countryCode}</Text>
+                 <Icon name="arrow-drop-down" type="material" size={20} color="#333" />
+                 </TouchableOpacity>
 
-          <TextInput
-            style={styles.inputnum}
-            placeholder="Enter your phone number"
-            keyboardType="phone-pad"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-          />
-        </View>
-      </View>
+                 <TextInput
+                 style={styles.inputnum}
+                placeholder="Enter your phone number"
+                keyboardType="phone-pad"
+                value={phoneNumber}
+                  onChangeText={setPhoneNumber}
+                     />
+                </View>
+                  </View>
 
-              <View style={styles.inputWrapper}>
+                <View style={styles.inputWrapper}>
                 <Text style={styles.label}>Email</Text>
                 <TextInput style={styles.input} placeholder="Enter your email" value={email} onChangeText={setEmail} />
-              </View>
+                    </View>
 
-              <View style={styles.inputWrapper}>
+                  <View style={styles.inputWrapper}>
                 <Text style={styles.label}>Password</Text>
                 <TextInput
                   style={styles.input}
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    // backgroundColor: "black",
+    backgroundColor: "#fff",
 
   },
   backIconContainer: {
@@ -383,13 +383,14 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     width: "100%",
-    height: height * 0.8,
+    height: 400,
     padding: 20,
     elevation: 5,
     shadowColor: "#000",
     shadowOffset: { width: 1, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+
    
   },
   privateBg: {
@@ -475,6 +476,8 @@ const styles = StyleSheet.create({
     bottom: 20,
     width: "100%",
     paddingHorizontal: 20,
+    backgroundColor:"#fff",
+    
   },
   loginTextContainer: {
     flexDirection: "row",
