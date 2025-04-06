@@ -182,9 +182,9 @@ const DamageInspection = () => {
           justifyContent: "space-between",
         }}
       >
-        <TouchableOpacity style={styles.carContainer} >
+        <TouchableOpacity style={styles.carContainer} onPress={handleCarPress}>
           <Svg width={250} height={200} viewBox="0 0 250 200">
-            <Image source={carSides[carFacing]} style={styles.carImage} onPress={handleCarPress} />
+            <Image source={carSides[carFacing]} style={styles.carImage}  />
               {carState.carDamageReport?.damageReport.map((marker, index) => {
                 if(marker.imageIndex === carFacing) {
                   const option = damageOptions.find(val => val.label === marker.damageType);

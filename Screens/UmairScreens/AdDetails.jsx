@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Dimensions, ScrollView, SafeAreaView } from "react-native";
 
 const { width } = Dimensions.get("window"); // Get screen width
 import MakeModel from "../../CustomComponents/UmairComponents/MakeModel";
@@ -21,6 +21,7 @@ import WrapperComponent from "../../CustomComponents/WrapperComponent";
 import { useAuth } from "../../R1_Contexts/authContext";
 import BiddingList from "../../CustomComponents/UmairComponents/BiddingList";
 import { useSocket } from "../../R1_Contexts/socketContext";
+import { ActivityIndicator } from "react-native-paper";
 
 const AdDetails = ({route}) => {
   
@@ -33,9 +34,10 @@ const AdDetails = ({route}) => {
     if(socket) {
       socket.emit('join-room', {roomId: carId});
     }
-
     return () => {
-      socket.emit('leave-room', {roomId: carId});
+      if(socket) {
+        socket.emit('leave-room', {roomId: carId});
+      }
     };
   }, [socket]);
 
@@ -47,7 +49,7 @@ const AdDetails = ({route}) => {
 
 
   if(isLoading) {
-    return null;
+    return <SafeAreaView><ActivityIndicator/></SafeAreaView>;
   }
 
   const car = data.data.car;

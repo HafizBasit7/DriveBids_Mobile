@@ -1,1 +1,1 @@
-export const chatBaseUrl = "http://192.168.1.14:3001";
+export const chatBaseUrl = "https://drivebids-messageserver-web-v2.onrender.com";

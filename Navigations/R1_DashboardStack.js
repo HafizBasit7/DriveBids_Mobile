@@ -33,15 +33,35 @@ const CustomTabBarButton = ({ onPress }) => (
 
 //
 
+const RedDotNotification = () => {
+  const {data} = useQuery({
+    queryKey: ['notificationCount'],
+    queryFn: getNotificationCount,
+  });
+  const count = data?.data.count;
+
+  if(count < 1) {
+    return null;
+  }
+
+  return (
+    <View
+      style={{
+        position: "absolute",
+        top: -2,
+        right: -3,
+        backgroundColor: "red",
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+      }}
+    />
+  )
+}
+
 const Tab = createBottomTabNavigator();
 
 export default function R1_DashboardStack () {
-
-    const {data} = useQuery({
-      queryKey: ['notificationCount'],
-      queryFn: getNotificationCount,
-    });
-    const count = data?.data.count;
 
     return (
         <Tab.Navigator
@@ -54,7 +74,6 @@ export default function R1_DashboardStack () {
                  backgroundColor: "#fff"
             }}
         >
-
             <Tab.Screen
                 name="Home"
                 component={R1_HomeStack}
@@ -74,19 +93,7 @@ export default function R1_DashboardStack () {
       <View>
         <Icon name="bell" size={24} color={color} />
         {/* Red Dot for Unread Notifications */}
-        {count > 0 && (
-          <View
-            style={{
-              position: "absolute",
-              top: -2,
-              right: -3,
-              backgroundColor: "red",
-              width: 10,
-              height: 10,
-              borderRadius: 5,
-            }}
-          />
-        )}
+        <RedDotNotification/>
       </View>
     ),
     tabBarLabel: "Notification",

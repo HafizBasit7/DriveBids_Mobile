@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  Animated 
+  Animated, 
+  RefreshControl
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
@@ -26,7 +27,7 @@ export default Home = () => {
 
   const navigation = useNavigation();
 
-  const {data, isLoading} = useQuery({
+  const {data, isLoading, isRefetching, refetch} = useQuery({
     queryKey: ['cars'],
     queryFn: () => listCars(1, 10, 'recent'),
   });
@@ -36,16 +37,21 @@ export default Home = () => {
     queryFn: getCarsIdInWatchList,
   });
 
-  const {data: endingCarList, isLoading: endingCarListLoading} = useQuery({
+  const {data: endingCarList, isLoading: endingCarListLoading, isRefetching: isRefetchingEnding, refetch: refetchEnding} = useQuery({
     queryKey: ['carsEnding'],
     queryFn: () => listCars(1, 10, 'ending')
   });
 
-  const {data: carsByBidCount, isLoading: carsByBidCountLoading} = useQuery({
+  const {data: carsByBidCount, isLoading: carsByBidCountLoading, isRefetching: isRefetchingBid, refetch: refetchBid} = useQuery({
     queryKey: ['carsByBidCount'],
     queryFn: () => listCarsByBidCount(1, 10)
   });
-  
+
+  const onRefresh = () => {
+    refetch();
+    refetchBid();
+    refetchEnding();
+  };
 
   if(isLoading) {
     return null;
@@ -67,6 +73,11 @@ export default Home = () => {
     <View style={styles.container}>
       <Header scrollY={scrollY}/>
       <Animated.ScrollView
+      refreshControl={
+        <RefreshControl refreshing={isRefetching ? true : isRefetchingEnding ? true : isRefetchingBid ? true : false}
+          onRefresh={onRefresh}
+        />
+      }
       onScroll={Animated.event(
         [{ nativeEvent: { contentOffset: { y: scrollY } } }],
         { useNativeDriver: false }

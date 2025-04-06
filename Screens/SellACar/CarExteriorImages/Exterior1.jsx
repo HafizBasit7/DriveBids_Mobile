@@ -30,7 +30,7 @@ const Exterior1 = () => {
     }
 
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
+      mediaTypes: ["images" ],
       aspect: [4, 3],
       quality: 1,
     });

@@ -48,6 +48,8 @@ const NotificationScreen = () => {
             screen: "AdDetails",
             params: { carId: item.metaData.car },
           });
+        } else if(item.notificationType === 'message') {
+          navigation.navigate('Messages' , {screen: 'ActiveChatBox', params: {chatId: item.metaData.chat}});
         }
       }}
       style={[

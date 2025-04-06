@@ -27,7 +27,7 @@ const Wheel1 = () => {
     }
 
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
+      mediaTypes: ["images" ],
       // allowsEditing: true,
       aspect: [4, 3],
       quality: 1,

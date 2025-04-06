@@ -40,7 +40,7 @@ export default DamageReportModal = ({
     }
 
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
+      mediaTypes: ["images" ],
       // allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
@@ -58,7 +58,15 @@ export default DamageReportModal = ({
       description,
       damageType: selectedDamage.label,
     });
+    resetState();
+    
   }
+
+  const resetState = () => {
+    setSelectedDamage(damageOptions[0]);
+    setSelectImage(null);
+    setDescription("");
+  };
 
   return (
     <Modal visible={modalVisible} transparent animationType="fade">

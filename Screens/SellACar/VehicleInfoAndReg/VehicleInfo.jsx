@@ -20,7 +20,7 @@ const VehicleInfo = () => {
   const carInspectionReportCompletion = carInspectionReportValidation.safeParse(carState.carInspectionReport);
   const carDetailsCompletion = carDetailsValidation.safeParse(carState.carDetails);
   const imageCompletion = imagesValidation.safeParse(carState.images);
-  const carDamageReportComplection = carDamageReportValidation.safeParse(carState.carDamageReport);
+  const carDamageReportComplection = carDamageReportValidation.safeParse(carState.carDamageReport || undefined);
   const carFeaturesCompletion = carFeaturesValidation.safeParse(carState.features);
 
   const postAdAllow = (carPricingCompletion.success && carInspectionReportCompletion.success && carDetailsCompletion.success && imageCompletion.success
@@ -33,6 +33,7 @@ const VehicleInfo = () => {
     setLoading(true);
     try {
         await carPostAd();
+        //OK: DONE
         queryClient.invalidateQueries('cars');
         queryClient.invalidateQueries('carsEnding');
         queryClient.invalidateQueries('carsByBidCount');

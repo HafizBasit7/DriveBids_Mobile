@@ -1,48 +1,76 @@
 import React from 'react';
-import { View, StyleSheet, FlatList, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, FlatList, Text, ScrollView, SafeAreaView } from 'react-native';
 import ViewAllCarCard from './ViewAllCarCard';
 import Header from '../../../CustomComponents/Header';
 import { getCarsIdInWatchList } from '../../../API_Callings/R1_API/Watchlist';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { listCars, listCarsByBidCount } from '../../../API_Callings/R1_API/Car';
+import { ActivityIndicator } from 'react-native-paper';
+import SectionHeader from "../../../CustomComponents/SectionHeader";
 
-
+const LIMIT = 10;
 
 const ViewAllCarsScreen = ({route}) => {
     const {type} = route.params;
 
+    const getQueryKey = (type) => {
+      switch (type) {
+        case 'recent':
+          return ['carsAll'];
+        case 'ending':
+          return ['carsEndingAll'];
+        default:
+          return ['carsByBidCountAll'];
+      }
+    };
+    
+    const getQueryFn = (type) => {
+      return ({ pageParam = 1 }) => {
+        switch (type) {
+          case 'recent':
+            return listCars(pageParam, LIMIT, 'recent');
+          case 'ending':
+            return listCars(pageParam, LIMIT, 'ending');
+          default:
+            return listCarsByBidCount(pageParam, LIMIT);
+        }
+      };
+    };
+
+    const {
+      data,
+      isLoading,
+      fetchNextPage,
+      hasNextPage,
+      isFetchingNextPage,
+    } = useInfiniteQuery({
+      queryKey: getQueryKey(type),
+      queryFn: getQueryFn(type),
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.data?.cars?.length === LIMIT
+          ? allPages.length + 1
+          : undefined;
+      },
+    });
+
     const {data: carsInWatchList, isLoading: watchlistLoading} = useQuery({
-        queryKey: ['carsInWatchList'],
-        queryFn: getCarsIdInWatchList,
-    });   
-
-    //Cars
-    const {data, isLoading} = useQuery({
-        queryKey: ['cars'],
-        queryFn: () => listCars(1, 10, 'recent'),
-        enabled: type === 'recent',
-    });
-    const {data: endingCarList, isLoading: endingCarListLoading} = useQuery({
-        queryKey: ['carsEnding'],
-        queryFn: () => listCars(1, 10, 'ending'),
-        enabled: type === 'ending'
-    });
-    const {data: carsByBidCount, isLoading: carsByBidCountLoading} = useQuery({
-        queryKey: ['carsByBidCount'],
-        queryFn: () => listCarsByBidCount(1, 10),
-        enabled: type === 'spotlight',
+      queryKey: ['carsInWatchList'],
+      queryFn: getCarsIdInWatchList,
     });
 
-    if(isLoading || endingCarListLoading || carsByBidCountLoading) {
-        return null;
+    if(isLoading) {
+      return <SafeAreaView><ActivityIndicator /></SafeAreaView>;
     }
+
+    const cars = data.pages.flatMap((page) => page?.data?.cars) || []
 
     return (
         <>
         <Header showSearch={false}  />
         <View style={styles.container}>
+        <SectionHeader marginCustom={20} title={type === 'ending' ? "Ending Soonest" : type === 'recent' ? 'Newly Listed' : 'Spotlight deals'} />
             <FlatList
-                data={type === 'recent' ? data.data.cars : type === 'spotlight' ? carsByBidCount.data.cars : endingCarList.data.cars}
+                data={cars}
                 keyExtractor={(item) => item._id} 
                 renderItem={({ item }) => (
             
@@ -55,6 +83,15 @@ const ViewAllCarsScreen = ({route}) => {
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.contentContainer}
               ItemSeparatorComponent={() => <View style={styles.separator} />}
+              onEndReached={() => {
+                if (hasNextPage && !isFetchingNextPage) {
+                  fetchNextPage();
+                }
+              }}
+              onEndReachedThreshold={0.5}
+              ListFooterComponent={
+                isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+              }
             />
 
         </View>

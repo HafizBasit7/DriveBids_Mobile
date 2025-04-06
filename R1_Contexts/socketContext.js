@@ -32,11 +32,21 @@ export default function SocketContextProvider ({children}) {
             //Events
             newSocket.on("connect", () => {
                 console.log("Connected to Bidding server");
+                newSocket.emit('join-room', {roomId: authState.user._id});
                 setBidSocket(newSocket);
             });
-            newSocket.on('connect_error', err => console.log(err))
-            newSocket.on('connect_failed', err => console.log(err))
-            newSocket.on('disconnect', err => console.log(err))
+            newSocket.on('connect_error', err => {
+                console.log(err);
+                setBidSocket(null);
+            });
+            newSocket.on('connect_failed', err => {
+                console.log(err);
+                setBidSocket(null);
+            });
+            newSocket.on('disconnect', err => {
+                console.log(err);
+                setBidSocket(null);
+            });
 
             //bid update
             newSocket.on('bid-update', (carId) => {

@@ -5,32 +5,42 @@ import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
 
 const PriceRange2 = () => {
-  const [inputValue, setInputValue] = useState("");
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation();
   const { carState, dispatch } = useCar();
+  
 
-  function formatNumberWithCommas(num) {
-    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
+ // Function to format numbers with commas
+ const formatNumberWithCommas = (num) => {
+  return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
 
-  function setReservedBidPrice(value) {
+
+  const [formattedBidPrice, setFormattedBidPrice] = useState(
+    formatNumberWithCommas(carState.carPricing.reserveBidPrice?.toString() || "0")
+  );
+
+  
+
+ 
+  // Function to handle input change
+  const handleBidInput = (text) => {
     // Remove non-numeric characters
-    const rawNumber = value.replace(/[^0-9]/g, "");
-    
-    // Format number with commas
+    const rawNumber = text.replace(/[^0-9]/g, "");
+
+    // Format the number with commas
     const formattedNumber = formatNumberWithCommas(rawNumber);
 
-    // Update state in context
+
+    // Update state for display
+    setFormattedBidPrice(formattedNumber);
+    // Dispatch raw numeric value to context
     dispatch({
       type: "UPDATE_FIELD",
       section: "carPricing",
       field: "reserveBidPrice",
-      value: parseInt(rawNumber) || 0, 
+      value: rawNumber ? parseInt(rawNumber) : 0,
     });
-
-    // Store formatted number for display
-    setInputValue(formattedNumber);
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -60,8 +70,8 @@ const PriceRange2 = () => {
             <TextInput
               style={styles.input}
               keyboardType="numeric"
-              value={inputValue} // Use formatted value
-              onChangeText={setReservedBidPrice}
+              value={formattedBidPrice}
+              onChangeText={handleBidInput}
             />
           </View>
         </View>
@@ -85,10 +95,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingBottom: 20,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
   },
   lineContainer: {
     flexDirection: "row",
@@ -152,6 +158,10 @@ const styles = StyleSheet.create({
     color: "#000",
     textAlign: "center",
   },
+  content: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
   buttonContainer: {
     width: "90%",
     alignSelf: "center",
@@ -161,6 +171,11 @@ const styles = StyleSheet.create({
   },
   button: {
     marginBottom: 5,
+  },
+  backButton: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#007BFF",
   },
 });
 

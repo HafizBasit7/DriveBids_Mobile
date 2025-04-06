@@ -105,7 +105,7 @@ export const carDamageReportValidation = zod.object({
         imageUrl: zod.string(),
         description: zod.string(),
     })).min(1, 'min one item for damage report')
-});
+}).optional();
 
 //Car features
 export const carFeaturesValidation = zod.object({

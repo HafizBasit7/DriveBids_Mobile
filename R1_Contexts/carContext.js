@@ -207,11 +207,17 @@ export default function CarContextProvider({children}) {
 
     const draftSave = async (section, subSection) => {
         if(subSection) {
-            const cleanedSubSection = (carState[section][subSection] || []).filter(item => item !== null);
+            const cleanedSubSection = {};
+            for(const sub in carState[section]) {
+                if(carState[section][sub]) {
+                    cleanedSubSection[sub] = carState[section][sub];
+                }
+            }
+            
             const result = await saveDraft({
                 [section]: {
-                    ...carState[section],
-                    [subSection]: cleanedSubSection,
+                    ...cleanedSubSection,
+                    // [subSection]: carState[section][subSection],
                 },
                 draftId: carState.draftId,
                 regNo: carState.regNo,
@@ -220,11 +226,15 @@ export default function CarContextProvider({children}) {
             const resultData = result.data;
             dispatch({type: 'DRAFT_ID', payload: resultData.draftId});
         } else {
-            const result = await saveDraft({
-                [section]: carState[section],
+            const body = {
                 draftId: carState.draftId,
                 regNo: carState.regNo,
-            });
+            }
+            if(carState[section]) {
+                body[section] = carState[section];
+            };
+
+            const result = await saveDraft(body);
             const resultData = result.data;
             dispatch({type: 'DRAFT_ID', payload: resultData.draftId});
         }

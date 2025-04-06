@@ -105,6 +105,7 @@ const Header = ({ showSearch = true, scrollY }) => {
             <View style={styles.searchBox}>
               <SvgSearch width={18} height={18} style={styles.searchIcon} />
               <TextInput
+                onPress={() => navigation.navigate("FiltersScreen")}
                 placeholder="Search for Honda Pilot 7-Passenger"
                 style={styles.searchInput}
                 placeholderTextColor="#888"

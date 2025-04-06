@@ -1,1 +1,1 @@
-export const bidBaseUrl = "http://192.168.1.14:3002";
+export const bidBaseUrl = "https://drivebids-bidding-webserver-v2.onrender.com";

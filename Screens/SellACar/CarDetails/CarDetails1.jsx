@@ -6,16 +6,29 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
+import {useQuery} from "@tanstack/react-query";
+import axios from "axios";
 
 const CarDetails1 = () => {
-  const [selectedOption, setSelectedOption] = useState(null);
+  // const [selectedOption, setSelectedOption] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const navigation = useNavigation(); // Initialize navigation
+
+  const {data, isLoading} = useQuery({
+    queryKey: ['make'],
+    queryFn: async () => {
+      const result = await axios.get('https://www.carqueryapi.com/api/0.3/?cmd=getMakes');
+      return result.data;
+    }
+  });
+
+  const makes = data?.Makes;
 
   const {carState, dispatch} = useCar();
 
@@ -28,18 +41,31 @@ const CarDetails1 = () => {
     });
   };
 
-  const options = [
-    { id: 1, label: "Toyota" },
-    { id: 2, label: "Honda" },
-    { id: 3, label: "Ford" },
-    { id: 4, label: "BMW" },
-    { id: 5, label: "Mercedes" },
-    { id: 6, label: "Nissan" },
-    { id: 7, label: "Hyundai" },
-    { id: 8, label: "Chevrolet" },
-    { id: 9, label: "Kia" },
-    { id: 10, label: "Volkswagen" },
-  ];
+  let filteredMakes;
+  if(inputValue && makes) {
+    filteredMakes = makes.filter(make => make.make_display.toLowerCase().includes(inputValue.toLowerCase()));
+  } else {
+    filteredMakes = makes;
+  }
+
+  // const options = [
+  //   { id: 1, label: "Toyota" },
+  //   { id: 2, label: "Honda" },
+  //   { id: 3, label: "Ford" },
+  //   { id: 4, label: "BMW" },
+  //   { id: 5, label: "Mercedes" },
+  //   { id: 6, label: "Nissan" },
+  //   { id: 7, label: "Hyundai" },
+  //   { id: 8, label: "Chevrolet" },
+  //   { id: 9, label: "Kia" },
+  //   { id: 10, label: "Volkswagen" },
+  // ];
+
+  const onNext = () => {
+    if(carState.carDetails.make) {
+      navigation.navigate("CarDetails2");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -61,38 +87,43 @@ const CarDetails1 = () => {
       <View style={styles.inputWrapper}>
         <TextInput
           style={styles.input}
-          placeholder="Enter custom company"
+          placeholder="Search car make"
           placeholderTextColor="#999"
-          value={carState.carDetails.make}
-          onChangeText={onChangeCarMake}
+          value={inputValue}
+          onChangeText={setInputValue}
         />
       </View>
 
       {/* Clickable List */}
-      <FlatList
-        data={options}
-        keyExtractor={(item) => item.id.toString()}
+      {isLoading && (
+        <ActivityIndicator/>
+      )}
+      {!isLoading && (
+        <FlatList
+        data={filteredMakes}
+        keyExtractor={(item) => item.make_id}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => onChangeCarMake(item.label)}>
+          <TouchableOpacity onPress={() => onChangeCarMake(item.make_display)}>
             <Text
               style={[
                 styles.entityText,
-                carState.carDetails.make === item.label && styles.selectedText,
+                carState.carDetails.make === item.make_display && styles.selectedText,
               ]}
             >
-              {item.label}
+              {item.make_display}
             </Text>
             <View style={styles.separator} />
           </TouchableOpacity>
         )}
       />
+      )}
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
         <CustomButton
           style={styles.button}
           title="Next"
-          onPress={() => navigation.navigate("CarDetails2")}
+          onPress={onNext}
         />
         <View style={{ height: 10 }} />
         {/* <CustomButton
