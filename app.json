@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "DriveBidz",
-    "slug": "DriveBidz",
+    "slug": "drivebidz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -51,7 +51,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "154dda31-0857-46ee-b651-fda44f7d3446"
+        "projectId": "8d766b39-daaa-4d07-96b2-84c91a0969a3"
       }
     },
     "owner": "corax0"
