@@ -80,17 +80,22 @@ export default function AuthContextProvider ({children}) {
 
     //Initially Load user
     const initialLoad = async () => {
-        //Load isFirstTime value
-        const isFirstTime = await AsyncStorage.getItem('isFirstTime');
-        dispatch({type: 'setIsFirstTime', value: isFirstTime ? false : true});
+        try {
+            //Load isFirstTime value
+            const isFirstTime = await AsyncStorage.getItem('isFirstTime');
+            dispatch({type: 'setIsFirstTime', value: isFirstTime ? false : true});
 
-        const token = await AsyncStorage.getItem('token');
-        if(token) {
-            await loadUser(token);
+            const token = await AsyncStorage.getItem('token');
+            if(token) {
+                await loadUser(token);
+            }
         }
-
-        //Toggle Loading
-        dispatch({type: 'toggleLoading'});
+        catch(e) {
+            console.log(e.toString());
+        } finally {
+            //Toggle Loading
+            dispatch({type: 'toggleLoading'});
+        }
     };
 
     //On boarding complete

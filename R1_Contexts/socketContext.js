@@ -21,7 +21,7 @@ export default function SocketContextProvider ({children}) {
             const newSocket = io(bidBaseUrl, {
                 reconnection: true,
                 autoConnect: true,
-                reconnectionAttempts: 5,
+                reconnectionAttempts: 8,
                 reconnectionDelay: 2000, 
                 transports: ["websocket"], 
                 auth: {
@@ -67,7 +67,7 @@ export default function SocketContextProvider ({children}) {
             const newSocket = io(chatBaseUrl, {
                 reconnection: true,
                 autoConnect: true,
-                reconnectionAttempts: 5,
+                reconnectionAttempts: 8,
                 reconnectionDelay: 2000, 
                 transports: ["websocket"], 
                 auth: {

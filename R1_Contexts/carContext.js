@@ -209,7 +209,7 @@ export default function CarContextProvider({children}) {
         if(subSection) {
             const cleanedSubSection = {};
             for(const sub in carState[section]) {
-                if(carState[section][sub]) {
+                if(carState[section][sub] && carState[section][sub].length > 0) {
                     cleanedSubSection[sub] = carState[section][sub];
                 }
             }
