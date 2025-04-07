@@ -21,6 +21,8 @@ import { useAuth } from "../../R1_Contexts/authContext";
 import DialogBox from "../../CustomComponents/DialogBox";
 import { Icon } from "react-native-elements";
 import { Modal } from "react-native-paper";
+import { loginValidation, signupValidation, traderSignupValidation } from "../../R1_Validations/AuthValidations";
+import { validateForm } from "../../utils/validate";
 const { width, height } = Dimensions.get("window");
 
 const SignupScreen = () => {
@@ -30,16 +32,16 @@ const SignupScreen = () => {
   const [message, setMessage] = useState(null);
 
   //Form state
-  const [name, setName] = useState('');
-  const [city, setCity] = useState('');
-  const [country, setCountry] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState();
+  const [city, setCity] = useState();
+  const [country, setCountry] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const [showPassword, setShowPassword] = useState(false);
 
   //Trader
-  const [businessAddress, setBusinessAddress] = useState('');
+  const [businessAddress, setBusinessAddress] = useState();
 
   const [selectedTab, setSelectedTab] = useState("private");
   const [isChecked, setIsChecked] = useState(false);
@@ -73,7 +75,8 @@ const SignupScreen = () => {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      await signup({
+      //Validation
+      const body = {
         name,
         phoneNumber: {
           phoneNo: Number(phoneNumber),
@@ -85,7 +88,14 @@ const SignupScreen = () => {
         password,
         businessAddress,
         type: selectedTab === 'private' ? 'individual' : 'trader'
-      });
+      }
+      validateForm([signupValidation, loginValidation], body);
+
+      if(body.type === 'trader') {
+        validateForm([traderSignupValidation], body);
+      }
+
+      await signup(body);
       setMessage({ type: 'success', message: 'Signup successful, Log in now', title: 'Success' });
     }
     catch (e) {

@@ -21,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../R1_Contexts/authContext.js";
 import DialogBox from "../../CustomComponents/DialogBox.jsx";
 import { Icon } from "react-native-elements";
+import { loginValidation } from "../../R1_Validations/AuthValidations.js";
 
 const SignInScreen = () => {
 
@@ -40,6 +41,14 @@ const SignInScreen = () => {
   const handleLogin = async () => {
     setLoading(true);
     try {
+        //Validation
+        const result = loginValidation.safeParse({email, password});
+        if(!result.success) {
+          throw {
+            name: 'app',
+            message: result.error.errors[0].message,
+          }
+        }
         await login({email, password});
     }
     catch(e) {

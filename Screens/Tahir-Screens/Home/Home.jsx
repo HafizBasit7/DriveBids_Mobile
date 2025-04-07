@@ -21,6 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 import { listCars, listCarsByBidCount } from "../../../API_Callings/R1_API/Car";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import { Icon } from "react-native-elements";
+import { ActivityIndicator } from "react-native-paper";
 
 export default Home = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -53,18 +54,7 @@ export default Home = () => {
     refetchEnding();
   };
 
-  if(isLoading) {
-    return null;
-  }
-
-  if(endingCarListLoading) {
-    return null;
-  }
-
-  if(carsByBidCountLoading) {
-    return null;
-  }
-  
+ 
   const CARD_WIDTH = 230;
   const SEPARATOR_WIDTH = 10;
   const ITEM_WIDTH = CARD_WIDTH + SEPARATOR_WIDTH;
@@ -89,7 +79,9 @@ export default Home = () => {
         <HomeBanner />
         <SectionHeader marginCustom={20} title={"Spotlight Deals"} />
 
-        <FlatList
+        {!carsByBidCountLoading ? (
+          <>
+            <FlatList
           data={carsByBidCount.data.cars}
           keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
@@ -123,9 +115,13 @@ export default Home = () => {
             <Text style={styles.viewAllText}>View All</Text>
             <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
           </TouchableOpacity>
+          </>
+        ) : <ActivityIndicator/>}
         <SectionHeader title={"Ending Soonest"} />
 
-        <FlatList
+       {!endingCarListLoading ? (
+        <>
+           <FlatList
           data={endingCarList.data.cars}
           keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
@@ -150,15 +146,19 @@ export default Home = () => {
           })}
         />
            <TouchableOpacity
-  style={styles.viewAllButton}
-  onPress={() => navigation.navigate("ViewAllCarsScreen", { type: "ending" })}
->
-  <Text style={styles.viewAllText}>View All</Text>
-  <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
-</TouchableOpacity>
+              style={styles.viewAllButton}
+              onPress={() => navigation.navigate("ViewAllCarsScreen", { type: "ending" })}
+            >
+              <Text style={styles.viewAllText}>View All</Text>
+              <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
+            </TouchableOpacity>
+        </>
+       ) : <ActivityIndicator/>}
 
         <SectionHeader title={"Newly Listed"} />
-        <FlatList
+       {!isLoading ? (
+        <>
+           <FlatList
           data={data.data.cars}
           keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
@@ -190,6 +190,8 @@ export default Home = () => {
   <Icon name="chevron-right" type="feather" size={18} color="#2F61BF"  style={{marginBottom:29}}/>
   
 </TouchableOpacity>
+        </>
+       ) : <ActivityIndicator/>}
       </Animated.ScrollView>
     </View>
   );

@@ -1,3 +1,5 @@
+import { enableScreens } from 'react-native-screens';
+enableScreens();
 import useLoadFonts from "./Hooks/useLoadFonts";
 import R1_App from "./R1_App";
 import AuthContextProvider from "./R1_Contexts/authContext";

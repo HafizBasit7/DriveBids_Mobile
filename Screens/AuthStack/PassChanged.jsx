@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
-// import LottieView from "lottie-react-native";
+import LottieView from "lottie-react-native";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../../CustomComponents/CustomButton.js";
 import { useNavigation } from "@react-navigation/native";
@@ -43,12 +43,12 @@ const PassChanged = () => {
       {/* Content (Now directly below the image) */}
       <View style={styles.contentContainer}>
         {/* Lottie Animation */}
-        {/* <LottieView
+        <LottieView
           source={require("../../assets/UmairAssets/PassAnimation.json")}
           autoPlay
           loop={true}
           style={styles.lottie}
-        /> */}
+        />
 
         {/* Heading with Active Tab Indicator */}
         <View style={styles.headingContainer}>
@@ -100,10 +100,10 @@ const styles = StyleSheet.create({
     marginTop: 20, // Ensures content is just below the image
     alignItems: "center",
   },
-  // lottie: {
-  //   width: 150,
-  //   height: 150,
-  // },
+  lottie: {
+    width: 150,
+    height: 150,
+  },
   headingContainer: {
     alignItems: "center",
     // marginTop: 15,
