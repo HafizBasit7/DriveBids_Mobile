@@ -10,49 +10,51 @@ import { useAuth } from "../R1_Contexts/authContext";
 
 const Stack = createStackNavigator();
 
-export default function R1_AuthStack () {
-    const {authState} = useAuth();
+export default function R1_AuthStack() {
+  const { authState } = useAuth();
 
-    return (
-        <Stack.Navigator
-            initialRouteName={authState.isFirstTime ? "onboardingScreen" : 'SignInScreen'}
-        >
-            {/* Onboarding Screen without Header */}
-            <Stack.Screen
-                name="onboardingScreen"
-                component={OnboardingScreen}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="SignInScreen"
-                component={SignInScreen}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="Signupscreen"
-                component={SignupScreen}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="ForgetPass"
-                component={ForgetPass}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="CodeScreen"
-                component={CodeScreen}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="Reset"
-                component={Reset}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="PassChanged"
-                component={PassChanged}
-                options={{ headerShown: false }}
-            />
-        </Stack.Navigator>
-    );
+  return (
+    <Stack.Navigator
+      initialRouteName={
+        authState.isFirstTime ? "onboardingScreen" : "SignInScreen"
+      }
+    >
+      {/* Onboarding Screen without Header */}
+      <Stack.Screen
+        name="onboardingScreen"
+        component={OnboardingScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SignInScreen"
+        component={SignInScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Signupscreen"
+        component={SignupScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ForgetPass"
+        component={ForgetPass}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CodeScreen"
+        component={CodeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Reset"
+        component={Reset}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PassChanged"
+        component={PassChanged}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
 }
