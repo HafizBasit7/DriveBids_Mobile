@@ -13,6 +13,11 @@ const attachmentValidation = zod.object({
     url: zod.string(),
 });
 
+const locationValidation = zod.object({
+    name: zod.string({message: 'Location name is not correct'}),
+    coordinates: zod.array(zod.number()).length(2, 'Location is not correct')    
+}, {message: 'Location is not valid or given'});
+
 //Car pricing
 export const carPricingValidation = zod.object({
     staringBidPrice: zod.number({required_error: 'starting bid price is missing'}),
@@ -65,7 +70,7 @@ export const carDetailsValidation = zod.object({
     make: zod.string({required_error: 'make is missing'}),
     model: zod.number({required_error: 'model is missing'}),
     variant: zod.string({required_error: 'variant is missing'}),
-    city: zod.string({required_error: 'city is missing'}),
+    location: locationValidation,
     mileage: zod.number({required_error: ' mileage is missing'}),
     fuel: zod.enum(['Petrol', 'Diesel', 'HI-Octane', 'Electric', 'Hybrid']),
     color: zod.string({required_error: 'color is missing'}),

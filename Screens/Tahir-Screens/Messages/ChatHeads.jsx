@@ -111,7 +111,7 @@ const ChatHeads = () => {
       },
       ...newPagesData.slice(1)
     ];
-    queryClient.setQueryData(['chats', type], {pageParams: cacheData.pageParams, pages: newPagesData});
+    queryClient.setQueryData(['chats', message.type], {pageParams: cacheData.pageParams, pages: newPagesData});
   };
 
   const renderMessageItem = ({ item }) => {

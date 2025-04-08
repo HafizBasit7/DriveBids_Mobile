@@ -3,13 +3,11 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  TextInput,
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const CarDetails2 = () => {
   const navigation = useNavigation(); // Initialize navigation
@@ -20,23 +18,10 @@ const CarDetails2 = () => {
     dispatch({
       type: 'UPDATE_FIELD',
       section: 'carDetails',
-      field: 'city',
+      field: 'location',
       value,
     });
   };
-
-  const options = [
-    { id: 1, label: "New York" },
-    { id: 2, label: "Los Angeles" },
-    { id: 3, label: "Chicago" },
-    { id: 4, label: "Houston" },
-    { id: 5, label: "Miami" },
-    { id: 6, label: "San Francisco" },
-    { id: 7, label: "Dallas" },
-    { id: 8, label: "Boston" },
-    { id: 9, label: "Seattle" },
-    { id: 10, label: "Washington D.C." },
-  ];
 
   return (
     <View style={styles.container}>
@@ -53,20 +38,60 @@ const CarDetails2 = () => {
         <Text style={styles.lineText2}>City</Text>
         <View style={styles.line} />
       </View>
-
       {/* Input Field */}
-      <View style={styles.inputWrapper}>
-        <TextInput
-          style={styles.input}
-          placeholder="Search City..."
-          placeholderTextColor="#999"
-          value={carState.carDetails.city}
-          onChangeText={onChangeCarCity}
+      {/* <View style={styles.inputWrapper}>
+        <GooglePlacesAutocomplete
+          placeholder='Search'
+          fetchDetails={true}
+          onPress={(data, details = null) => {
+            console.log(data, details);
+          }}
+          onFail={(error) => console.error(error)}
+          query={{
+            key: 'AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI',
+            language: 'en',
+          }}
         />
-      </View>
+      </View> */}
+
+      <GooglePlacesAutocomplete
+        placeholder='Search'
+        fetchDetails={true}
+        onPress={(data, details = null) => {
+          const updateLocation = {
+            name: data.description,
+            coordinates: [
+              details.geometry.location.lat,
+              details.geometry.location.lng,
+            ]
+          };
+          onChangeCarCity(updateLocation);
+        }}
+        onFail={(error) => console.error(error)}
+        query={{
+          key: 'AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI',
+          language: 'en',
+        }}
+        textInputProps={{
+          value: carState.carDetails?.location?.name
+        }}
+        styles={{
+          textInputContainer: {
+            flexDirection: "row",
+            alignItems: "center",
+            borderWidth: 1,
+            borderColor: "#ccc",
+            borderRadius: 10,
+            paddingHorizontal: 15,
+            marginHorizontal: 20,
+            height: 55,
+            marginTop: 10,
+          },
+        }}
+      />
 
       {/* Clickable List */}
-      <FlatList
+      {/* <FlatList
         data={options}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
@@ -82,7 +107,7 @@ const CarDetails2 = () => {
             <View style={styles.separator} />
           </TouchableOpacity>
         )}
-      />
+      /> */}
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
@@ -134,17 +159,17 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "700",
   },
-  inputWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginHorizontal: 20,
-    height: 55,
-    marginTop: 10,
-  },
+  // inputWrapper: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   borderWidth: 1,
+  //   borderColor: "#ccc",
+  //   borderRadius: 10,
+  //   paddingHorizontal: 15,
+  //   marginHorizontal: 20,
+  //   height: 55,
+  //   marginTop: 10,
+  // },
   input: {
     flex: 1,
     fontSize: 16,

@@ -15,7 +15,7 @@ const initialState = {
         make: null,
         model: null,
         variant: null,
-        city: null,
+        location: null,
         mileage: null,
         fuel: null,
         color: null,
