@@ -78,6 +78,7 @@ const SignupScreen = () => {
 
   const handleLogin = async () => {
     setLoading(true);
+
     try {
       //Validation
       const body = {
@@ -88,8 +89,8 @@ const SignupScreen = () => {
         },
         city,
         country,
-        email: email.trim(),
-        password: password.trim(),
+        email: email ? email.trim() : email,
+        password: password ? password.trim() : password,
         businessAddress,
         type: selectedTab === "private" ? "individual" : "trader",
       };
@@ -102,7 +103,7 @@ const SignupScreen = () => {
         setMessage({
           type: "error",
           message: "Please agree to terms & conditions.",
-          title: "Success",
+          title: "Error",
         });
         return;
       }
@@ -128,7 +129,13 @@ const SignupScreen = () => {
       <DialogBox
         visible={loading ? true : message ? true : false}
         message={message?.message}
-        onOkPress={() => setMessage(null)}
+        onOkPress={() => {
+          if (message.type == "success") {
+            setMessage(null);
+            navigation.navigate("SignInScreen");
+          }
+          setMessage(null);
+        }}
         type={message?.type}
         loading={loading}
         title={message?.title || ""}

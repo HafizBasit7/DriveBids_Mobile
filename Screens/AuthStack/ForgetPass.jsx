@@ -38,7 +38,7 @@ const ForgetPass = () => {
     //Send email
     setLoading(true);
     try {
-      await sendResetOtp({ email: email.trim() });
+      await sendResetOtp({ email: email ? email.trim() : email });
       navigation.navigate("CodeScreen");
     } catch (e) {
       setMessage({
