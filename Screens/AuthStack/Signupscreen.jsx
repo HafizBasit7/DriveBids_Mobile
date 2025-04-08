@@ -21,7 +21,11 @@ import { useAuth } from "../../R1_Contexts/authContext";
 import DialogBox from "../../CustomComponents/DialogBox";
 import { Icon } from "react-native-elements";
 import { Modal } from "react-native-paper";
-import { loginValidation, signupValidation, traderSignupValidation } from "../../R1_Validations/AuthValidations";
+import {
+  loginValidation,
+  signupValidation,
+  traderSignupValidation,
+} from "../../R1_Validations/AuthValidations";
 import { validateForm } from "../../utils/validate";
 const { width, height } = Dimensions.get("window");
 
@@ -47,23 +51,23 @@ const SignupScreen = () => {
   const [isChecked, setIsChecked] = useState(false);
   const navigation = useNavigation("");
   const [countryModalVisible, setCountryModalVisible] = useState(false);
-  const [countryCode, setCountryCode] = useState('+92');  
+  const [countryCode, setCountryCode] = useState("+92");
 
   // Country codes list
   const countryCodes = [
-    { code: '+1', country: 'USA' },
-    { code: '+91', country: 'India' },
-    { code: '+44', country: 'UK' },
-    { code: '+971', country: 'UAE' },
-    { code: '+61', country: 'Australia' },
+    { code: "+1", country: "USA" },
+    { code: "+91", country: "India" },
+    { code: "+44", country: "UK" },
+    { code: "+971", country: "UAE" },
+    { code: "+61", country: "Australia" },
   ];
-  
+
   const handleCountrySelect = (item) => {
     console.log("Selected Country: ", item);
     setCountryCode(item.code);
-    setCountryModalVisible(false);  // Close the modal
+    setCountryModalVisible(false); // Close the modal
   };
-  
+
   const handleTermsClick = () => {
     Linking.openURL("https://example.com/terms");
   };
@@ -80,26 +84,33 @@ const SignupScreen = () => {
         name,
         phoneNumber: {
           phoneNo: Number(phoneNumber),
-          countryCode: Number(countryCode.replace('+', '')),
+          countryCode: Number(countryCode.replace("+", "")),
         },
         city,
         country,
         email,
         password,
         businessAddress,
-        type: selectedTab === 'private' ? 'individual' : 'trader'
-      }
+        type: selectedTab === "private" ? "individual" : "trader",
+      };
       validateForm([signupValidation, loginValidation], body);
 
-      if(body.type === 'trader') {
+      if (body.type === "trader") {
         validateForm([traderSignupValidation], body);
       }
 
       await signup(body);
-      setMessage({ type: 'success', message: 'Signup successful, Log in now', title: 'Success' });
-    }
-    catch (e) {
-      setMessage({ type: 'error', message: e.message || e.msg, title: 'Error' });
+      setMessage({
+        type: "success",
+        message: "Signup successful, Log in now",
+        title: "Success",
+      });
+    } catch (e) {
+      setMessage({
+        type: "error",
+        message: e.message || e.msg,
+        title: "Error",
+      });
     } finally {
       setLoading(false);
     }
@@ -113,7 +124,7 @@ const SignupScreen = () => {
         onOkPress={() => setMessage(null)}
         type={message?.type}
         loading={loading}
-        title={message?.title || ''}
+        title={message?.title || ""}
       />
 
       <StatusBar
@@ -173,112 +184,137 @@ const SignupScreen = () => {
           selectedTab === "private" ? styles.privateBg : styles.tradeBg,
         ]}
       >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.inputContainer}
-        >
-          <ScrollView showsVerticalScrollIndicator={false} 
-          >
-            <View >
-              <View style={styles.inputWrapper}>
-                <Text style={styles.label}>Name</Text>
-                <TextInput style={styles.input} placeholder="Enter your name" value={name} onChangeText={setName} />
-              </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>Name</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your name"
+                value={name}
+                onChangeText={setName}
+              />
+            </View>
 
-              <View style={styles.inputWrapper}>
-                <Text style={styles.label}>City</Text>
-                <TextInput style={styles.input} placeholder="Enter your city" value={city} onChangeText={setCity} />
-              </View>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>City</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your city"
+                value={city}
+                onChangeText={setCity}
+              />
+            </View>
 
-              <View style={styles.inputWrapper}>
-                <Text style={styles.label}>Country</Text>
-                <TextInput style={styles.input} placeholder="Enter your country" value={country} onChangeText={setCountry} />
-              </View>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>Country</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your country"
+                value={country}
+                onChangeText={setCountry}
+              />
+            </View>
 
-                  <View style={styles.inputWrapper}>
-                    <Text style={styles.label}>Phone Number</Text>
-                 <View style={styles.phoneInputContainer}>
-                   <TouchableOpacity
-                    style={styles.countryCodePicker}
-                   onPress={() => setCountryModalVisible(true)}
-                    >
-                 <Text style={styles.countryCodeText}>{countryCode}</Text>
-                 <Icon name="arrow-drop-down" type="material" size={20} color="#333" />
-                 </TouchableOpacity>
-
-                 <TextInput
-                 style={styles.inputnum}
-                placeholder="Enter your phone number"
-                keyboardType="phone-pad"
-                value={phoneNumber}
-                  onChangeText={setPhoneNumber}
-                     />
-                </View>
-                  </View>
-
-                <View style={styles.inputWrapper}>
-                <Text style={styles.label}>Email</Text>
-                <TextInput style={styles.input} placeholder="Enter your email" value={email} onChangeText={setEmail} />
-                    </View>
-
-                  <View style={styles.inputWrapper}>
-                <Text style={styles.label}>Password</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter your password"
-                  secureTextEntry={!showPassword}
-                  
-                  value={password} onChangeText={setPassword}
-                />
-                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-                  <Icon name={showPassword ? "eye-off" : "eye"} type="feather" size={22} color="#888" />
-                </TouchableOpacity>
-              </View>
-
-              {selectedTab === "trade" && (
-                <View style={styles.inputWrapper}>
-                  <Text style={styles.label}>Business Address</Text>
-                  <TextInput
-                    value={businessAddress}
-                    onChangeText={setBusinessAddress}
-                    style={styles.input}
-                    placeholder="Enter your business address"
-
-                  />
-                </View>
-              )}
-
-              {/* Checkbox */}
-              
-              <View style={styles.checkboxContainer}>
-                <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
-                  <BouncyCheckbox
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>Phone Number</Text>
+              <View style={styles.phoneInputContainer}>
+                <TouchableOpacity
+                  style={styles.countryCodePicker}
+                  onPress={() => setCountryModalVisible(true)}
+                >
+                  <Text style={styles.countryCodeText}>{countryCode}</Text>
+                  <Icon
+                    name="arrow-drop-down"
+                    type="material"
                     size={20}
-                    fillColor="#2F61BF"
-                    unfillColor="#FFFFFF"
-                  
-                    iconStyle={{ borderColor: "#2F61BF"}}
-                    isChecked={isChecked}
-                    disableBuiltInState={true}
-                    onPress={() => setIsChecked(!isChecked)}
-                    style={{ marginTop: 5 }} 
+                    color="#333"
                   />
                 </TouchableOpacity>
 
-                <Text style={styles.checkboxText}>
-                  I agree to the{"  "}
-                  <TouchableOpacity onPress={handleTermsClick}>
-                    <Text style={styles.clickableText}>terms&conditions</Text>
-                  </TouchableOpacity>{""}
-                  
-                  <TouchableOpacity  onPress={handleTermsClick}>
-                    <Text style={styles.clickableText}></Text>
-                  </TouchableOpacity>
-                </Text>
+                <TextInput
+                  style={styles.inputnum}
+                  placeholder="Enter your phone number"
+                  keyboardType="phone-pad"
+                  value={phoneNumber}
+                  onChangeText={setPhoneNumber}
+                />
               </View>
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
+
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>Email</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your email"
+                value={email}
+                onChangeText={setEmail}
+              />
+            </View>
+
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>Password</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your password"
+                secureTextEntry={!showPassword}
+                value={password}
+                onChangeText={setPassword}
+              />
+              <TouchableOpacity
+                onPress={() => setShowPassword(!showPassword)}
+                style={styles.eyeIcon}
+              >
+                <Icon
+                  name={showPassword ? "eye-off" : "eye"}
+                  type="feather"
+                  size={22}
+                  color="#888"
+                />
+              </TouchableOpacity>
+            </View>
+
+            {selectedTab === "trade" && (
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>Business Address</Text>
+                <TextInput
+                  value={businessAddress}
+                  onChangeText={setBusinessAddress}
+                  style={styles.input}
+                  placeholder="Enter your business address"
+                />
+              </View>
+            )}
+
+            {/* Checkbox */}
+
+            <View style={styles.checkboxContainer}>
+              <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
+                <BouncyCheckbox
+                  size={20}
+                  fillColor="#2F61BF"
+                  unfillColor="#FFFFFF"
+                  iconStyle={{ borderColor: "#2F61BF" }}
+                  isChecked={isChecked}
+                  disableBuiltInState={true}
+                  onPress={() => setIsChecked(!isChecked)}
+                  style={{ marginTop: 5 }}
+                />
+              </TouchableOpacity>
+
+              <Text style={styles.checkboxText}>
+                I agree to the{"  "}
+                <TouchableOpacity onPress={handleTermsClick}>
+                  <Text style={styles.clickableText}>terms&conditions</Text>
+                </TouchableOpacity>
+                {""}
+                <TouchableOpacity onPress={handleTermsClick}>
+                  <Text style={styles.clickableText}></Text>
+                </TouchableOpacity>
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
       </View>
 
       {/* Bottom Buttons Container */}
@@ -308,7 +344,9 @@ const SignupScreen = () => {
                   style={styles.modalItem}
                   onPress={() => handleCountrySelect(item)}
                 >
-                  <Text style={styles.modalText}>{item.country} ({item.code})</Text>
+                  <Text style={styles.modalText}>
+                    {item.country} ({item.code})
+                  </Text>
                 </TouchableOpacity>
               )}
             />
@@ -330,7 +368,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#fff",
-
   },
   backIconContainer: {
     position: "absolute",
@@ -371,7 +408,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-    backgroundColor:"#FEE226"
+    backgroundColor: "#FEE226",
   },
   activeTabIndicator: {
     position: "absolute",
@@ -392,16 +429,16 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   contentContainer: {
-    width: "100%",
-    height: 400,
+    flex: 1,
     padding: 20,
+
     elevation: 5,
     shadowColor: "#000",
     shadowOffset: { width: 1, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
 
-   
+    paddingBottom: 30,
   },
   privateBg: {
     backgroundColor: "#fff",
@@ -411,7 +448,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginTop: 10,
-    flexGrow:1
+    flexGrow: 1,
   },
   inputWrapper: {
     marginBottom: 15,
@@ -431,10 +468,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: "#fff",
     fontFamily: "Inter-Regular",
-    
   },
   inputnum: {
-    minWidth:"78%",
+    minWidth: "78%",
     height: 55,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -442,7 +478,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: "#fff",
     fontFamily: "Inter-Regular",
-    
   },
   phoneInputContainer: {
     flexDirection: "row",
@@ -472,7 +507,6 @@ const styles = StyleSheet.create({
   checkboxText: {
     fontSize: 14,
     color: "#333",
-
   },
   clickableText: {
     color: "#2F61BF",
@@ -482,12 +516,12 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-Regular",
   },
   bottomContainer: {
-    position: "absolute",
+    // position: "absolute",
     bottom: 20,
+
     width: "100%",
     paddingHorizontal: 20,
-    backgroundColor:"#fff",
-    
+    backgroundColor: "#fff",
   },
   loginTextContainer: {
     flexDirection: "row",
@@ -498,7 +532,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#000",
     fontFamily: "Inter-Regular",
-    fontWeight: "700"
+    fontWeight: "700",
   },
   loginLink: {
     fontSize: 14,
@@ -513,7 +547,6 @@ const styles = StyleSheet.create({
     top: 45,
   },
   modalOverlay: {
-    
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.0)",
