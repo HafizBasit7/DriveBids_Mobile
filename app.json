@@ -4,13 +4,13 @@
     "slug": "drivebidz",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/adaptive-icon.png",
     "newArchEnabled": true,
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/adaptive-icon.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#FEE226"
     },
     "ios": {
       "supportsTablet": true
@@ -22,11 +22,11 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-          "android.permission.RECORD_AUDIO",
-          "android.permission.CAMERA",
-          "android.permission.READ_EXTERNAL_STORAGE",
-          "android.permission.WRITE_EXTERNAL_STORAGE",
-          "android.permission.INTERNET"
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.INTERNET"
       ],
       "package": "com.umairarshad.DriveBidz"
     },
@@ -47,7 +47,7 @@
       ]
     ],
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/adaptive-icon.png"
     },
     "extra": {
       "eas": {
