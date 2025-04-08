@@ -12,15 +12,15 @@ const VehicleReg = () => {
 
   function onChangeTextReg(value) {
     dispatch({
-      type: 'UPDATE_FIELD',
-      field: 'regNo',
+      type: "UPDATE_FIELD",
+      field: "regNo",
       value,
     });
   }
 
   function nextPage() {
     if (!carState.regNo) {
-      console.log('Enter reg no');
+      console.log("Enter reg no");
       return;
     } else {
       navigation.navigate("VehicleInfo");
@@ -51,8 +51,10 @@ const VehicleReg = () => {
         <CustomButton
           title="Sell my car"
           onPress={nextPage}
-          disabled={carState.regNo ? false: true}
-          backgroundColor={carState.regNo ? '#ccc' : GlobalStyles.colors.primary}
+          disabled={carState.regNo ? false : true}
+          backgroundColor={
+            carState.regNo ? "#ccc" : GlobalStyles.colors.primary
+          }
         />
       </View>
     </View>
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   inputWrapper: {
-    position: 'relative',
+    position: "relative",
     width: "100%",
     marginBottom: 10,
   },
@@ -98,11 +100,11 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   placeholder: {
-    position: 'absolute',
+    position: "absolute",
     left: 15,
     top: 18,
     fontSize: 18,
-    fontFamily: "Inter-Light",
+    fontFamily: "Inter-Regular",
     fontWeight: "500",
     color: "#999",
   },
