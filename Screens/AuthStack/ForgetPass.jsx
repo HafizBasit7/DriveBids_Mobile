@@ -32,17 +32,20 @@ const ForgetPass = () => {
 
   const handleSendCode = async () => {
     if (email.trim() === "") {
-      setMessage({type: 'error', message: 'Enter email', title: 'Error'});
+      setMessage({ type: "error", message: "Enter email", title: "Error" });
       return;
     }
     //Send email
     setLoading(true);
     try {
-        await sendResetOtp({email});
-        navigation.navigate("CodeScreen");
-    }
-    catch(e) {
-        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+      await sendResetOtp({ email: email.trim() });
+      navigation.navigate("CodeScreen");
+    } catch (e) {
+      setMessage({
+        type: "error",
+        message: e.message || e.msg,
+        title: "Error",
+      });
     } finally {
       setLoading(false);
     }
@@ -50,13 +53,13 @@ const ForgetPass = () => {
 
   return (
     <>
-       <DialogBox
+      <DialogBox
         visible={loading ? true : message ? true : false}
         message={message?.message}
         onOkPress={() => setMessage(null)}
         type={message?.type}
         loading={loading}
-        title={message?.title || ''}
+        title={message?.title || ""}
       />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "padding"}
@@ -71,8 +74,11 @@ const ForgetPass = () => {
             />
 
             <View style={styles.backIconContainer}>
-              <BackIcon width={30} height={30}   onPress={() => navigation.navigate("SignInScreen")}/>
-              
+              <BackIcon
+                width={30}
+                height={30}
+                onPress={() => navigation.navigate("SignInScreen")}
+              />
             </View>
             <View style={styles.topImage}>
               <Image
@@ -144,7 +150,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor:"#fff"
+    backgroundColor: "#fff",
   },
   backIconContainer: {
     position: "absolute",
@@ -160,22 +166,22 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 10,
     paddingHorizontal: 15,
-    backgroundColor:"#fff"
+    backgroundColor: "#fff",
   },
 
   heading: {
     fontSize: 28,
     fontFamily: "Inter-Bold",
     color: "#000",
-    marginBottom:10
+    marginBottom: 10,
   },
   description: {
     fontSize: 16,
     color: "#555",
- 
+
     width: "90%",
     fontFamily: "Inter-Regular",
-    marginBottom:15
+    marginBottom: 15,
   },
   activeTabIndicator: {
     marginTop: "5%",
@@ -218,7 +224,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 0,
-    marginBottom: 25
+    marginBottom: 25,
   },
   accountText: {
     fontSize: 14,

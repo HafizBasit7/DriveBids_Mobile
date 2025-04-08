@@ -88,8 +88,8 @@ const SignupScreen = () => {
         },
         city,
         country,
-        email,
-        password,
+        email: email.trim(),
+        password: password.trim(),
         businessAddress,
         type: selectedTab === "private" ? "individual" : "trader",
       };
@@ -98,7 +98,14 @@ const SignupScreen = () => {
       if (body.type === "trader") {
         validateForm([traderSignupValidation], body);
       }
-
+      if (!isChecked) {
+        setMessage({
+          type: "error",
+          message: "Please agree to terms & conditions.",
+          title: "Success",
+        });
+        return;
+      }
       await signup(body);
       setMessage({
         type: "success",
@@ -377,7 +384,7 @@ const styles = StyleSheet.create({
   },
   topImage: {
     width: "100%",
-    height: height * 0.4,
+    height: height * 0.3,
     resizeMode: "cover",
   },
   rowContainer: {
@@ -411,17 +418,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#FEE226",
   },
   activeTabIndicator: {
-    position: "absolute",
-    width: "64%",
-    height: 14,
-    backgroundColor: "yellow",
-    borderRadius: 10,
-    opacity: 0.6,
-    transform: [{ rotate: "-1deg" }],
-    shadowColor: "#000",
-    shadowOffset: { width: 2, height: 2 },
-    bottom: "35%",
-    zIndex: -1,
+    // position: "absolute",
+    // width: "64%",
+    // height: 14,
+    // backgroundColor: "green",
+    // borderRadius: 10,
+    // opacity: 0.6,
+    // transform: [{ rotate: "-1deg" }],
+    // shadowColor: "#000",
+    // shadowOffset: { width: 2, height: 2 },
+    // bottom: "35%",
+    // zIndex: -1,
   },
   boxText: {
     fontSize: 20,
@@ -517,7 +524,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     // position: "absolute",
-    bottom: 20,
+    bottom: 10,
 
     width: "100%",
     paddingHorizontal: 20,
