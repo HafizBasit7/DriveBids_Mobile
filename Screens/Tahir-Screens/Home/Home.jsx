@@ -77,7 +77,7 @@ export default Home = () => {
         showsVerticalScrollIndicator={false}
       >
         <HomeBanner />
-        <SectionHeader marginCustom={20} title={"Spotlight Deals"} />
+        <SectionHeader marginCustom={20} title={"Featured Adds"} />
 
         {!carsByBidCountLoading ? (
           <>

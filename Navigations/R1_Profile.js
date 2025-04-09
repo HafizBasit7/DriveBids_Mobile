@@ -9,6 +9,7 @@ import Terms from "../Screens/Tahir-Screens/TermsAndConditions/Terms";
 import NotificationSettingsScreen from "../Screens/Tahir-Screens/NotificationSetting/NotificationSetting";
 import PasswordChangeScreen from "../Screens/Tahir-Screens/ChangePassword/ChangePassword";
 import MyAds from "../Screens/Tahir-Screens/MyAds/MyAds";
+import CompletedDeals from "../Screens/RehanScreens/CompletedDeals";
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export default function R1_Profile() {
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="MyAds" component={MyAds} />
       <Stack.Screen name="MyBids" component={MyBids} />
+      <Stack.Screen name="CompletedDeals" component={CompletedDeals} />
       <Stack.Screen name="WatchList" component={WatchList} />
       <Stack.Screen name="NotificationSettingsScreen" component={NotificationSettingsScreen}/>
       <Stack.Screen name="PasswordChangeScreen" component={PasswordChangeScreen}/>

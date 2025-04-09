@@ -30,7 +30,7 @@ const BiddingHistory = ({car}) => {
       </View>
 
       {/* Expandable Content */}
-      {(isExpanded && isLoading) && (<ActivityIndicator/>)}
+      {(isExpanded && isLoading) && (<ActivityIndicator style={{marginTop: 20}}/>)}
       {(isExpanded && !isLoading) && (
         <View style={styles.biddingList}>
           {bids.map((bid, index) => {

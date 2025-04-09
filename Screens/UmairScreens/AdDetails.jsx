@@ -76,7 +76,7 @@ const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
         <View style={styles.container}>
           <View style={styles.lineContainer}>
             <View style={styles.fullLine} />
-            <Text style={styles.lineText}>Car Details</Text>
+            <Text style={styles.lineText}>{car.title}</Text>
             <View style={styles.fullLine} />
           </View>
 
@@ -84,28 +84,40 @@ const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
 <View style={styles.boxedLineContainer}>
   {/* Left Line - Fills left to right */}
   <View style={styles.smallLine}>
-    <View style={[styles.progressFill, { width: progressWidth }]} />
+    <View style={[...(car.status === 'sold' ?  [] : [styles.progressFill]), { width: car.status === 'sold' ? '100%' : progressWidth }]} />
   </View>
 
   {/* Center Box */}
-  <View style={styles.centerBox}>
-  <Text
-    style={[
-      styles.centerText,
-      car.reserveMet && { color: '#3BBF2F' } 
-    ]}
-  >
-    RESERVE {car.reserveMet ? '' : 'NOT'} MET
-  </Text>
+  <View style={[styles.centerBox, {backgroundColor: car.status === 'sold' ? '#ccc' : null}]}>
+  {car.status !== 'sold' && (
+    <Text
+      style={[
+        styles.centerText,
+        car.reserveMet && { color: '#3BBF2F' } 
+      ]}
+    >
+      RESERVE {car.reserveMet ? '' : 'NOT'} MET
+    </Text>
+  )}
+  {car.status === 'sold' && (
+    <Text
+      style={[
+        styles.centerText,
+        { color: '#FFFFFF' } 
+      ]}
+    >
+      CAR SOLD
+    </Text>
+  )}
   </View>
 
   {/* Right Line - Fills right to left */}
   <View style={styles.smallLine}>
-    <View style={[styles.progressFill, styles.rightProgress, { width: progressWidth }]} />
+    <View style={[...(car.status === 'sold' ?  [] : [styles.progressFill]), styles.rightProgress, { width: car.status === 'sold' ? '100%' : progressWidth }]} />
   </View>
 </View>
           <MakeModel car={car}/>
-          {!isMyBid && (<BidsButtons car={car}/>)}
+          {(!isMyBid && car.status !== 'sold') && (<BidsButtons car={car}/>)}
           {!isMyBid && (
             <>
               <SectionHeader title={"Owner Details"} />

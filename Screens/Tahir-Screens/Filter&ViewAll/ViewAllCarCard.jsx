@@ -16,6 +16,7 @@ const ViewAllCarCard = ({
   notHome = false,
   isFromMyBids = false,
   bid,
+  isFromCompletedDeals = false,
 }) => {
 
   const navigation = useNavigation();
@@ -201,10 +202,12 @@ const ViewAllCarCard = ({
         
         <View style={styles.bottomRow}>
           <View style={styles.bidTimeContainer}>
-            <View>
-              <Text style={styles.topBidText}>Top Bid</Text>
-              <Text style={styles.priceText}>AED {formatAmount(ad.highestBid)}</Text>
-            </View>
+            {!isFromCompletedDeals && (
+              <View>
+                <Text style={styles.topBidText}>Top Bid</Text>
+                <Text style={styles.priceText}>AED {formatAmount(ad.highestBid)}</Text>
+              </View>
+            )}
             {isFromMyBids && (
               <View>
                 <Text style={styles.topBidText}>My Bid</Text>

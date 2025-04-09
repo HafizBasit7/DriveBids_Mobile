@@ -21,8 +21,8 @@ export default function useLoadFonts() {
 
       if (fontsLoaded) {
         setFontReady(true);
-        // Only hide splash screen when fonts are fully loaded
-        await SplashScreen.hideAsync();
+        // Do not hide splash screen, hide on auth load completion
+        // await SplashScreen.hideAsync();
       }
     }
     prepare();

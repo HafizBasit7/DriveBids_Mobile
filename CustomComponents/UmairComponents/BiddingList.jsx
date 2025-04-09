@@ -55,7 +55,7 @@ const BiddingList = ({car}) => {
         <View style={styles.fullLine} />
       </View>
 
-      {(isExpanded && isLoading) && (<ActivityIndicator/>)}
+      {(isExpanded && isLoading) && (<ActivityIndicator style={{marginTop: 20}}/>)}
 
       {/* Expandable Content */}
       {(isExpanded && !isLoading) && (

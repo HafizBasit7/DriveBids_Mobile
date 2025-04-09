@@ -43,6 +43,16 @@ const ProfileScreen = () => {
       },
     },
     {
+      id: "completeddeals",
+      title: "Completed Deals",
+      icon: "directions-car",
+      iconType: "material",
+      iconColor: GlobalStyles.colors.ButtonColor,
+      onClick: () => {
+        navigation.navigate("CompletedDeals");
+      },
+    },
+    {
       id: "watchlist",
       title: "Watchlist",
       icon: "favorite",

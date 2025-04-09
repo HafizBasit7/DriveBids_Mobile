@@ -12,6 +12,7 @@ export default function R1_Messages() {
       screenOptions={{
         headerShown: false,
       }}
+      initialRouteName="ChatHeads"
     >
       <Stack.Screen name="ChatHeads" component={ChatHeads} />
       <Stack.Screen name="ActiveChatBox" component={ActiveChatBox} />

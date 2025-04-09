@@ -400,3 +400,29 @@ export const searchCars = async (params = {}, page = 1, limit = 10) => {
         throw e;
     }
 };
+
+export const getCompletedDeals = async (page = 1, limit = 10, type = 'buy') => {
+    try {
+        const result = await apiClient.get(`/car/completedDeals?page=${page}&limit=${limit}&type=${type}`);
+        const resultData = result.data;
+
+        if(!resultData.status) {
+            throw {
+                name: 'app',
+                message: resultData.message,
+            };
+        }
+
+        return resultData; 
+    }
+    catch(e) {
+        if(e.response?.data) {
+            throw {
+                name: 'app',
+                ...e.response.data,
+            }
+        }
+        throw e;
+    }
+};
+

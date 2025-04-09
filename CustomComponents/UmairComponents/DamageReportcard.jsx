@@ -79,7 +79,7 @@ const DamageReportCarousel = ({car}) => {
             </TouchableOpacity>
 
             {/* Open Modal on Image Click */}
-            <TouchableOpacity onPress={() => {}}>
+            {/* <TouchableOpacity onPress={() => {}}> */}
               <Image source={carSides[currentIndex]} style={styles.carImage} />
               {damageReport && damageReport.map((marker, index) => {
                 if(marker.imageIndex === currentIndex) {
@@ -89,7 +89,7 @@ const DamageReportCarousel = ({car}) => {
                       onPress={() => toggleDamage(marker)}
                       key={index}
                       name={option.icon}
-                      size={20}
+                      size={24}
                       color={option.color}
                       style={{
                         position: "absolute",
@@ -101,7 +101,7 @@ const DamageReportCarousel = ({car}) => {
                   );
                 }
               })}
-            </TouchableOpacity>
+            {/* </TouchableOpacity> */}
 
             <TouchableOpacity onPress={handleNext}>
               <Icon name="chevron-right" size={24} color="#2A5DB0" />

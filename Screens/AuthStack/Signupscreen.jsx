@@ -27,6 +27,7 @@ import {
   traderSignupValidation,
 } from "../../R1_Validations/AuthValidations";
 import { validateForm } from "../../utils/validate";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 const { width, height } = Dimensions.get("window");
 
 const SignupScreen = () => {
@@ -37,8 +38,7 @@ const SignupScreen = () => {
 
   //Form state
   const [name, setName] = useState();
-  const [city, setCity] = useState();
-  const [country, setCountry] = useState();
+  const [location, setLocation] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -87,8 +87,7 @@ const SignupScreen = () => {
           phoneNo: Number(phoneNumber),
           countryCode: Number(countryCode.replace("+", "")),
         },
-        city,
-        country,
+        location,
         email: email ? email.trim() : email,
         password: password ? password.trim() : password,
         businessAddress,
@@ -198,7 +197,7 @@ const SignupScreen = () => {
           selectedTab === "private" ? styles.privateBg : styles.tradeBg,
         ]}
       >
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
           <View>
             <View style={styles.inputWrapper}>
               <Text style={styles.label}>Name</Text>
@@ -210,7 +209,48 @@ const SignupScreen = () => {
               />
             </View>
 
-            <View style={styles.inputWrapper}>
+            <Text style={styles.label}>Location</Text>
+            <GooglePlacesAutocomplete
+              placeholder='Enter / Search Location'
+              fetchDetails={true}
+              onPress={(data, details) => {
+                const updateLocation = {
+                  name: data.description,
+                  coordinates: [
+                    details.geometry.location.lat,
+                    details.geometry.location.lng,
+                  ]
+                };
+                setLocation(updateLocation);
+              }}
+              onFail={(error) => console.error(error)}
+              query={{
+                key: 'AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI',
+                language: 'en',
+              }}
+              listViewDisplayed='auto'
+              textInputProps={{
+                defaultValue: location?.name,
+              }}
+              styles={{
+                textInputContainer: {
+                  borderWidth: 1,
+                  borderColor: "#ccc",
+                  borderRadius: 10,
+                  paddingHorizontal: 3,
+                  marginBottom: 15,
+                },
+                listView: {
+                  position: 'absolute',
+                  top: 55, // Adjust based on input field height
+                  left: 0,
+                  right: 0,
+                  backgroundColor: 'white',
+                  zIndex: 1000,
+                },
+              }}
+            />
+            {/* <View style={styles.inputWrapper}>
               <Text style={styles.label}>City</Text>
               <TextInput
                 style={styles.input}
@@ -228,7 +268,7 @@ const SignupScreen = () => {
                 value={country}
                 onChangeText={setCountry}
               />
-            </View>
+            </View> */}
 
             <View style={styles.inputWrapper}>
               <Text style={styles.label}>Phone Number</Text>

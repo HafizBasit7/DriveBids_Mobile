@@ -20,6 +20,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import { getCarOwnerCars } from "../../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
+import ViewAllCarCard from "../Filter&ViewAll/ViewAllCarCard";
 
 
 const LIMIT = 10;
@@ -70,43 +71,67 @@ export default OwnerProfile = ({route}) => {
         {!isLoading && (<SectionHeader title={`${user.name} Listings`} />)}
         {isLoading && <ActivityIndicator/>}
         {!isLoading && (
-          <FlatList
-            data={cars}
-            keyExtractor={(item) => String(item._id)}
-            renderItem={({ item }) => (
-              <HomeCarCard
-                CardWidth={280}
-                imgHeight={170}
-                ad={item}
-                carsInWatchList={carsInWatchList}
-              />
-            )}
-            onEndReached={() => {
-              if (hasNextPage && !isFetchingNextPage) {
-                fetchNextPage();
-              }
-            }}
-            onEndReachedThreshold={0.5}
-            ListFooterComponent={
-              isFetchingNextPage ? <ActivityIndicator size="small" /> : null
-            }
-            showsVerticalScrollIndicator={false} // Hide vertical scroll indicator
-            contentContainerStyle={{
-              paddingVertical: 10,
+          // <FlatList
+          //   data={cars}
+          //   keyExtractor={(item) => String(item._id)}
+          //   renderItem={({ item }) => (
+          //     <HomeCarCard
+          //       CardWidth={280}
+          //       imgHeight={170}
+          //       ad={item}
+          //       carsInWatchList={carsInWatchList}
+          //     />
+          //   )}
+          //   onEndReached={() => {
+          //     if (hasNextPage && !isFetchingNextPage) {
+          //       fetchNextPage();
+          //     }
+          //   }}
+          //   onEndReachedThreshold={0.5}
+          //   ListFooterComponent={
+          //     isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+          //   }
+          //   showsVerticalScrollIndicator={false} // Hide vertical scroll indicator
+          //   contentContainerStyle={{
+          //     paddingVertical: 10,
 
-              justifyContent: "center",
-              alignItems: "center",
-            }} // Add vertical padding
-            ItemSeparatorComponent={() => (
-              <View style={{ height: 5 }} /> // Adjust spacing between items
-            )}
-            removeClippedSubviews={true}
-            getItemLayout={(data, index) => ({
-              length: CARD_HEIGHT, // Adjust to item height
-              offset: CARD_HEIGHT * index,
-              index,
-            })}
-          />
+          //     justifyContent: "center",
+          //     alignItems: "center",
+          //   }} // Add vertical padding
+          //   ItemSeparatorComponent={() => (
+          //     <View style={{ height: 5 }} /> // Adjust spacing between items
+          //   )}
+          //   removeClippedSubviews={true}
+          //   getItemLayout={(data, index) => ({
+          //     length: CARD_HEIGHT, // Adjust to item height
+          //     offset: CARD_HEIGHT * index,
+          //     index,
+          //   })}
+          // />
+            <FlatList
+                data={cars}
+                keyExtractor={(item) => item._id} 
+                renderItem={({ item }) => (
+            
+                <ViewAllCarCard
+                    ad={item}
+                    carsInWatchList={carsInWatchList}
+                />
+
+              )}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.contentContainer}
+              ItemSeparatorComponent={() => <View style={styles.separator} />}
+              onEndReached={() => {
+                if (hasNextPage && !isFetchingNextPage) {
+                  fetchNextPage();
+                }
+              }}
+              onEndReachedThreshold={0.5}
+              ListFooterComponent={
+                isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+              }
+            />
         )}
       </View>
     </>
@@ -114,6 +139,14 @@ export default OwnerProfile = ({route}) => {
 };
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    paddingVertical: 10,
+    flex:1,
+    paddingHorizontal: 10, 
+    backgroundColor: '#fff',
+    paddingBottom:40 
+   
+  },
   container: {
     flex: 1,
   },

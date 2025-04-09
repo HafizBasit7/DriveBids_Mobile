@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import apiClient, { removeAuthToken, setAuthToken } from "../API_Callings/R1_API/axios-client";
 import { getUser, loginUser, signupUser } from "../API_Callings/R1_API/Auth";
+import * as SplashScreen from "expo-splash-screen";
 
 
 //State
@@ -93,6 +94,8 @@ export default function AuthContextProvider ({children}) {
         catch(e) {
             console.log(e.toString());
         } finally {
+            //Hide splash screen here
+            await SplashScreen.hideAsync();
             //Toggle Loading
             dispatch({type: 'toggleLoading'});
         }

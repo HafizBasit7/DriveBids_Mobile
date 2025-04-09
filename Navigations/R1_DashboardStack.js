@@ -9,6 +9,7 @@ import R1_Profile from "./R1_Profile";
 import R1_Notification from "./R1_Notifications";
 import { useQuery } from "@tanstack/react-query";
 import { getNotificationCount } from "../API_Callings/R1_API/Auth";
+import { CommonActions } from "@react-navigation/native";
   
 //Custom button
 const CustomTabBarButton = ({ onPress }) => (
@@ -40,7 +41,7 @@ const RedDotNotification = () => {
   });
   const count = data?.data.count;
 
-  if(count < 1) {
+  if(count < 1 || !count) {
     return null;
   }
 
@@ -77,6 +78,17 @@ export default function R1_DashboardStack () {
             <Tab.Screen
                 name="Home"
                 component={R1_HomeStack}
+                listeners={({navigation}) => ({
+                  tabPress: (e) => {
+                    e.preventDefault();
+                    navigation.dispatch(
+                      CommonActions.reset({
+                        index: 0,
+                        routes: [{ name: 'Home', state: { routes: [{ name: 'Home' }] } }],
+                      })
+                    );
+                  },
+                })}
                 options={{
                     tabBarIcon: ({ color }) => (
                       <Icon name="home" size={24} color={color} />
@@ -113,6 +125,17 @@ export default function R1_DashboardStack () {
             
               name="Messages"
               component={R1_Messages}
+              listeners={({navigation}) => ({
+                tabPress: (e) => {
+                  e.preventDefault();
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [{ name: 'Messages', state: { routes: [{ name: 'ChatHeads' }] } }],
+                    })
+                  );
+                },
+              })}
               options={{
                 tabBarIcon: ({ color }) => (
                   <View>
@@ -138,6 +161,17 @@ export default function R1_DashboardStack () {
             <Tab.Screen
               name="Profile"
               component={R1_Profile}
+              listeners={({navigation}) => ({
+                tabPress: (e) => {
+                  e.preventDefault();
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [{ name: 'Profile', state: { routes: [{ name: 'ProfileScreen' }] } }],
+                    })
+                  );
+                },
+              })}
               options={{
                 tabBarIcon: ({ color }) => (
                   <Icon name="settings" size={24} color={color} />

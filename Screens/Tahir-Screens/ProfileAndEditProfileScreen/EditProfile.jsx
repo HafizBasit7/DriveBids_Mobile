@@ -23,6 +23,7 @@ import { updateProfile } from "../../../API_Callings/R1_API/Auth";
 import Header from "../../../CustomComponents/Header";
 import { FlatList } from "react-native-gesture-handler";
 import { uploadImage } from "../../../utils/upload";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const ProfileEditScreen = () => {
 
@@ -62,7 +63,7 @@ const handleCountrySelect = (item) => {
 
   const [imageUploading, setImageUploading] = useState(false);
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   const [formData, setFormData] = useState(user);
   const [imageModalVisible, setImageModalVisible] = useState(false); 
@@ -183,6 +184,7 @@ const handleCountrySelect = (item) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
       >
         {/* Profile Image */}
         <View style={styles.profileImageContainer}>
@@ -210,6 +212,50 @@ const handleCountrySelect = (item) => {
               style={styles.input}
               value={formData.name}
               onChangeText={(text) => handleChange("name", text)}
+            />
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Location</Text>
+            <GooglePlacesAutocomplete
+              placeholder='Enter / Search Location'
+              fetchDetails={true}
+              onPress={(data, details) => {
+                const updateLocation = {
+                  name: data.description,
+                  coordinates: [
+                    details.geometry.location.lng,
+                    details.geometry.location.lat,
+                  ]
+                };
+                handleChange('location', updateLocation);
+              }}
+              onFail={(error) => console.error(error)}
+              query={{
+                key: 'AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI',
+                language: 'en',
+              }}
+              listViewDisplayed='auto'
+              textInputProps={{
+                defaultValue: formData.location?.name,
+              }}
+              styles={{
+                textInputContainer: {
+                  borderWidth: 1,
+                  borderColor: "#ccc",
+                  borderRadius: 10,
+                  paddingHorizontal: 3,
+                  marginBottom: 5,
+                },
+                listView: {
+                  position: 'absolute',
+                  top: 55, // Adjust based on input field height
+                  left: 0,
+                  right: 0,
+                  backgroundColor: 'white',
+                  zIndex: 1000,
+                },
+              }}
             />
           </View>
 
@@ -245,14 +291,7 @@ const handleCountrySelect = (item) => {
             </View>
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Location</Text>
-            <TextInput
-              style={styles.input}
-              value={formData.city}
-              onChangeText={(text) => handleChange("city", text)}
-            />
-          </View>
+         
         </View>
         {loading && (
           <ActivityIndicator/>

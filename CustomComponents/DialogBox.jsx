@@ -42,7 +42,7 @@ const DialogBox = ({ visible, title, message, type, onOkPress, onCancelPress, lo
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "rgba(0,0,0,0.5)",
+          backgroundColor: "rgba(0,0,0,0.7)",
         }}
         onPress={onCancelPress}
       >
