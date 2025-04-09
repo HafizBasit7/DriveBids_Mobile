@@ -22,6 +22,7 @@ import { listCars, listCarsByBidCount } from "../../../API_Callings/R1_API/Car";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import { Icon } from "react-native-elements";
 import { ActivityIndicator } from "react-native-paper";
+import Loader from "../../../CustomComponents/Loader";
 
 export default Home = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -116,7 +117,7 @@ export default Home = () => {
             <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
           </TouchableOpacity>
           </>
-        ) : <ActivityIndicator/>}
+        ) : <Loader/>}
         <SectionHeader title={"Ending Soonest"} />
 
        {!endingCarListLoading ? (
@@ -132,12 +133,12 @@ export default Home = () => {
           )}
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 5 }} // Add padding instead of fixed height
+          contentContainerStyle={{ paddingHorizontal: 5 }} 
           ItemSeparatorComponent={() => (
             <View style={{ width: SEPARATOR_WIDTH }} />
           )}
           snapToInterval={ITEM_WIDTH}
-          decelerationRate="fast" // Makes snapping more obvious
+          decelerationRate="fast" 
           removeClippedSubviews={true}
           getItemLayout={(data, index) => ({
             length: CARD_WIDTH,
@@ -153,7 +154,7 @@ export default Home = () => {
               <Icon name="chevron-right" type="feather" size={18} color="#2F61BF" />
             </TouchableOpacity>
         </>
-       ) : <ActivityIndicator/>}
+       ) : <Loader/>}
 
         <SectionHeader title={"Newly Listed"} />
        {!isLoading ? (
@@ -174,7 +175,7 @@ export default Home = () => {
             <View style={{ width: SEPARATOR_WIDTH }} />
           )}
           snapToInterval={ITEM_WIDTH}
-          decelerationRate="fast" // Makes snapping more obvious
+          decelerationRate="fast" 
           removeClippedSubviews={true}
           getItemLayout={(data, index) => ({
             length: CARD_WIDTH,
@@ -191,7 +192,7 @@ export default Home = () => {
   
 </TouchableOpacity>
         </>
-       ) : <ActivityIndicator/>}
+       ) : <Loader/>}
       </Animated.ScrollView>
     </View>
   );
