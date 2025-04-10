@@ -12,7 +12,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
 
 const CarDetails7 = () => {
-  const [selectedOption, setSelectedOption] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const navigation = useNavigation(); // Initialize navigation
 
@@ -40,6 +39,14 @@ const CarDetails7 = () => {
     { id: 10, label: "Gray" },
   ];
 
+  let filteredOptions;
+  if(inputValue) {
+    filteredOptions = [...options].filter(val => val.label.toLowerCase().includes(inputValue.toLowerCase()));
+  }
+  else {
+    filteredOptions = options;
+  }
+
   return (
     <View style={styles.container}>
       {/* Step Progress Indicator */}
@@ -60,16 +67,16 @@ const CarDetails7 = () => {
       <View style={styles.inputWrapper}>
         <TextInput
           style={styles.input}
-          placeholder="Enter custom Colour"
+          placeholder="Search Color"
           placeholderTextColor="#999"
-          value={carState.carDetails.color}
-          onChangeText={toggleColor}
+          value={inputValue}
+          onChangeText={setInputValue}
         />
       </View>
 
       {/* Clickable List */}
       <FlatList
-        data={options}
+        data={filteredOptions}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => toggleColor(item.label)}>

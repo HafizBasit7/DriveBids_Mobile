@@ -70,12 +70,12 @@ export default function Terms() {
             alignSelf: "center",
           }}
         >
-          <CustomButton
+          {/* <CustomButton
             title="Agree"
             style={styles.nextButton}
             textStyle={styles.nextButtonText}
             onPress={() => console.log("Aggreed Terms Conditions")}
-          />
+          /> */}
         </View>
       </ScrollView>
     </>

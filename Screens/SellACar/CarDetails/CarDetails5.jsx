@@ -1,111 +1,65 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, PanResponder, Animated } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard,} from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
-
-const MIN_VALUE = 8;
-const MAX_VALUE = 30;
-
-const mapProgressToMileage = (progressValue) => {
-  return Math.round((progressValue / 100) * (MAX_VALUE - MIN_VALUE) + MIN_VALUE);
-};
-
-const mapMileageToProgress = (mileageValue) => {
-  return Math.round(((mileageValue - MIN_VALUE) / (MAX_VALUE - MIN_VALUE)) * 100);
-};
+import { TextInput } from "react-native-gesture-handler";
 
 const CarDetails5 = () => {
   const navigation = useNavigation();
   const { carState, dispatch } = useCar();
 
-  const initialMileage = carState.carDetails.mileage || MIN_VALUE;
-  const [mileage, setMileage] = useState(initialMileage);
-  const [progress] = useState(new Animated.Value(mapMileageToProgress(initialMileage)));
+  const updateValue = (value) => {
+    dispatch({
+      type: 'UPDATE_FIELD',
+      section: 'carDetails',
+      field: 'mileage',
+      value: parseInt(value),
+    });
+  };
 
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: (event, gestureState) => {
-      let newProgress = Math.max(0, Math.min(100, mapMileageToProgress(mileage) + gestureState.dx / 4));
-      progress.setValue(newProgress);
-      setMileage(mapProgressToMileage(newProgress)); // Update mileage in real-time
-    },
-    onPanResponderRelease: () => {
-      progress.stopAnimation((value) => {
-        const finalMileage = mapProgressToMileage(value);
-        setMileage(finalMileage);
-        dispatch({
-          type: "UPDATE_FIELD",
-          section: "carDetails",
-          field: "mileage",
-          value: finalMileage,
-        });
-      });
-    },
-  });
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.lineContainer}>
-          <View style={styles.line} />
-          <Text style={styles.lineText}>Step 5 of 14</Text>
-          <View style={styles.line} />
-        </View>
-
-        <View style={styles.lineContainer}>
-          <View style={styles.line} />
-          <Text style={styles.lineText2}>Mileage</Text>
-          <View style={styles.line} />
-        </View>
-
-        <View style={styles.progressContainer}>
-          <Text style={styles.progressHeading}>Mileage: {mileage} km</Text>
-          <View style={styles.progressBar}>
-            <Animated.View
-              style={[
-                styles.filledBar,
-                {
-                  width: progress.interpolate({
-                    inputRange: [0, 100],
-                    outputRange: ["0%", "100%"],
-                  }),
-                },
-              ]}
-            />
-            <Animated.View
-              style={[
-                styles.progressCircle,
-                {
-                  left: progress.interpolate({
-                    inputRange: [0, 100],
-                    outputRange: ["0%", "100%"],
-                  }),
-                },
-              ]}
-              {...panResponder.panHandlers}
-            />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.lineContainer}>
+            <View style={styles.line} />
+            <Text style={styles.lineText}>Step 5 of 14</Text>
+            <View style={styles.line} />
           </View>
-          <View style={styles.rangeLabels}>
-            <Text style={styles.rangeText}>8</Text>
-            <Text style={styles.rangeText}>12</Text>
-            <Text style={styles.rangeText}>16</Text>
-            <Text style={styles.rangeText}>20</Text>
-            <Text style={styles.rangeText}>24</Text>
-            <Text style={styles.rangeText}>30</Text>
+
+          <View style={styles.lineContainer}>
+            <View style={styles.line} />
+            <Text style={styles.lineText2}>Mileage</Text>
+            <View style={styles.line} />
+          </View>
+
+          <View style={styles.progressContainer}>
+            <Text style={styles.progressHeading}>Mileage (KM)</Text>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Mileage in KM"
+                placeholderTextColor="#999"
+                value={(carState.carDetails.mileage || 0).toString()}
+                onChangeText={updateValue}
+                keyboardType="numeric"
+              />
+            </View>
           </View>
         </View>
-      </View>
 
-      {/* Bottom Buttons */}
-      <View style={styles.buttonContainer}>
-        <CustomButton
-          style={styles.button}
-          title="Next"
-          onPress={() => navigation.navigate("CarDetails6")}
-        />
+        {/* Bottom Buttons */}
+        <View style={styles.buttonContainer}>
+          <CustomButton
+            style={styles.button}
+            title="Next"
+            onPress={() => navigation.navigate("CarDetails6")}
+          />
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -113,6 +67,11 @@ const styles = StyleSheet.create({
 container: {
   flex: 1,
   backgroundColor: "#fff",
+},
+input: {
+  flex: 1,
+  fontSize: 16,
+  color: "#000",
 },
 content: {
   flex: 1,
@@ -128,6 +87,17 @@ line: {
   flex: 1,
   height: 1,
   backgroundColor: "#000",
+},
+inputWrapper: {
+  flexDirection: "row",
+  alignItems: "center",
+  borderWidth: 1,
+  borderColor: "#ccc",
+  borderRadius: 10,
+  paddingHorizontal: 15,
+  // marginHorizontal: 20,
+  height: 55,
+  // marginTop: 10,
 },
 lineText: {
   marginHorizontal: 4,
@@ -150,7 +120,7 @@ progressContainer: {
 progressHeading: {
   fontSize: 18,
   fontWeight: "bold",
-  marginBottom: 30,
+  marginBottom: 20,
 },
 progressBar: {
   height: 8,

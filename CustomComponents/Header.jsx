@@ -74,7 +74,7 @@ const Header = ({ showSearch = true, scrollY }) => {
             onPress={() => console.log("Change Location")}
           >
             <SvgLocation width={20} height={20} />
-            <Text style={styles.text}>{authState?.user?.city || "Your City"}</Text>
+            <Text style={[styles.text,]} numberOfLines={1}>{authState?.user?.location?.name || "Your City"}</Text>
             <SvgDown width={15} height={15} />
           </TouchableOpacity>
 
