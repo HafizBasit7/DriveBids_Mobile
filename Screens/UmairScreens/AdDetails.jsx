@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions, ScrollView, SafeAreaView } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { View, Text, StyleSheet, Dimensions, ScrollView, SafeAreaView ,  Animated, 
+} from "react-native";
 
 const { width } = Dimensions.get("window"); // Get screen width
 import MakeModel from "../../CustomComponents/UmairComponents/MakeModel";
@@ -22,6 +23,7 @@ import { useAuth } from "../../R1_Contexts/authContext";
 import BiddingList from "../../CustomComponents/UmairComponents/BiddingList";
 import { useSocket } from "../../R1_Contexts/socketContext";
 import { ActivityIndicator } from "react-native-paper";
+import CarLoader from "../../CustomComponents/CarLoader";
 
 const AdDetails = ({route}) => {
   
@@ -29,6 +31,9 @@ const AdDetails = ({route}) => {
   const {authState} = useAuth();
  
   const {bidSocket: socket} = useSocket();
+
+  const scrollY = useRef(new Animated.Value(0)).current; // Animated Value
+
 
   useEffect(() => {
     if(socket) {
@@ -49,7 +54,7 @@ const AdDetails = ({route}) => {
 
 
   if(isLoading) {
-    return <SafeAreaView><ActivityIndicator/></SafeAreaView>;
+    return <CarLoader/>;
   }
 
   const car = data.data.car;
@@ -68,10 +73,15 @@ const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
 
   return (
     <WrapperComponent>
-      <HomeHeader car={car}/>
-      <ScrollView
+      <HomeHeader style={{backgroundColor:"#fff"}} car={car} scrollY={scrollY}/>
+      <Animated.ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
+        scrollEventThrottle={16}
       >
         <View style={styles.container}>
           <View style={styles.lineContainer}>
@@ -139,7 +149,7 @@ const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
         <SellersComment car={car}/>
           <SimilarAds make={car.make} carId={car._id}/>
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
     </WrapperComponent>
   );
 };
@@ -159,8 +169,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 25, // Space before the next section
-    width: width, // Make it full width
+    marginBottom: 25, 
+    width: width, 
     marginTop:15
   },
   fullLine: {

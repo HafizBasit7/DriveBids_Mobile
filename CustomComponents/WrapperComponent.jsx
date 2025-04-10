@@ -16,6 +16,6 @@ export default function WrapperComponent({children}) {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#f3f4f6',
+        backgroundColor: '#fff',
     },
 });

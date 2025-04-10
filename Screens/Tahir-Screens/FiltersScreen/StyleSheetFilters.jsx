@@ -14,9 +14,9 @@ export const FilterStyles = StyleSheet.create({
     paddingBottom: 10,
   },
   scrollContainer: {
-    flex: 1,
+   
 
-    height: "100%",
+    maxHeight:500,
     paddingHorizontal: 10,
   },
   scrollContent: {
@@ -104,14 +104,13 @@ export const FilterStyles = StyleSheet.create({
   },
   floatingButtonContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
+    alignItems:"center",
     paddingHorizontal: 20,
     paddingVertical: 15,
-    backgroundColor: "white",
-    borderTopWidth: 1,
-    borderTopColor: "#eeeeee",
+    backgroundColor: "transparent",
     position: "absolute",
-    bottom: "-5%",
+    bottom: "2.5%",
     left: 0,
     right: 0,
     zIndex: 100,
@@ -119,8 +118,6 @@ export const FilterStyles = StyleSheet.create({
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 5,
-    paddingBottom:80
   },
   button: {
     width: "48%",
@@ -144,6 +141,7 @@ export const FilterStyles = StyleSheet.create({
   applyButtonText: {
     fontFamily: "Inter-SemiBold",
     color: "#ffffff",
+    fontSize:18
   },
   bottomPadding: {
     height: 0, // Space for floating buttons

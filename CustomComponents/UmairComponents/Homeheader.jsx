@@ -22,7 +22,7 @@ import WrapperComponent from "../WrapperComponent";
 
 const { width } = Dimensions.get("window");
 
-const HomeHeader = ({ car }) => {
+const HomeHeader = ({ car,scrollY }) => {
   const scrollViewRef = useRef(null);
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -81,7 +81,7 @@ const HomeHeader = ({ car }) => {
       }
     
       return () => clearInterval(interval);
-    }, [isPaused]); // 🔹 Depend on `isPaused` to start/stop the slider
+    }, [isPaused]);
 
 
     const openModal = (image) => {
@@ -104,6 +104,29 @@ const HomeHeader = ({ car }) => {
     );
   };
 
+  const animatedContainerHeight = scrollY.interpolate({
+    inputRange: [0, 150], 
+    outputRange: [90, 65], 
+    extrapolate: "clamp",
+  });
+  
+  const animatedLabelFontSize = scrollY.interpolate({
+    inputRange: [0, 150],
+    outputRange: [20, 14], 
+    extrapolate: "clamp",
+  });
+  
+  const animatedPriceFontSize = scrollY.interpolate({
+    inputRange: [0, 150],
+    outputRange: [14, 10],
+    extrapolate: "clamp",
+  });
+  
+  const animatedTimerFontSize = scrollY.interpolate({
+    inputRange: [0, 150],
+    outputRange: [13, 9], 
+    extrapolate: "clamp",
+  });
   return (
     <View>
     {modalVisible ? (
@@ -135,6 +158,7 @@ const HomeHeader = ({ car }) => {
         </ScrollView>
 
         {/* Left Arrow Button */}
+
         <TouchableOpacity
           style={styles.backIconContainer}
           onPress={() => navigation.goBack()}
@@ -142,16 +166,8 @@ const HomeHeader = ({ car }) => {
           <BackIcon width={30} height={30} />
         </TouchableOpacity>
 
-        {/* Right Arrow Button */}
-        {/* <TouchableOpacity style={styles.msgIconContainer}>
-          <MsgIcon
-            width={30}
-            height={30}
-            style={{ transform: [{ rotate: "180deg" }] }}
-          />
-        </TouchableOpacity> */}
+       
 
-        {/* Pagination Dots */}
         <View style={styles.pagination}>
           {images.map((_, index) => (
             <View
@@ -166,27 +182,43 @@ const HomeHeader = ({ car }) => {
       </View>
 
       {/* Yellow Container Below Slider */}
-      <View style={styles.yellowContainer}>
-        <View style={styles.leftContainer}>
-          <Text style={styles.labelText}>Buy Now price</Text>
-          <Text style={styles.priceText}>
-            AED {formatAmount(car.buyNowPrice)}
-          </Text>
-        </View>
-        <View style={styles.verticalLine} />
-        <View style={styles.rightContainer}>
-          <Text style={styles.labelText}>Highest Bid</Text>
-          <Text style={styles.priceText}>
-            AED {formatAmount(car.highestBid)}
-          </Text>
-          {!isCarSold && (
-            <>
-              <Text style={styles.labelText2}>Ends in</Text>
-              <Text style={styles.timerText}>{timeLeft}</Text>
-            </>
-          )}
-        </View>
-      </View>
+      <Animated.View style={[styles.yellowContainer, { height: animatedContainerHeight }]}>
+    <View style={styles.leftContainer}>
+      <Animated.Text
+        style={[styles.labelText, { fontSize: animatedLabelFontSize }]}
+      >
+        Buy Now price
+      </Animated.Text>
+      <Animated.Text
+        style={[styles.priceText, { fontSize: animatedPriceFontSize }]}
+      >
+        AED {formatAmount(car.buyNowPrice)}
+      </Animated.Text>
+    </View>
+    <View style={styles.verticalLine} />
+    <View style={styles.rightContainer}>
+      <Animated.Text
+        style={[styles.labelText, { fontSize: animatedLabelFontSize }]}
+      >
+        Highest Bid
+      </Animated.Text>
+      <Animated.Text
+        style={[styles.priceText, { fontSize: animatedPriceFontSize }]}
+      >
+        AED {formatAmount(car.highestBid)}
+      </Animated.Text>
+      {!isCarSold && (
+        <>
+          <Text style={styles.labelText2}>Ends in</Text>
+          <Animated.Text
+            style={[styles.timerText, { fontSize: animatedTimerFontSize }]}
+          >
+            {timeLeft}
+          </Animated.Text>
+        </>
+      )}
+    </View>
+  </Animated.View>
 
       {/* Modal for displaying larger image */}
    
@@ -220,6 +252,7 @@ const styles = StyleSheet.create({
     height: 170,
     backgroundColor: GlobalStyles.colors.HomeHeaderColour,
     position: "relative",
+    
   },
   image: {
     width: width,

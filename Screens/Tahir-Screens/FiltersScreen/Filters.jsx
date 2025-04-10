@@ -14,6 +14,9 @@ import { CheckBox, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../../../CustomComponents/Header";
 import { FilterStyles } from "./StyleSheetFilters";
+import { GlobalStyles } from "../../../Styles/GlobalStyles";
+import MakeSection from "./MakeSlection";
+import MakeSelection from "./MakeSlection";
 
 const FiltersScreen = () => {
   const styles = FilterStyles;
@@ -31,6 +34,7 @@ const FiltersScreen = () => {
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedTransmission, setSelectedTransmission] = useState("");
   const [horsePowerRange, setHorsePowerRange] = useState({ min: "", max: "" });
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
   // Predefined lists for filtering
   const conditions = ["Poor", "Fair", "Good", "Excellent"];
@@ -46,8 +50,7 @@ const FiltersScreen = () => {
     "EV Single-Speed",
   ];
 
-  // Dummy data for make suggestions
-  const allMakes = [
+  const makes = [
     "Toyota",
     "Honda",
     "Ford",
@@ -68,8 +71,7 @@ const FiltersScreen = () => {
     "Porsche",
   ];
 
-  // Filter makes based on search input
-  const filteredMakes = allMakes.filter((make) =>
+  const filteredMakes = makes.filter((make) =>
     make.toLowerCase().includes(makeSearch.toLowerCase())
   );
 
@@ -139,8 +141,23 @@ const FiltersScreen = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <Header showSearch={false} />
-      <Text style={styles.header}>Filters</Text>
+      <View
+  style={{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    marginBottom: 10,
+    marginTop:10
+  }}
+>
+  <Text style={{ fontSize: 28, fontWeight: 'bold' }}>Filters</Text>
+  <TouchableOpacity onPress={clearFilters}>
+    <Text style={{ fontSize: 13, color: '#fff' ,backgroundColor:"#2F61BF",padding:5,borderRadius:5}}>Clear Filters </Text>
+  </TouchableOpacity>
+</View>
 
+     
       <ScrollView
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
@@ -171,44 +188,7 @@ const FiltersScreen = () => {
           </View>
         </View>
 
-        {/* Make */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Make</Text>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search for make..."
-            value={makeSearch}
-            onChangeText={setMakeSearch}
-          />
-
-          {/* Selected Makes */}
-          {selectedMakes.length > 0 && (
-            <View style={styles.chipContainer}>
-              {selectedMakes.map((make) => (
-                <View key={make} style={styles.chip}>
-                  <Text style={styles.chipText}>{make}</Text>
-                  <TouchableOpacity onPress={() => removeMake(make)}>
-                    <Icon name="close" type="material" size={16} color="#666" />
-                  </TouchableOpacity>
-                </View>
-              ))}
-            </View>
-          )}
-
-          {makeSearch.length > 0 && (
-            <View style={styles.searchResults}>
-              {filteredMakes.map((make) => (
-                <TouchableOpacity
-                  key={make}
-                  style={styles.searchResultItem}
-                  onPress={() => selectMake(make)}
-                >
-                  <Text style={styles.searchResultText}>{make}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-        </View>
+        <MakeSelection makes={makes} selectedMakes={selectedMakes} setSelectedMakes={setSelectedMakes}/>
 
         {/* Model */}
         <View style={styles.section}>
@@ -221,32 +201,54 @@ const FiltersScreen = () => {
           />
         </View>
 
-        {/* Condition */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Condition</Text>
-          {conditions.map((condition) => (
-            <TouchableOpacity
-              key={condition}
-              style={styles.radioButton}
-              onPress={() => setSelectedCondition(condition)}
-            >
-              <Icon
-                name={
-                  selectedCondition === condition
-                    ? "radio-button-checked"
-                    : "radio-button-unchecked"
-                }
-                type="material"
-                size={22}
-                color={selectedCondition === condition ? "#0066cc" : "#aaaaaa"}
-              />
-              <Text style={styles.radioButtonText}>{condition} </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <View style={{ marginBottom: 15 }}>
+  {/* Header */}
+  <View
+    style={{
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingVertical: 12,
+      paddingHorizontal: 2,
+      backgroundColor: "#fff",
+      borderColor: "#ddd",
+    }}
+  >
+    <Text style={{ fontSize: 18, fontWeight: "bold" }}>Condition</Text>
+  </View>
+
+  {/* Tiles Layout */}
+  <View style={{ flexDirection: "row", flexWrap: "wrap", padding: 5 }}>
+    {conditions.map((condition) => (
+      <TouchableOpacity
+        key={condition}
+        onPress={() => setSelectedCondition(condition)}
+        style={{
+          paddingVertical: 10,
+          paddingHorizontal: 20,
+          borderRadius: 8,
+          borderWidth:0.2,
+          borderColor:"#000",
+          margin: 3,
+          backgroundColor:
+            selectedCondition === condition ? GlobalStyles.colors.ButtonColor : "#fff",
+        }}
+      >
+        <Text
+          style={{
+            color: selectedCondition === condition ? "#ffffff" : "#333333",
+            fontWeight: "bold",
+          }}
+        >
+          {condition}
+        </Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+</View>
 
         {/* City */}
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <Text style={styles.sectionTitle}>City</Text>
           {cities.map((city) => (
             <TouchableOpacity
@@ -267,7 +269,7 @@ const FiltersScreen = () => {
               <Text style={styles.radioButtonText}>{city} </Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </View> */}
 
         {/* Mileage Range */}
         <View style={styles.section}>
@@ -397,12 +399,7 @@ const FiltersScreen = () => {
       </ScrollView>
 
       <View style={styles.floatingButtonContainer}>
-        <TouchableOpacity
-          style={[styles.button, styles.clearButton]}
-          onPress={clearFilters}
-        >
-          <Text style={styles.clearButtonText}>Clear Filters</Text>
-        </TouchableOpacity>
+       
 
         <TouchableOpacity
           style={[styles.button, styles.applyButton]}
