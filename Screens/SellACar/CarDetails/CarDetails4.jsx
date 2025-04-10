@@ -61,8 +61,8 @@ const CarDetails2 = () => {
           const updateLocation = {
             name: data.description,
             coordinates: [
-              details.geometry.location.lat,
               details.geometry.location.lng,
+              details.geometry.location.lat,
             ]
           };
           onChangeCarCity(updateLocation);

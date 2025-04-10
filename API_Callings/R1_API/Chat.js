@@ -121,3 +121,28 @@ export const getChatId = async ({userId, carId}) => {
         throw e;
     }
 };
+
+export const hasUnreadMessages = async () => {
+    try {
+        const result = await chatApiClient.get('/car/haveUnreadMessages');
+        const resultData = result.data;
+
+        if(!resultData.status) {
+            throw {
+                name: 'app',
+                message: resultData.message,
+            };
+        }
+
+        return resultData; 
+    }
+    catch(e) {
+        if(e.response?.data) {
+            throw {
+                name: 'app',
+                ...e.response.data,
+            }
+        }
+        throw e;
+    }
+};

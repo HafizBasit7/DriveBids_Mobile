@@ -10,6 +10,7 @@ import R1_Notification from "./R1_Notifications";
 import { useQuery } from "@tanstack/react-query";
 import { getNotificationCount } from "../API_Callings/R1_API/Auth";
 import { CommonActions } from "@react-navigation/native";
+import { hasUnreadMessages } from "../API_Callings/R1_API/Chat";
   
 //Custom button
 const CustomTabBarButton = ({ onPress }) => (
@@ -32,16 +33,43 @@ const CustomTabBarButton = ({ onPress }) => (
   </View>
 );
 
+const RedDotMessages = () => {
+  const {data, isLoading} = useQuery({
+    queryKey: ['messagesCount'],
+    queryFn: hasUnreadMessages,
+  });
+
+  const count = data?.data.hasUnread;
+
+  if(count < 1 || !count || isLoading) {
+    return null;
+  }
+
+  return (
+    <View
+      style={{
+        position: "absolute",
+        top: -2,
+        right: -3,
+        backgroundColor: "red",
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+      }}
+    />
+  )
+};
+
 //
 
 const RedDotNotification = () => {
-  const {data} = useQuery({
+  const {data, isLoading} = useQuery({
     queryKey: ['notificationCount'],
     queryFn: getNotificationCount,
   });
   const count = data?.data.count;
 
-  if(count < 1 || !count) {
+  if(count < 1 || !count || isLoading) {
     return null;
   }
 
@@ -97,20 +125,20 @@ export default function R1_DashboardStack () {
                 }}
             />
 
-<Tab.Screen
-  name="My Ads"
-  component={R1_Notification}
-  options={{
-    tabBarIcon: ({ color }) => (
-      <View>
-        <Icon name="bell" size={24} color={color} />
-        {/* Red Dot for Unread Notifications */}
-        <RedDotNotification/>
-      </View>
-    ),
-    tabBarLabel: "Notification",
-  }}
-/>
+          <Tab.Screen
+            name="My Ads"
+            component={R1_Notification}
+            options={{
+              tabBarIcon: ({ color }) => (
+                <View>
+                  <Icon name="bell" size={24} color={color} />
+                  {/* Red Dot for Unread Notifications */}
+                  <RedDotNotification/>
+                </View>
+              ),
+              tabBarLabel: "Notification",
+            }}
+          />
 
 
             <Tab.Screen
@@ -140,17 +168,7 @@ export default function R1_DashboardStack () {
                 tabBarIcon: ({ color }) => (
                   <View>
                   <Icon name="message-square" size={24} color={color} />
-                  <View
-          style={{
-            position: "absolute",
-            top: -2,
-            right: -3,
-            backgroundColor: "red",
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-          }}
-        />
+                  <RedDotMessages/>
                   </View>
                 ),
                 

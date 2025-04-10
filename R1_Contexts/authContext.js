@@ -6,9 +6,15 @@ import * as SplashScreen from "expo-splash-screen";
 
 
 //State
-const intialState = {isLoading: true, isAuthenticated: false, user: null, isFirstTime: true};
+const intialState = {isLoading: true, isAuthenticated: false, user: null, isFirstTime: true, selectedLocation: null};
 const authReducerFunction = (state, action) => {
     switch(action.type) {
+        case 'updateLocation': {
+            return {
+                ...state,
+                selectedLocation: action.payload,
+            };
+        }
         case 'toggleLoading': {
             return {
                 ...state,
