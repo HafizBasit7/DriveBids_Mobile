@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Animated,
 } from "react-native";
 import CustomButton from "../../CustomComponents/CustomButton";
 import WrapperComponent from "../../CustomComponents/WrapperComponent";
@@ -17,6 +18,8 @@ import { ActivityIndicator } from "react-native-paper";
 const PlaceBid = ({route}) => {
   const [bidAmount, setBidAmount] = useState(""); 
   const [message, setMessage] = useState(null);
+
+  const scrollY = useRef(new Animated.Value(0)).current; // Animated Value
 
 
   const mutation = useMutation({
@@ -54,7 +57,7 @@ const PlaceBid = ({route}) => {
         title={message?.title || ''}
       />
 
-      <HomeHeader car={car}/>
+      <HomeHeader car={car} scrollY={scrollY}/>
       <View style={styles.container}>
         {/* Main Content */}
         <View style={styles.content}>
