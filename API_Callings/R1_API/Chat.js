@@ -124,7 +124,7 @@ export const getChatId = async ({userId, carId}) => {
 
 export const hasUnreadMessages = async () => {
     try {
-        const result = await chatApiClient.get('/car/haveUnreadMessages');
+        const result = await chatApiClient.get('/chat/haveUnreadMessages');
         const resultData = result.data;
 
         if(!resultData.status) {

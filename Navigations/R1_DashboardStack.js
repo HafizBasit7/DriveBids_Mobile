@@ -39,7 +39,7 @@ const RedDotMessages = () => {
     queryFn: hasUnreadMessages,
   });
 
-  const count = data?.data.hasUnread;
+  const count = data?.data.haveUnread;
 
   if(count < 1 || !count || isLoading) {
     return null;

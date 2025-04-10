@@ -82,6 +82,9 @@ const handleCountrySelect = (item) => {
       if(profileImage) {
         updatedData.imgUrl = profileImage;
       }
+      if(!updatedData.businessAddress) {
+        delete updatedData['businessAddress'];
+      }
 
       const result = await updateProfile(updatedData);
       dispatch({
