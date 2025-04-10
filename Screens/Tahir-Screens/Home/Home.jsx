@@ -23,15 +23,19 @@ import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import { Icon } from "react-native-elements";
 import { ActivityIndicator } from "react-native-paper";
 import Loader from "../../../CustomComponents/Loader";
+import { useAuth } from "../../../R1_Contexts/authContext";
 
 export default Home = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
+  const {authState} = useAuth();
 
   const navigation = useNavigation();
 
+  const currentSelectedLocation = (authState.selectedLocation || authState.user.location) || {"coordinates": [73.1128313, 33.5255503]};
+
   const {data, isLoading, isRefetching, refetch} = useQuery({
     queryKey: ['cars'],
-    queryFn: () => listCars(1, 10, 'recent'),
+    queryFn: () => listCars(1, 10, 'recent', currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1]),
   });
 
   const {data: carsInWatchList, isLoading: watchlistLoading} = useQuery({
@@ -41,12 +45,12 @@ export default Home = () => {
 
   const {data: endingCarList, isLoading: endingCarListLoading, isRefetching: isRefetchingEnding, refetch: refetchEnding} = useQuery({
     queryKey: ['carsEnding'],
-    queryFn: () => listCars(1, 10, 'ending')
+    queryFn: () => listCars(1, 10, 'ending', currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1])
   });
 
   const {data: carsByBidCount, isLoading: carsByBidCountLoading, isRefetching: isRefetchingBid, refetch: refetchBid} = useQuery({
     queryKey: ['carsByBidCount'],
-    queryFn: () => listCarsByBidCount(1, 10)
+    queryFn: () => listCarsByBidCount(1, 10, currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1])
   });
 
   const onRefresh = () => {

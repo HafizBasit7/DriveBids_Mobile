@@ -7,11 +7,15 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { listCars, listCarsByBidCount } from '../../../API_Callings/R1_API/Car';
 import { ActivityIndicator } from 'react-native-paper';
 import SectionHeader from "../../../CustomComponents/SectionHeader";
+import { useAuth } from '../../../R1_Contexts/authContext';
 
 const LIMIT = 10;
 
 const ViewAllCarsScreen = ({route}) => {
     const {type} = route.params;
+
+    const {authState} = useAuth();
+    const currentSelectedLocation = (authState.selectedLocation || authState.user.location) || {"coordinates": [73.1128313, 33.5255503]};
 
     const getQueryKey = (type) => {
       switch (type) {
@@ -28,11 +32,11 @@ const ViewAllCarsScreen = ({route}) => {
       return ({ pageParam = 1 }) => {
         switch (type) {
           case 'recent':
-            return listCars(pageParam, LIMIT, 'recent');
+            return listCars(pageParam, LIMIT, 'recent', currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1]);
           case 'ending':
-            return listCars(pageParam, LIMIT, 'ending');
+            return listCars(pageParam, LIMIT, 'ending', currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1]);
           default:
-            return listCarsByBidCount(pageParam, LIMIT);
+            return listCarsByBidCount(pageParam, LIMIT, currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1]);
         }
       };
     };

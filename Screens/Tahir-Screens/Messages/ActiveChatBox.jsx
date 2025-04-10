@@ -70,6 +70,10 @@ const ActiveChatBox = ({route}) => {
     mutationFn: sendMessage,
   });
   const messages = data?.pages.flatMap((page) => page?.data?.messages) || [];
+
+  if(!isLoading && !isFetchingNextPage) {
+    queryClient.invalidateQueries(["messagesCount"]);
+  }
   
   //Socket
   useEffect(() => {

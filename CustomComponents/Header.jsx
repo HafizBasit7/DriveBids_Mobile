@@ -51,6 +51,12 @@ const Header = ({ showSearch = true, scrollY }) => {
   const { authState } = useAuth();
   const navigation = useNavigation();
 
+  const currentSelectedLocation = authState.selectedLocation?.name || authState.user.location?.name;
+
+  const navigateToChangeLocation = () => {
+    navigation.navigate('ChangeLocation');
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
@@ -71,10 +77,10 @@ const Header = ({ showSearch = true, scrollY }) => {
           {/* Location Selector */}
           <TouchableOpacity
             style={styles.center}
-            onPress={() => console.log("Change Location")}
+            onPress={navigateToChangeLocation}
           >
             <SvgLocation width={20} height={20} />
-            <Text style={[styles.text,]} numberOfLines={1}>{authState?.user?.location?.name || "Your City"}</Text>
+            <Text style={[styles.text,]} numberOfLines={1}>{currentSelectedLocation || "Your City"}</Text>
             <SvgDown width={15} height={15} />
           </TouchableOpacity>
 

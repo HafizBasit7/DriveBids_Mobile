@@ -217,8 +217,8 @@ const SignupScreen = () => {
                 const updateLocation = {
                   name: data.description,
                   coordinates: [
-                    details.geometry.location.lat,
                     details.geometry.location.lng,
+                    details.geometry.location.lat,
                   ]
                 };
                 setLocation(updateLocation);

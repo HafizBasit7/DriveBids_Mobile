@@ -10,6 +10,7 @@ import FiltersScreen from "../Screens/Tahir-Screens/FiltersScreen/Filters";
 import OwnerProfile from "../Screens/Tahir-Screens/OwnerProfile/OwnerProfile";
 import Filters_ViewAll from "../Screens/Tahir-Screens/Filter&ViewAll/Filter&ViewAll";
 import ViewAllCarsScreen from "../Screens/Tahir-Screens/Filter&ViewAll/ViewAllCarsScreen";
+import ChangeLocationScreen from "../Screens/RehanScreens/ChangeLocation";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,14 @@ export default function R1_HomeStack() {
       <Stack.Screen
         name="Home"
         component={Home}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="ChangeLocation"
+        component={ChangeLocationScreen}
         options={{
           headerShown: false,
         }}
