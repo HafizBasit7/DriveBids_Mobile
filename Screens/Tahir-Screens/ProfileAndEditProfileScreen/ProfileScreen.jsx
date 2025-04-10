@@ -134,37 +134,33 @@ const ProfileScreen = () => {
 
   return (
     <>
-       <Header showSearch={false} />
-    <ScrollView 
-      contentContainerStyle={{ flexGrow: 1,backgroundColor:"#fff", }} 
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Profile Header */}
-      <View style={styles.profileHeader}>
-        <Image
-          source={{ uri: user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }}
-          style={styles.profileImage}
-          defaultSource={{ uri: "https://i.pravatar.cc/150?img=10" }}
-        />
-        <View style={styles.profileInfo}>
-          <Text style={styles.profileName}>{user.name}</Text>
+      <Header showSearch={false}/>
+      {/* <SectionHeader title={"Profile"} /> */}
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Profile Header */}
+        <View style={styles.profileHeader}>
+          <Image
+            source={{ uri: user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }}
+            style={styles.profileImage}
+            defaultSource={{ uri: "https://i.pravatar.cc/150?img=10" }}
+          />
+          <View style={styles.profileInfo}>
+            <Text style={styles.profileName}>{user.name}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}>
+              <Text style={styles.editProfileText}>Edit Profile</Text>
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}>
-            <Text style={styles.editProfileText}>Edit Profile</Text>
-          </TouchableOpacity>
+        <Icon name="chevron-right" size={24} color="#9ca3af" />
+      </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}>
-          <Icon name="chevron-right" size={24} color="#9ca3af" />
-        </TouchableOpacity>
-      </View>
 
-      {/* Menu Items */}
-      <View style={{ flex: 1 }}>
+        {/* Menu Items */}
         <View style={styles.menuContainer}>
           {menuItems.map(renderMenuItem)}
         </View>
-      </View>
-    </ScrollView>
-  </>
+      </ScrollView>
+    </>
   );
 };
 
