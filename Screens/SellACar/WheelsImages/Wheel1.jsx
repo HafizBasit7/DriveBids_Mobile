@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
 import SectionHeader from "../../../CustomComponents/SectionHeader";
@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
 import { uploadImage } from "../../../utils/upload";
 import DialogBox from "../../../CustomComponents/DialogBox";
+import { Icon } from "react-native-elements";
 
 const Wheel1 = () => {
   const {carState, dispatch} = useCar();
@@ -17,43 +18,100 @@ const Wheel1 = () => {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const [imageModalVisible, setImageModalVisible] = useState(false);
 
   const navigation = useNavigation();
-  const openGallery = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Sorry, we need camera roll permissions to make this work!");
-      return;
-    }
-
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images" ],
-      // allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setLoading(true);
-      try {
-        const imgUrl = await uploadImage(result.assets[0]);
-        dispatch({
-          type: 'UPDATE_IMAGE',
-          section: "wheels",
-          index: index,
-          value: {type: 'image', url: imgUrl}
+    const handleGallery = async () => {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== "granted") {
+              alert("Sorry, we need camera roll permissions to make this work!");
+              return;
+            }
+        
+            let result = await ImagePicker.launchImageLibraryAsync({
+              mediaTypes: ["images" ],
+              aspect: [4, 3],
+              quality: 1,
+            });
+        
+            if (!result.canceled) {
+              setImageModalVisible(false);
+              setLoading(true);
+              try {
+                const imgUrl = await uploadImage(result.assets[0]);
+                dispatch({
+                  type: 'UPDATE_IMAGE',
+                  section: "wheels",
+                  index: index,
+                  value: {type: 'image', url: imgUrl}
+                });
+              }
+              catch(e) {
+                setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
+              } finally {
+                setLoading(false);
+              }
+            }
+          };
+      
+      const handleCamera = async () => {
+        const {status} = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== "granted") {
+            alert("Sorry, we need camera permissions to make this work!");
+            return;
+          }
+        const result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ["images"],
+          aspect: [4, 3],
+          quality: 1,
         });
-      }
-      catch(e) {
-        setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
+        if (!result.canceled) {
+          setImageModalVisible(false);
+          setLoading(true);
+          try {
+            const imgUrl = await uploadImage(result.assets[0], `wheels-${index}`);
+            dispatch({
+              type: 'UPDATE_IMAGE',
+              section: "wheels",
+              index: index,
+              value: {type: 'image', url: imgUrl}
+            });
+          }
+          catch(e) {
+            setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
+          } finally {
+            setLoading(false);
+          }
+        }
+      };
+    
+      const openGallery = async () => {
+        setImageModalVisible(true);
+      };
 
   return (
     <View style={styles.container}>
+       <Modal visible={imageModalVisible} animationType="slide" transparent={true}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select or Take a Photo</Text>
+            <TouchableOpacity style={styles.modalItem} onPress={handleCamera}>
+              <Icon name="camera" type="material" size={24} color="#3b82f6" />
+              <Text style={styles.modalText}>Take a Picture</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalItem} onPress={handleGallery}>
+              <Icon name="image" type="material" size={24} color="#3b82f6" />
+              <Text style={styles.modalText}>Choose from Gallery</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalCloseButton}
+              onPress={() => setImageModalVisible(false)}
+            >
+              <Text style={styles.modalCloseText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <DialogBox
         visible={loading ? true : message ? true : false}
         message={message?.message}
@@ -157,6 +215,48 @@ const styles = StyleSheet.create({
   nextButtonText: {
     color: GlobalStyles.colors.ButtonColor,
     fontFamily: "Inter-SemiBold",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.0)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 20,
+    maxHeight: '60%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontFamily: 'Inter-SemiBold',
+    marginBottom: 15,
+  },
+  modalItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  modalText: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    marginLeft: 10,
+  },
+  modalCloseButton: {
+    marginTop: 20,
+    paddingVertical: 12,
+    backgroundColor: '#2F61BF',
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  modalCloseText: {
+    color: '#fff',
+    fontFamily: 'Inter-SemiBold',
+    fontSize: 16,
   },
 });
 
