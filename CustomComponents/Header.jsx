@@ -79,7 +79,7 @@ const Header = ({ showSearch = true, scrollY }) => {
             style={styles.center}
             onPress={navigateToChangeLocation}
           >
-            <SvgLocation width={20} height={20} />
+            <SvgLocation width={15} height={18} />
             <Text style={[styles.text,]} numberOfLines={1}>{currentSelectedLocation || "Your City"}</Text>
             <SvgDown width={15} height={15} />
           </TouchableOpacity>
@@ -165,13 +165,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    marginLeft:10
   },
   right: {
     width: "20%",
     alignItems: "flex-end",
   },
   text: {
-    marginHorizontal: 8,
+    marginHorizontal: 6,
     fontSize: 16,
     fontWeight: "bold",
   },

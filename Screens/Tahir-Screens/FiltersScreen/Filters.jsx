@@ -17,6 +17,9 @@ import { FilterStyles } from "./StyleSheetFilters";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import MakeSection from "./MakeSlection";
 import MakeSelection from "./MakeSlection";
+import TransmissionSelection from "./TransmissionSelection";
+import ColorSelection from "./ColorSelection";
+import FuelTypeSelection from "./FuelTypeSelection";
 
 const FiltersScreen = () => {
   const styles = FilterStyles;
@@ -34,11 +37,9 @@ const FiltersScreen = () => {
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedTransmission, setSelectedTransmission] = useState("");
   const [horsePowerRange, setHorsePowerRange] = useState({ min: "", max: "" });
-  const [isCollapsed, setIsCollapsed] = useState(false)
 
   // Predefined lists for filtering
-  const conditions = ["Poor", "Fair", "Good", "Excellent"];
-  const cities = ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Al Ain"];
+  const conditions = ["Excellent", "Poor", "Fair", "Good",];
   const fuelTypes = ["Petrol", "Diesel", "HI-Octane", "Electric", "Hybrid"];
   const colors = ["White", "Black", "Silver", "Red", "Blue", "Grey"];
   const transmissionTypes = [
@@ -71,29 +72,16 @@ const FiltersScreen = () => {
     "Porsche",
   ];
 
-  const filteredMakes = makes.filter((make) =>
-    make.toLowerCase().includes(makeSearch.toLowerCase())
-  );
 
-  // Select a make from the dropdown
-  const selectMake = (make) => {
-    if (!selectedMakes.includes(make)) {
-      setSelectedMakes([...selectedMakes, make]);
-    }
-    setMakeSearch("");
-    Keyboard.dismiss();
-  };
 
-  // Remove a selected make
-  const removeMake = (make) => {
-    setSelectedMakes(selectedMakes.filter((item) => item !== make));
-  };
+
+
 
   // Clear all filters
   const clearFilters = () => {
     setPriceRange({ min: "", max: "" });
     setMakeSearch("");
-    setSelectedMakes([]);
+    setSelectedMakes("");
     setModel("");
     setSelectedCondition("");
     setSelectedCity("");
@@ -142,29 +130,161 @@ const FiltersScreen = () => {
     >
       <Header showSearch={false} />
       <View
-  style={{
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    marginBottom: 10,
-    marginTop:10
-  }}
->
-  <Text style={{ fontSize: 28, fontWeight: 'bold' }}>Filters</Text>
-  <TouchableOpacity onPress={clearFilters}>
-    <Text style={{ fontSize: 13, color: '#fff' ,backgroundColor:"#2F61BF",padding:5,borderRadius:5}}>Clear Filters </Text>
-  </TouchableOpacity>
-</View>
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingHorizontal: 16,
+          marginBottom: 10,
+          marginTop: 10,
+        }}
+      >
+        <Text style={{ fontSize: 28, fontWeight: 'bold' }}>Filters</Text>
 
-     
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <TouchableOpacity onPress={clearFilters}>
+            <Text
+              style={{
+                fontSize: 13,
+                color: '#000',
+                backgroundColor: '#fff',
+                padding: 5,
+                borderRadius: 5,
+                borderColor: '#000',
+                borderWidth: 0.2,
+              }}
+            >
+              Clear Filters </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={applyFilters}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#fff',
+                backgroundColor: '#2F61BF',
+                padding: 6,
+                borderRadius: 5,
+                paddingVertical: 7,
+                width: 100,
+                textAlign: 'center',
+                fontWeight: 700
+              }}
+            >
+              Apply
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+
+
       <ScrollView
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Price Range */}
+       
+
+        <MakeSelection makes={makes} selectedMakes={selectedMakes} setSelectedMakes={setSelectedMakes} />
+
+        {/* Model */}
         <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Model</Text>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Enter model..."
+            value={model}
+            onChangeText={setModel}
+          />
+        </View>
+
+
+
+        <View style={{ paddingBottom: 10 }}>
+          {/* Header */}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingVertical: 12,
+              paddingHorizontal: 2,
+              backgroundColor: "#fff",
+              borderColor: "#ddd",
+            }}
+          >
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>Condition</Text>
+          </View>
+
+          {/* Tiles Layout */}
+          <View style={{ flexDirection: "row", flexWrap: "wrap", padding: 5 }}>
+            {conditions.map((condition) => (
+              <TouchableOpacity
+                key={condition}
+                onPress={() => setSelectedCondition(condition)}
+                style={{
+                  paddingVertical: 10,
+                  paddingHorizontal: 20,
+                  borderRadius: 8,
+                  borderWidth: 0.2,
+                  borderColor: "#000",
+                  margin: 3,
+                  backgroundColor:
+                    selectedCondition === condition ? GlobalStyles.colors.ButtonColor : "#fff",
+                }}
+              >
+                <Text
+                  style={{
+                    color: selectedCondition === condition ? "#ffffff" : "#333333",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {condition}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+
+
+
+
+        <View style={{ flex: 1, padding: 2 }}>
+
+          <FuelTypeSelection
+            fuelTypes={fuelTypes}
+            selectedFuel={selectedFuel}
+            setSelectedFuel={setSelectedFuel}
+          />
+
+
+        </View>
+
+
+        <View style={{ flex: 1, padding: 2 }}>
+
+          <ColorSelection
+            colors={colors}
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
+          />
+
+
+        </View>
+
+
+        <View style={{ flex: 1, padding: 2 }}>
+
+
+          <TransmissionSelection
+            transmissionTypes={transmissionTypes}
+            selectedTransmission={selectedTransmission}
+            setSelectedTransmission={setSelectedTransmission}
+          />
+        </View>
+         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Price Range (AED)</Text>
           <View style={styles.rangeInputs}>
             <TextInput
@@ -188,90 +308,6 @@ const FiltersScreen = () => {
           </View>
         </View>
 
-        <MakeSelection makes={makes} selectedMakes={selectedMakes} setSelectedMakes={setSelectedMakes}/>
-
-        {/* Model */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Model</Text>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Enter model..."
-            value={model}
-            onChangeText={setModel}
-          />
-        </View>
-
-        <View style={{ marginBottom: 15 }}>
-  {/* Header */}
-  <View
-    style={{
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      paddingVertical: 12,
-      paddingHorizontal: 2,
-      backgroundColor: "#fff",
-      borderColor: "#ddd",
-    }}
-  >
-    <Text style={{ fontSize: 18, fontWeight: "bold" }}>Condition</Text>
-  </View>
-
-  {/* Tiles Layout */}
-  <View style={{ flexDirection: "row", flexWrap: "wrap", padding: 5 }}>
-    {conditions.map((condition) => (
-      <TouchableOpacity
-        key={condition}
-        onPress={() => setSelectedCondition(condition)}
-        style={{
-          paddingVertical: 10,
-          paddingHorizontal: 20,
-          borderRadius: 8,
-          borderWidth:0.2,
-          borderColor:"#000",
-          margin: 3,
-          backgroundColor:
-            selectedCondition === condition ? GlobalStyles.colors.ButtonColor : "#fff",
-        }}
-      >
-        <Text
-          style={{
-            color: selectedCondition === condition ? "#ffffff" : "#333333",
-            fontWeight: "bold",
-          }}
-        >
-          {condition}
-        </Text>
-      </TouchableOpacity>
-    ))}
-  </View>
-</View>
-
-        {/* City */}
-        {/* <View style={styles.section}>
-          <Text style={styles.sectionTitle}>City</Text>
-          {cities.map((city) => (
-            <TouchableOpacity
-              key={city}
-              style={styles.radioButton}
-              onPress={() => setSelectedCity(city)}
-            >
-              <Icon
-                name={
-                  selectedCity === city
-                    ? "radio-button-checked"
-                    : "radio-button-unchecked"
-                }
-                type="material"
-                size={22}
-                color={selectedCity === city ? "#0066cc" : "#aaaaaa"}
-              />
-              <Text style={styles.radioButtonText}>{city} </Text>
-            </TouchableOpacity>
-          ))}
-        </View> */}
-
-        {/* Mileage Range */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Mileage (KMs)</Text>
           <View style={styles.rangeInputs}>
@@ -296,81 +332,7 @@ const FiltersScreen = () => {
           </View>
         </View>
 
-        {/* Fuel Type */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Fuel Type</Text>
-          {fuelTypes.map((fuel) => (
-            <TouchableOpacity
-              key={fuel}
-              style={styles.radioButton}
-              onPress={() => setSelectedFuel(fuel)}
-            >
-              <Icon
-                name={
-                  selectedFuel === fuel
-                    ? "radio-button-checked"
-                    : "radio-button-unchecked"
-                }
-                type="material"
-                size={22}
-                color={selectedFuel === fuel ? "#0066cc" : "#aaaaaa"}
-              />
-              <Text style={styles.radioButtonText}>{fuel} </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
 
-        {/* Color */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Color</Text>
-          {colors.map((color) => (
-            <TouchableOpacity
-              key={color}
-              style={styles.radioButton}
-              onPress={() => setSelectedColor(color)}
-            >
-              <Icon
-                name={
-                  selectedColor === color
-                    ? "radio-button-checked"
-                    : "radio-button-unchecked"
-                }
-                type="material"
-                size={22}
-                color={selectedColor === color ? "#0066cc" : "#aaaaaa"}
-              />
-              <Text style={styles.radioButtonText}>{color} </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Transmission */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Transmission</Text>
-          {transmissionTypes.map((transmission) => (
-            <TouchableOpacity
-              key={transmission}
-              style={styles.radioButton}
-              onPress={() => setSelectedTransmission(transmission)}
-            >
-              <Icon
-                name={
-                  selectedTransmission === transmission
-                    ? "radio-button-checked"
-                    : "radio-button-unchecked"
-                }
-                type="material"
-                size={22}
-                color={
-                  selectedTransmission === transmission ? "#0066cc" : "#aaaaaa"
-                }
-              />
-              <Text style={styles.radioButtonText}>{transmission} </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Horse Power Range */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Horse Power</Text>
           <View style={styles.rangeInputs}>
@@ -399,14 +361,9 @@ const FiltersScreen = () => {
       </ScrollView>
 
       <View style={styles.floatingButtonContainer}>
-       
 
-        <TouchableOpacity
-          style={[styles.button, styles.applyButton]}
-          onPress={applyFilters}
-        >
-          <Text style={styles.applyButtonText}>Apply</Text>
-        </TouchableOpacity>
+
+
       </View>
     </KeyboardAvoidingView>
   );

@@ -98,7 +98,7 @@ const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
   </View>
 
   {/* Center Box */}
-  <View style={[styles.centerBox, {backgroundColor: car.status === 'sold' ? '#ccc' : null}]}>
+  <View style={[styles.centerBox, {backgroundColor: car.status === 'sold' ? '#D70040' : null}]}>
   {car.status !== 'sold' && (
     <Text
       style={[
@@ -113,7 +113,7 @@ const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
     <Text
       style={[
         styles.centerText,
-        { color: '#FFFFFF' } 
+        { color: '#fff' } 
       ]}
     >
       CAR SOLD
@@ -221,7 +221,6 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 2,
     height: 50,
     justifyContent: "center",
   },

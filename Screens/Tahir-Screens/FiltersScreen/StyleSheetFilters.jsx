@@ -14,9 +14,9 @@ export const FilterStyles = StyleSheet.create({
     paddingBottom: 10,
   },
   scrollContainer: {
+    flex:1,
    
 
-    maxHeight:500,
     paddingHorizontal: 10,
   },
   scrollContent: {
@@ -24,9 +24,8 @@ export const FilterStyles = StyleSheet.create({
   },
   section: {
     marginBottom: 5,
-    borderBottomWidth: 1,
     borderBottomColor: "#ccc",
-    paddingBottom: 15,
+    paddingBottom: 10,
     
   },
   sectionTitle: {

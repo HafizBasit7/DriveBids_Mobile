@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Modal,
   FlatList,
+  StatusBar,
 } from "react-native";
 import { Icon } from "react-native-elements";
 
@@ -18,25 +19,26 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
   );
 
   const selectMake = (make) => {
-    
-      setSelectedMakes(make);
-    
+    setSelectedMakes(make);
+    setModalVisible(false);
     setMakeSearch("");
   };
 
-  const removeMake = (make) => {
-    setSelectedMakes(selectedMakes.filter((item) => item !== make));
-  };
+  useEffect(() => {
+    if (modalVisible) {
+      StatusBar.setBarStyle("dark-content");
+      StatusBar.setBackgroundColor("rgba(0, 0, 0, 0.4)", true);
+    } else {
+      StatusBar.setBackgroundColor("transparent", true);
+    }
+  }, [modalVisible]);
 
   return (
-    
-    <View>
-      {/* Make Section */}
-      
+    <View style={{ paddingBottom: 10 }}>
       <View style={{ paddingVertical: 10 }}>
         <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 5 }}>Make</Text>
 
-        Button to Open Bottom Sheet
+        {/* Button to Open Bottom Sheet */}
         <TouchableOpacity
           onPress={() => setModalVisible(true)}
           style={{
@@ -47,7 +49,7 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
           }}
         >
           <Text style={{ color: "#666" }}>
-            {selectedMakes ? selectedMakes : "Select Make"}
+            {selectedMakes ? selectedMakes : "Select Make..."}
           </Text>
         </TouchableOpacity>
       </View>
@@ -63,7 +65,7 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
           style={{
             flex: 1,
             justifyContent: "flex-end",
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            backgroundColor: "rgba(0, 0, 0, 0.4)", // Modal background
           }}
         >
           <View
@@ -72,7 +74,7 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
               padding: 20,
               borderTopLeftRadius: 16,
               borderTopRightRadius: 16,
-              maxHeight: "80%",
+              maxHeight: "80%", // Restrict modal height
             }}
           >
             {/* Modal Header */}
@@ -104,31 +106,6 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
               onChangeText={setMakeSearch}
             />
 
-            {/* Selected Makes */}
-            {/* {selectedMakes.length > 0 && (
-              <View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 10 }}>
-                {selectedMakes?.map((make) => (
-                  <View
-                    key={make}
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      backgroundColor: "#e0e0e0",
-                      paddingHorizontal: 10,
-                      paddingVertical: 5,
-                      borderRadius: 15,
-                      margin: 5,
-                    }}
-                  >
-                    <Text style={{ marginRight: 5 }}>{make}</Text>
-                    <TouchableOpacity onPress={() => removeMake(make)}>
-                      <Icon name="close" type="material" size={16} color="#666" />
-                    </TouchableOpacity>
-                  </View>
-                ))}
-              </View>
-            )} */}
-
             {/* Search Results */}
             <FlatList
               data={filteredMakes}
@@ -145,6 +122,7 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
                   <Text>{item}</Text>
                 </TouchableOpacity>
               )}
+              showsVerticalScrollIndicator={false}  // Hides the scrollbar
             />
           </View>
         </View>

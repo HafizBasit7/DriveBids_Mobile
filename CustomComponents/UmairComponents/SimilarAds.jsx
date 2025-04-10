@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   scrollViewContent: {
-    paddingHorizontal: 10, // Adds padding on both sides
+    paddingHorizontal: 3, 
   },
   cardSpacing: {
-    marginRight: 10, // Adds spacing between cards
+    marginRight: 10, 
   },
 });
 

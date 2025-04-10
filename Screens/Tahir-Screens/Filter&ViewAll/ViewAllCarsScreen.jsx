@@ -72,7 +72,7 @@ const ViewAllCarsScreen = ({route}) => {
         <>
         <Header showSearch={false}  />
         <View style={styles.container}>
-        <SectionHeader marginCustom={20} title={type === 'ending' ? "Ending Soonest" : type === 'recent' ? 'Newly Listed' : 'Featured Adds'} />
+        <SectionHeader  marginCustom={20} title={type === 'ending' ? "Ending Soonest" : type === 'recent' ? 'Newly Listed' : 'Featured Adds'} />
             <FlatList
                 data={cars}
                 keyExtractor={(item) => item._id} 
@@ -116,7 +116,10 @@ const styles = StyleSheet.create({
     height: 15, 
   },
   container: {
+    backgroundColor:"#fff",
+
     flex: 1,
+    
   },
   chipContainer: {
     flexDirection: 'row',
