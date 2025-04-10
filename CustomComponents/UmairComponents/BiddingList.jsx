@@ -56,9 +56,11 @@ const BiddingList = ({car}) => {
       </View>
 
       {(isExpanded && isLoading) && (<ActivityIndicator style={{marginTop: 20}}/>)}
-
+      {(isExpanded && !isLoading && bids && bids.length < 1) && (
+              <Text style={{margin:30}}>No Data To Show</Text>
+            ) }
       {/* Expandable Content */}
-      {(isExpanded && !isLoading) && (
+      {(isExpanded && !isLoading && bids && bids.length > 0) && (
         <View style={styles.listContainer}>
           {bids.map((bidder, index) => (
             <View key={bidder._id} style={styles.bidderCard}>

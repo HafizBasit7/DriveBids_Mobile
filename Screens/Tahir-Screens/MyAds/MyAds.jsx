@@ -11,6 +11,7 @@ import { listMyAds } from "../../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import ViewAllCarCard from "../Filter&ViewAll/ViewAllCarCard";
+import Nodata from "../../../CustomComponents/NoData";
 
 const LIMIT = 10;
 
@@ -46,9 +47,12 @@ export default MyAds = () => {
       <Header showSearch={false}/>
       <View style={styles.container}>
       <SectionHeader title={"My Ads"} />
-      {isLoading && <ActivityIndicator/>}
+      {isLoading && <ActivityIndicator style={{flex: 1, justifyContent: 'center'}}/>}
+      {((!isLoading && cars && cars.length < 1)) && (
+        <Nodata/>
+      )}
 
-      {(!isLoading && cars) && (
+      {(!isLoading && cars && cars.length > 0) && (
         <FlatList
           data={cars}
           keyExtractor={(item) => String(item._id)}

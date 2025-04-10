@@ -18,6 +18,7 @@ import { ActivityIndicator } from "react-native-paper";
 import {timeAgo} from "../../../utils/R1_utils";
 import { useAuth } from "../../../R1_Contexts/authContext";
 import { useSocket } from "../../../R1_Contexts/socketContext";
+import Nodata from "../../../CustomComponents/NoData";
 
 const LIMIT = 10;
 
@@ -183,10 +184,11 @@ const ChatHeads = () => {
 
       {/* Messages List */}
       {isLoading && (
-        <ActivityIndicator style={{margin: '10'}}/>
+        <ActivityIndicator style={{flex: 1, justifyContent: 'center'}}/>
       )}
 
-      {!isLoading && (
+      {((!isLoading && chats && chats.length < 1) && <Nodata/>)}
+      {(!isLoading && chats && chats.length > 0) && (
         <FlatList
           data={chats}
           keyExtractor={(item) => item._id}

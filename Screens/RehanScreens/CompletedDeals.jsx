@@ -15,6 +15,7 @@ import {getCompletedDeals, listMyBids} from "../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
 import { getCarsIdInWatchList } from "../../API_Callings/R1_API/Watchlist";
 import ViewAllCarCard from "../../Screens/Tahir-Screens/Filter&ViewAll/ViewAllCarCard";
+import Nodata from "../../CustomComponents/NoData";
 
 const LIMIT = 10;
 
@@ -76,8 +77,11 @@ export default CompletedDeals = () => {
         </TouchableOpacity>
       </View>
       
-      {isLoading && (<ActivityIndicator/>)}
-      {(!isLoading && completedDeals) && (
+      {isLoading && (<ActivityIndicator style={{flex: 1, justifyContent: 'center'}}/>)}
+      {(!isLoading && completedDeals && completedDeals.length < 1) && (
+        <Nodata/>
+      )}
+      {(!isLoading && completedDeals && completedDeals.length > 0) && (
         <FlatList
           data={completedDeals}
           keyExtractor={(item) => String(item._id)}

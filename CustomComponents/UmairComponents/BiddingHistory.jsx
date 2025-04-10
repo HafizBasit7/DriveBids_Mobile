@@ -31,7 +31,10 @@ const BiddingHistory = ({car}) => {
 
       {/* Expandable Content */}
       {(isExpanded && isLoading) && (<ActivityIndicator style={{marginTop: 20}}/>)}
-      {(isExpanded && !isLoading) && (
+      {(isExpanded && !isLoading && bids && bids.length < 1) && (
+        <Text style={{margin:30}}>No Data To Show</Text>
+      ) }
+      {(isExpanded && !isLoading && bids && bids.length > 0) && (
         <View style={styles.biddingList}>
           {bids.map((bid, index) => {
             const isOwnBid = bid.user === user._id;

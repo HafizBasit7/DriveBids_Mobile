@@ -16,6 +16,7 @@ import {listMyBids} from "../../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import ViewAllCarCard from "../Filter&ViewAll/ViewAllCarCard";
+import NoData from "../../../CustomComponents/NoData";
 
 const LIMIT = 10;
 
@@ -88,8 +89,11 @@ export default MyBids = () => {
         </TouchableOpacity>
       </View>
       
-      {isLoading && (<ActivityIndicator/>)}
-      {(!isLoading && bids) && (
+      {isLoading && (<ActivityIndicator style={{flex: 1, justifyContent: 'center'}}/>)}
+      {((!isLoading && bids && bids.length < 1)) && (
+        <NoData/>
+      )}
+      {(!isLoading && bids && bids.length > 0) && (
         <FlatList
           data={bids}
           keyExtractor={(item) => String(item._id)}

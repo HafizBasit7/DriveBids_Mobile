@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { getCarInspectionReport } from "../../API_Callings/R1_API/Car";
+import { ActivityIndicator } from "react-native-paper";
 
 const inspectionReportEnum = [
   { icon: "check-circle", color: "green", label: "OK" },
@@ -74,7 +75,11 @@ const InspectionReport = ({car}) => {
         <View style={styles.fullLine} />
       </View>
 
-      {isExpanded && (
+      {(isExpanded && isLoading) && (
+        <ActivityIndicator style={{margin: 30}}/>
+      )}
+
+      {(isExpanded && !isLoading) && (
         <View>
           <View style={styles.card}>
             <Text style={styles.cardHeader}>Symbols</Text>

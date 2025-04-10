@@ -80,7 +80,7 @@ const NotificationScreen = () => {
     <View style={styles.container}>
       <SectionHeader title={"Notifications"} />
       
-      {isLoading && <ActivityIndicator />}
+      {isLoading && <ActivityIndicator style={{flex: 1, justifyContent: 'center'}}/>}
 
       {!isLoading && notifications.length > 0 && (
         <FlatList

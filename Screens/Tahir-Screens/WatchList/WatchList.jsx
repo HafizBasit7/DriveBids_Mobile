@@ -19,6 +19,7 @@ import { getWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import { ActivityIndicator } from "react-native-paper";
 import Header from "../../../CustomComponents/Header";
 import ViewAllCarCard from "../Filter&ViewAll/ViewAllCarCard";
+import Nodata from "../../../CustomComponents/NoData";
 
 const LIMIT = 10;
 
@@ -52,8 +53,11 @@ export default WatchList = () => {
       <Header showSearch={false}/>
       <View style={styles.container}>
         <SectionHeader title={"Watch List"} />
-        {isLoading && (<ActivityIndicator/>)}
-        {watchList && (
+        {isLoading && (<ActivityIndicator style={{flex: 1, justifyContent: 'center'}}/>)}
+        {(!isLoading && watchList && watchList.length < 1) && (
+          <Nodata/>
+        )}
+        {(!isLoading && watchList && watchList.length > 0) && (
           <FlatList
             data={watchList}
             keyExtractor={(item) => String(item._id)}
