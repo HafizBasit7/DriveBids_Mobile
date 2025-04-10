@@ -25,7 +25,7 @@ const FiltersScreen = () => {
   // State for filter values
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
   const [makeSearch, setMakeSearch] = useState("");
-  const [selectedMakes, setSelectedMakes] = useState([]);
+  const [selectedMakes, setSelectedMakes] = useState("");
   const [model, setModel] = useState("");
   const [selectedCondition, setSelectedCondition] = useState("");
   const [selectedCity, setSelectedCity] = useState("");

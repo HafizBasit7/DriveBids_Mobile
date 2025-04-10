@@ -18,9 +18,9 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
   );
 
   const selectMake = (make) => {
-    if (!selectedMakes.includes(make)) {
-      setSelectedMakes([...selectedMakes, make]);
-    }
+    
+      setSelectedMakes(make);
+    
     setMakeSearch("");
   };
 
@@ -32,10 +32,11 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
     
     <View>
       {/* Make Section */}
+      
       <View style={{ paddingVertical: 10 }}>
         <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 5 }}>Make</Text>
 
-        {/* Button to Open Bottom Sheet */}
+        Button to Open Bottom Sheet
         <TouchableOpacity
           onPress={() => setModalVisible(true)}
           style={{
@@ -46,7 +47,7 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
           }}
         >
           <Text style={{ color: "#666" }}>
-            {selectedMakes.length > 0 ? selectedMakes.join(", ") : "Select Make"}
+            {selectedMakes ? selectedMakes : "Select Make"}
           </Text>
         </TouchableOpacity>
       </View>
@@ -104,9 +105,9 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
             />
 
             {/* Selected Makes */}
-            {selectedMakes.length > 0 && (
+            {/* {selectedMakes.length > 0 && (
               <View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 10 }}>
-                {selectedMakes.map((make) => (
+                {selectedMakes?.map((make) => (
                   <View
                     key={make}
                     style={{
@@ -126,7 +127,7 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
                   </View>
                 ))}
               </View>
-            )}
+            )} */}
 
             {/* Search Results */}
             <FlatList
