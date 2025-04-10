@@ -7,27 +7,43 @@ import {
   SafeAreaView,
   Switch,
 } from "react-native";
-import { Icon } from "react-native-elements";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import Header from "../../../CustomComponents/Header";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import { getNotificationSettings, updateNotificationSettings } from "../../../API_Callings/R1_API/Auth";
+import { ActivityIndicator } from "react-native-paper";
 
 export default function NotificationSettingsScreen() {
-  // Common settings
-  const [generalNotification, setGeneralNotification] = useState(true);
-  const [sound, setSound] = useState(false);
-  const [vibrate, setVibrate] = useState(true);
 
-  // System & services update settings
-  const [appUpdates, setAppUpdates] = useState(false);
-  const [promotion, setPromotion] = useState(true);
-  const [discountAvailable, setDiscountAvailable] = useState(false);
-  const [paymentRequest, setPaymentRequest] = useState(false);
+  const queryClient = useQueryClient();
 
-  // Others settings
-  const [newServiceAvailable, setNewServiceAvailable] = useState(false);
-  const [newTipsAvailable, setNewTipsAvailable] = useState(true);
+  const {data, isLoading} = useQuery({
+    queryKey: ['notificationSettings'],
+    queryFn: getNotificationSettings,
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: updateNotificationSettings,
+    onMutate: async (payload) => {
+      await queryClient.cancelQueries('notificationSettings');
+      const previousNotificationSettings = queryClient.getQueryData(['notificationSettings']);
+
+      const newData = {...previousNotificationSettings};
+      newData.data.notificationSettings = {
+        ...newData.data.notificationSettings,
+        ...payload,
+      };
+
+      queryClient.setQueryData(["notificationSettings"], newData);
+
+      return {previousNotificationSettings};
+    },
+    onError: async (_error, _newMessage, context) => {
+      queryClient.setQueryData(["notificationSettings"], context.previousNotificationSettings);
+    },
+  });
 
   const renderSwitch = (value, onValueChange) => (
     <Switch
@@ -40,38 +56,52 @@ export default function NotificationSettingsScreen() {
     />
   );
 
+  const saveSettings = async (key, value) => {
+    updateMutation.mutate({[key]: value});
+  };
+
   return (
-    <>
+    <View style={styles.container}>
       <Header showSearch={false}/>
-       <View style={{ backgroundColor: "#fff" }}>  <SectionHeader title={"Notifications Setting"} /></View>
-   
+       <View style={{ backgroundColor: "#fff", paddingTop: 10,}}>  <SectionHeader title={"Notifications Setting"} /></View>
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}
+        contentContainerStyle={{ flexGrow: 1 }}
       >
-          
         {/* Common Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Common</Text>
+        {isLoading && (<ActivityIndicator style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}/>)}
+        {!isLoading && (
+          <View style={styles.section}>
+            {/* <Text style={styles.sectionTitle}>Common</Text> */}
 
-          <View style={styles.settingItem}>
-            <Text style={styles.settingText}>General Notification</Text>
-            {renderSwitch(generalNotification, setGeneralNotification)}
-          </View>
+            <View style={styles.settingItem}>
+              <Text style={styles.settingText}>New Chat</Text>
+              {renderSwitch(data.data.notificationSettings.newChat, () => saveSettings('newChat', !data.data.notificationSettings.newChat))}
+            </View>
 
-          <View style={styles.settingItem}>
-            <Text style={styles.settingText}>Sound</Text>
-            {renderSwitch(sound, setSound)}
-          </View>
+            <View style={styles.settingItem}>
+              <Text style={styles.settingText}>Car Sold (Buy Now)</Text>
+              {renderSwitch(data.data.notificationSettings.carSold, () => saveSettings('carSold', !data.data.notificationSettings.carSold))}
+            </View>
 
-          <View style={styles.settingItem}>
-            <Text style={styles.settingText}>Vibrate</Text>
-            {renderSwitch(vibrate, setVibrate)}
+            <View style={styles.settingItem}>
+              <Text style={styles.settingText}>Bid Accepted</Text>
+              {renderSwitch(data.data.notificationSettings.bidAccepted, () => saveSettings('bidAccepted', !data.data.notificationSettings.bidAccepted))}
+            </View>
+
+            <View style={styles.settingItem}>
+              <Text style={styles.settingText}>Bid Placed</Text>
+              {renderSwitch(data.data.notificationSettings.bidPlaced, () => saveSettings('bidPlaced', !data.data.notificationSettings.bidPlaced))}
+            </View>
           </View>
-        </View>
-        <View style={styles.divider} />
+        )}
+
+        
+        {/* <View style={styles.divider} /> */}
         {/* System & Services Update Section */}
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <Text style={styles.sectionTitle}>System & services update</Text>
 
           <View style={styles.settingItem}>
@@ -93,10 +123,10 @@ export default function NotificationSettingsScreen() {
             <Text style={styles.settingText}>Payment Request</Text>
             {renderSwitch(paymentRequest, setPaymentRequest)}
           </View>
-        </View>
-        <View style={styles.divider} />
+        </View> */}
+        {/* <View style={styles.divider} /> */}
         {/* Others Section */}
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <Text style={styles.sectionTitle}>Others</Text>
 
           <View style={styles.settingItem}>
@@ -108,30 +138,30 @@ export default function NotificationSettingsScreen() {
             <Text style={styles.settingText}>New Tips Available</Text>
             {renderSwitch(newTipsAvailable, setNewTipsAvailable)}
           </View>
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <CustomButton
+        </View> */}
+      </ScrollView>
+      
+      {/* <View style={styles.buttonContainer}> */}
+          {/* <CustomButton
             style={{ marginBottom: 10 }}
             title="Save Changes"
             onPress={() => console.log("Save Settings")}
-          />
-          <CustomButton
+          /> */}
+          {/* <CustomButton
             title="Back"
             style={styles.nextButton}
             textStyle={styles.nextButtonText}
             onPress={() => console.log("Go bAck from Notification Setting")}
-          />
-        </View>
-      </ScrollView>
-    </>
+          /> */}
+        {/* </View> */}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    
+    flex: 1,  
+    backgroundColor:"#fff"
   },
   scrollView: {
     flex: 1,
@@ -139,7 +169,8 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 10,
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   sectionTitle: {
     fontFamily: "Inter-SemiBold",
@@ -172,7 +203,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
     alignSelf: "center",
-    marginBottom:"10%"
+    marginBottom:"8%"
   },
   nextButton: {
     backgroundColor: "transparent",
