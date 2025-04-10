@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    height: 56,
+    height: 80,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 2,
     zIndex: 10,
+    paddingTop:20,
   },
   backButton: {
     marginRight: 12,

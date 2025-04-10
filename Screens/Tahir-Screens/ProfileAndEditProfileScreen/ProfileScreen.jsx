@@ -155,14 +155,11 @@ const ProfileScreen = () => {
       </TouchableOpacity>
         </View>
 
-<<<<<<< HEAD
       {/* Menu Items */}
       <View style={{ flex: 1. }}>
-=======
-        {/* Menu Items */}
->>>>>>> e4e3f2ae8e402e984407ff4fc159e5b43b2225dd
         <View style={styles.menuContainer}>
           {menuItems.map(renderMenuItem)}
+        </View>
         </View>
       </ScrollView>
     </>
@@ -221,7 +218,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: "#f3f4f6",
-    marginBottom: 7,
+    marginBottom: 5,
     borderRadius: 10,
   },
   menuItemLeft: {

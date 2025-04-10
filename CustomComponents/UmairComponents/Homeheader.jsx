@@ -439,7 +439,7 @@ const styles = StyleSheet.create({
     bottom: 40,
     left: 0,
     right: 0,
-    height: 80,
+    height: 90,
   },
   thumbnailsContent: {
     paddingHorizontal: 10,
@@ -456,6 +456,7 @@ const styles = StyleSheet.create({
   selectedThumbnail: {
     borderColor: "#FFD700",
     transform: [{ scale: 1.05 }],
+    borderWidth:1
   },
   thumbnail: {
     width: "100%",
