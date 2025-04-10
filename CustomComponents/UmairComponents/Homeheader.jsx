@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from "react";
 import {
   View,
@@ -11,25 +12,25 @@ import {
   Modal,
   TouchableWithoutFeedback,
   StatusBar,
+  FlatList,
 } from "react-native";
-import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg"; // Ensure correct path
-// import MsgIcon from "../../assets/UmairAssets/MsgSVG.svg"; // Ensure correct path
+import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
 import { calculateTimeLeft } from "../../utils/countdown";
 import { useNavigation } from "@react-navigation/native";
 import { formatAmount } from "../../utils/R1_utils";
 import WrapperComponent from "../WrapperComponent";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
-const HomeHeader = ({ car,scrollY }) => {
+const HomeHeader = ({ car, scrollY }) => {
   const scrollViewRef = useRef(null);
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-
+  const thumbnailsRef = useRef(null);
 
   const countdownInterval = useRef();
   const [timeLeft, setTimeLeft] = useState("0hr:0m:0s");
@@ -37,7 +38,6 @@ const HomeHeader = ({ car,scrollY }) => {
   const navigation = useNavigation();
 
   const isCarSold = car.status === "sold";
-  
 
   useEffect(() => {
     if (isCarSold) return;
@@ -56,44 +56,67 @@ const HomeHeader = ({ car,scrollY }) => {
     .flat()
     .map((val) => val.url);
 
-    const [isPaused, setIsPaused] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
-    useEffect(() => {
-      let index = 0;
-      let interval;
-    
-      if (!isPaused) {
-        interval = setInterval(() => {
-          if (scrollViewRef.current) {
-            scrollViewRef.current.scrollTo({
-              x: index * width,
-              animated: true,
-            });
-    
-            setCurrentIndex(index);
-            index++;
-    
-            if (index >= images.length) {
-              index = 0;
-            }
+  useEffect(() => {
+    let index = 0;
+    let interval;
+
+    if (!isPaused) {
+      interval = setInterval(() => {
+        if (scrollViewRef.current) {
+          scrollViewRef.current.scrollTo({
+            x: index * width,
+            animated: true,
+          });
+
+          setCurrentIndex(index);
+          index++;
+
+          if (index >= images.length) {
+            index = 0;
           }
-        }, 3000);
+        }
+      }, 3000);
+    }
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  const openModal = (imageIndex) => {
+    setSelectedImageIndex(imageIndex);
+    setModalVisible(true);
+    setIsPaused(true); // Stop slider when modal opens
+    
+    // Slight delay to ensure FlatList is rendered before scrolling
+    setTimeout(() => {
+      if (thumbnailsRef.current) {
+        thumbnailsRef.current.scrollToIndex({
+          index: imageIndex,
+          animated: true,
+          viewPosition: 0.5
+        });
       }
-    
-      return () => clearInterval(interval);
-    }, [isPaused]);
+    }, 100);
+  };
 
+  const closeModal = () => {
+    setModalVisible(false);
+    setIsPaused(false); // Resume slider when modal closes
+  };
 
-    const openModal = (image) => {
-      setSelectedImage(image);
-      setModalVisible(true);
-      setIsPaused(true); // 🔹 Stop slider when modal opens
-    };
+  const selectImage = (index) => {
+    setSelectedImageIndex(index);
     
-    const closeModal = () => {
-      setModalVisible(false);
-      setIsPaused(false); // 🔹 Resume slider when modal closes
-    };
+    // Scroll thumbnails to keep selected thumbnail centered
+    if (thumbnailsRef.current) {
+      thumbnailsRef.current.scrollToIndex({
+        index: index,
+        animated: true,
+        viewPosition: 0.5
+      });
+    }
+  };
   const nextImage = () => {
     setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
@@ -127,9 +150,20 @@ const HomeHeader = ({ car,scrollY }) => {
     outputRange: [13, 9], 
     extrapolate: "clamp",
   });
+  const renderThumbnail = ({ item, index }) => (
+    <TouchableOpacity
+      onPress={() => selectImage(index)}
+      style={[
+        styles.thumbnailContainer,
+        selectedImageIndex === index && styles.selectedThumbnail,
+      ]}
+    >
+      <Image source={{ uri: item }} style={styles.thumbnail} />
+    </TouchableOpacity>
+  );
   return (
     <View>
-    {modalVisible ? (
+      {modalVisible ? (
         <StatusBar
           barStyle="light-content"
           backgroundColor="rgba(0, 0, 0, 0.8)"
@@ -151,13 +185,11 @@ const HomeHeader = ({ car,scrollY }) => {
           )}
         >
           {images.map((image, index) => (
-            <TouchableOpacity key={index} onPress={() => openModal(image)}>
+            <TouchableOpacity key={index} onPress={() => openModal(index)}>
               <Image source={{ uri: image }} style={styles.image} />
             </TouchableOpacity>
           ))}
         </ScrollView>
-
-        {/* Left Arrow Button */}
 
         <TouchableOpacity
           style={styles.backIconContainer}
@@ -165,8 +197,6 @@ const HomeHeader = ({ car,scrollY }) => {
         >
           <BackIcon width={30} height={30} />
         </TouchableOpacity>
-
-       
 
         <View style={styles.pagination}>
           {images.map((_, index) => (
@@ -227,21 +257,46 @@ const HomeHeader = ({ car,scrollY }) => {
         visible={modalVisible}
         onRequestClose={closeModal}
       >
-        
-        <TouchableWithoutFeedback onPress={closeModal}>
-          <View style={styles.modalOverlay}>
-            <TouchableOpacity style={styles.leftButton} onPress={prevImage}>
-              <Text style={styles.navText}>❮</Text>
-            </TouchableOpacity>
-            <Image
-              source={{ uri: images[selectedImageIndex] }}
-              style={styles.modalImage}
+        <View style={styles.modalOverlay}>
+          <TouchableOpacity 
+            style={styles.closeButton} 
+            onPress={closeModal}
+          >
+            <Text style={styles.closeButtonText}>✕</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.leftButton} onPress={prevImage}>
+            <Text style={styles.navText}>❮</Text>
+          </TouchableOpacity>
+          
+          <Image
+            source={{ uri: images[selectedImageIndex] }}
+            style={styles.modalImage}
+          />
+          
+          <TouchableOpacity style={styles.rightButton} onPress={nextImage}>
+            <Text style={styles.navText}>❯</Text>
+          </TouchableOpacity>
+          
+          {/* Horizontal thumbnails carousel */}
+          <View style={styles.thumbnailCarouselContainer}>
+            <FlatList
+              ref={thumbnailsRef}
+              data={images}
+              renderItem={renderThumbnail}
+              keyExtractor={(_, index) => index.toString()}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.thumbnailsContent}
+              initialScrollIndex={selectedImageIndex}
+              getItemLayout={(data, index) => ({
+                length: 80,
+                offset: 80 * index,
+                index,
+              })}
             />
-            <TouchableOpacity style={styles.rightButton} onPress={nextImage}>
-              <Text style={styles.navText}>❯</Text>
-            </TouchableOpacity>
           </View>
-        </TouchableWithoutFeedback>
+        </View>
       </Modal>
     </View>
   );
@@ -340,14 +395,73 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
-  
+    backgroundColor: "rgba(0, 0, 0, 0.95)",
   },
-  modalImage: { width: width * 1, height: width, resizeMode: "contain" },
-  
-  leftButton: { position: "absolute", left: 20, zIndex: 10 },
-  rightButton: { position: "absolute", right: 20, zIndex: 10 },
-  navText: { fontSize: 40, color: "yellow" },
+  modalImage: { 
+    width: width, 
+    height: width, 
+    resizeMode: "contain" 
+  },
+  leftButton: { 
+    position: "absolute", 
+    left: 20, 
+    zIndex: 10 
+  },
+  rightButton: { 
+    position: "absolute", 
+    right: 20, 
+    zIndex: 10 
+  },
+  navText: { 
+    fontSize: 40, 
+    color: "#FFD700" 
+  },
+  closeButton: {
+    position: "absolute",
+    top: 40,
+    right: 20,
+    zIndex: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  closeButtonText: {
+    color: "#FFD700",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  // Thumbnail styles
+  thumbnailCarouselContainer: {
+    position: "absolute",
+    bottom: 40,
+    left: 0,
+    right: 0,
+    height: 80,
+  },
+  thumbnailsContent: {
+    paddingHorizontal: 10,
+  },
+  thumbnailContainer: {
+    width: 70,
+    height: 70,
+    borderRadius: 8,
+    marginHorizontal: 5,
+    borderWidth: 2,
+    borderColor: "transparent",
+    overflow: "hidden",
+  },
+  selectedThumbnail: {
+    borderColor: "#FFD700",
+    transform: [{ scale: 1.05 }],
+  },
+  thumbnail: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
 });
 
 export default HomeHeader;

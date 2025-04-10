@@ -1,30 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  TextInput,
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
-import { CheckBox } from "react-native-elements";
 
 const CarDetails13 = () => {
   const navigation = useNavigation(); // Initialize navigation
+  const { carState, dispatch } = useCar();
 
-  const {carState, dispatch} = useCar();
-
-  function onChangeCarMake (value) {
+  function onChangeCarMake(value) {
     dispatch({
-      type: 'UPDATE_FIELD',
-      section: 'carDetails',
-      field: 'condition',
+      type: "UPDATE_FIELD",
+      section: "carDetails",
+      field: "condition",
       value,
     });
-  };
+  }
 
   const options = [
     { id: 1, label: "Poor" },
@@ -55,12 +52,12 @@ const CarDetails13 = () => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => onChangeCarMake(item.label)}>
-            <View style={styles.optionContainer}>
-              <CheckBox
-                checked={carState.carDetails.condition === item.label}
-                onPress={() => onChangeCarMake(item.label)}
-                checkedColor="#007BFF"
-              />
+            <View
+              style={[
+                styles.optionContainer,
+                carState.carDetails.condition === item.label && styles.selectedOption,
+              ]}
+            >
               <Text
                 style={[
                   styles.entityText,
@@ -82,13 +79,6 @@ const CarDetails13 = () => {
           title="Next"
           onPress={() => navigation.navigate("CarDetails14")}
         />
-        <View style={{ height: 10 }} />
-        {/* <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.navigate("VehicleInfo")}
-        /> */}
       </View>
     </View>
   );
@@ -101,11 +91,12 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   optionContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-    marginTop:"4%"
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    marginVertical: 4,
+    borderRadius: 5,
+  },
+  selectedOption: {
   },
   lineContainer: {
     flexDirection: "row",
@@ -132,30 +123,12 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "700",
   },
-  inputWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginHorizontal: 20,
-    height: 55,
-    marginTop: 10,
-  },
-  input: {
-    flex: 1,
-    fontSize: 16,
-    color: "#000",
-  },
   entityText: {
     fontSize: 16,
     color: "#000",
-    paddingVertical: 12,
-    paddingHorizontal: 15,
   },
   selectedText: {
-    color: "#007BFF", // Blue color for selected text
+    color: "#2F61BF", 
     fontWeight: "700",
   },
   separator: {
@@ -169,15 +142,10 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: 15,
-    marginBottom: "3%"
+    marginBottom: "3%",
   },
   button: {
     marginBottom: 5,
-  },
-  backButton: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#007BFF",
   },
 });
 

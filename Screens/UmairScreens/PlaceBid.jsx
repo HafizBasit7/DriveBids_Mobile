@@ -82,6 +82,7 @@ const PlaceBid = ({route}) => {
               keyboardType="numeric"
               value={bidAmount} // Empty string shows placeholder, non-empty string hides it
               onChangeText={setBidAmount}
+              
             />
           </View>
 
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     marginBottom:5
   },
   currencySymbol: {
-    fontSize: 22,
+    fontSize: 25,
     fontWeight: "bold",
     marginRight: 5,
   },
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 30,
     fontWeight: "bold",
-    textAlign: "center", // Centers text horizontally
+    textAlign: "start", // Centers text horizontally
     textAlignVertical: "center",
   },
   warning: {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -8,12 +8,11 @@ import {
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
-import { CheckBox } from "react-native-elements"; // Importing CheckBox
 import { useCar } from "../../../R1_Contexts/carContext";
 
 const CarDetails6 = () => {
-  const navigation = useNavigation(); // Initialize navigation
-  const {carState, dispatch} = useCar();
+  const navigation = useNavigation();
+  const { carState, dispatch } = useCar();
 
   const options = [
     { id: 1, label: "Petrol" },
@@ -21,18 +20,13 @@ const CarDetails6 = () => {
     { id: 3, label: "HI-Octane" },
     { id: 4, label: "Electricity" },
     { id: 5, label: "Hybrid" },
-    // { id: 6, label: "LPG" },
-    // { id: 7, label: "Hydrogen" },
-    // { id: 8, label: "Biofuel" },
-    // { id: 9, label: "Ethanol" },
-    // { id: 10, label: "Methanol" },
   ];
 
   const toggleSelection = (value) => {
     dispatch({
-      type: 'UPDATE_FIELD',
-      section: 'carDetails',
-      field: 'fuel',
+      type: "UPDATE_FIELD",
+      section: "carDetails",
+      field: "fuel",
       value,
     });
   };
@@ -53,19 +47,21 @@ const CarDetails6 = () => {
         <View style={styles.line} />
       </View>
 
-      {/* Clickable List with Checkboxes */}
+      {/* Clickable List */}
       <FlatList
         data={options}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => toggleSelection(item.label)}>
-            <View style={styles.optionContainer}>
-              <CheckBox
-                checked={carState.carDetails.fuel == item.label}
-                onPress={() => toggleSelection(item.label)}
-                checkedColor="#007BFF"
-              />
-              <Text style={styles.entityText}>{item.label}</Text>
+            <View style={styles.row}>
+              <Text
+                style={[
+                  styles.tableData,
+                  carState.carDetails.fuel === item.label && styles.selectedText,
+                ]}
+              >
+                {item.label}
+              </Text>
             </View>
           </TouchableOpacity>
         )}
@@ -78,13 +74,6 @@ const CarDetails6 = () => {
           title="Next"
           onPress={() => navigation.navigate("CarDetails7")}
         />
-        <View style={{ height: 10 }} />
-        {/* <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
-        /> */}
       </View>
     </View>
   );
@@ -121,31 +110,19 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "700",
   },
-  inputWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginHorizontal: 20,
-    height: 55,
-    marginTop: 10,
-  },
-  input: {
-    flex: 1,
-    fontSize: 16,
-    color: "#000",
-  },
-  optionContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 4,
+  row: {
+    paddingVertical: 12,
     paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+    marginTop: 5,
   },
-  entityText: {
+  tableData: {
     fontSize: 16,
-    color: "#000",
+    color: "#000", // Default color
+  },
+  selectedText: {
+    color: "#2F61BF", // Blue color for selected item
   },
   buttonContainer: {
     alignItems: "center",
@@ -153,15 +130,10 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: 5,
-    marginBottom: "3%"
+    marginBottom: "3%",
   },
   button: {
     marginBottom: 5,
-  },
-  backButton: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#007BFF",
   },
 });
 

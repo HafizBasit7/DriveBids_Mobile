@@ -158,7 +158,7 @@ const ProfileScreen = () => {
       </View>
 
       {/* Menu Items */}
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1. }}>
         <View style={styles.menuContainer}>
           {menuItems.map(renderMenuItem)}
         </View>
@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
   menuContainer: {
     borderRadius: 10,
     overflow: "hidden",
+    
   },
   menuItem: {
     flexDirection: "row",
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: "#f3f4f6",
-    marginBottom: 8,
+    marginBottom: 7,
     borderRadius: 10,
   },
   menuItemLeft: {
