@@ -340,9 +340,9 @@ const ActiveChatBox = ({route}) => {
             
           </View>
           <View style={styles.connectionStatusContainer}>
-  <View style={[styles.statusDot, isUserConnected ? styles.statusDotOnline : styles.statusDotOffline]} />
+  <View style={[styles.statusDot, socket ? styles.statusDotOnline : styles.statusDotOffline]} />
   <Text style={styles.statusText}>
-    {isUserConnected ? "User is online" : "User is offline"}
+    {socket ? "Connected" : "Disconnected, Connecting..."}
   </Text>
 </View>
         </View>
