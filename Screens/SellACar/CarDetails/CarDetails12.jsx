@@ -6,6 +6,8 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
@@ -26,54 +28,56 @@ const CarDetails12 = () => {
   };
 
   return (
-    <View style={styles.container}>
+  <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
 
-    {/* Content */}
-    <View style={{ flex: 1 }}>
-      {/* Step Progress Indicator */}
-      <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <Text style={styles.lineText}>Step 12 of 14</Text>
-        <View style={styles.line} />
-      </View>
-  
-      {/* Section Title */}
-      <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <Text style={styles.lineText2}>Accident History</Text>
-        <View style={styles.line} />
-      </View>
-  
-      {/* Input Field */}
-      <View style={styles.inputWrapper}>
-        <TextInput
-          style={[styles.input, { height: 150,textAlignVertical: 'top', textAlign: 'left',paddingTop:15 }]}
-          placeholder="Enter accident history..."
-          placeholderTextColor="#999"
-          value={carState.carDetails.accidentHistory}
-          onChangeText={onChangeCarCity}
-          multiline
-        />
-      </View>
-    </View>
-  
-    {/* Buttons */}
-    <View style={styles.buttonContainer}>
-      <CustomButton
-        style={styles.button}
-        title="Next"
-        onPress={() => navigation.navigate("CarDetails13")}
-      />
-      <View style={{ height: 10 }} />
-      {/* <CustomButton
-        title="Back"
-        style={styles.backButton}
-        textStyle={{ color: "#007BFF" }}
-        onPress={() => navigation.goBack()}
-      /> */}
-    </View>
-  
+{/* Content */}
+<View style={{ flex: 1 }}>
+  {/* Step Progress Indicator */}
+  <View style={styles.lineContainer}>
+    <View style={styles.line} />
+    <Text style={styles.lineText}>Step 12 of 14</Text>
+    <View style={styles.line} />
   </View>
+
+  {/* Section Title */}
+  <View style={styles.lineContainer}>
+    <View style={styles.line} />
+    <Text style={styles.lineText2}>Accident History</Text>
+    <View style={styles.line} />
+  </View>
+
+  {/* Input Field */}
+  <View style={styles.inputWrapper}>
+    <TextInput
+      style={[styles.input, { height: 150,textAlignVertical: 'top', textAlign: 'left',paddingTop:15 }]}
+      placeholder="Enter accident history..."
+      placeholderTextColor="#999"
+      value={carState.carDetails.accidentHistory}
+      onChangeText={onChangeCarCity}
+      multiline
+    />
+  </View>
+</View>
+
+{/* Buttons */}
+<View style={styles.buttonContainer}>
+  <CustomButton
+    style={styles.button}
+    title="Next"
+    onPress={() => navigation.navigate("CarDetails13")}
+  />
+  <View style={{ height: 10 }} />
+  {/* <CustomButton
+    title="Back"
+    style={styles.backButton}
+    textStyle={{ color: "#007BFF" }}
+    onPress={() => navigation.goBack()}
+  /> */}
+</View>
+
+</View>
+  </TouchableWithoutFeedback>
   
   );
 };

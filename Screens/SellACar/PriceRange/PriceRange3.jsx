@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, Keyboard } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
+import { TouchableWithoutFeedback } from "react-native";
 
 const PriceRange3 = () => {
   const navigation = useNavigation();
@@ -43,7 +44,8 @@ const PriceRange3 = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
       {/* Content */}
       <View style={styles.content}>
         {/* Step Progress Indicator */}
@@ -87,6 +89,7 @@ const PriceRange3 = () => {
         <View style={{ height: 10 }} />
       </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 

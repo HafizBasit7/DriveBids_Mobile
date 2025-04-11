@@ -3,11 +3,13 @@ import {
   View,
   Text,
   StyleSheet,
+  Keyboard,
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { TouchableWithoutFeedback } from "react-native";
 
 const CarDetails2 = () => {
   const navigation = useNavigation(); // Initialize navigation
@@ -24,7 +26,8 @@ const CarDetails2 = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
@@ -125,6 +128,7 @@ const CarDetails2 = () => {
         /> */}
       </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 

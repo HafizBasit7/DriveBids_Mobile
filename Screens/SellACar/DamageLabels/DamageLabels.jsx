@@ -190,9 +190,10 @@ const DamageInspection = () => {
                   const option = damageOptions.find(val => val.label === marker.damageType);
                   return (
                     <MaterialIcons
+                      onPress={() => {}}
                       key={index}
                       name={option.icon}
-                      size={20}
+                      size={25}
                       color={option.color}
                       style={{
                         position: "absolute",

@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Upload from "../assets/tahirAssets/Upload";
@@ -70,7 +71,7 @@ export default DamageReportModal = ({
 
   return (
     <Modal visible={modalVisible} transparent animationType="fade">
-      <TouchableWithoutFeedback onPress={dismissModal}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View
           style={{
             flex: 1,

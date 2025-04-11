@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
@@ -43,7 +43,8 @@ const PriceRange2 = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
       {/* Content */}
       <View style={styles.content}>
         {/* Step Progress Indicator */}
@@ -87,6 +88,7 @@ const PriceRange2 = () => {
         <View style={{ height: 10 }} />
       </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
