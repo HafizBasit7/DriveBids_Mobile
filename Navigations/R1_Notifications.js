@@ -10,7 +10,7 @@ export default function R1_Notifications() {
   return (
     <Stack.Navigator
       screenOptions={{
-        header: () => <Header showSearch={false}/>
+        header: () => <Header showSearch={false} title={'Notifications'}/>
       }}
     >
       <Stack.Screen name="Notifications" component={NotificationScreen} />

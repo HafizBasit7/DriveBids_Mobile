@@ -123,6 +123,8 @@ const SignupScreen = () => {
     }
   };
 
+  const visible = loading ? true : message ? true : false;
+
   return (
     <View style={styles.container}>
       <DialogBox
@@ -142,7 +144,7 @@ const SignupScreen = () => {
 
       <StatusBar
         barStyle="dark-content"
-        backgroundColor="transparent"
+        backgroundColor={visible ? "rgba(0,0,0,0.7)" : 'transparent'}
         translucent
       />
 
@@ -211,7 +213,7 @@ const SignupScreen = () => {
 
             <Text style={styles.label}>Location</Text>
             <GooglePlacesAutocomplete
-              placeholder='Enter / Search Location'
+              placeholder='Enter / search location'
               fetchDetails={true}
               onPress={(data, details) => {
                 const updateLocation = {

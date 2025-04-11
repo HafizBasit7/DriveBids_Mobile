@@ -44,7 +44,7 @@ export default MyAds = () => {
 
   return (
     <>
-      <Header showSearch={false}/>
+      <Header showSearch={false} title={'Settings'}/>
       <View style={styles.container}>
       <SectionHeader title={"My Ads"} />
       {isLoading && <ActivityIndicator style={{flex: 1, justifyContent: 'center'}}/>}

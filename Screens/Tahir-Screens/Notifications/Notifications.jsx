@@ -78,7 +78,7 @@ const NotificationScreen = () => {
   
   return (
     <View style={styles.container}>
-      <SectionHeader title={"Notifications"} />
+      {/* <SectionHeader title={"Notifications"} /> */}
       
       {isLoading && <ActivityIndicator style={{flex: 1, justifyContent: 'center'}}/>}
 

@@ -73,7 +73,7 @@ const CarDetails2 = () => {
           language: 'en',
         }}
         textInputProps={{
-          defaultValue: carState.carDetails?.location?.name
+          placeholder: carState.carDetails?.location?.name
         }}
         styles={{
           textInputContainer: {

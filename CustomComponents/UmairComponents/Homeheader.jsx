@@ -20,15 +20,24 @@ import { calculateTimeLeft } from "../../utils/countdown";
 import { useNavigation } from "@react-navigation/native";
 import { formatAmount } from "../../utils/R1_utils";
 import WrapperComponent from "../WrapperComponent";
+import { useQuery } from "@tanstack/react-query";
+import { getCar } from "../../API_Callings/R1_API/Car";
 
 const { width, height } = Dimensions.get("window");
 
-const HomeHeader = ({ car, scrollY }) => {
+const HomeHeader = ({ carId, scrollY }) => {
+  const {data, isLoading} = useQuery({
+    queryKey: ['car', carId],
+    queryFn: () => getCar(carId),
+    enabled: false,
+  });
+  const car = data.data.car;
+
   const scrollViewRef = useRef(null);
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedImage, setSelectedImage] = useState("");
+  // const [selectedImage, setSelectedImage] = useState("");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const thumbnailsRef = useRef(null);
 

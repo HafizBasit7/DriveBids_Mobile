@@ -73,7 +73,7 @@ const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
 
   return (
     <WrapperComponent>
-      <HomeHeader style={{backgroundColor:"#fff"}} car={car} scrollY={scrollY}/>
+      <HomeHeader style={{backgroundColor:"#fff"}} carId={carId} scrollY={scrollY}/>
       <Animated.ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}

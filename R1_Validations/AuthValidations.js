@@ -14,6 +14,11 @@ export const phoneNumberValidation = zod.object(
   { message: "invalid phone number" }
 );
 
+const locationValidation = zod.object({
+    name: zod.string({message: 'Location name is not correct'}),
+    coordinates: zod.array(zod.number()).length(2, 'Location is not correct')    
+}, {message: 'Location is not valid or given'});
+
 export const loginValidation = zod.object({
   email: zod
     .string({
@@ -30,8 +35,7 @@ export const loginValidation = zod.object({
 export const signupValidation = zod.object({
   // type: zod.enum(["individual", "trader"], {required_error: 'user type is required', message: "invalid user type"}),
   name: zod.string({ required_error: "Please enter your name." }),
-  city: zod.string({ required_error: "Please enter your city." }),
-  country: zod.string({ required_error: "Please enter your country." }),
+  location: locationValidation,
   phoneNumber: phoneNumberValidation,
 });
 

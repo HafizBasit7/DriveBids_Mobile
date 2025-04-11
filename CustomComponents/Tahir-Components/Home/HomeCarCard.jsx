@@ -122,7 +122,7 @@ const HomeCarCard = ({
         </View>
       )}
       <View style={styles.details}>
-        <Text style={styles.title}>{ad.variant}</Text>
+        <Text style={styles.title}>{ad.make} {ad.variant}</Text>
         <View style={styles.infoRow}>
   <View style={styles.iconTextContainer}>
     <Icon name="calendar-today" type="material" size={14} color="black" />

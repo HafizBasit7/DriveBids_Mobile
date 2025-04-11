@@ -57,7 +57,7 @@ const PlaceBid = ({route}) => {
         title={message?.title || ''}
       />
 
-      <HomeHeader car={car} scrollY={scrollY}/>
+      <HomeHeader carId={car._id} scrollY={scrollY}/>
       <View style={styles.container}>
         {/* Main Content */}
         <View style={styles.content}>

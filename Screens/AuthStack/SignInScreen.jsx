@@ -64,12 +64,14 @@ const SignInScreen = () => {
     console.log(`${platform} Login Clicked`);
   };
 
+  const visible = loading ? true : message ? true : false;
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.innerContainer}>
 
         <DialogBox
-           visible={loading ? true : message ? true : false}
+           visible={visible}
            message={message?.message}
            onOkPress={() => setMessage(null)}
            type={message?.type}
@@ -79,7 +81,7 @@ const SignInScreen = () => {
 
         <StatusBar
           barStyle="dark-content"
-          backgroundColor="transparent"
+          backgroundColor={visible ? "rgba(0,0,0,0.7)" : 'transparent'}
           translucent
         />
         <View style={{ height: "40%", width: "100%",backgroundColor:"#fff" }}>

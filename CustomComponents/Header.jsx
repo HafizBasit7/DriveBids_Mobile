@@ -26,7 +26,7 @@ const MAX_HEADER_HEIGHT = height * 0.22;
 const MIN_HEADER_HEIGHT = height * 0.13;
 const SCROLL_RANGE = 150;
 
-const Header = ({ showSearch = true, scrollY }) => {
+const Header = ({ showSearch = true, scrollY, title = null }) => {
   // Interpolations for animation
   const headerHeight = scrollY?.interpolate({
     inputRange: [0, SCROLL_RANGE],
@@ -75,14 +75,20 @@ const Header = ({ showSearch = true, scrollY }) => {
           )}
 
           {/* Location Selector */}
-          <TouchableOpacity
-            style={styles.center}
-            onPress={navigateToChangeLocation}
-          >
-            <SvgLocation width={15} height={18} />
-            <Text style={[styles.text,]} numberOfLines={1}>{currentSelectedLocation || "Your City"}</Text>
-            <SvgDown width={15} height={15} />
-          </TouchableOpacity>
+          {!title && (
+            <TouchableOpacity
+              style={styles.center}
+              onPress={navigateToChangeLocation}
+            >
+              <SvgLocation width={15} height={18} />
+              <Text style={[styles.text,]} numberOfLines={1}>{currentSelectedLocation || "Your City"}</Text>
+              <SvgDown width={15} height={15} />
+            </TouchableOpacity>
+          )}
+
+          {title && (
+            <Text style={{fontWeight: '800', fontSize: 18}}>{title}</Text>
+          )}
 
           {/* Profile */}
           <TouchableOpacity

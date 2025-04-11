@@ -153,8 +153,8 @@ const ChatHeads = () => {
   
   return (
     <View style={styles.container}>
-      <Header showSearch={false}/>
-      <SectionHeader title={"Messages"} />
+      <Header showSearch={false} title={'Messages'}/>
+      {/* <SectionHeader title={"Messages"} /> */}
       <View style={styles.tabContainer}>
         <TouchableOpacity
           onPress={() => setActiveTab("Buying")}
@@ -215,6 +215,7 @@ const styles = StyleSheet.create({
     backgroundColor:"#fff"
   },
   tabContainer: {
+    marginVertical: 15,
     flexDirection: "row",
   },
   tab: {

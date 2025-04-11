@@ -118,7 +118,7 @@ const OnboardingScreen = () => {
                 onPress={handleNext}
                 style={[styles.button, styles.nextButton]}
               >
-                <Text style={[styles.buttonText, { color: "#fff" }]}>Next</Text>
+                <Text style={[styles.buttonText, { color: "#fff" }]}>Next </Text>
               </TouchableOpacity>
             ) : (
               <>
@@ -127,10 +127,9 @@ const OnboardingScreen = () => {
                   style={[styles.button, styles.signupButton]}
                 >
                   <Text style={[styles.buttonText, { color: "#fff" }]}>
-                    Sign Up
-                  </Text>
+                    Sign Up </Text>
                 </TouchableOpacity>
-                <Text style={styles.signupText}>Already have an account?</Text>
+                <Text style={styles.signupText}>Already have an account? </Text>
               </>
             )}
 
@@ -156,8 +155,7 @@ const OnboardingScreen = () => {
                 style={[styles.button, styles.skipButton]}
               >
                 <Text style={[styles.buttonText, { color: "#18B0F8" }]}>
-                  Skip
-                </Text>
+                  Skip </Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
@@ -165,8 +163,7 @@ const OnboardingScreen = () => {
                 style={[styles.button, styles.loginButton]}
               >
                 <Text style={[styles.buttonText, { color: "#18B0F8" }]}>
-                  Login
-                </Text>
+                  Login </Text>
               </TouchableOpacity>
             )}
           </View>

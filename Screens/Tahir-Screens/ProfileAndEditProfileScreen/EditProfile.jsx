@@ -240,7 +240,7 @@ const handleCountrySelect = (item) => {
               }}
               listViewDisplayed='auto'
               textInputProps={{
-                defaultValue: formData.location?.name,
+                placeholder: formData.location?.name,
               }}
               styles={{
                 textInputContainer: {

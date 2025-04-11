@@ -63,6 +63,7 @@ const RedDotMessages = () => {
 //
 
 const RedDotNotification = () => {
+  
   const {data, isLoading} = useQuery({
     queryKey: ['notificationCount'],
     queryFn: getNotificationCount,
@@ -126,8 +127,19 @@ export default function R1_DashboardStack () {
             />
 
           <Tab.Screen
-            name="My Ads"
+            name="Notifications"
             component={R1_Notification}
+            listeners={({navigation}) => ({
+              tabPress: (e) => {
+                e.preventDefault();
+                navigation.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: 'Notifications', state: { routes: [{ name: 'Notifications' }] } }],
+                  })
+                );
+              },
+            })}
             options={{
               tabBarIcon: ({ color }) => (
                 <View>

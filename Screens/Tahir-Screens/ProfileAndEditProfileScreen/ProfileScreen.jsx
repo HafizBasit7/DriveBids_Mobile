@@ -134,7 +134,7 @@ const ProfileScreen = () => {
 
   return (
     <>
-      <Header showSearch={false}/>
+      <Header showSearch={false} title={'Settings'}/>
       {/* <SectionHeader title={"Profile"} /> */}
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Profile Header */}
