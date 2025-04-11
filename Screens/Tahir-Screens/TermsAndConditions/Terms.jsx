@@ -8,7 +8,7 @@ import Header from "../../../CustomComponents/Header";
 export default function Terms() {
   return (
     <>
-      <Header showSearch={false}/>
+      <Header showSearch={false} title={' '}/>
       <View style={{ backgroundColor: "#fff" }}>
   <SectionHeader title={"Terms & Conditions"} />
 </View>

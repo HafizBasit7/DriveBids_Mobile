@@ -49,7 +49,7 @@ export default CompletedDeals = () => {
 
   return (
     <>
-      <Header showSearch={false}/>
+      <Header showSearch={false} title={' '}/>
       <View style={styles.container}>
       <SectionHeader title={"Completed Deals"} />
       <View style={styles.tabContainer}>

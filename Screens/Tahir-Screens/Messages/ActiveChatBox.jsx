@@ -174,14 +174,16 @@ const ActiveChatBox = ({route}) => {
         )}
 
         {/* Message Text */}
-        <Text
+        {!attachment && (
+          <Text
           style={[
             styles.messageText,
             item.sender === user._id ? styles.userText : styles.agentText,
           ]}
         >
-          {!attachment ? item.message : ''}
+          {item.message}
         </Text>
+        )}
   
         {/* Timer (formatted time) */}
         <Text style={[styles.timeText, item.sender === user._id ? styles.userTime : styles.agentTime]}>
@@ -654,6 +656,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 8,
     marginTop: 5,
+    marginBottom: 15,
   },
   connectionStatusContainer: {
     flexDirection: "row",

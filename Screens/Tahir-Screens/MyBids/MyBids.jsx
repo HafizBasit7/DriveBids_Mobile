@@ -51,7 +51,7 @@ export default MyBids = () => {
 
   return (
     <>
-      <Header showSearch={false}/>
+      <Header showSearch={false} title={' '}/>
       <View style={styles.container}>
       <SectionHeader title={"My Bids"} />
       <View style={styles.tabContainer}>

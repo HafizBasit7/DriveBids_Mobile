@@ -51,7 +51,7 @@ export default function PasswordChangeScreen() {
 
   return (
     <>
-      <Header showSearch={false} />
+      <Header showSearch={false} title={'Settings'} />
       <DialogBox
         visible={message ? true : false}
         message={message?.message}

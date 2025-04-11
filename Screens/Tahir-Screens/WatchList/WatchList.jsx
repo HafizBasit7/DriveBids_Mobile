@@ -50,7 +50,7 @@ export default WatchList = () => {
 
   return (
     <>
-      <Header showSearch={false}/>
+      <Header showSearch={false} title={' '}/>
       <View style={styles.container}>
         <SectionHeader title={"Watch List"} />
         {isLoading && (<ActivityIndicator style={{flex: 1, justifyContent: 'center'}}/>)}

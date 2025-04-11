@@ -62,7 +62,7 @@ export default function NotificationSettingsScreen() {
 
   return (
     <View style={styles.container}>
-      <Header showSearch={false}/>
+      <Header showSearch={false} title={'Settings'}/>
        <View style={{ backgroundColor: "#fff", paddingTop: 10,}}>  <SectionHeader title={"Notifications Setting"} /></View>
 
       <ScrollView

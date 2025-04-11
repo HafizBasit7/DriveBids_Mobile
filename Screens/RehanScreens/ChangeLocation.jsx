@@ -16,19 +16,19 @@ const ChangeLocationScreen = () => {
 
   const predefinedPlaces = [
     {
-      description: 'Pakistan',
+      description: 'Pakistan ',
       geometry: { location: { lat: 30.3753, lng: 69.3451 } },
     },
     {
-      description: 'Dubai',
+      description: 'Dubai ',
       geometry: { location: { lat: 25.2048, lng: 55.2708 } },
     },
     {
-      description: 'Abu Dhabi',
+      description: 'Abu Dhabi ',
       geometry: { location: { lat: 24.4539, lng: 54.3773 } },
     },
     {
-      description: 'Sharjah',
+      description: 'Sharjah ',
       geometry: { location: { lat: 25.3562, lng: 55.4272 } },
     },
   ];
@@ -58,7 +58,7 @@ const ChangeLocationScreen = () => {
               ],
             };
             dispatch({type: 'updateLocation', payload: updateLocation});
-
+            navigation.goBack();
             setTimeout(() => {
               //Main Page
               queryClient.invalidateQueries(['cars']);
@@ -80,6 +80,9 @@ const ChangeLocationScreen = () => {
             placeholder: currentSelectedLocation,
           }}
           styles={{
+            listView: {
+              marginHorizontal:12
+            },
             textInputContainer: {
               borderWidth: 1,
               borderColor: '#ccc',

@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import R1_SellCarStack from "./R1_SellCarStack";
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions} from 'react-native';
 import Icon from "react-native-vector-icons/Feather";
 import Svg, { Path } from "react-native-svg";
 import R1_HomeStack from "./R1_HomeStack";
@@ -90,8 +90,11 @@ const RedDotNotification = () => {
 }
 
 const Tab = createBottomTabNavigator();
+const {width} = Dimensions.get("window");
 
 export default function R1_DashboardStack () {
+
+  const formattedWidth = width / 100;
 
     return (
         <Tab.Navigator
@@ -106,6 +109,7 @@ export default function R1_DashboardStack () {
         >
             <Tab.Screen
                 name="Home"
+                
                 component={R1_HomeStack}
                 listeners={({navigation}) => ({
                   tabPress: (e) => {
@@ -123,12 +127,14 @@ export default function R1_DashboardStack () {
                       <Icon name="home" size={24} color={color} />
                     ),
                     tabBarLabel: "Home",
+                    tabBarLabelStyle: {fontSize: formattedWidth * 3}
                 }}
             />
 
           <Tab.Screen
             name="Notifications"
             component={R1_Notification}
+            
             listeners={({navigation}) => ({
               tabPress: (e) => {
                 e.preventDefault();
@@ -149,6 +155,7 @@ export default function R1_DashboardStack () {
                 </View>
               ),
               tabBarLabel: "Notification",
+              tabBarLabelStyle: {fontSize: formattedWidth * 3}
             }}
           />
 
@@ -185,6 +192,7 @@ export default function R1_DashboardStack () {
                 ),
                 
                 tabBarLabel: "Messages",
+                tabBarLabelStyle: {fontSize: formattedWidth * 3}
               }}
             />
 
@@ -207,6 +215,7 @@ export default function R1_DashboardStack () {
                   <Icon name="settings" size={24} color={color} />
                 ),
                 tabBarLabel: "Settings",
+                tabBarLabelStyle: {fontSize: formattedWidth * 3}
               }}
             />
         </Tab.Navigator>
