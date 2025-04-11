@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   View,
-  Image,
   StyleSheet,
   Dimensions,
   Text,
@@ -14,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { confirmResetPassword } from "../../API_Callings/R1_API/Reset.js";
 import DialogBox from "../../CustomComponents/DialogBox.jsx";
 import { Icon } from "react-native-elements";
+import { Image } from "expo-image";
 
 const { width, height } = Dimensions.get("window");
 
@@ -65,7 +65,7 @@ const Reset = ({route}) => {
       <Image
         source={require("../../assets/tahirAssets/AuthPngs/ResetPass.png")}
         style={styles.topImage}
-        resizeMode="cover"
+        contentFit="cover"
       />
 
       <View style={styles.overlayContainer}>
@@ -289,7 +289,7 @@ export default Reset;
 //           <Image
 //             source={require("../../assets/tahirAssets/AuthPngs/ResetPass.png")}
 //             style={styles.topImage}
-//             resizeMode="cover"
+//             contentFit="cover"
 //           />
 
 //           {/* Content Section */}

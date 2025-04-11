@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
@@ -14,6 +13,7 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import { useAuth } from "../../../R1_Contexts/authContext";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../../../CustomComponents/Header";
+import { Image } from "expo-image";
 
 const ProfileScreen = () => {
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  Image,
+  
   StyleSheet,
   SafeAreaView,
   ScrollView,
@@ -24,6 +24,7 @@ import Header from "../../../CustomComponents/Header";
 import { FlatList } from "react-native-gesture-handler";
 import { uploadImage } from "../../../utils/upload";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { Image } from "expo-image";
 
 const ProfileEditScreen = () => {
 

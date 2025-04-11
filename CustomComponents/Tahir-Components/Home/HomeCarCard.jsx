@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text,  StyleSheet, TouchableOpacity } from "react-native";
 import { Icon, Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toggleWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import { calculateTimeLeft } from "../../../utils/countdown";
 import { useAuth } from "../../../R1_Contexts/authContext";
+import { Image } from "expo-image";
 
 const HomeCarCard = ({
   ad,
@@ -61,7 +62,7 @@ const HomeCarCard = ({
     },
     onSettled: () => {
       // queryClient.invalidateQueries(["carsInWatchList"]);
-      queryClient.invalidateQueries(["watchlist"]);
+      // queryClient.invalidateQueries(["watchlist"]);
     },
   });
 

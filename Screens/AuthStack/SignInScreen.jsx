@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   View,
-  Image,
+  
   StyleSheet,
   Dimensions,
   Text,
@@ -22,6 +22,7 @@ import { useAuth } from "../../R1_Contexts/authContext.js";
 import DialogBox from "../../CustomComponents/DialogBox.jsx";
 import { Icon } from "react-native-elements";
 import { loginValidation } from "../../R1_Validations/AuthValidations.js";
+import { Image } from "expo-image";
 
 const SignInScreen = () => {
 

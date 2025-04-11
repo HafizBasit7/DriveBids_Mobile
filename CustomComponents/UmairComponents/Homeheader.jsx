@@ -4,7 +4,6 @@ import {
   View,
   StyleSheet,
   Animated,
-  Image,
   Dimensions,
   ScrollView,
   TouchableOpacity,
@@ -22,6 +21,7 @@ import { formatAmount } from "../../utils/R1_utils";
 import WrapperComponent from "../WrapperComponent";
 import { useQuery } from "@tanstack/react-query";
 import { getCar } from "../../API_Callings/R1_API/Car";
+import { Image } from "expo-image";
 
 const { width, height } = Dimensions.get("window");
 
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
   image: {
     width: width,
     height: 170,
-    resizeMode: "cover",
+    contentFit: "cover",
   },
   backIconContainer: {
     position: "absolute",
@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
   modalImage: { 
     width: width, 
     height: width, 
-    resizeMode: "contain" 
+    contentFit: "contain" 
   },
   leftButton: { 
     position: "absolute", 
@@ -470,7 +470,7 @@ const styles = StyleSheet.create({
   thumbnail: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
+    contentFit: "cover",
   },
 });
 

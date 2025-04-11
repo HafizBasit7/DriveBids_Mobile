@@ -1,12 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { getMyCarBiddingHistory } from "../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
 import { formatAmount, formatDateTime } from "../../utils/R1_utils";
 import { acceptBid } from "../../API_Callings/R1_API/Bid";
 import DialogBox from "../DialogBox";
+import { Image } from "expo-image";
 
 const BiddingList = ({car}) => {
   const [isExpanded, setIsExpanded] = useState(false);

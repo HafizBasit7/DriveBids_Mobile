@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { GlobalStyles } from '../../../Styles/GlobalStyles';
 import {formatAmount} from "../../../utils/R1_utils";
@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toggleWatchList } from '../../../API_Callings/R1_API/Watchlist';
 import { calculateTimeLeft } from '../../../utils/countdown';
 import { useNavigation } from '@react-navigation/native';
+import { Image } from "expo-image";
 
 const { width } = Dimensions.get('window');
 
@@ -106,7 +107,7 @@ const ViewAllCarCard = ({
         <Image 
           source={{ uri: ad.images.exterior[0].url }} 
           style={styles.carImage} 
-          resizeMode="cover" 
+          contentFit="cover" 
         />
       </View>
       

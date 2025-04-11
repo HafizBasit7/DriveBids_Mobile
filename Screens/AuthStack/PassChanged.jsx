@@ -1,7 +1,6 @@
 import React from "react";
 import {
   View,
-  Image,
   StyleSheet,
   Dimensions,
   Text,
@@ -12,6 +11,7 @@ import LottieView from "lottie-react-native";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
 import CustomButton from "../../CustomComponents/CustomButton.js";
 import { useNavigation } from "@react-navigation/native";
+import { Image } from "expo-image";
 
 const { width, height } = Dimensions.get("window");
 
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   topImage: {
     width: "100%",
     height: height * 0.4,
-    resizeMode: "cover",
+    contentFit: "cover",
   },
   contentContainer: {
     paddingHorizontal: 20,

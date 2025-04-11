@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   View,
-  Image,
+
   StyleSheet,
   Dimensions,
   Text,
@@ -18,6 +18,7 @@ import CustomButton from "../../CustomComponents/CustomButton.js";
 import { useNavigation } from "@react-navigation/native";
 import { sendResetOtp } from "../../API_Callings/R1_API/Reset.js";
 import DialogBox from "../../CustomComponents/DialogBox.jsx";
+import { Image } from "expo-image";
 
 const { width, height } = Dimensions.get("window");
 
