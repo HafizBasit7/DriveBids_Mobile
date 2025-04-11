@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Modal, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, Modal, TouchableOpacity, ActivityIndicator, StatusBar } from "react-native";
 import { GlobalStyles } from "../Styles/GlobalStyles";
 import { Icon } from "react-native-elements";
 
@@ -35,6 +35,11 @@ const DialogBox = ({ visible, title, message, type, onOkPress, onCancelPress, lo
       animationType="fade"
       onRequestClose={onCancelPress} 
     >
+         <StatusBar
+              barStyle="dark-content"
+              backgroundColor= "rgba(0,0,0,0.7)" 
+              translucent
+            />
       {/* Backdrop touch to close */}
       <TouchableOpacity
         activeOpacity={1}

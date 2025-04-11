@@ -42,6 +42,8 @@ const ActiveChatBox = ({route}) => {
   const {chatId} = route.params;
   const [optionsVisible, setOptionsVisible] = useState(false); // Toggle for showing options
   const queryClient = useQueryClient();
+  const [isUserConnected, setIsUserConnected] = useState(false);
+
 
  
   const {data: chatHeadData, isLoadingChatHead} = useQuery({
@@ -139,6 +141,13 @@ const ActiveChatBox = ({route}) => {
     console.log("User reported");
     setOptionsVisible(false); // Close options after reporting
   };
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openModal = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setModalVisible(true);
+  };
 
   const renderMessage = ({ item }) => {
     const attachment = item.attachments ? (item.attachments || [])[0] : null;
@@ -151,11 +160,16 @@ const ActiveChatBox = ({route}) => {
       >
         {/* Image message  */}
         {attachment && attachment.type?.includes("image") && (
+                    <TouchableOpacity onPress={() => openModal(attachment.url)}>
+
           <Image
             source={{ uri: attachment.url }}
             style={styles.attachmentImage}
             resizeMode="cover"
           />
+                    </TouchableOpacity>
+
+          
         )}
 
         {/* Message Text */}
@@ -239,6 +253,8 @@ const ActiveChatBox = ({route}) => {
       <Modal visible={imageModalVisible} animationType="slide" transparent={true}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
+          <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />
+            
             <Text style={styles.modalTitle}>Select or Take a Photo</Text>
             <TouchableOpacity style={styles.modalItem} onPress={handleCamera}>
               <Icon name="camera" type="material" size={24} color="#3b82f6" />
@@ -320,15 +336,23 @@ const ActiveChatBox = ({route}) => {
             >
               AED {chatHeadDataReal ? formatAmount(chatHeadDataReal?.car.highestBid) : 0}
             </Text>
+            
           </View>
+          <View style={styles.connectionStatusContainer}>
+  <View style={[styles.statusDot, isUserConnected ? styles.statusDotOnline : styles.statusDotOffline]} />
+  <Text style={styles.statusText}>
+    {isUserConnected ? "User is online" : "User is offline"}
+  </Text>
+</View>
         </View>
         <Ionicons  onPress={() => navigation.navigate("Home", {
           screen: "AdDetails",
           params: { carId: chatHeadDataReal?.car._id },
         })} name="chevron-forward" size={24} color="#999" />
+
+
       </View>
 
-      {/* KeyboardAvoidingView for the chat and input */}
       <KeyboardAvoidingView
         style={styles.keyboardView}
         behavior={
@@ -388,6 +412,14 @@ const ActiveChatBox = ({route}) => {
             <Ionicons name="send" size={20} color="white" />
           </TouchableOpacity>
         </View>
+        <Modal visible={modalVisible} transparent={true} animationType="fade">
+        <View style={styles.modalContainer}>
+        <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />
+
+          <TouchableOpacity style={styles.closeArea} onPress={() => setModalVisible(false)} />
+          <Image source={{ uri: selectedImage }} style={styles.fullImage} resizeMode="contain" />
+        </View>
+      </Modal>
  
       </KeyboardAvoidingView>
     </View>
@@ -398,6 +430,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  closeArea: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
+  fullImage: {
+    width: "95%",
+    height: "50%",
+    borderRadius: 10,
   },
   header: {
     flexDirection: "row",
@@ -434,8 +482,8 @@ const styles = StyleSheet.create({
     borderColor: "#E0E0E0",
   },
   itemImage: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     borderRadius: 4,
     backgroundColor: "#E0E0E0",
   },
@@ -560,7 +608,7 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.0)',
+    backgroundColor: 'rgba(0,0,0,0.7)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -605,6 +653,28 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 8,
     marginTop: 5,
+  },
+  connectionStatusContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 2,
+  },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginRight: 6,
+  },
+  statusDotOnline: {
+    backgroundColor: "#4CAF50", // Green for online/connected
+  },
+  statusDotOffline: {
+    backgroundColor: "#F44336", // Red for offline/disconnected
+  },
+  statusText: {
+    fontSize: 11,
+    fontFamily: "Inter-Regular",
+    color: "#666",
   }
 });
 

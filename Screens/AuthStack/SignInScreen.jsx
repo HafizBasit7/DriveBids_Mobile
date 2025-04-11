@@ -81,7 +81,7 @@ const SignInScreen = () => {
 
         <StatusBar
           barStyle="dark-content"
-          backgroundColor={visible ? "rgba(0,0,0,0.7)" : 'transparent'}
+          backgroundColor="transparent"
           translucent
         />
         <View style={{ height: "40%", width: "100%",backgroundColor:"#fff" }}>

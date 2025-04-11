@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import { Icon, DropDown } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
@@ -317,6 +318,7 @@ const handleCountrySelect = (item) => {
       </ScrollView>
       <Modal visible={imageModalVisible} animationType="slide" transparent={true}>
         <View style={styles.modalOverlay}>
+           <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Select or Take a Photo</Text>
             <TouchableOpacity style={styles.modalItem} onPress={handleCamera}>
@@ -381,6 +383,7 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: "center",
     backgroundColor: "#fff",
+   
   },
   profileImageContainer: {
     position: "relative",
@@ -484,7 +487,7 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.0)',
+    backgroundColor: 'rgba(0,0,0,0.7)',
     justifyContent: 'center',
     alignItems: 'center',
   },

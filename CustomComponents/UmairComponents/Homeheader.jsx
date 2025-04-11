@@ -13,6 +13,7 @@ import {
   TouchableWithoutFeedback,
   StatusBar,
   FlatList,
+  SafeAreaView,
 } from "react-native";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
@@ -170,17 +171,13 @@ const HomeHeader = ({ carId, scrollY }) => {
       <Image source={{ uri: item }} style={styles.thumbnail} />
     </TouchableOpacity>
   );
+  
   return (
-    <View>
-      {modalVisible ? (
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor="rgba(0, 0, 0, 0.8)"
-          translucent
-        />
-      ) : (
-        <StatusBar barStyle="dark-content" backgroundColor="transparent" />
-      )}
+    <View >
+           
+
+       
+      
       <View style={styles.container}>
         <ScrollView
           ref={scrollViewRef}
@@ -267,6 +264,11 @@ const HomeHeader = ({ carId, scrollY }) => {
         onRequestClose={closeModal}
       >
         <View style={styles.modalOverlay}>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor="rgba(0, 0, 0, 0.8)"
+          translucent
+        />
           <TouchableOpacity 
             style={styles.closeButton} 
             onPress={closeModal}
@@ -313,11 +315,12 @@ const HomeHeader = ({ carId, scrollY }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 170,
+    // height: 170,
     backgroundColor: GlobalStyles.colors.HomeHeaderColour,
     position: "relative",
     
   },
+  
   image: {
     width: width,
     height: 170,
@@ -404,7 +407,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.95)",
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
   },
   modalImage: { 
     width: width, 

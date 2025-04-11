@@ -8,6 +8,7 @@ import { listCars, listCarsByBidCount } from '../../../API_Callings/R1_API/Car';
 import { ActivityIndicator } from 'react-native-paper';
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { useAuth } from '../../../R1_Contexts/authContext';
+import CarLoader from '../../../CustomComponents/CarLoader';
 
 const LIMIT = 10;
 
@@ -63,7 +64,7 @@ const ViewAllCarsScreen = ({route}) => {
     });
 
     if(isLoading) {
-      return <SafeAreaView><ActivityIndicator /></SafeAreaView>;
+      return <CarLoader/>;
     }
 
     const cars = data.pages.flatMap((page) => page?.data?.cars) || []

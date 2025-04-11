@@ -187,7 +187,7 @@ const ChatHeads = () => {
         <ActivityIndicator style={{flex: 1, justifyContent: 'center'}}/>
       )}
 
-      {((!isLoading && chats && chats.length < 1) && <Nodata/>)}
+      {((!isLoading && chats && chats.length < 1) && <Nodata ismessage={true}/>)}
       {(!isLoading && chats && chats.length > 0) && (
         <FlatList
           data={chats}

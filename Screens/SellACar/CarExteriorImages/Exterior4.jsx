@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, StatusBar } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
 import SectionHeader from "../../../CustomComponents/SectionHeader";
@@ -93,6 +93,8 @@ const Exterior4 = () => {
     <View style={styles.container}>
       <Modal visible={imageModalVisible} animationType="slide" transparent={true}>
         <View style={styles.modalOverlay}>
+                     <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />
+          
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Select or Take a Photo</Text>
             <TouchableOpacity style={styles.modalItem} onPress={handleCamera}>
@@ -217,7 +219,7 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.0)',
+    backgroundColor: 'rgba(0,0,0,0.7)',
     justifyContent: 'center',
     alignItems: 'center',
   },

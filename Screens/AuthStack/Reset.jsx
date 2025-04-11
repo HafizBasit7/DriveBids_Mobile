@@ -44,7 +44,7 @@ const Reset = ({route}) => {
       setLoading(false);
     }
   };
-
+const visible = loading ? true : message ? true : false
   return (
     <View style={styles.container}>
       <DialogBox
@@ -58,7 +58,7 @@ const Reset = ({route}) => {
 
       <StatusBar
         barStyle="dark-content"
-        backgroundColor="transparent"
+        backgroundColor={visible ? "rgba(0,0,0,0.7)" : 'transparent'}
         translucent
       />
 

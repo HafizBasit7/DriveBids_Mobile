@@ -11,6 +11,7 @@ import HomeCarCard from "../Tahir-Components/Home/HomeCarCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getSimilarCars } from "../../API_Callings/R1_API/Car";
 import { getCarsIdInWatchList } from "../../API_Callings/R1_API/Watchlist";
+import Nodata from "../NoData";
 
 const SimilarAds = ({make, carId}) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -42,18 +43,22 @@ const SimilarAds = ({make, carId}) => {
 
       {/* Expandable Content */}
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollViewContent}
-      >
-        {cars?.map((ad, index) => (
-          <View key={index} style={styles.cardSpacing}>
-            <HomeCarCard ad={ad} carsInWatchList={carsInWatchList}/>
-          </View>
-        ))}
-      </ScrollView>
+      {cars?.length === 0 ? (
+        <Nodata isSimilar={true} />
+      ) : (
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollViewContent}
+        >
+          {cars?.map((ad, index) => (
+            <View key={index} style={styles.cardSpacing}>
+              <HomeCarCard ad={ad} carsInWatchList={carsInWatchList} />
+            </View>
+          ))}
+        </ScrollView>
+      )}
 
       {/* Toggle Button */}
       <TouchableOpacity

@@ -213,7 +213,8 @@ const SignupScreen = () => {
 
             <Text style={styles.label}>Location</Text>
             <GooglePlacesAutocomplete
-              placeholder='Enter / search location'
+              placeholder='Enter location'
+              
               fetchDetails={true}
               onPress={(data, details) => {
                 const updateLocation = {

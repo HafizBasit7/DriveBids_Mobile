@@ -57,9 +57,11 @@ const Header = ({ showSearch = true, scrollY, title = null }) => {
     navigation.navigate('ChangeLocation');
   };
 
+  
+
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent  />
 
       {/* Animated Header Section */}
       <Animated.View style={[styles.header, { height: headerHeight }]}>
@@ -71,6 +73,13 @@ const Header = ({ showSearch = true, scrollY, title = null }) => {
               onPress={() => navigation.goBack()}
             >
               <SvgBack width={30} height={28} />
+            </TouchableOpacity>
+          )}
+
+          {!navigation.canGoBack() && (
+            <TouchableOpacity
+              style={styles.left} 
+            >
             </TouchableOpacity>
           )}
 
@@ -171,7 +180,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginLeft:10
+    marginRight:30
   },
   right: {
     width: "20%",
@@ -183,10 +192,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   profilePic: {
-    width: 35,
-    height: 35,
+    width: 38,
+    height: 38,
     borderRadius: 20,
     backgroundColor: "gray",
+    marginRight:5
   },
   searchContainer: {
     flexDirection: "row",
