@@ -190,9 +190,10 @@ const DamageInspection = () => {
                   const option = damageOptions.find(val => val.label === marker.damageType);
                   return (
                     <MaterialIcons
+                      onPress={() => {}}
                       key={index}
                       name={option.icon}
-                      size={20}
+                      size={25}
                       color={option.color}
                       style={{
                         position: "absolute",
@@ -295,7 +296,7 @@ const styles = StyleSheet.create({
   carImage: {
     width: 200,
     height: 200,
-    resizeMode: "contain",
+    contentFit: "contain",
   
     marginHorizontal:"auto"
   
@@ -351,7 +352,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 100,
-    resizeMode: "cover",
+    contentFit: "cover",
   },
   penIconContainer: {
     position: "absolute",

@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   logo: {
     width: "80%",
     height: "20%",
-    resizeMode: "contain",
+    contentFit: "contain",
   },
   tabsContainer: {
     width: "100%",
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   bottomImage: {
     width: "95%",
     height: "22%",
-    resizeMode: "cover",
+    contentFit: "cover",
     alignSelf: "flex-start",
     marginTop: 5,
     marginLeft: -20,

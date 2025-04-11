@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text,  TouchableOpacity, StyleSheet } from "react-native";
 import { Icon } from "react-native-elements";
 import SectionHeader from "../SectionHeader";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import { useMutation } from "@tanstack/react-query";
 import { getChatId } from "../../API_Callings/R1_API/Chat";
+import { Image } from "expo-image";
 
 const SellerProfileCard = ({
   name = "ADAM WILLIAMS",

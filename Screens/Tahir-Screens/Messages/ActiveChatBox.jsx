@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
-  Image,
+  
   KeyboardAvoidingView,
   Platform,
   StatusBar,
@@ -28,6 +28,7 @@ import SvgBack from "../../../assets/SVG/TahirSvgs/back.svg";
 import { ActivityIndicator } from "react-native-paper";
 import { Icon } from "react-native-elements";
 import { uploadImage } from "../../../utils/upload";
+import { Image } from "expo-image";
 
 const LIMIT = 15;
 
@@ -165,7 +166,7 @@ const ActiveChatBox = ({route}) => {
           <Image
             source={{ uri: attachment.url }}
             style={styles.attachmentImage}
-            resizeMode="cover"
+            contentFit="cover"
           />
                     </TouchableOpacity>
 

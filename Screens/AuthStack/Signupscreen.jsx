@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   View,
-  Image,
   StyleSheet,
   Dimensions,
   StatusBar,
@@ -21,6 +20,7 @@ import { useAuth } from "../../R1_Contexts/authContext";
 import DialogBox from "../../CustomComponents/DialogBox";
 import { Icon } from "react-native-elements";
 import { Modal } from "react-native-paper";
+import { Image } from "expo-image";
 import {
   loginValidation,
   signupValidation,
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
   topImage: {
     width: "100%",
     height: height * 0.3,
-    resizeMode: "cover",
+    contentFit: "cover",
   },
   rowContainer: {
     flexDirection: "row",

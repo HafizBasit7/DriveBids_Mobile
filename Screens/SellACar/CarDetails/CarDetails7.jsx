@@ -10,6 +10,8 @@ import {
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
+import { TouchableWithoutFeedback } from "react-native";
+import { Keyboard } from "react-native";
 
 const CarDetails7 = () => {
   const [inputValue, setInputValue] = useState("");
@@ -48,7 +50,8 @@ const CarDetails7 = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
@@ -109,6 +112,7 @@ const CarDetails7 = () => {
         /> */}
       </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 

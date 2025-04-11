@@ -59,7 +59,6 @@ export default Home = () => {
     refetchEnding();
   };
 
- 
   const CARD_WIDTH = 230;
   const SEPARATOR_WIDTH = 10;
   const ITEM_WIDTH = CARD_WIDTH + SEPARATOR_WIDTH;

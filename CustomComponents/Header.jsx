@@ -5,7 +5,7 @@ import {
   Dimensions,
   StatusBar,
   Text,
-  Image,
+
   TextInput,
   TouchableOpacity,
   Animated,
@@ -17,6 +17,7 @@ import SvgFilter from "../assets/SVG/TahirSvgs/Filter.svg";
 import SvgSearch from "../assets/SVG/TahirSvgs/Search.svg";
 import { useAuth } from "../R1_Contexts/authContext";
 import { useNavigation } from "@react-navigation/native";
+import { Image } from "expo-image";
 
 
 const { height, width } = Dimensions.get("window");

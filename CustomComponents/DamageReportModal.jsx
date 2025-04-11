@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
-  Image,
   TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Upload from "../assets/tahirAssets/Upload";
 import { GlobalStyles } from "../Styles/GlobalStyles";
 import * as ImagePicker from "expo-image-picker";
+import { Image } from "expo-image";
 
 const damageOptions = [
   { label: "Scratches", icon: "gesture", color: "#2D8CFF" },
@@ -70,7 +71,7 @@ export default DamageReportModal = ({
 
   return (
     <Modal visible={modalVisible} transparent animationType="fade">
-      <TouchableWithoutFeedback onPress={dismissModal}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View
           style={{
             flex: 1,

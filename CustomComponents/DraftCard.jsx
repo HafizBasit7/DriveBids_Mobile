@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; // Icons for check/cross
 import { GlobalStyles } from "../Styles/GlobalStyles";
+import { Image } from "expo-image";
 
 const DraftCard = ({
   item,

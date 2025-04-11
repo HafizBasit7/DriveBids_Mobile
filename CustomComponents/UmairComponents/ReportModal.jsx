@@ -3,11 +3,12 @@ import {
   View,
   Text,
   Modal,
-  Image,
+ 
   TouchableOpacity,
   TouchableWithoutFeedback,
   StyleSheet,
 } from "react-native";
+import { Image } from "expo-image";
 
 const ReportModal = ({ visible, onClose, damage }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     height: 100,
     margin: 5,
     borderRadius: 10,
-    resizeMode: "cover",
+    contentFit: "cover",
   },
   imageModalBackground: {
     flex: 1,
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
   fullImage: {
     width: 300,
     height: 300,
-    resizeMode: "contain",
+    contentFit: "contain",
   },
 });
 

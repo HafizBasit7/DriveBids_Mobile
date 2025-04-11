@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   View,
-  Image,
+  
   StyleSheet,
   Dimensions,
   Text,
@@ -18,6 +18,7 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import DialogBox from "../../CustomComponents/DialogBox.jsx";
+import { Image } from "expo-image";
 
 const { width, height } = Dimensions.get("window");
 const CELL_COUNT = 4;

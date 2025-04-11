@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   View,
   Text,
-  Image,
+  
   StyleSheet,
   TouchableOpacity,
   Dimensions,
@@ -12,6 +12,7 @@ import {
 import { onboardingData } from "../../utils/onBoarding";
 import { useNavigation } from "@react-navigation/native";
 import GestureRecognizer from "react-native-swipe-gestures";
+import { Image } from "expo-image";
 
 // Import SVGs
 import Car1Svg from "../../assets/UmairAssets/OnBoard1.svg";
@@ -71,7 +72,7 @@ const OnboardingScreen = () => {
               : require("../../assets/Vector1.png")
           }
           style={styles.bgImage}
-          resizeMode="cover"
+          contentFit="cover"
         />
 
         {/* Logo at the Top */}
@@ -89,7 +90,7 @@ const OnboardingScreen = () => {
             <Image
               source={require("../../assets/UmairAssets/OnBoard2Png.png")}
               style={styles.handRight}
-              resizeMode="contain"
+              contentFit="contain"
             />
           ) : currentIndex === 2 ? (
             <>
@@ -100,7 +101,7 @@ const OnboardingScreen = () => {
             <Image
               source={require("../../assets/car4.png")}
               style={styles.car4}
-              resizeMode="contain"
+              contentFit="contain"
             />
           )}
         </View>
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
   handRight: {
     width: width * 0.7,
     height: height * 0.8,
-    resizeMode: "contain",
+    contentFit: "contain",
     position: "absolute",
     right: "2%",
     bottom: Platform.OS === "ios" ? "-40%" : "-40%",

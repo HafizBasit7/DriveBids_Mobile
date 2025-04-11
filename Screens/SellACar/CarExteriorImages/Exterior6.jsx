@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, StatusBar } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Modal, StatusBar } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
 import SectionHeader from "../../../CustomComponents/SectionHeader";
@@ -11,6 +11,7 @@ import { useCar } from "../../../R1_Contexts/carContext";
 import { uploadImage } from "../../../utils/upload";
 import DialogBox from "../../../CustomComponents/DialogBox";
 import { Icon } from "react-native-elements";
+import { Image } from "expo-image";
 const Exterior6 = () => {
   const navigation = useNavigation(); // Initialize navigation
 
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
+    contentFit: "cover",
   },
   penIconContainer: {
     position: "absolute",
