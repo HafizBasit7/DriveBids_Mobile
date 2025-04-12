@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   
@@ -19,23 +19,41 @@ import {
 } from "react-native-confirmation-code-field";
 import DialogBox from "../../CustomComponents/DialogBox.jsx";
 import { Image } from "expo-image";
+import { sendResetOtp } from "../../API_Callings/R1_API/Reset.js";
 
 const { width, height } = Dimensions.get("window");
 const CELL_COUNT = 4;
 
-const CodeScreen = () => {
+const CodeScreen = ({route}) => {
+  const {email} = route.params;
   const navigation = useNavigation();
-  const [email, setEmail] = useState("");
   // const [isCodeSent, setIsCodeSent] = useState(false);
   const [otp, setOtp] = useState("");
-  const [timer, setTimer] = useState(29);
-    const [message, setMessage] = useState(null);
+
+  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const [timeLeft, setTimeLeft] = useState(300);
 
   const ref = useBlurOnFulfill({ value: otp, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: otp,
     setValue: setOtp,
   });
+
+  useEffect(() => {
+    const currentInterval = setInterval(() => {
+      setTimeLeft(prevVal => {
+        if(prevVal > 0) {
+          return (prevVal - 1);
+        } else {
+          return 0;
+        }
+      })
+    }, 1000);
+
+    return () => clearInterval(currentInterval);
+  }, []);
 
   const handleSendCode = () => {
     if(otp.trim() === "") {
@@ -57,14 +75,37 @@ const CodeScreen = () => {
     navigation.navigate("Reset", {otp});
   };
 
+  const handleSendCodeAgain = async () => {
+    setLoading(true);
+    try {
+          await sendResetOtp({ email: email ? email.trim() : email });
+          setTimeLeft(300);
+        } catch (e) {
+          setMessage({
+            type: "error",
+            message: e.message || e.msg,
+            title: "Error",
+          });
+        } finally {
+          setLoading(false);
+        }
+  };
+
+  function formatSeconds(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  }
+
   return (
     <View style={styles.container}>
-       <DialogBox
-        visible={message ? true : false}
+      <DialogBox
+        visible={loading ? true : message ? true : false}
         message={message?.message}
         onOkPress={() => setMessage(null)}
         type={message?.type}
-        title={message?.title || ''}
+        loading={loading}
+        title={message?.title || ""}
       />
       <StatusBar
         barStyle="dark-content"
@@ -110,15 +151,15 @@ const CodeScreen = () => {
             )}
           />
           <View style={styles.resendContainer}>
-            <TouchableOpacity onPress={handleSendCode} disabled={timer > 0}>
+            <TouchableOpacity onPress={handleSendCodeAgain} disabled={timeLeft > 0}>
               <Text
-                style={[styles.resendText, timer > 0 && styles.resendDisabled]}
+                style={[styles.resendText, timeLeft > 0 && styles.resendDisabled]}
               >
                 Send code again
               </Text>
             </TouchableOpacity>
             <Text style={styles.timerText}>
-              {timer > 0 ? `00:${timer < 10 ? `0${timer}` : timer}` : "00:00"}
+              {formatSeconds(timeLeft)}
             </Text>
           </View>
         </View>

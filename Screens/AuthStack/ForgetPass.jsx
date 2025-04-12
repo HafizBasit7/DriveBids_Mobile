@@ -40,7 +40,7 @@ const ForgetPass = () => {
     setLoading(true);
     try {
       await sendResetOtp({ email: email ? email.trim() : email });
-      navigation.navigate("CodeScreen");
+      navigation.navigate("CodeScreen", {email});
     } catch (e) {
       setMessage({
         type: "error",
