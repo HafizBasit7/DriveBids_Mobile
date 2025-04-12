@@ -8,6 +8,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { searchCars } from '../../../API_Callings/R1_API/Car';
 import { getCarsIdInWatchList } from '../../../API_Callings/R1_API/Watchlist';
 import { ActivityIndicator } from 'react-native-paper';
+import { useAuth } from '../../../R1_Contexts/authContext';
 
 
 const FilterChips = (filters) => {
@@ -117,6 +118,8 @@ const LIMIT = 10;
 
 const Filters_ViewAll = ({ route }) => {
   const { filters } = route.params;
+  const {authState} = useAuth();
+  const currentSelectedLocation = (authState.selectedLocation || authState.user.location) || {"coordinates": [73.1128313, 33.5255503]};
 
   const {
     data,
@@ -126,7 +129,7 @@ const Filters_ViewAll = ({ route }) => {
     hasNextPage,
   } = useInfiniteQuery({
     queryKey: ["search", filters],
-    queryFn: ({ pageParam = 1 }) => searchCars(filters, pageParam, LIMIT),
+    queryFn: ({ pageParam = 1 }) => searchCars(filters, pageParam, LIMIT, currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1]),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage?.data?.cars?.length === LIMIT ? allPages.length + 1 : undefined;
     },

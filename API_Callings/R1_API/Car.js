@@ -376,10 +376,10 @@ export const getSimilarCars = async (page = 1, limit = 10, make) => {
     }
 };
 
-export const searchCars = async (params = {}, page = 1, limit = 10) => {
+export const searchCars = async (params = {}, page = 1, limit = 10, lng, lat) => {
     try {
         const queryString = new URLSearchParams(params).toString();
-        const result = await apiClient.get(`/car/searchCars?page=${page}&limit=${limit}&${queryString}`);
+        const result = await apiClient.get(`/car/searchCars?page=${page}&limit=${limit}&${queryString}&lng=${lng}&lat=${lat}`);
         const resultData = result.data;
 
         if (!resultData.status) {
