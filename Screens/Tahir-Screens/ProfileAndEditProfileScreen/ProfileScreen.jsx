@@ -4,16 +4,17 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
+
+  Dimensions,
 } from "react-native";
 import { Icon } from "react-native-elements";
-import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import { useAuth } from "../../../R1_Contexts/authContext";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../../../CustomComponents/Header";
 import { Image } from "expo-image";
+
+const {height} = Dimensions.get('window');
 
 const ProfileScreen = () => {
 
@@ -136,7 +137,7 @@ const ProfileScreen = () => {
     <>
       <Header showSearch={false} title={'Settings'}/>
       {/* <SectionHeader title={"Profile"} /> */}
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <View style={styles.scrollContent}>
         {/* Profile Header */}
         <View style={styles.profileHeader}>
           <Image
@@ -156,12 +157,11 @@ const ProfileScreen = () => {
         </View>
 
       {/* Menu Items */}
-      <View style={{ flex: 1 }}>
+      
         <View style={styles.menuContainer}>
           {menuItems.map(renderMenuItem)}
         </View>
-        </View>
-      </ScrollView>
+      </View>
     </>
   );
 };
@@ -170,19 +170,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    
   },
   scrollContent: {
-    padding: 16,
-    backgroundColor: "#fff",
-    flex: 1,
+    padding: 10,
+    backgroundColor: "#fff", 
+    height: height * 1,
   },
   profileHeader: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "white",
     borderRadius: 10,
-    padding: 16,
-    marginBottom: 16,
+    padding: 12,
+    marginBottom: height * 0.0003,
+    height: height * 0.15,
   },
   profileImage: {
     width: 64,
@@ -196,30 +198,31 @@ const styles = StyleSheet.create({
   },
   profileName: {
     fontFamily: "Inter-SemiBold",
-    fontSize: 20,
+    fontSize: 18,
     color: "#111827",
     marginBottom: 2,
   },
   editProfileText: {
     fontFamily: "Inter-Regular",
-    fontSize: 14,
+    fontSize: 13,
     color: GlobalStyles.colors.ButtonColor,
   },
   menuContainer: {
     borderRadius: 10,
     overflow: "hidden",
-    
+    height: height * 0.6,
   },
   menuItem: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "white",
-    padding: 16,
+    padding: 12,
     borderBottomWidth: 1,
     borderBottomColor: "#f3f4f6",
     marginBottom: 4,
     borderRadius: 10,
+    height: height * 0.07,
   },
   menuItemLeft: {
     flexDirection: "row",
@@ -234,7 +237,7 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     fontFamily: "Inter-SemiBold",
-    fontSize: 16,
+    fontSize: height * 0.02,
     color: "#111827",
   },
 });

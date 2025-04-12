@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#2F61BF",
     
     marginVertical: 3,
-    borderRadius: 25,
+    borderRadius: 10,
     width: "50%",
     
     alignSelf: "center",

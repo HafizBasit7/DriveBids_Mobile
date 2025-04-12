@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     flexDirection: 'row',
-    height: width * 0.4, // Fixed height based on screen width
+    height: 180, // Fixed height based on screen width
     overflow: 'hidden',
   },
   imageContainer: {
