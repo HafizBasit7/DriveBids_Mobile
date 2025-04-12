@@ -36,6 +36,9 @@ export default Home = () => {
   const {data, isLoading, isRefetching, refetch} = useQuery({
     queryKey: ['cars'],
     queryFn: () => listCars(1, 10, 'recent', currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1]),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 
   const {data: carsInWatchList, isLoading: watchlistLoading} = useQuery({
@@ -45,12 +48,18 @@ export default Home = () => {
 
   const {data: endingCarList, isLoading: endingCarListLoading, isRefetching: isRefetchingEnding, refetch: refetchEnding} = useQuery({
     queryKey: ['carsEnding'],
-    queryFn: () => listCars(1, 10, 'ending', currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1])
+    queryFn: () => listCars(1, 10, 'ending', currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1]),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 
   const {data: carsByBidCount, isLoading: carsByBidCountLoading, isRefetching: isRefetchingBid, refetch: refetchBid} = useQuery({
     queryKey: ['carsByBidCount'],
-    queryFn: () => listCarsByBidCount(1, 10, currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1])
+    queryFn: () => listCarsByBidCount(1, 10, currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1]),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 
   const onRefresh = () => {
