@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   topImage: {
     width: "100%",
     height: height * 0.4,
-    contentFit: "cover",
+    resizeMode: "cover",
   },
   contentContainer: {
     paddingHorizontal: 20,

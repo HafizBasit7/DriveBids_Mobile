@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   handRight: {
     width: width * 0.7,
     height: height * 0.8,
-    contentFit: "contain",
+    resizeMode: "contain",
     position: "absolute",
     right: "2%",
     bottom: Platform.OS === "ios" ? "-40%" : "-40%",

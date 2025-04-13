@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
   image: {
     width: width,
     height: 170,
-    contentFit: "cover",
+    resizeMode: "cover",
   },
   backIconContainer: {
     position: "absolute",
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
   modalImage: { 
     width: width, 
     height: width, 
-    contentFit: "contain" 
+    resizeMode: "contain" 
   },
   leftButton: { 
     position: "absolute", 
@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
   thumbnail: {
     width: "100%",
     height: "100%",
-    contentFit: "cover",
+    resizeMode: "cover",
   },
 });
 

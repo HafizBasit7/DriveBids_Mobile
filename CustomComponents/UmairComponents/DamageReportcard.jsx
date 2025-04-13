@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   carImage: {
     width: 200,
     height: 200,
-    contentFit: "contain",
+    resizeMode: "contain",
   },
   dotsContainer: {
     flexDirection: "row",

@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
   topImage: {
     width: "100%",
     height: height * 0.3,
-    contentFit: "cover",
+    resizeMode: "cover",
   },
   rowContainer: {
     flexDirection: "row",

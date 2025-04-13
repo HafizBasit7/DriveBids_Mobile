@@ -296,10 +296,8 @@ const styles = StyleSheet.create({
   carImage: {
     width: 200,
     height: 200,
-    contentFit: "contain",
-  
+    resizeMode: "contain",  
     marginHorizontal:"auto"
-  
   },
   modalContainer: {
     maxHeight: "85%",
@@ -352,7 +350,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 100,
-    contentFit: "cover",
+    resizeMode: "cover",
   },
   penIconContainer: {
     position: "absolute",

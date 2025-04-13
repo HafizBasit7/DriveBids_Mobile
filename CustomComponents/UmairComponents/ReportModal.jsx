@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     height: 100,
     margin: 5,
     borderRadius: 10,
-    contentFit: "cover",
+    resizeMode: "cover",
   },
   imageModalBackground: {
     flex: 1,
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   fullImage: {
     width: 300,
     height: 300,
-    contentFit: "contain",
+    resizeMode: "contain",
   },
 });
 
