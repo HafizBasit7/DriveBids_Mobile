@@ -7,7 +7,7 @@ import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import Exterior from "../../../assets/tahirAssets/exterior1";
-import { useNavigation } from "@react-navigation/native"; // Import navigation hook
+import { useNavigation } from "@react-navigation/native"; 
 import { useCar } from "../../../R1_Contexts/carContext";
 import {uploadImage} from "../../../utils/upload";
 import DialogBox from "../../../CustomComponents/DialogBox";
@@ -17,10 +17,8 @@ import { Image } from "expo-image";
 const Exterior1 = () => {
 
   const navigation = useNavigation(); 
-
   const {carState, dispatch} = useCar();
   const index = 0;
-
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const [imageModalVisible, setImageModalVisible] = useState(false);

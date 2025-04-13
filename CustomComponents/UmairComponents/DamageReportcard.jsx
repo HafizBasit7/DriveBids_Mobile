@@ -52,33 +52,28 @@ const DamageReportCarousel = ({car}) => {
 
   return (
     <View style={styles.container}>
-      {/* Damage Report Heading */}
       <View style={styles.lineContainer}>
         <View style={styles.fullLine} />
         <Text style={styles.lineText}>Damage Report</Text>
         <View style={styles.fullLine} />
       </View>
 
-      {/* Blue Damage Label */}
       {isExpanded && (
         <View style={styles.borderedContainer}>
           <View style={styles.damageLabelContainer}>
             <Text style={styles.damageLabel}>Damage Label</Text>
           </View>
 
-          {/* Instruction Text */}
           <Text style={styles.instructionText}>
             Click the label to reveal the damage report
           </Text>
-          <Text style={styles.viewText}>{descriptions[currentIndex]}</Text>
+          <Text style={styles.viewText}>{descriptions[currentIndex]} </Text>
 
-          {/* Car Image with Navigation Arrows */}
           <View style={styles.imageContainer}>
             <TouchableOpacity onPress={handlePrev}>
               <Icon name="chevron-left" size={24} color="#2A5DB0" />
             </TouchableOpacity>
 
-            {/* Open Modal on Image Click */}
             {/* <TouchableOpacity onPress={() => {}}> */}
               <Image source={carSides[currentIndex]} style={styles.carImage} />
               {damageReport && damageReport.map((marker, index) => {
@@ -101,14 +96,12 @@ const DamageReportCarousel = ({car}) => {
                   );
                 }
               })}
-            {/* </TouchableOpacity> */}
 
             <TouchableOpacity onPress={handleNext}>
               <Icon name="chevron-right" size={24} color="#2A5DB0" />
             </TouchableOpacity>
           </View>
 
-          {/* Navigation Dots */}
           <View style={styles.dotsContainer}>
             {carSides.map((_, index) => (
               <View
@@ -120,7 +113,6 @@ const DamageReportCarousel = ({car}) => {
         </View>
       )}
 
-      {/* View Detailed Report Button */}
       <TouchableOpacity
         style={styles.dropdownButton}
         onPress={() => setIsExpanded(!isExpanded)}
@@ -136,7 +128,6 @@ const DamageReportCarousel = ({car}) => {
         </Text>
       </TouchableOpacity>
 
-      {/* Report Modal */}
       {damage && (
         <ReportModal
           visible={true}
