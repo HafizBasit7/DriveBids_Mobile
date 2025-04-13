@@ -70,9 +70,7 @@ const initialState = {
             glowPlugLight: null,
         },
     },
-    carDamageReport: {
-        damageReport: [],
-    },
+    carDamageReport: null,
     carPricing: {
         staringBidPrice: null,
         reserveBidPrice: null,
