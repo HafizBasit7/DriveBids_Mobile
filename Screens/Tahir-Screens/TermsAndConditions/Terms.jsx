@@ -8,9 +8,9 @@ import Header from "../../../CustomComponents/Header";
 export default function Terms() {
   return (
     <>
-      <Header showSearch={false} title={' '}/>
+      <Header showSearch={false} title={'Terms & Conditions'}/>
       <View style={{ backgroundColor: "#fff" }}>
-  <SectionHeader title={"Terms & Conditions"} />
+  {/* <SectionHeader title={"Terms & Conditions"} /> */}
 </View>
     
       <ScrollView
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontFamily: "Inter-Regular",
     fontSize: 16,
+    fontWeight:600,
     textAlign: "left",
     color: GlobalStyles.colors.ButtonColor,
     marginBottom: 22,
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontFamily: "Inter-SemiBold",
     fontSize: 24,
-    textAlign: "center",
+    textAlign: "start",
     color: GlobalStyles.colors.ButtonColor,
     marginBottom: 20,
   },

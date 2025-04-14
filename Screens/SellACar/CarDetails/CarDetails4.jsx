@@ -59,6 +59,7 @@ const CarDetails2 = () => {
 
       <GooglePlacesAutocomplete
         placeholder='Search'
+        enablePoweredByContainer={false}
         fetchDetails={true}
         onPress={(data, details = null) => {
           const updateLocation = {

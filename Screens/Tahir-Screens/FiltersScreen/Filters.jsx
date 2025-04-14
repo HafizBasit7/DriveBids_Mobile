@@ -96,7 +96,7 @@ const FiltersScreen = () => {
   const applyFilters = () => {
     // Prepare filter object to pass to next screen
     const filters = {
-      make: selectedMakes.length > 0 ? selectedMakes[0] : undefined,
+      make: selectedMakes,
       model: model || undefined,
       minPrice: priceRange.min ? parseFloat(priceRange.min) : undefined,
       maxPrice: priceRange.max ? parseFloat(priceRange.max) : undefined,
@@ -145,13 +145,16 @@ const FiltersScreen = () => {
           <TouchableOpacity onPress={clearFilters}>
             <Text
               style={{
-                fontSize: 13,
+                fontSize: 14,
                 color: '#000',
                 backgroundColor: '#fff',
                 padding: 5,
                 borderRadius: 5,
+                paddingVertical: 7,
+
                 borderColor: '#000',
                 borderWidth: 0.2,
+                fontWeight: 700
               }}
             >
               Clear Filters </Text>
@@ -160,10 +163,10 @@ const FiltersScreen = () => {
           <TouchableOpacity onPress={applyFilters}>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 14,
                 color: '#fff',
                 backgroundColor: '#2F61BF',
-                padding: 6,
+                padding: 5,
                 borderRadius: 5,
                 paddingVertical: 7,
                 width: 100,

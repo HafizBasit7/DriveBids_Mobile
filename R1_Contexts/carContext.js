@@ -70,7 +70,9 @@ const initialState = {
             glowPlugLight: null,
         },
     },
-    carDamageReport: null,
+    carDamageReport: {
+        damageReport: [],
+    },
     carPricing: {
         staringBidPrice: null,
         reserveBidPrice: null,
@@ -228,9 +230,18 @@ export default function CarContextProvider({children}) {
                 draftId: carState.draftId,
                 regNo: carState.regNo,
             }
-            if(carState[section]) {
+            if(section === 'carDamageReport' && carState[section]) {
+                if(carState[section].damageReport.length > 0) {
+                    body[section] = carState[section];
+                } else {
+                    dispatch({type: 'SET_DRAFT', payload: {
+                        ...carState,
+                        carDamageReport: null,
+                    }})
+                }
+            } else if(carState[section]) {
                 body[section] = carState[section];
-            };
+            }
 
             const result = await saveDraft(body);
             const resultData = result.data;

@@ -49,9 +49,9 @@ export default CompletedDeals = () => {
 
   return (
     <>
-      <Header showSearch={false} title={' '}/>
+      <Header showSearch={false} title={'Settings'}/>
       <View style={styles.container}>
-      <SectionHeader title={"Completed Deals"} />
+      {/* <SectionHeader title={"Completed Deals"} /> */}
       <View style={styles.tabContainer}>
         <TouchableOpacity
           onPress={() => setActiveTab("Bought")}
@@ -72,8 +72,7 @@ export default CompletedDeals = () => {
           <Text
             style={activeTab === "Sold" ? styles.activeTabText : styles.tabText}
           >
-            Sold
-          </Text>
+            Sold </Text>
         </TouchableOpacity>
       </View>
       
@@ -115,7 +114,8 @@ export default CompletedDeals = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-     backgroundColor:"#fff"
+     backgroundColor:"#fff",
+     paddingVertical:15
   },
   tabContainer: {
     flexDirection: "row",

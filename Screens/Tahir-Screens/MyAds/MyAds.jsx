@@ -44,9 +44,9 @@ export default MyAds = () => {
 
   return (
     <>
-      <Header showSearch={false} title={' '}/>
+      <Header showSearch={false} title={'My Ads'}/>
       <View style={styles.container}>
-      <SectionHeader title={"My Ads"} />
+      {/* <SectionHeader title={" "}  /> */}
       {isLoading && <ActivityIndicator style={{flex: 1, justifyContent: 'center'}}/>}
       {((!isLoading && cars && cars.length < 1)) && (
         <Nodata/>
@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
     backgroundColor:"#fff"
   },
   contentContainer: {
-    paddingVertical: 10,
+    paddingVertical: 20,
+    
     
     paddingHorizontal: 10, 
     backgroundColor: '#fff',

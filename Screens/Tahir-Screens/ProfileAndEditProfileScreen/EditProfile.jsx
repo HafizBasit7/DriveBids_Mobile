@@ -223,6 +223,7 @@ const handleCountrySelect = (item) => {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Location</Text>
             <GooglePlacesAutocomplete
+            enablePoweredByContainer={false}
               placeholder='Enter / Search Location'
               fetchDetails={true}
               onPress={(data, details) => {

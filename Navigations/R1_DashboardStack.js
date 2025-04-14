@@ -127,7 +127,8 @@ export default function R1_DashboardStack () {
                       <Icon name="home" size={24} color={color} />
                     ),
                     tabBarLabel: "Home",
-                    tabBarLabelStyle: {fontSize: formattedWidth * 3}
+                    tabBarLabelStyle: {fontSize: formattedWidth * 3},
+
                 }}
             />
 

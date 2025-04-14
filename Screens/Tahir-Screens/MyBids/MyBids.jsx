@@ -51,9 +51,9 @@ export default MyBids = () => {
 
   return (
     <>
-      <Header showSearch={false} title={' '}/>
+      <Header showSearch={false} title={'My Bids'}/>
       <View style={styles.container}>
-      <SectionHeader title={"My Bids"} />
+      {/* <SectionHeader title={"My Bids"} /> */}
       <View style={styles.tabContainer}>
         <TouchableOpacity
           onPress={() => setActiveTab("Active")}
@@ -128,7 +128,8 @@ export default MyBids = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-     backgroundColor:"#fff"
+     backgroundColor:"#fff",
+     paddingVertical:15
   },
   tabContainer: {
     flexDirection: "row",

@@ -140,8 +140,10 @@ export default OwnerProfile = ({route}) => {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    paddingVertical: 10,
-    flex:1,
+    paddingVertical: 20,
+
+    gap:15,
+    
     paddingHorizontal: 10, 
     backgroundColor: '#fff',
     paddingBottom:40 

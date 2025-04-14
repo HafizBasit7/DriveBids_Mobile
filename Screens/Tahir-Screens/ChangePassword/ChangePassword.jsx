@@ -51,7 +51,7 @@ export default function PasswordChangeScreen() {
 
   return (
     <>
-      <Header showSearch={false} title={'Settings'} />
+      <Header showSearch={false} title={'Change Password'} />
       <DialogBox
         visible={message ? true : false}
         message={message?.message}
@@ -60,9 +60,9 @@ export default function PasswordChangeScreen() {
         loading={false}
         title={message?.title || ''}
       />
-      <View style={{ backgroundColor: "#fff" }}>
+      {/* <View style={{ backgroundColor: "#fff", }}>
         <SectionHeader title={"Change Password"} />
-      </View>
+      </View> */}
 
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -171,10 +171,11 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: "100%",
+    paddingVertical:30,
   },
   labelText: {
     fontFamily: "Inter-SemiBold",
-    fontSize: 16,
+    fontSize: 18,
     color: "#000",
     marginBottom: 10,
     marginLeft: 10,
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: "40%",
+    marginTop: "30%",
     alignSelf: "center",
   },
   nextButton: {

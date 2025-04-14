@@ -61,6 +61,7 @@ const Header = ({ showSearch = true, scrollY, title = null }) => {
   
 
   return (
+    <View style={{ backgroundColor: 'transparent',}}> 
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent  />
 
@@ -147,13 +148,19 @@ const Header = ({ showSearch = true, scrollY, title = null }) => {
         )}
       </Animated.View>
     </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor:"#fff",
+    
+  
+    
+    
+    
   },
   header: {
     width: width,

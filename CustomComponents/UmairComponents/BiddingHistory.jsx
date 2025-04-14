@@ -49,11 +49,12 @@ const BiddingHistory = ({car}) => {
                   )}
                   {isOwnBid && (
                     <View style={styles.myBidContainer}>
-                      <Text style={styles.highestBidText}>My Bid</Text>
+                      <Text style={styles.highestBidText}>You</Text>
                     </View>
                   )}
                 </View>
                 <Text style={styles.bidAmount}>Bid: AED {formatAmount(bid.bidAmount)}</Text>
+                {isOwnBid && (<Text style={[styles.bidAmount, {marginBottom: 2}]}>Budget: AED {formatAmount(bid.maxBudget)}</Text>)}
                 {/* <Text style={styles.bidRank}>{index} Bid</Text> */}
                 <Text style={styles.bidDate}>
                   Bided on {formatDateTime(bid.createdAt)}

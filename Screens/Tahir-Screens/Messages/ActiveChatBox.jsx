@@ -14,6 +14,8 @@ import {
   Modal,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons"; // make sure this is imported
+
 import { chatData } from "./DummyMessages";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
@@ -300,12 +302,16 @@ const ActiveChatBox = ({route}) => {
           />
         </TouchableOpacity>
         {optionsVisible && (
-        <View style={styles.optionsBox}>
-          <TouchableOpacity onPress={handleReport} style={styles.option}>
-            <Text style={styles.optionText}>Report User</Text>
-          </TouchableOpacity>
-          {/* Add more options here if needed */}
-        </View>
+       <View style={styles.optionsBox}>
+       <TouchableOpacity onPress={handleReport} style={styles.option}>
+         <View style={{ flexDirection: "row", alignItems: "center" }}>
+           <MaterialIcons name="report" size={20} color="#FF3B30" />
+           <Text style={[styles.optionText, { marginLeft: 5 }]}>
+             Report User </Text>
+         </View>
+       </TouchableOpacity>
+       {/* Add more options here if needed */}
+     </View>
       )}
       </View>
 
@@ -416,8 +422,8 @@ const ActiveChatBox = ({route}) => {
           </TouchableOpacity>
         </View>
         <Modal visible={modalVisible} transparent={true} animationType="fade">
-        <View style={styles.modalContainer}>
-        <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />
+           <View style={styles.modalContainer}>
+           <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />
 
           <TouchableOpacity style={styles.closeArea} onPress={() => setModalVisible(false)} />
           <Image source={{ uri: selectedImage }} style={styles.fullImage} resizeMode="contain" />
@@ -607,7 +613,8 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 14,
-    color: "#007bff",
+    color: "#000",
+    fontWeight:900
   },
   modalOverlay: {
     flex: 1,
@@ -670,10 +677,10 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   statusDotOnline: {
-    backgroundColor: "#4CAF50", // Green for online/connected
+    backgroundColor: "#4CAF50", 
   },
   statusDotOffline: {
-    backgroundColor: "#F44336", // Red for offline/disconnected
+    backgroundColor: "#F44336",
   },
   statusText: {
     fontSize: 11,

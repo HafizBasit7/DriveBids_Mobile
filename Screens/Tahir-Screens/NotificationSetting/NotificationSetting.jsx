@@ -62,8 +62,10 @@ export default function NotificationSettingsScreen() {
 
   return (
     <View style={styles.container}>
-      <Header showSearch={false} title={'Settings'}/>
-       <View style={{ backgroundColor: "#fff", paddingTop: 10,}}>  <SectionHeader title={"Notifications Setting"} /></View>
+      <Header showSearch={false} title={' Notification Settings'}/>
+       <View style={{ backgroundColor: "#fff", paddingTop: 10,}}> 
+         {/* <SectionHeader title={"Notifications Setting"} /> */}
+         </View>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -182,12 +184,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 2,
+    
+    marginBottom: 10,
+   borderTopColor:"#000",
+   borderBottomColor:"#000",
+   borderWidth:0.3,
+   borderRadius:10,
+   paddingHorizontal:8,
+   
+    
   },
   settingText: {
     fontFamily: "Inter-Regular",
     fontSize: 15,
     color: "#333",
+    fontWeight:650
   },
   switch: {
     transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }],

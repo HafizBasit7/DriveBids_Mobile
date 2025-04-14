@@ -430,13 +430,13 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: "absolute",
-    top: 40,
-    right: 20,
+    top: 8,
+    right: 12,
     zIndex: 10,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     borderRadius: 20,
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -444,6 +444,7 @@ const styles = StyleSheet.create({
     color: "#FFD700",
     fontSize: 20,
     fontWeight: "bold",
+   
   },
   // Thumbnail styles
   thumbnailCarouselContainer: {
@@ -460,20 +461,24 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 8,
-    marginHorizontal: 5,
+    marginHorizontal: 3,
     borderWidth: 2,
     borderColor: "transparent",
     overflow: "hidden",
   },
   selectedThumbnail: {
-    borderColor: "#FFD700",
     transform: [{ scale: 1.05 }],
-    borderWidth:1
   },
   thumbnail: {
+    borderColor: "#FFD700",
+    padding:1,
+
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+    borderWidth:0.4,
+    borderRadius:10
+
   },
 });
 

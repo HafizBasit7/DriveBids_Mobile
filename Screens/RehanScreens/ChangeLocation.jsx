@@ -45,6 +45,7 @@ const ChangeLocationScreen = () => {
 
       <View style={styles.container}>
         <GooglePlacesAutocomplete
+        enablePoweredByContainer={false}
           placeholder="Enter / Search Location"
           fetchDetails={true}
         //   currentLocation={true}

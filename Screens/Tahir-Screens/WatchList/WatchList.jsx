@@ -42,9 +42,9 @@ const WatchList = () => {
 
   return (
     <>
-      <Header showSearch={false} title={' '} />
+      <Header showSearch={false} title={'Watch List'} />
       <View style={styles.container}>
-        <SectionHeader title={"Watch List"} />
+        {/* <SectionHeader title={"Watch List"} /> */}
         {isLoading && (
           <ActivityIndicator style={{ flex: 1, justifyContent: 'center' }} />
         )}
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingVertical:15
   },
   contentContainer: {
     paddingVertical: 10,

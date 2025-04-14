@@ -216,7 +216,7 @@ const ViewAllCarCard = ({
               </View>
             )}
             <View>
-              {isCarSold ? <Text style={{color: 'green'}}>Sold</Text>: (<Text style={styles.timeText}>{timeLeft}</Text>)}
+              {isCarSold ? <Text style={{color: 'green'}}>Sold </Text>: (<Text style={styles.timeText}>{timeLeft}</Text>)}
             </View>
           </View>
           

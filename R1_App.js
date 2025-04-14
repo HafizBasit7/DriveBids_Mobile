@@ -7,7 +7,7 @@ export default function R1_App() {
     const {authState} = useAuth();
     
     if(authState.isLoading) {
-        return <SafeAreaView><ActivityIndicator/></SafeAreaView>;
+        return <SafeAreaView ><ActivityIndicator/></SafeAreaView>;
     }
 
     return (

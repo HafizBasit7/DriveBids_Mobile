@@ -14,14 +14,12 @@ import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import Header from "../../../CustomComponents/Header"; 
-import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import HomeCarCard from "../../../CustomComponents/Tahir-Components/Home/HomeCarCard";
 import HomeBanner from "../../../CustomComponents/HomeBanner";
 import { useQuery } from "@tanstack/react-query";
 import { listCars, listCarsByBidCount } from "../../../API_Callings/R1_API/Car";
 import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import { Icon } from "react-native-elements";
-import { ActivityIndicator } from "react-native-paper";
 import Loader from "../../../CustomComponents/Loader";
 import { useAuth } from "../../../R1_Contexts/authContext";
 
@@ -86,7 +84,7 @@ export default Home = () => {
         { useNativeDriver: false }
       )}
       scrollEventThrottle={16}
-        style={{ flex: 1, paddingBottom: 10 }}
+        style={{ flex: 1, paddingBottom: 10,  }}
         showsVerticalScrollIndicator={false}
       >
         <HomeBanner />
@@ -213,8 +211,10 @@ export default Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#fff",
-    maxHeight:"100%"
+    maxHeight:"100%",
+    zIndex: 10,
+    backgroundColor:'#fff',
+   
     
     
   },

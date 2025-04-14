@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 2,
     marginTop: 5,
 
     alignItems: "center",
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.ButtonColor,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 25,
+    borderRadius: 10,
     marginTop: 5,
     width: "90%",
     alignItems: "center",
