@@ -1,8 +1,8 @@
 import apiClient from "./axios-client";
 
-export const getDrafts = async () => {
+export const getDrafts = async (page = 1, limit = 10) => {
     try {
-        const result = await apiClient.get('/car/drafts');
+        const result = await apiClient.get(`/car/drafts?page=${page}&limit=${limit}`);
         const resultData = result.data;
 
         if(!resultData.status) {
@@ -425,6 +425,3 @@ export const getCompletedDeals = async (page = 1, limit = 10, type = 'buy') => {
         throw e;
     }
 };
-
-
-
