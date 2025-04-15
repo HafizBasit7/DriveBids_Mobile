@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -21,9 +21,11 @@ import TransmissionSelection from "./TransmissionSelection";
 import ColorSelection from "./ColorSelection";
 import FuelTypeSelection from "./FuelTypeSelection";
 
-const FiltersScreen = () => {
+const FiltersScreen = ({route}) => {
   const styles = FilterStyles;
   const navigation = useNavigation();
+  const fromSearch = route?.params?.fromSearch;
+ 
 
   // State for filter values
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
@@ -122,6 +124,36 @@ const FiltersScreen = () => {
 
     navigation.navigate("Filters_ViewAll", { filters });
   };
+
+  useEffect(() => {
+    if(fromSearch) {
+      const filters = {
+        make: selectedMakes,
+        model: model || undefined,
+        minPrice: priceRange.min ? parseFloat(priceRange.min) : undefined,
+        maxPrice: priceRange.max ? parseFloat(priceRange.max) : undefined,
+        condition: selectedCondition || undefined,
+        city: selectedCity || undefined,
+        minMileage: mileageRange.min ? parseFloat(mileageRange.min) : undefined,
+        maxMileage: mileageRange.max ? parseFloat(mileageRange.max) : undefined,
+        fuel: selectedFuel || undefined,
+        color: selectedColor || undefined,
+        transmission: selectedTransmission || undefined,
+        minHorsePower: horsePowerRange.min
+          ? parseFloat(horsePowerRange.min)
+          : undefined,
+        maxHorsePower: horsePowerRange.max
+          ? parseFloat(horsePowerRange.max)
+          : undefined,
+      };
+  
+      // Remove undefined values
+      Object.keys(filters).forEach(
+        (key) => filters[key] === undefined && delete filters[key]
+      );
+      navigation.navigate("Filters_ViewAll", { filters });
+    }
+  }, [fromSearch]);
 
   return (
     <KeyboardAvoidingView

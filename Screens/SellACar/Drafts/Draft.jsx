@@ -5,19 +5,34 @@ import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import DraftCard from "../../../CustomComponents/DraftCard";
 import { ActivityIndicator } from "react-native-paper";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getDrafts, loadDraft } from "../../../API_Callings/R1_API/Car";
 import DialogBox from "../../../CustomComponents/DialogBox";
 import { useCar } from "../../../R1_Contexts/carContext";
 import { useNavigation } from "@react-navigation/native";
 import Nodata from "../../../CustomComponents/NoData";
 
+const LIMIT = 4;
+
 const Draft = () => {
 
-  const {data, isLoading} = useQuery({
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: ["drafts"],
-    queryFn: getDrafts,
+    queryFn: ({pageParam = 1}) => getDrafts(pageParam, LIMIT),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.data?.drafts?.length === LIMIT
+        ? allPages.length + 1
+        : undefined;
+    },
   });
+
+  const drafts = data?.pages.flatMap((page) => page?.data?.drafts) || [];
 
   const {dispatch} = useCar();
   const navigation = useNavigation();
@@ -59,7 +74,7 @@ const Draft = () => {
       <Nodata />
     ) : (
       <FlatList
-        data={data.data?.drafts}
+        data={drafts}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <DraftCard
@@ -69,6 +84,15 @@ const Draft = () => {
         )}
         contentContainerStyle={{ paddingHorizontal: 5, gap: 10 }}
         showsVerticalScrollIndicator={false}
+        onEndReached={() => {
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+        }
       />
     )}
   </View>

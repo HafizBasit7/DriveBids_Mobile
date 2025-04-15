@@ -1,14 +1,17 @@
-import React from 'react';
-import { View, StyleSheet, FlatList, Text, ScrollView } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, StyleSheet, FlatList, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import ViewAllCarCard from './ViewAllCarCard';
 import Header from '../../../CustomComponents/Header';
 import SectionHeader from '../../../CustomComponents/SectionHeader';
 import { Icon } from 'react-native-elements';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query';
 import { searchCars } from '../../../API_Callings/R1_API/Car';
 import { getCarsIdInWatchList } from '../../../API_Callings/R1_API/Watchlist';
 import { ActivityIndicator } from 'react-native-paper';
 import { useAuth } from '../../../R1_Contexts/authContext';
+import SvgFilter from "../../../assets/SVG/TahirSvgs/Filter.svg";
+import SvgSearch from "../../../assets/SVG/TahirSvgs/Search.svg";
+import { useNavigation } from '@react-navigation/native';
 
 
 const FilterChips = (filters) => {
@@ -118,9 +121,14 @@ const LIMIT = 10;
 
 const Filters_ViewAll = ({ route }) => {
   const { filters } = route.params;
+
+  const queryClient = useQueryClient();
+
+  const [title, setTitle] = useState();
   const {authState} = useAuth();
   const currentSelectedLocation = (authState.selectedLocation || authState.user.location) || {"coordinates": [73.1128313, 33.5255503]};
 
+  const navigation = useNavigation();
   const {
     data,
     isLoading,
@@ -128,19 +136,27 @@ const Filters_ViewAll = ({ route }) => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: ["search", filters],
-    queryFn: ({ pageParam = 1 }) => searchCars(filters, pageParam, LIMIT, currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1]),
+    queryKey: ["search", {...filters, ...((title === '' || title === undefined || !title) ? {} : {title})}],
+    queryFn: ({ pageParam = 1 }) => searchCars({...filters, ...((title === '' || title === undefined || !title) ? {} : {title})}, pageParam, LIMIT, currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1]),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage?.data?.cars?.length === LIMIT ? allPages.length + 1 : undefined;
     },
+    gcTime: 0,
   });
+
+  useEffect(() => {
+    const interval = setTimeout(() => {
+      queryClient.invalidateQueries({queryKey: ['search']});
+    }, 300);
+    return () => {
+      clearTimeout(interval);
+    };
+  }, [title]);
 
   const { data: carsInWatchList } = useQuery({
     queryKey: ["carsInWatchList"],
     queryFn: getCarsIdInWatchList,
   });
-
-  if (isLoading) return null;
 
   const filteredCars = data?.pages?.flatMap((page) => page.data.cars) || [];
 
@@ -149,9 +165,31 @@ const Filters_ViewAll = ({ route }) => {
       <Header showSearch={false} />
       <View style={styles.container}>
 
+        <View style={styles.searchContainer}>
+          <View style={styles.searchBox}>
+            <SvgSearch width={18} height={18} style={styles.searchIcon} />
+            <TextInput
+              placeholder="Search for Honda Pilot 7-Passenger"
+              style={styles.searchInput}
+              placeholderTextColor="#888"
+              value={title}
+              onChangeText={setTitle}
+            />
+          </View>
+
+
+          <TouchableOpacity
+            style={styles.filterIcon}
+            onPress={() => navigation.goBack()}
+          >
+            <SvgFilter width={25} height={25} />
+          </TouchableOpacity>
+        </View>
         
         <FilterChips filters={filters} />
-        <FlatList
+        {isLoading && <ActivityIndicator/>}
+       {!isLoading && (
+         <FlatList
           data={filteredCars}
           keyExtractor={(item) => item._id.toString()}
           renderItem={({ item }) => (
@@ -172,6 +210,7 @@ const Filters_ViewAll = ({ route }) => {
             ) : null
           }
         />
+       )}
       </View>
     </>
   );
@@ -224,7 +263,37 @@ const styles = StyleSheet.create({
    
     fontFamily:"Inter-Regular"
   },
-  
+  searchBox: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F3F3F3",
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    height: 45,
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 15,
+    marginHorizontal: 10,
+  },
+  searchIcon: {
+    marginLeft: 10,
+    marginRight: 5,
+  },
+  filterIcon: {
+    marginLeft: 10,
+    padding: 10,
+    backgroundColor: "#F3F3F3",
+    borderRadius: 10,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 12,
+    color: "#000000",
+    textAlignVertical: "center",
+  },
 });
 
 export default Filters_ViewAll;
