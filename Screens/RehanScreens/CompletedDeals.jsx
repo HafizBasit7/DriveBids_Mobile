@@ -14,7 +14,6 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {getCompletedDeals, listMyBids} from "../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
 import { getCarsIdInWatchList } from "../../API_Callings/R1_API/Watchlist";
-import ViewAllCarCard from "../../Screens/Tahir-Screens/Filter&ViewAll/ViewAllCarCard";
 import Nodata from "../../CustomComponents/NoData";
 import CompletedDealsCard from "../Tahir-Screens/Filter&ViewAll/completeddealscards";
 
@@ -40,10 +39,6 @@ export default CompletedDeals = () => {
     },
   });
 
-  const {data: carsInWatchList, isLoading: watchlistLoading} = useQuery({
-    queryKey: ['carsInWatchList'],
-    queryFn: getCarsIdInWatchList,
-  });
 
   const completedDeals = data?.pages.flatMap((page) => page?.data?.completedDeals) || [];
   // var CARD_HEIGHT = 150;
@@ -89,9 +84,6 @@ export default CompletedDeals = () => {
             <CompletedDealsCard
               ad={item.car}
               item={item}
-              notHome={true}
-              isFromCompletedDeals={true}
-              carsInWatchList={carsInWatchList}
             />
           )}
           showsVerticalScrollIndicator={false}

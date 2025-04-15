@@ -63,6 +63,7 @@ const InspectionReport = ({car}) => {
     queryKey: ['inspectionReport', car],
     queryFn: () => getCarInspectionReport(car),
     enabled: isExpanded,
+    refetchOnMount: false,
   })
 
   const inspectionReport = data?.data?.inspectionReport;

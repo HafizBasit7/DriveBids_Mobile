@@ -49,9 +49,9 @@ export default function SocketContextProvider ({children}) {
             });
 
             //bid update
-            newSocket.on('bid-update', (carId) => {
-                queryClient.invalidateQueries(['car', carId]);
-                queryClient.invalidateQueries(['biddingHistory', carId]);
+            newSocket.on('bid-update', ({carId}) => {
+                queryClient.invalidateQueries({queryKey: ['car', carId]});
+                queryClient.invalidateQueries({queryKey: ['biddingHistory', carId]});
             });
         }
 

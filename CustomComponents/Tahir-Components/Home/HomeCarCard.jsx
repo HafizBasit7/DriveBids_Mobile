@@ -62,7 +62,7 @@ const HomeCarCard = ({
     },
     onSettled: () => {
       // queryClient.invalidateQueries(["carsInWatchList"]);
-      // queryClient.invalidateQueries(["watchlist"]);
+      queryClient.invalidateQueries({queryKey: ["watchlist"]});
     },
   });
 

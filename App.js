@@ -6,7 +6,14 @@ import AuthContextProvider from "./R1_Contexts/authContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SocketContextProvider from "./R1_Contexts/socketContext";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    }, 
+  }
+});
+
 
 export default function App() {
   const fontsLoaded = useLoadFonts();

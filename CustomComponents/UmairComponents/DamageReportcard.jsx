@@ -31,7 +31,8 @@ const DamageReportCarousel = ({car}) => {
   const {data, isLoading} = useQuery({
     queryKey: ['damageReport', car],
     queryFn: () => getCarDamageReport(car),
-    enabled: isExpanded
+    enabled: isExpanded,
+    refetchOnMount: false,
   });
 
   const handleNext = () => {

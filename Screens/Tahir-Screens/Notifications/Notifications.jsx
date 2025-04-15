@@ -37,7 +37,7 @@ const NotificationScreen = () => {
     },
   });
   
-  queryClient.invalidateQueries(["notificationCount"]);
+  queryClient.invalidateQueries({queryKey: ["notificationCount"]});
   const notifications = data?.pages.flatMap((page) => page?.data?.notifications) || [];
   
   const renderNotificationItem = ({ item }) => (

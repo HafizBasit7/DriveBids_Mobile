@@ -68,12 +68,12 @@ const ChangeLocationScreen = () => {
       dispatch({ type: 'updateLocation', payload: updateLocation });
       navigation.goBack();
       setTimeout(() => {
-        queryClient.invalidateQueries(['cars']);
-        queryClient.invalidateQueries(['carsByBidCount']);
-        queryClient.invalidateQueries(['carsEnding']);
-        queryClient.invalidateQueries(['carsAll']);
-        queryClient.invalidateQueries(['carsByBidCountAll']);
-        queryClient.invalidateQueries(['carsEndingAll']);
+        queryClient.invalidateQueries({queryKey: ['cars']});
+        queryClient.invalidateQueries({queryKey: ['carsEnding']});
+        queryClient.invalidateQueries({queryKey: ['carsByBidCount']});
+        queryClient.invalidateQueries({queryKey: ['carsAll']});
+        queryClient.invalidateQueries({queryKey: ['carsEndingAll']});
+        queryClient.invalidateQueries({queryKey: ['carsByBidCountAll']});
       }, 200);
     }}
     query={{

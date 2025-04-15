@@ -79,7 +79,7 @@ const ActiveChatBox = ({route}) => {
   const messages = data?.pages.flatMap((page) => page?.data?.messages) || [];
 
   if(!isLoading && !isFetchingNextPage) {
-    queryClient.invalidateQueries(["messagesCount"]);
+    queryClient.invalidateQueries({queryKey: ["messagesCount"]});
   }
   
   //Socket
@@ -721,7 +721,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: 0,
+    top: 45,
     right: 20,
     zIndex: 999,
   },

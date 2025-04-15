@@ -33,10 +33,6 @@ const VehicleInfo = () => {
     setLoading(true);
     try {
         await carPostAd();
-        //OK: DONE
-        queryClient.invalidateQueries('cars');
-        queryClient.invalidateQueries('carsEnding');
-        queryClient.invalidateQueries('carsByBidCount');
         setMessage({type: 'success', message: 'Car ad posted!', title: 'Success'});
     }
     catch(e) {

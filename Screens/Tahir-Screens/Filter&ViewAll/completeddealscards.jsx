@@ -1,88 +1,84 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, StatusBar } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { GlobalStyles } from '../../../Styles/GlobalStyles';
 import {formatAmount} from "../../../utils/R1_utils";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toggleWatchList } from '../../../API_Callings/R1_API/Watchlist';
-import { calculateTimeLeft } from '../../../utils/countdown';
 import { useNavigation } from '@react-navigation/native';
 import { Image } from "expo-image";
 import { useAuth } from '../../../R1_Contexts/authContext';
+import { getChatId } from '../../../API_Callings/R1_API/Chat';
 
-const { width } = Dimensions.get('window');
 
 const CompletedDealsCard = ({ 
   ad,
   item,
-  carsInWatchList,
 }) => {
+
+  const [showOwnerProfile, setShowOwnerProfile] = useState(false);
 
   const navigation = useNavigation();
   const {authState} = useAuth();
   const user = authState.user;
+
+  const chatNowMutation = useMutation({
+    mutationFn: getChatId,
+  });
  
 
   const queryClient = useQueryClient();
-  const toggleWatchListMutation = useMutation({
-    mutationFn: toggleWatchList,
-    onMutate: async (carId) => {
-      //For Car ids in watchlist
-      await queryClient.cancelQueries(["carsInWatchList"]);
-      const previousWatchlist = queryClient.getQueryData(["carsInWatchList"]);
-
-      queryClient.setQueryData(["carsInWatchList"], (oldData) => {
-        if (!oldData) return { data: { carsInWatchList: [{ car: carId }] }, status: true, statusCode: 200 };
-        const isAlreadyInWatchlist = oldData.data.carsInWatchList.some((item) => item.car === carId);
-        return {
-          ...oldData,
-          data: {
-            ...oldData.data,
-            carsInWatchList: isAlreadyInWatchlist
-              ? oldData.data.carsInWatchList.filter((item) => item.car !== carId)
-              : [...oldData.data.carsInWatchList, { car: carId }],
-          },
-        };
-      });
-
-      return { previousWatchlist };
-    },
-    onError: (_error, _newMessage, context) => {
-      if (context?.previousWatchlist) {
-        queryClient.setQueryData(["carsInWatchList"], context.previousWatchlist);
-      }
-    },
-    onSettled: () => {
-      // queryClient.invalidateQueries(["carsInWatchList"]);
-      queryClient.invalidateQueries(["watchlist"]);
-    },
-  });
-
-  //Calcuations
-  const isCarInWatchList = (carsInWatchList?.data.carsInWatchList.findIndex(val => val.car === ad._id) !== -1);
 
 
   const handleViewAd = () => {
-    if(notHome) {
       navigation.navigate('Home', {screen: 'AdDetails', params: {carId: ad._id}});
-      return;
+  };
+
+  const handleChatNow = async  () => {
+    try {
+      const result = await chatNowMutation.mutateAsync({userId: item.user._id, carId: ad._id});
+      navigation.navigate('Messages' , {screen: 'ActiveChatBox', params: {chatId: result.data.chatId}})
     }
-    navigation.navigate('AdDetails', {carId: ad._id})
+    catch(e) {
+      console.log(e);
+    }
   };
 
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-      <TouchableOpacity style={styles.favoriteIcon} onPress={() => toggleWatchListMutation.mutate(ad._id)}>
-          <Icon
-            name={isCarInWatchList ? 'heart' : 'heart-outline'} 
-            type="material-community"
-            color={isCarInWatchList ? '#FF0000' : '#FFFFFF'} 
-            size={18}
-          />
-        </TouchableOpacity>
-        
+
+      {/* Modal  */}
+       <Modal visible={showOwnerProfile} animationType="slide" transparent={true}>
+          <View style={styles.modalOverlay}>
+            <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />
+            <View style={styles.modalContent}>
+            <Text style={{textAlign:'center', textDecorationLine:'underline', fontWeight:'500', marginBottom: 20,}}>Owner Details</Text>
+            <View style={{ display:"flex", flexDirection:"row", justifyContent:"space-between", marginBottom:5, flexWrap:'wrap'}}>
+              <View >
+                  <View style={{alignItems: 'flex-start', marginBottom: 10}}> 
+                    <Text style={styles.topBidText}>{item.seller === user._id ? 'Bought By' : 'Sold By'}</Text> 
+                    <Text style={styles.priceText}>{item.user.name}</Text>
+                  </View>
+                  <Text style={styles.topBidText}>Email: </Text>
+                  <Text style={styles.priceText}>{item.user.email}</Text>
+              </View>
+              <View >
+                <Text style={styles.topBidText}>Phone: </Text>
+                <Text style={styles.priceText}>+{item.user.phoneNumber?.countryCode} {item.user.phoneNumber?.phoneNo}</Text>
+              </View>
+              </View>
+              <TouchableOpacity
+                style={styles.modalCloseButton}
+                onPress={() => setShowOwnerProfile(false)}
+              >
+                <Text style={styles.modalCloseText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+      <View style={styles.imageContainer}>        
         <Image 
           source={{ uri: ad.images.exterior[0].url }} 
           style={styles.carImage} 
@@ -96,8 +92,8 @@ const CompletedDealsCard = ({
       {ad.title}
     </Text>
     
-      <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 0,marginBottom:3,borderWidth: 1,
-    borderColor: "#000", // Black color
+      <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 0,marginBottom:3,
+     // Black color
     borderRadius:5 }}>
         <Text
           style={{
@@ -105,9 +101,11 @@ const CompletedDealsCard = ({
             paddingHorizontal: 10,
             paddingVertical: 3,
             borderRadius: 6,
-            color: item.bid ? "#000" : "#000",
+            color: item?.bid ? "#ffffff" : "#ffffff",
             fontSize: 10,
+            backgroundColor:'green',
             width:60,
+            textAlign:'center'
           }}
         >
            {item.bid? "Win Bid": "Bought"} </Text>
@@ -149,76 +147,57 @@ const CompletedDealsCard = ({
           </View>
         </View>
         
-        <View style={styles.detailsRow}>
-          <View style={styles.iconTextContainer}>
-            <Icon 
-              name="gas-pump" 
-              type="font-awesome-5" 
-              size={12} 
-              color="#000000" 
-            />
-            <Text style={styles.detailText}>{ad.fuel}</Text>
-          </View>
-          <View style={styles.divider} />
-          <View style={styles.iconTextContainer}>
-            <Icon 
-              name="speedometer" 
-              type="material-community" 
-              size={12} 
-              color="#000000" 
-            />
-            <Text style={styles.detailText}>{ad.mileage} km</Text>
-          </View>
-          <View style={styles.divider} />
-          <View style={styles.iconTextContainer}>
-            <Icon 
-              name="palette" 
-              type="material-community" 
-              size={12} 
-              color="#000000" 
-            />
-            <Text style={styles.detailText}>{ad.color}</Text>
-          </View>
-        </View>
-        <View style={{ display:"flex", flexDirection:"row", justifyContent:"space-between",marginBottom:5}}>
-            <View>
-                <Text style={styles.topBidText}>My Bid</Text>
-                <Text style={styles.priceText}>AED {formatAmount(1)}</Text>
+       
+        <View>
+                <Text style={styles.topBidText}>Winning Price:</Text>
+                <Text style={styles.priceText}>AED {formatAmount(item.buyingAmount)}</Text>
                 </View>
-              <View style={{alignItems: 'flex-end'}}> 
-                <Text style={styles.topBidText}>{item.seller === user._id ? 'Bought By' : 'Sold By'}</Text> 
-                <Text style={styles.priceText}>{item.user.name}</Text>
-                </View>
-        </View>
+        <TouchableOpacity onPress={() => setShowOwnerProfile(true)}>
+          <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+            <Text style={{textAlign:'center', textDecorationLine:'underline', fontWeight:'500'}}>Owner Details</Text>
+            <Icon 
+                name="eye" 
+                type="material-community" 
+                size={16} 
+                color="#000000" 
+              />
+          </View>
+        </TouchableOpacity>
         
         <View style={styles.bottomRow}>
           <View style={styles.bidTimeContainer}>
-            
-           <TouchableOpacity 
+          <TouchableOpacity 
             style={styles.viewAdButton}
             onPress={handleViewAd}
+          > 
+          <Text>
+          <Icon 
+          name="campaign" 
+          type="material" 
+          size={16} 
+          color="#FFFFFF" 
+        /></Text>
+            <Text style={styles.viewAdButtonText}> View Ad</Text>
+           
+          </TouchableOpacity>
+          
+          </View>
+          
+          
+
+
+          <TouchableOpacity 
+            style={styles.viewAdButton}
+            onPress={handleChatNow}
           >
-            <Text style={styles.viewAdButtonText}>chat now </Text>
             <Icon 
               name="chat" 
               type="material" 
               size={14} 
               color="#FFFFFF" 
             />
-          </TouchableOpacity>
-          </View>
-          
-          <TouchableOpacity 
-            style={styles.viewAdButton}
-            onPress={handleViewAd}
-          >
-            <Text style={styles.viewAdButtonText}>View Ad</Text>
-            <Icon 
-              name="campaign" 
-              type="material" 
-              size={16} 
-              color="#FFFFFF" 
-            />
+            <Text style={styles.viewAdButtonText}>{chatNowMutation.isPending ? 'Please wait...' : 'Chat Now'} </Text>
+            
           </TouchableOpacity>
         </View>
       </View>
@@ -236,7 +215,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     flexDirection: 'row',
-    height: 180, // Fixed height based on screen width
+    height: '190', // Fixed height based on screen width
     overflow: 'hidden',
   },
   imageContainer: {
@@ -309,10 +288,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Regular',
     fontSize: 12,
     color: '#666',
+    
   },
   priceText: {
     fontFamily: 'Inter-SemiBold',
     fontSize: 13,
+    
   },
   timeText: {
     fontFamily: 'Inter-SemiBold',
@@ -323,16 +304,59 @@ const styles = StyleSheet.create({
   viewAdButton: {
     backgroundColor: GlobalStyles.colors.ButtonColor,
     paddingVertical: 8,
-    paddingHorizontal: 15,
+    paddingHorizontal: 7,
     borderRadius: 5,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent:'center',
     gap: 5,
   },
   viewAdButtonText: {
     color: '#FFFFFF',
     fontFamily: 'Inter-SemiBold',
     fontSize: 13,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 20,
+    maxHeight: '60%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontFamily: 'Inter-SemiBold',
+    marginBottom: 15,
+  },
+  modalItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  modalText: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    marginLeft: 10,
+  },
+  modalCloseButton: {
+    marginTop: 20,
+    paddingVertical: 12,
+    backgroundColor: '#2F61BF',
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  modalCloseText: {
+    color: '#fff',
+    fontFamily: 'Inter-SemiBold',
+    fontSize: 16,
   },
 });
 

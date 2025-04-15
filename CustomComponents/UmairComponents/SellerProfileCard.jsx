@@ -26,8 +26,6 @@ const SellerProfileCard = ({
   const handleChatNow = async () => {
     try {
       const result = await chatNowMutation.mutateAsync({userId: car.user._id, carId: car._id});
-      console.log(result);
-      navigation.navigate('Messages');
       navigation.navigate('Messages' , {screen: 'ActiveChatBox', params: {chatId: result.data.chatId}})
     }
     catch(e) {

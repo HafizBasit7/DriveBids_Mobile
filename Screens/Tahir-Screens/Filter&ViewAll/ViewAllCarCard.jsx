@@ -68,7 +68,7 @@ const ViewAllCarCard = ({
     },
     onSettled: () => {
       // queryClient.invalidateQueries(["carsInWatchList"]);
-      queryClient.invalidateQueries(["watchlist"]);
+      queryClient.invalidateQueries({queryKey: ["watchlist"]});
     },
   });
 
