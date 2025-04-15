@@ -148,6 +148,8 @@ const Filters_ViewAll = ({ route }) => {
     <>
       <Header showSearch={false} />
       <View style={styles.container}>
+
+        
         <FilterChips filters={filters} />
         <FlatList
           data={filteredCars}

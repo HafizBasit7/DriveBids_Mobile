@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, SafeAreaView, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; // Or use 'react-native-vector-icons/Ionicons'
@@ -11,6 +11,7 @@ const ChangeLocationScreen = () => {
   const navigation = useNavigation();
   const {authState, dispatch} = useAuth();
   const queryClient = useQueryClient();
+  const inputRef = useRef(null);
 
   const currentSelectedLocation = authState.selectedLocation?.name || authState.user.location?.name;
 
@@ -32,7 +33,14 @@ const ChangeLocationScreen = () => {
       geometry: { location: { lat: 25.3562, lng: 55.4272 } },
     },
   ];
+  useEffect(() => {
+    // Focus input when component mounts
+    const timer = setTimeout(() => {
+      inputRef.current?.focus();
+    }, 300); // Slight delay to ensure component is mounted
 
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* Header with Back Button and Title */}
@@ -44,58 +52,92 @@ const ChangeLocationScreen = () => {
       </View>
 
       <View style={styles.container}>
-        <GooglePlacesAutocomplete
-        enablePoweredByContainer={false}
-          placeholder="Enter / Search Location"
-          fetchDetails={true}
-        //   currentLocation={true}
-        //   currentLocationLabel="Current Location"
-          onPress={(data, details) => {
-            const updateLocation = {
-              name: data.description,
-              coordinates: [
-                details.geometry.location.lng,
-                details.geometry.location.lat,
-              ],
-            };
-            dispatch({type: 'updateLocation', payload: updateLocation});
-            navigation.goBack();
-            setTimeout(() => {
-              //Main Page
-              queryClient.invalidateQueries(['cars']);
-              queryClient.invalidateQueries(['carsByBidCount']);
-              queryClient.invalidateQueries(['carsEnding']);
-              //All page
-              queryClient.invalidateQueries(['carsAll']);
-              queryClient.invalidateQueries(['carsByBidCountAll']);
-              queryClient.invalidateQueries(['carsEndingAll']);
-              }, 200);
-          }}
-          query={{
-            key: 'AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI',
-            language: 'en',
-          }}
-          predefinedPlaces={predefinedPlaces}
-          predefinedPlacesAlwaysVisible={true}
-          textInputProps={{
-            placeholder: currentSelectedLocation,
-          }}
-          styles={{
-            listView: {
-              marginHorizontal:12
-            },
-            textInputContainer: {
-              borderWidth: 1,
-              borderColor: '#ccc',
-              borderRadius: 10,
-              paddingHorizontal: 3,
-              marginBottom: 5,
-              marginHorizontal: 20,
-              marginTop: 25,
-            },
-          }}
-        />
-      </View>
+  <GooglePlacesAutocomplete
+    enablePoweredByContainer={false}
+    ref={inputRef}
+    placeholder="Enter / Search Location"
+    fetchDetails={true}
+    onPress={(data, details) => {
+      const updateLocation = {
+        name: data.description,
+        coordinates: [
+          details.geometry.location.lng,
+          details.geometry.location.lat,
+        ],
+      };
+      dispatch({ type: 'updateLocation', payload: updateLocation });
+      navigation.goBack();
+      setTimeout(() => {
+        queryClient.invalidateQueries(['cars']);
+        queryClient.invalidateQueries(['carsByBidCount']);
+        queryClient.invalidateQueries(['carsEnding']);
+        queryClient.invalidateQueries(['carsAll']);
+        queryClient.invalidateQueries(['carsByBidCountAll']);
+        queryClient.invalidateQueries(['carsEndingAll']);
+      }, 200);
+    }}
+    query={{
+      key: 'AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI',
+      language: 'en',
+    }}
+    predefinedPlaces={predefinedPlaces}
+    predefinedPlacesAlwaysVisible={true}
+    textInputProps={{
+      placeholder: currentSelectedLocation,
+      placeholderTextColor: '#888',
+    }}
+    styles={{
+      container: {
+        flex: 0,
+      },
+      textInputContainer: {
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
+        marginHorizontal: 15,
+        marginTop: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 1,
+        elevation: 1,
+      },
+      textInput: {
+        height: 50,
+        color: '#333',
+        fontSize: 16,
+        paddingHorizontal: 15,
+        borderRadius: 10,
+      },
+      listView: {
+        backgroundColor: '#fff',
+        marginHorizontal: 15,
+        borderRadius: 10,
+        elevation: 1,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        marginTop:5
+      },
+      row: {
+        padding: 13,
+        height: 44,
+        flexDirection: 'row',
+      },
+      separator: {
+        height: 0.5,
+        backgroundColor: '#c8c7cc',
+      },
+      description: {
+        fontSize: 14,
+        color: '#555',
+      },
+    }}
+  />
+</View>
+
     </SafeAreaView>
   );
 };

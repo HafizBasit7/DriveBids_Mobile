@@ -93,6 +93,8 @@ export default Home = () => {
         {!carsByBidCountLoading ? (
           <>
             <FlatList
+              showsHorizontalScrollIndicator={false}
+              snapToAlignment="start" 
           data={carsByBidCount.data.cars}
           keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
@@ -105,7 +107,6 @@ export default Home = () => {
             />
           )}
           horizontal
-          showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 7 }} 
           ItemSeparatorComponent={() => (
             <View style={{ width: SEPARATOR_WIDTH }} />
@@ -134,6 +135,8 @@ export default Home = () => {
         <>
            <FlatList
           data={endingCarList.data.cars}
+          showsHorizontalScrollIndicator={false}
+          snapToAlignment="start" // Optional: Snaps items to the start
           keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
             <HomeCarCard
@@ -142,7 +145,6 @@ export default Home = () => {
             />
           )}
           horizontal
-          showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 5 }} 
           ItemSeparatorComponent={() => (
             <View style={{ width: SEPARATOR_WIDTH }} />
@@ -180,12 +182,14 @@ export default Home = () => {
           )}
           horizontal
           showsHorizontalScrollIndicator={false}
+          snapToAlignment="start" // Optional: Snaps items to the start
+  decelerationRate="fast" // Makes scroll feel smoother/faster
+  pagingEnabled={false} 
           contentContainerStyle={{ paddingHorizontal: 5 }} 
           ItemSeparatorComponent={() => (
             <View style={{ width: SEPARATOR_WIDTH }} />
           )}
           snapToInterval={ITEM_WIDTH}
-          decelerationRate="fast" 
           removeClippedSubviews={true}
           getItemLayout={(data, index) => ({
             length: CARD_WIDTH,

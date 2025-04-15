@@ -16,6 +16,7 @@ import { ActivityIndicator } from "react-native-paper";
 import { getCarsIdInWatchList } from "../../API_Callings/R1_API/Watchlist";
 import ViewAllCarCard from "../../Screens/Tahir-Screens/Filter&ViewAll/ViewAllCarCard";
 import Nodata from "../../CustomComponents/NoData";
+import CompletedDealsCard from "../Tahir-Screens/Filter&ViewAll/completeddealscards";
 
 const LIMIT = 10;
 
@@ -85,8 +86,9 @@ export default CompletedDeals = () => {
           data={completedDeals}
           keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
-            <ViewAllCarCard
+            <CompletedDealsCard
               ad={item.car}
+              item={item}
               notHome={true}
               isFromCompletedDeals={true}
               carsInWatchList={carsInWatchList}

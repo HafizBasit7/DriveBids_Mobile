@@ -31,6 +31,8 @@ import { ActivityIndicator } from "react-native-paper";
 import { Icon } from "react-native-elements";
 import { uploadImage } from "../../../utils/upload";
 import { Image } from "expo-image";
+import ImageViewer from 'react-native-image-zoom-viewer';
+
 
 const LIMIT = 15;
 
@@ -45,8 +47,8 @@ const ActiveChatBox = ({route}) => {
   const {chatId} = route.params;
   const [optionsVisible, setOptionsVisible] = useState(false); // Toggle for showing options
   const queryClient = useQueryClient();
-  const [isUserConnected, setIsUserConnected] = useState(false);
-
+  // const [isUserConnected, setIsUserConnected] = useState(false);
+  const [sending, setSending] = useState(false);
 
  
   const {data: chatHeadData, isLoadingChatHead} = useQuery({
@@ -135,7 +137,10 @@ const ActiveChatBox = ({route}) => {
   };
 
   const sendMessageNew = async () => {
-    mutation.mutate({chatId, message: newMessage});
+    setSending(true);
+    mutation.mutateAsync({chatId, message: newMessage}).then((val) => {
+      setSending(false);
+    });
     setNewMessage('');
   };
 
@@ -388,6 +393,15 @@ const ActiveChatBox = ({route}) => {
             isFetchingNextPage ? <ActivityIndicator size="small" /> : null
           }
         />
+        {sending && (
+          <View
+          style={{alignSelf: 'flex-end',
+            marginBottom:5,
+            marginRight:15
+          }}
+          
+          ><Text style={{color:"#ccc"}}>Sending...</Text></View>
+        )}
 
         {/* Input Container */}
         <View style={styles.inputContainer}>
@@ -421,14 +435,32 @@ const ActiveChatBox = ({route}) => {
             <Ionicons name="send" size={20} color="white" />
           </TouchableOpacity>
         </View>
-        <Modal visible={modalVisible} transparent={true} animationType="fade">
-           <View style={styles.modalContainer}>
-           <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />
 
-          <TouchableOpacity style={styles.closeArea} onPress={() => setModalVisible(false)} />
-          <Image source={{ uri: selectedImage }} style={styles.fullImage} resizeMode="contain" />
-        </View>
-      </Modal>
+{modalVisible && (
+  <Modal visible={modalVisible} transparent={true} animationType="fade">
+    <StatusBar barStyle="light-content" backgroundColor="rgba(0,0,0,0.95)" />
+
+    <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.95)' }}>
+      <ImageViewer
+        imageUrls={[{ url: selectedImage }]} // expects array of {url: ...}
+        enableSwipeDown
+        onSwipeDown={() => setModalVisible(false)} // Close on swipe down
+        onCancel={() => setModalVisible(false)}   // Close on cancel
+        renderIndicator={() => null} // optional: hide indicator (1/1)
+        backgroundColor="rgba(0,0,0,0.9)"
+      />
+
+      {/* Close Icon */}
+      <TouchableOpacity
+        style={styles.closeButton}
+        onPress={() => setModalVisible(false)} // Close the modal when the icon is pressed
+      >
+        <Ionicons name="close-circle" size={40} color="#fff" />
+      </TouchableOpacity>
+    </View>
+  </Modal>
+)}
+
  
       </KeyboardAvoidingView>
     </View>
@@ -686,7 +718,13 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: "Inter-Regular",
     color: "#666",
-  }
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 0,
+    right: 20,
+    zIndex: 999,
+  },
 });
 
 export default ActiveChatBox;

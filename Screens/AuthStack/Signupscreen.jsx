@@ -199,7 +199,11 @@ const SignupScreen = () => {
           selectedTab === "private" ? styles.privateBg : styles.tradeBg,
         ]}
       >
-        <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+          <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 180} 
+    >
+        <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewContent}>
           <View>
             <View style={styles.inputWrapper}>
               <Text style={styles.label}>Name</Text>
@@ -372,6 +376,7 @@ const SignupScreen = () => {
             </View>
           </View>
         </ScrollView>
+        </KeyboardAvoidingView>
       </View>
 
       {/* Bottom Buttons Container */}
@@ -432,6 +437,10 @@ const styles = StyleSheet.create({
     left: 20,
     zIndex: 10,
   },
+  scrollViewContent: {
+    flexGrow: 1,
+  
+  },
   topImage: {
     width: "100%",
     height: height * 0.3,
@@ -442,6 +451,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: height * 0.09,
     marginTop: -height * 0.09,
+    backgroundColor:"#fff"
   },
   leftBox: {
     flex: 1,
@@ -453,7 +463,7 @@ const styles = StyleSheet.create({
   },
   rightBox: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     borderTopLeftRadius: 45,
@@ -487,13 +497,10 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    padding: 20,
+    padding: 15,
+    backgroundColor:"#fff",
 
-    elevation: 5,
     shadowColor: "#000",
-    shadowOffset: { width: 1, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
 
     paddingBottom: 30,
   },

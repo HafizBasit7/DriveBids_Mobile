@@ -61,7 +61,7 @@ const Header = ({ showSearch = true, scrollY, title = null }) => {
   
 
   return (
-    <View style={{ backgroundColor: 'transparent',}}> 
+    <View style={{ backgroundColor: '#fff',}}> 
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent  />
 
@@ -155,12 +155,11 @@ const Header = ({ showSearch = true, scrollY, title = null }) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor:"#fff",
+    backgroundColor:"#FEE226",
+    borderBottomLeftRadius: 60,
+    borderBottomRightRadius: 60,
     
-  
-    
-    
-    
+
   },
   header: {
     width: width,
