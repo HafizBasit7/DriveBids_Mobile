@@ -13,6 +13,7 @@ import {
   StatusBar,
   FlatList,
   SafeAreaView,
+  Platform,
 } from "react-native";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
@@ -171,6 +172,25 @@ const HomeHeader = ({ carId, scrollY }) => {
       <Image source={{ uri: item }} style={styles.thumbnail} />
     </TouchableOpacity>
   );
+
+  const closeButtonText = {
+    color: "#FFD700",
+    fontSize: 20,
+    fontWeight: "bold",
+    ...(Platform.OS === "ios"
+      ? {
+          // iOS-specific style
+          position: "absolute",
+          top: 40,
+          right: 20,
+        }
+      : {
+          // Android-specific style
+          position: "absolute",
+          top: -10,
+          right: 15,
+        }),
+  };
   
   return (
     <View >
@@ -273,7 +293,7 @@ const HomeHeader = ({ carId, scrollY }) => {
             style={styles.closeButton} 
             onPress={closeModal}
           >
-            <Text style={styles.closeButtonText}>✕</Text>
+            <Text  style={closeButtonText}>✕</Text>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.leftButton} onPress={prevImage}>

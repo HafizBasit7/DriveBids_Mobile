@@ -26,7 +26,7 @@ const PriceRange3 = () => {
   // Function to handle input change
   const handleBidInput = (text) => {
     // Remove non-numeric characters
-    const rawNumber = text.replace(/[^0-9]/g, "");
+    const rawNumber = text.replace(/[^0-9]/g, "").replace(/^0+/, "");
 
     // Format the number with commas
     const formattedNumber = formatNumberWithCommas(rawNumber);

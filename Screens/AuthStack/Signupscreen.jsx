@@ -201,7 +201,7 @@ const SignupScreen = () => {
       >
           <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 180} 
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 280 : 180} 
     >
         <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewContent}>
           <View>
@@ -439,6 +439,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     flexGrow: 1,
+    
   
   },
   topImage: {
@@ -451,7 +452,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: height * 0.09,
     marginTop: -height * 0.09,
-    backgroundColor:"#fff"
+    backgroundColor:""
   },
   leftBox: {
     flex: 1,

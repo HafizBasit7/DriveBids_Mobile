@@ -116,7 +116,7 @@ const BidsButtons = ({
           <>
             <Text style={styles.blueText}>{quickBidTitle}</Text>
             <Text style={styles.price}>AED </Text>
-            <Text style={styles.price}>{car.highestBid ? car.highestBid + 1 : car.staringBidPrice}</Text>
+            <Text style={styles.price}>{car.highestBid ? car.highestBid.toLocaleString() + 1 : car.staringBidPrice.toLocaleString()}</Text>
 
           </>
         ) : (
@@ -127,19 +127,19 @@ const BidsButtons = ({
     {!loadingBids && bid && (
       <View style={styles.container1}>
       <View>
-      <Text>
+      <Text style={{color:"#696969"}}>
         Current bid:
 
       </Text>
-      <Text>
+      <Text style={{color:"#696969"}}>
       Total Budget: </Text>
       </View>
       <View>
-      <Text>
+      <Text style={{color:"#696969"}}>
         {bid.bidAmount.toLocaleString()} AED
 
       </Text>
-      <Text>
+      <Text style={{color:"#696969"}}>
       {bid.maxBudget.toLocaleString()} AED
       </Text>
       </View>

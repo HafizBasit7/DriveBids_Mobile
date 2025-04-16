@@ -12,6 +12,8 @@ export const useSocket = () => useContext(SocketContext);
 export default function SocketContextProvider ({children}) {
     const [bidSocket, setBidSocket] = useState(null);
     const [chatSocket, setChatSocket] = useState(null);
+    
+
     const {authState} = useAuth();
     const queryClient = useQueryClient();
 
@@ -21,7 +23,7 @@ export default function SocketContextProvider ({children}) {
             const newSocket = io(bidBaseUrl, {
                 reconnection: true,
                 autoConnect: true,
-                reconnectionAttempts: 8,
+                reconnectionAttempts: 12,
                 reconnectionDelay: 2000, 
                 transports: ["websocket"], 
                 auth: {
@@ -67,7 +69,7 @@ export default function SocketContextProvider ({children}) {
             const newSocket = io(chatBaseUrl, {
                 reconnection: true,
                 autoConnect: true,
-                reconnectionAttempts: 8,
+                reconnectionAttempts: 12,
                 reconnectionDelay: 2000, 
                 transports: ["websocket"], 
                 auth: {

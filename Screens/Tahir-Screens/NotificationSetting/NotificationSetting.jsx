@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
    borderBottomColor:"#000",
    borderWidth:0.3,
    borderRadius:10,
-   paddingHorizontal:8,
+   padding:8
    
     
   },
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-Regular",
     fontSize: 15,
     color: "#333",
-    fontWeight:650
+    fontWeight:700
   },
   switch: {
     transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }],
