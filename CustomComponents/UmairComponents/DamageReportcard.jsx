@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import ReportModal from "./ReportModal"; 
@@ -27,6 +27,7 @@ const DamageReportCarousel = ({car}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const [damage, setDamage] = useState(null);
+  const imagePixels = useRef();
 
   const {data, isLoading} = useQuery({
     queryKey: ['damageReport', car],
@@ -76,27 +77,36 @@ const DamageReportCarousel = ({car}) => {
             </TouchableOpacity>
 
             {/* <TouchableOpacity onPress={() => {}}> */}
-              <Image source={carSides[currentIndex]} style={styles.carImage} />
-              {damageReport && damageReport.map((marker, index) => {
-                if(marker.imageIndex === currentIndex) {
-                  const option = damageOptions.find(val => val.label === marker.damageType);
-                  return (
-                    <MaterialIcons
-                      onPress={() => toggleDamage(marker)}
-                      key={index}
-                      name={option.icon}
-                      size={24}
-                      color={option.color}
-                      style={{
-                        position: "absolute",
-                        left: marker.x - 20 / 2, // Center the icon at x
-                        top: marker.y - 20 / 2,  // Center the icon at y
-                      }}
-                    />
-                    
-                  );
-                }
-              })}
+              <View style={{position: 'relative'}}>
+                <Image
+                  source={carSides[currentIndex]}
+                  style={styles.carImage}
+                  onLayout={(e) => {
+                    const { width, height } = e.nativeEvent.layout;
+                    imagePixels.current = { width, height };
+                  }}
+                />
+                {damageReport && damageReport.map((marker, index) => {
+                  if(marker.imageIndex === currentIndex) {
+                    const option = damageOptions.find(val => val.label === marker.damageType);
+                    return (
+                      <MaterialIcons
+                        onPress={() => toggleDamage(marker)}
+                        key={index}
+                        name={option.icon}
+                        size={24}
+                        color={option.color}
+                        style={{
+                          position: "absolute",
+                          left: marker.x * imagePixels.current.width - 10, 
+                          top: marker.y * imagePixels.current.height - 10, 
+                        }}
+                      />
+                      
+                    );
+                  }
+                })}
+              </View>
 
             <TouchableOpacity onPress={handleNext}>
               <Icon name="chevron-right" size={24} color="#2A5DB0" />

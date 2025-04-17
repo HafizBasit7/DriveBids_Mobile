@@ -36,6 +36,7 @@ const DamageInspection = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [carFacing, setCarFacing] = useState(0);
+  const imagePixels = useRef({width: 0, height: 0});
 
   const navigation = useNavigation();
   
@@ -50,7 +51,10 @@ const DamageInspection = () => {
 
   const handleCarPress = (event) => {
     const { locationX, locationY } = event.nativeEvent;
-    location.current = {locationX, locationY};
+    const x = locationX / imagePixels.current.width;
+    const y = locationY / imagePixels.current.height;
+
+    location.current = {locationX: x, locationY: y};
     setModalVisible(true);
   };
 
@@ -182,31 +186,41 @@ const DamageInspection = () => {
           justifyContent: "space-between",
         }}
       >
-        <TouchableOpacity style={styles.carContainer} onPress={handleCarPress}>
-          <Svg width={250} height={200} viewBox="0 0 250 200">
-            <Image source={carSides[carFacing]} style={styles.carImage}  />
-              {carState.carDamageReport?.damageReport.map((marker, index) => {
-                if(marker.imageIndex === carFacing) {
-                  const option = damageOptions.find(val => val.label === marker.damageType);
-                  return (
-                    <MaterialIcons
-                      onPress={() => {}}
-                      key={index}
-                      name={option.icon}
-                      size={25}
-                      color={option.color}
-                      style={{
-                        position: "absolute",
-                        left: marker.x - 20 / 2, // Center the icon at x
-                        top: marker.y - 20 / 2,  // Center the icon at y
-                      }}
-                    />
-                    
-                  );
-                }
-              })}
-          </Svg>
-        </TouchableOpacity>
+        <View style={styles.carContainer}>
+          {/* <Svg width={250} height={200} viewBox="0 0 250 200"> */}
+          <TouchableOpacity style={{position: 'relative' }} onPress={handleCarPress}>
+            <Image
+              source={carSides[carFacing]}
+              style={styles.carImage}
+              onLayout={(e) => {
+                const { width, height } = e.nativeEvent.layout;
+                imagePixels.current = { width, height };
+              }}
+            />
+            {carState.carDamageReport?.damageReport.map((marker, index) => {
+            if(marker.imageIndex === carFacing) {
+              const option = damageOptions.find(val => val.label === marker.damageType);
+              return (
+                <MaterialIcons
+                  // onPress={() => {}}
+                  key={index}
+                  name={option.icon}
+                  size={25}
+                  color={option.color}
+                  style={{
+                    position: "absolute",
+                    zIndex: 3,
+                    left: marker.x * imagePixels.current.width - 10, 
+                    top: marker.y * imagePixels.current.height - 10, 
+                  }}
+                />
+                
+              );
+            }
+          })}
+          </TouchableOpacity>
+          {/* </Svg> */}
+        </View>
 
         {/* Instruction */}
         <Text style={[styles.instruction, { fontSize: 15, marginTop: 7 }]}>
