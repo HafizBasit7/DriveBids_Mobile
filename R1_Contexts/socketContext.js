@@ -20,7 +20,8 @@ export default function SocketContextProvider ({children}) {
     //Bid Socket
     useEffect(() => {
         if(authState.isAuthenticated && !bidSocket) {
-            const newSocket = io(bidBaseUrl, {
+            const newSocket = io("wss://srv694651.hstgr.cloud", {
+                path: "/socket.io/drivebidbidding",
                 reconnection: true,
                 autoConnect: true,
                 reconnectionAttempts: 12,
@@ -66,7 +67,8 @@ export default function SocketContextProvider ({children}) {
     //Chat Socket
     useEffect(() => {
         if(authState.isAuthenticated && !chatSocket) {
-            const newSocket = io(chatBaseUrl, {
+            const newSocket = io("wss://srv694651.hstgr.cloud", {
+                path: "/socket.io/drivebidmessages",
                 reconnection: true,
                 autoConnect: true,
                 reconnectionAttempts: 12,

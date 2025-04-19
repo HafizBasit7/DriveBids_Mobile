@@ -116,7 +116,7 @@ const BidsButtons = ({
           <>
             <Text style={styles.blueText}>{quickBidTitle}</Text>
             <Text style={styles.price}>AED </Text>
-            <Text style={styles.price}>{car.highestBid ? car.highestBid.toLocaleString() + 1 : car.staringBidPrice.toLocaleString()}</Text>
+            <Text style={styles.price}>{car.highestBid ? (car.highestBid + 1).toLocaleString() : (car.highestBid + 1).toLocaleString()}</Text>
 
           </>
         ) : (
