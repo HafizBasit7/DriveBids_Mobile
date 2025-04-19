@@ -28,6 +28,7 @@ import {
 } from "../../R1_Validations/AuthValidations";
 import { validateForm } from "../../utils/validate";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import OTPModal from "./OtpModal";
 const { width, height } = Dimensions.get("window");
 
 const SignupScreen = () => {
@@ -52,6 +53,14 @@ const SignupScreen = () => {
   const navigation = useNavigation("");
   const [countryModalVisible, setCountryModalVisible] = useState(false);
   const [countryCode, setCountryCode] = useState("+92");
+
+  const [otpModalVisible, setOtpModalVisible] = useState(false);
+  const [otp, setOtp] = useState('');
+
+  const handleOtpSubmit = () => {
+    console.log('OTP Submitted:', otp);
+    setOtpModalVisible(false);
+  };
 
   // Country codes list
   const countryCodes = [
@@ -257,25 +266,7 @@ const SignupScreen = () => {
                 },
               }}
             />
-            {/* <View style={styles.inputWrapper}>
-              <Text style={styles.label}>City</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your city"
-                value={city}
-                onChangeText={setCity}
-              />
-            </View>
-
-            <View style={styles.inputWrapper}>
-              <Text style={styles.label}>Country</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your country"
-                value={country}
-                onChangeText={setCountry}
-              />
-            </View> */}
+           
 
             <View style={styles.inputWrapper}>
               <Text style={styles.label}>Phone Number</Text>
@@ -348,6 +339,15 @@ const SignupScreen = () => {
             )}
 
             {/* Checkbox */}
+            <TouchableOpacity onPress={() => setOtpModalVisible(true)}>
+        <Text style={{
+          textDecorationLine: 'underline',
+          color: '#2F61BF',
+          marginBottom: 10,
+        }}>
+          Request OTP
+        </Text>
+      </TouchableOpacity>
 
             <View style={styles.checkboxContainer}>
               <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
@@ -421,6 +421,13 @@ const SignupScreen = () => {
           </View>
         </View>
       </Modal>
+      <OTPModal
+        visible={otpModalVisible}
+        onClose={() => setOtpModalVisible(false)}
+        onSubmit={handleOtpSubmit}
+        otp={otp}
+        setOtp={setOtp}
+      />
     </View>
   );
 };
