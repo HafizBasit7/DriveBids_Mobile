@@ -29,6 +29,7 @@ import {
 import { validateForm } from "../../utils/validate";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import OTPModal from "./OtpModal";
+import { generateEmailVerificationOtp, verifyEmailOtp } from "../../API_Callings/R1_API/Reset";
 const { width, height } = Dimensions.get("window");
 
 const SignupScreen = () => {
@@ -54,13 +55,9 @@ const SignupScreen = () => {
   const [countryModalVisible, setCountryModalVisible] = useState(false);
   const [countryCode, setCountryCode] = useState("+92");
 
-  const [otpModalVisible, setOtpModalVisible] = useState(false);
-  const [otp, setOtp] = useState('');
-
-  const handleOtpSubmit = () => {
-    console.log('OTP Submitted:', otp);
-    setOtpModalVisible(false);
-  };
+  const [token, setToken] = useState();
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState();
 
   // Country codes list
   const countryCodes = [
@@ -72,7 +69,7 @@ const SignupScreen = () => {
   ];
 
   const handleCountrySelect = (item) => {
-    console.log("Selected Country: ", item);
+    // console.log("Selected Country: ", item);
     setCountryCode(item.code);
     setCountryModalVisible(false); // Close the modal
   };
@@ -81,8 +78,47 @@ const SignupScreen = () => {
     Linking.openURL("https://example.com/terms");
   };
 
-  const handleConditionsClick = () => {
-    Linking.openURL("https://example.com/conditions");
+  // const handleConditionsClick = () => {
+  //   Linking.openURL("https://example.com/conditions");
+  // };
+
+  const handleRequestOtp = async () => {
+    setLoading(true);
+    try {
+      await generateEmailVerificationOtp({email});
+      setLoading(false);
+      setOtpSent(true);
+    }
+    catch(e) {
+      setLoading(false);
+      if(e?.message === 'OTP is already generated, please check your email') {
+        setOtpSent(true);
+      } else {
+        setMessage({
+          type: "error",
+          message: e.message || e.msg,
+          title: "Error",
+        });
+      }
+    }
+  };
+
+  const verifyOtp = async () => {
+    setLoading(true);
+    try {
+      const result = await verifyEmailOtp({email, otp: parseInt(otp)});
+      setToken(result.data.token);
+      setOtp();
+      setLoading(false);
+    }
+    catch(e) {
+      setMessage({
+        type: "error",
+        message: e.message || e.msg,
+        title: "Error",
+      });
+      setLoading(false);
+    }
   };
 
   const handleLogin = async () => {
@@ -97,6 +133,7 @@ const SignupScreen = () => {
           countryCode: Number(countryCode.replace("+", "")),
         },
         location,
+        token,
         email: email ? email.trim() : email,
         password: password ? password.trim() : password,
         businessAddress,
@@ -304,6 +341,33 @@ const SignupScreen = () => {
               />
             </View>
 
+            {(!otpSent && email) && (
+              <TouchableOpacity onPress={handleRequestOtp}>
+                <Text style={{
+                  textDecorationLine: 'underline',
+                  color: '#2F61BF',
+                  marginBottom: 10,
+                }}>
+                  Request OTP
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            {(token && otpSent) && (
+              <Text
+                style={{
+                  color: '#008000',
+                  fontWeight: 500,
+                  marginBottom: 8,
+                  marginTop: -10,
+                  fontSize: 12,
+                }}
+              >
+                Email Verified
+              </Text>
+            )}
+            
+
             <View style={styles.inputWrapper}>
               <Text style={styles.label}>Password</Text>
               <TextInput
@@ -339,15 +403,6 @@ const SignupScreen = () => {
             )}
 
             {/* Checkbox */}
-            <TouchableOpacity onPress={() => setOtpModalVisible(true)}>
-        <Text style={{
-          textDecorationLine: 'underline',
-          color: '#2F61BF',
-          marginBottom: 10,
-        }}>
-          Request OTP
-        </Text>
-      </TouchableOpacity>
 
             <View style={styles.checkboxContainer}>
               <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
@@ -422,9 +477,9 @@ const SignupScreen = () => {
         </View>
       </Modal>
       <OTPModal
-        visible={otpModalVisible}
-        onClose={() => setOtpModalVisible(false)}
-        onSubmit={handleOtpSubmit}
+        visible={!token && otpSent && !loading && !message}
+        onClose={() => setOtpSent(false)}
+        onSubmit={verifyOtp}
         otp={otp}
         setOtp={setOtp}
       />

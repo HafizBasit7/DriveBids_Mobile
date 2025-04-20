@@ -37,6 +37,7 @@ export const signupValidation = zod.object({
   name: zod.string({ required_error: "Please enter your name." }),
   location: locationValidation,
   phoneNumber: phoneNumberValidation,
+  token: zod.string({message: 'Email verification is required'}),
 });
 
 export const traderSignupValidation = zod.object({
