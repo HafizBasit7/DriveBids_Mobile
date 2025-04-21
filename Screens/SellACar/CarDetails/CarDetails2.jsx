@@ -90,7 +90,8 @@ const CarDetails2 = () => {
         />
       </View>
 
-      {isLoading && <ActivityIndicator/>}
+      {isLoading &&         <ActivityIndicator style={{marginVertical:"auto"}}/>
+      }
       {!isLoading && (
         <FlatList
         data={filteredVariants}

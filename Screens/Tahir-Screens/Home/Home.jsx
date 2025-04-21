@@ -22,6 +22,7 @@ import { getCarsIdInWatchList } from "../../../API_Callings/R1_API/Watchlist";
 import { Icon } from "react-native-elements";
 import Loader from "../../../CustomComponents/Loader";
 import { useAuth } from "../../../R1_Contexts/authContext";
+import Nodata from "../../../CustomComponents/NoData";
 
 export default Home = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -90,11 +91,10 @@ export default Home = () => {
         <HomeBanner />
         <SectionHeader marginCustom={20} title={"Featured Adds"} />
 
-        {!carsByBidCountLoading ? (
+        {!carsByBidCountLoading ?carsByBidCount.data.cars.length === 0? <Nodata/>: (
           <>
             <FlatList
               showsHorizontalScrollIndicator={false}
-              snapToAlignment="start" 
           data={carsByBidCount.data.cars}
           keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
@@ -111,7 +111,7 @@ export default Home = () => {
           ItemSeparatorComponent={() => (
             <View style={{ width: SEPARATOR_WIDTH }} />
           )}
-          snapToInterval={ITEM_WIDTH}
+          // snapToInterval={ITEM_WIDTH}
           decelerationRate="fast" 
           removeClippedSubviews={true}
           getItemLayout={(data, index) => ({
@@ -131,12 +131,11 @@ export default Home = () => {
         ) : <Loader/>}
         <SectionHeader title={"Ending Soonest"} />
 
-       {!endingCarListLoading ? (
+       {!endingCarListLoading ? endingCarList.data.cars.length === 0? <Nodata/>:  (
         <>
            <FlatList
           data={endingCarList.data.cars}
           showsHorizontalScrollIndicator={false}
-          snapToAlignment="start" // Optional: Snaps items to the start
           keyExtractor={(item) => String(item._id)}
           renderItem={({ item }) => (
             <HomeCarCard
@@ -149,7 +148,7 @@ export default Home = () => {
           ItemSeparatorComponent={() => (
             <View style={{ width: SEPARATOR_WIDTH }} />
           )}
-          snapToInterval={ITEM_WIDTH}
+          // snapToInterval={ITEM_WIDTH}
           decelerationRate="fast" 
           removeClippedSubviews={true}
           getItemLayout={(data, index) => ({
@@ -169,7 +168,7 @@ export default Home = () => {
        ) : <Loader/>}
 
         <SectionHeader title={"Newly Listed"} />
-       {!isLoading ? (
+       {!isLoading ? data.data.cars.length === 0? <View style={{marginBottom:30}}> <Nodata /></View>: (
         <>
            <FlatList
           data={data.data.cars}
@@ -183,13 +182,13 @@ export default Home = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
           snapToAlignment="start" // Optional: Snaps items to the start
-  decelerationRate="fast" // Makes scroll feel smoother/faster
+  decelerationRate="fast" 
   pagingEnabled={false} 
           contentContainerStyle={{ paddingHorizontal: 5 }} 
           ItemSeparatorComponent={() => (
             <View style={{ width: SEPARATOR_WIDTH }} />
           )}
-          snapToInterval={ITEM_WIDTH}
+          // snapToInterval={ITEM_WIDTH}
           removeClippedSubviews={true}
           getItemLayout={(data, index) => ({
             length: CARD_WIDTH,

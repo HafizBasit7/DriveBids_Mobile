@@ -175,7 +175,7 @@ const handleCountrySelect = (item) => {
 
   return (
     <>
-      <Header showSearch={false}/>
+      <Header showSearch={false} title={"Edit Profile"}/>
       <DialogBox
         visible={imageUploading ? true : message ? true : false}
         message={message?.message}
@@ -184,8 +184,11 @@ const handleCountrySelect = (item) => {
         loading={imageUploading}
         title={message?.title || ''}
       />
-      <View style={{backgroundColor:"#fff"}}>       <SectionHeader title={"Edit Profile"} />
+      <View style={{backgroundColor:"#fff"}}>  
+        
+             {/* <SectionHeader title={"Edit Profile"} /> */}
       </View>
+      <View style={{flex:1,backgroundColor:"#fff"}}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
@@ -318,6 +321,7 @@ const handleCountrySelect = (item) => {
           </View>
         )}
       </ScrollView>
+      </View>
       <Modal visible={imageModalVisible} animationType="slide" transparent={true}>
         <View style={styles.modalOverlay}>
            <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />

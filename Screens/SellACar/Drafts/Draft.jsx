@@ -69,7 +69,7 @@ const Draft = () => {
     <SectionHeader title="Drafts" />
   
     {isLoading ? (
-      <ActivityIndicator />
+      <View style={{marginVertical:"auto"}}><ActivityIndicator /></View>
     ) : data?.data?.drafts?.length === 0 ? (
       <Nodata />
     ) : (

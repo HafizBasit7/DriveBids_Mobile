@@ -99,7 +99,7 @@ const CarDetails1 = () => {
 
       {/* Clickable List */}
       {isLoading && (
-        <ActivityIndicator/>
+        <ActivityIndicator style={{marginVertical:"auto"}}/>
       )}
       {!isLoading && (
         <FlatList

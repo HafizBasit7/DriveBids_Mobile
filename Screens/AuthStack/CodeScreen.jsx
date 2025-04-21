@@ -173,7 +173,7 @@ const CodeScreen = ({route}) => {
         }}
       >
         <CustomButton
-          title="Verify"
+          title="Next"
           onPress={handleSendCode}
           style={{ marginTop: 0, marginBottom: 25 }}
         />
