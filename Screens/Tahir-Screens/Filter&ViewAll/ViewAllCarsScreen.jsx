@@ -107,7 +107,6 @@ const ViewAllCarsScreen = ({route}) => {
 const styles = StyleSheet.create({
   contentContainer: {
     paddingVertical: 10,
-    flex:1,
     paddingHorizontal: 10, 
     backgroundColor: '#fff',
     paddingBottom:40 

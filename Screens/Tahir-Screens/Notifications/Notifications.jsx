@@ -9,8 +9,8 @@ import {
 import { Avatar, Icon } from "react-native-elements";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { getMyNotifications } from "../../../API_Callings/R1_API/Auth";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getMyNotifications, setNotificationRead } from "../../../API_Callings/R1_API/Auth";
 import { ActivityIndicator } from "react-native-paper";
 import { timeAgo } from "../../../utils/R1_utils";
 import { useNavigation } from "@react-navigation/native";
@@ -20,6 +20,48 @@ const LIMIT = 10;
 const NotificationScreen = () => {
   const navigation = useNavigation();
   const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: setNotificationRead,
+    onMutate: (notificationId) => {
+      queryClient.cancelQueries(['notifications']);
+      queryClient.cancelQueries(['notificationCount']);
+
+      const oldCount = queryClient.getQueryData(['notificationCount']);
+      const oldNoti = queryClient.getQueryData(['notifications']);
+
+      queryClient.setQueryData(['notificationCount'], (oldData) => {
+        const updated = {...oldData};
+        updated.data.count -= 1;
+        return updated;
+      });
+
+      queryClient.setQueryData(['notifications'], (oldData) => {
+        if (!oldData) return oldData;
+      
+        let updated = { ...oldData };
+        updated.pages = updated.pages.map((page) => {
+          return {
+            ...page,
+            data: {
+              ...page.data,
+              notifications: page.data.notifications.map((notif) =>
+                notif._id === notificationId ? { ...notif, isRead: true } : notif
+              ),
+            },
+          };
+        });
+      
+        return updated;
+      });
+
+      return {oldCount, oldNoti};
+    },
+    onError: (_error, _newMessage, context) => {
+      queryClient.setQueryData('notifications', context.oldNoti);
+      queryClient.setQueryData('notificationCount', context.oldCount);
+    },
+  });
 
   const {
     data,
@@ -37,12 +79,13 @@ const NotificationScreen = () => {
     },
   });
   
-  queryClient.invalidateQueries({queryKey: ["notificationCount"]});
+  // queryClient.invalidateQueries({queryKey: ["notificationCount"]});
   const notifications = data?.pages.flatMap((page) => page?.data?.notifications) || [];
   
   const renderNotificationItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
+        mutation.mutate(item._id);
         if (item.notificationType === "car") {
           navigation.navigate("Home", {
             screen: "AdDetails",

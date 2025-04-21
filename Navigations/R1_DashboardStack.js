@@ -67,6 +67,7 @@ const RedDotNotification = () => {
   const {data, isLoading} = useQuery({
     queryKey: ['notificationCount'],
     queryFn: getNotificationCount,
+    refetchOnMount: false,
   });
   const count = data?.data.count;
 

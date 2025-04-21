@@ -179,6 +179,31 @@ export const getNotificationCount = async () => {
     }
 };
 
+export const setNotificationRead = async (notificationId) => {
+    try {
+        const result = await apiClient.post(`/auth/setNotificationRead`, {notificationId});
+        const resultData = result.data;
+
+        if(!resultData.status) {
+            throw {
+                name: 'app',
+                message: resultData.message,
+            };
+        }
+
+        return resultData;
+    }
+    catch(e) {
+        if(e.response?.data) {
+            throw {
+                name: 'app',
+                ...e.response.data,
+            }
+        }
+        throw e;
+    }
+};
+
 //Notification settings
 export const getNotificationSettings = async () => {
     try {

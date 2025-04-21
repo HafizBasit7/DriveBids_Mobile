@@ -13,7 +13,7 @@ import SectionHeader from "../../../CustomComponents/SectionHeader";
 import Header from "../../../CustomComponents/Header";
 import { useNavigation } from "@react-navigation/native";
 import {useInfiniteQuery, useQuery, useQueryClient} from "@tanstack/react-query";
-import { getChats } from "../../../API_Callings/R1_API/Chat";
+import { getChats, hasUnreadMessages } from "../../../API_Callings/R1_API/Chat";
 import { ActivityIndicator } from "react-native-paper";
 import {timeAgo} from "../../../utils/R1_utils";
 import { useAuth } from "../../../R1_Contexts/authContext";
@@ -29,6 +29,13 @@ const ChatHeads = () => {
   const {authState} = useAuth();
   const {chatSocket: socket} = useSocket();
   const queryClient = useQueryClient();
+
+  const {data: unread} = useQuery({
+      queryKey: ['messagesCount'],
+      queryFn: hasUnreadMessages,
+      enabled: false,
+  });
+  const chatUnreadData = unread?.data?.chatUnreadStatus;
 
   const {
     data,
@@ -116,7 +123,7 @@ const ChatHeads = () => {
   };
 
   const renderMessageItem = ({ item }) => {
-    const isUnread = item.isRead; 
+    const isUnread = (chatUnreadData||{})[item._id]; 
   
     return (
       <TouchableOpacity
