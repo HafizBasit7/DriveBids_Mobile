@@ -255,14 +255,32 @@ const handleCountrySelect = (item) => {
                   borderRadius: 10,
                   paddingHorizontal: 3,
                   marginBottom: 5,
-                },
+                }, 
+               
+               
                 listView: {
-                  position: 'absolute',
-                  top: 55, // Adjust based on input field height
-                  left: 0,
-                  right: 0,
-                  backgroundColor: 'white',
-                  zIndex: 1000,
+                  backgroundColor: '#fff',
+                  marginHorizontal: 5,
+                  borderRadius: 10,
+                  elevation: 1,
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.1,
+                  shadowRadius: 3,
+                  marginTop:5
+                },
+                row: {
+                  padding: 13,
+                  height: 44,
+                  flexDirection: 'row',
+                },
+                separator: {
+                  height: 0.5,
+                  backgroundColor: '#c8c7cc',
+                },
+                description: {
+                  fontSize: 14,
+                  color: '#555',
                 },
               }}
             />

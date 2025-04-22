@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -6,27 +6,26 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
+  Modal,
+  Animated,
+  Dimensions,
+  TouchableWithoutFeedback,
+  Keyboard,
+  StatusBar,
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
-import { TouchableWithoutFeedback } from "react-native";
-import { Keyboard } from "react-native";
+
+const { height } = Dimensions.get("window");
 
 const CarDetails7 = () => {
   const [inputValue, setInputValue] = useState("");
-  const navigation = useNavigation(); // Initialize navigation
+  const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+  const bottomSheetAnimation = useRef(new Animated.Value(height)).current;
 
-  const {carState, dispatch} = useCar();
-
-  const toggleColor = (value) => {
-    dispatch({
-      type: 'UPDATE_FIELD',
-      section: 'carDetails',
-      field: 'color',
-      value,
-    });
-  };
+  const { carState, dispatch } = useCar();
+  const navigation = useNavigation();
 
   const options = [
     { id: 1, label: "Red" },
@@ -41,77 +40,156 @@ const CarDetails7 = () => {
     { id: 10, label: "Gray" },
   ];
 
-  let filteredOptions;
-  if(inputValue) {
-    filteredOptions = [...options].filter(val => val.label.toLowerCase().includes(inputValue.toLowerCase()));
-  }
-  else {
-    filteredOptions = options;
+  const toggleColor = (value) => {
+    dispatch({
+      type: "UPDATE_FIELD",
+      section: "carDetails",
+      field: "color",
+      value,
+    });
+    setInputValue(value);
+    closeBottomSheet();
+  };
+
+  const openBottomSheet = () => {
+    setInputValue(""); // Reset input value when opening the bottom sheet
+    setBottomSheetVisible(true);
+    Animated.timing(bottomSheetAnimation, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const closeBottomSheet = () => {
+    Animated.timing(bottomSheetAnimation, {
+      toValue: height,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setBottomSheetVisible(false);
+    });
+  };
+
+  let filteredOptions = options;
+  if (inputValue) {
+    filteredOptions = options.filter((option) =>
+      option.label.toLowerCase().includes(inputValue.toLowerCase())
+    );
   }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-      {/* Step Progress Indicator */}
-      <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <Text style={styles.lineText}>Step 7 of 14</Text>
-        <View style={styles.line} />
-      </View>
+        {/* Step Progress Indicator */}
+        <View style={styles.lineContainer}>
+          <View style={styles.line} />
+          <Text style={styles.lineText}>Step 7 of 14</Text>
+          <View style={styles.line} />
+        </View>
 
-      {/* Section Title */}
-      <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <Text style={styles.lineText2}>Colour</Text>
-        <View style={styles.line} />
-      </View>
+        {/* Section Title */}
+        <View style={styles.lineContainer}>
+          <View style={styles.line} />
+          <Text style={styles.lineText2}>Colour</Text>
+          <View style={styles.line} />
+        </View>
 
-      {/* Input Field */}
-      <View style={styles.inputWrapper}>
-        <TextInput
-          style={styles.input}
-          placeholder="Search Color"
-          placeholderTextColor="#999"
-          value={inputValue}
-          onChangeText={setInputValue}
-        />
-      </View>
+        {/* Input Field to open bottom sheet */}
+        
+                        <View style={{display:"flex",flexDirection:"column",justifyContent:"space-between",height:height*0.65}}>
+        
+        <TouchableOpacity
+          style={styles.inputWrapper}
+          onPress={openBottomSheet}
+        >
+          <TextInput
+            style={styles.input}
+            placeholder="Select color"
+            placeholderTextColor="#999"
+            value={inputValue}
+            editable={false}
+            pointerEvents="none"
+          />
+        </TouchableOpacity>
+          {/* Button to Navigate */}
+          <View style={styles.buttonContainer}>
+          <CustomButton
+            style={styles.button}
+            title="Next"
+            onPress={() => navigation.navigate("CarDetails8")}
+          />
+        </View>
+        </View>
 
-      {/* Clickable List */}
-      <FlatList
-        data={filteredOptions}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => toggleColor(item.label)}>
-            <Text
-              style={[
-                styles.entityText,
-                carState.carDetails.color === item.label && styles.selectedText,
-              ]}
-            >
-              {item.label}
-            </Text>
-            <View style={styles.separator} />
-          </TouchableOpacity>
-        )}
-      />
+        {/* Bottom Sheet Modal */}
+        <Modal
+          visible={bottomSheetVisible}
+          transparent={true}
+          animationType="none"
+        >
+          <TouchableWithoutFeedback onPress={closeBottomSheet}>
+            <View style={styles.modalOverlay}>
+               <StatusBar
+                                    barStyle="dark-content"
+                                    backgroundColor= "rgba(0,0,0,0.3)" 
+                                    translucent
+                                  />
+              <TouchableWithoutFeedback>
+                <Animated.View
+                  style={[
+                    styles.bottomSheet,
+                    { transform: [{ translateY: bottomSheetAnimation }] },
+                  ]}
+                >
+                  <View style={styles.bottomSheetContent}>
+                    <View style={styles.bottomSheetHeader}>
+                      <Text style={styles.bottomSheetTitle}>Select Color</Text>
+                      <TouchableOpacity onPress={closeBottomSheet}>
+                        <Text style={styles.closeButton}>✕</Text>
+                      </TouchableOpacity>
+                    </View>
 
-      {/* Buttons */}
-      <View style={styles.buttonContainer}>
-        <CustomButton
-          style={styles.button}
-          title="Next"
-          onPress={() => navigation.navigate("CarDetails8")}
-        />
-        <View style={{ height: 10 }} />
-        {/* <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
-        /> */}
+                    {/* Search Bar */}
+                    <View style={styles.searchContainer}>
+                      <TextInput
+                        style={styles.searchInput}
+                        placeholder="Search colors"
+                        placeholderTextColor="#999"
+                        value={inputValue}
+                        onChangeText={setInputValue}
+                      />
+                    </View>
+
+                    {/* Fuel options list */}
+                    <FlatList
+                      data={filteredOptions}
+                      keyExtractor={(item) => item.id.toString()}
+                      renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => toggleColor(item.label)}>
+                          <View style={styles.row}>
+                            <Text
+                              style={[
+                                styles.tableData,
+                                carState.carDetails.color === item.label &&
+                                  styles.selectedText,
+                              ]}
+                            >
+                              {item.label}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      )}
+                    />
+                  </View>
+                </Animated.View>
+              </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+
+      
       </View>
-    </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -163,36 +241,78 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
   },
-  entityText: {
+  row: {
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+  },
+  tableData: {
     fontSize: 16,
     color: "#000",
-    paddingVertical: 12,
-    paddingHorizontal: 25,
   },
   selectedText: {
-    color: "#007BFF", 
-    fontWeight: "700",
-  },
-  separator: {
-    height: 1,
-    backgroundColor: "#ccc",
-    marginHorizontal: 22,
+    color: "#2F61BF", // Blue color for selected item
   },
   buttonContainer: {
     alignItems: "center",
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
-    marginTop: 15,
-    marginBottom: "3%"
+    marginTop: 5,
+    marginBottom: "3%",
   },
   button: {
     marginBottom: 5,
   },
-  backButton: {
-    backgroundColor: "#fff",
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "flex-end",
+  },
+  bottomSheet: {
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    height: height * 0.6, // Takes up 60% of screen height
+    width: "100%",
+    position: "absolute",
+    bottom: 0,
+  },
+  bottomSheetContent: {
+    flex: 1,
+  },
+  bottomSheetHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+  bottomSheetTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+  },
+  closeButton: {
+    fontSize: 22,
+    fontWeight: "500",
+    color: "#888",
+  },
+  searchContainer: {
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+  searchInput: {
     borderWidth: 1,
-    borderColor: "#007BFF",
+    borderColor: "#ccc",
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    height: 45,
+    fontSize: 16,
   },
 });
 

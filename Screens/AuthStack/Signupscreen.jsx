@@ -293,13 +293,39 @@ const SignupScreen = () => {
                   paddingHorizontal: 3,
                   marginBottom: 15,
                 },
+              
+               
+                textInput: {
+                  height: 46,
+                  color: '#333',
+                  fontSize: 14,
+                  fontWeight:400,
+                  paddingHorizontal: 8,
+                  borderRadius: 10,
+                },
                 listView: {
-                  position: 'absolute',
-                  top: 55, // Adjust based on input field height
-                  left: 0,
-                  right: 0,
-                  backgroundColor: 'white',
-                  zIndex: 1000,
+                  backgroundColor: '#fff',
+                  marginHorizontal: 2,
+                  borderRadius: 10,
+                  elevation: 1,
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.1,
+                  shadowRadius: 3,
+                  marginTop:1
+                },
+                row: {
+                  padding: 13,
+                  height: 44,
+                  flexDirection: 'row',
+                },
+                separator: {
+                  height: 0.5,
+                  backgroundColor: '#c8c7cc',
+                },
+                description: {
+                  fontSize: 14,
+                  color: '#555',
                 },
               }}
             />
