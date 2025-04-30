@@ -183,7 +183,7 @@ const HomeCarCard = ({
         {!isCarSold && (<Text style={styles.timer}>{timeLeft}</Text>)}
       </View>
       <Button
-            title="View Ad"
+            title="View Auction"
             buttonStyle={styles.button}
             titleStyle={styles.buttonText}
             icon={{
@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
     
     marginVertical: 3,
     borderRadius: 10,
-    width: "50%",
+    width: "60%",
     
     alignSelf: "center",
   },

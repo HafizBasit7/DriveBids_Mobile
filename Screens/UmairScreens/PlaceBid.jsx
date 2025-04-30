@@ -75,7 +75,7 @@ const PlaceBid = ({route}) => {
 
           {/* Input Box */}
           <View style={styles.inputContainer}>
-            <Text style={styles.currencySymbol}>$</Text>
+            <Text style={styles.currencySymbol}>AED</Text>
             <TextInput
               style={styles.input}
               placeholder="Enter Bid"
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     marginBottom:5
   },
   currencySymbol: {
-    fontSize: 25,
+    fontSize: 18,
     fontWeight: "bold",
     marginRight: 5,
   },
@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "start", // Centers text horizontally
     textAlignVertical: "center",
+    width: 200,
   },
   warning: {
     color: "#B3261E",

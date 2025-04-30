@@ -119,7 +119,7 @@ const OnboardingScreen = () => {
                 onPress={handleNext}
                 style={[styles.button, styles.nextButton]}
               >
-                <Text style={[styles.buttonText, { color: "#fff" }]}>Next </Text>
+                <Text style={[styles.buttonText, { color: "#fff" }]}>{currentIndex === 0 ? "Start Your Journey" : "Experience Live Bidding"} </Text>
               </TouchableOpacity>
             ) : (
               <>

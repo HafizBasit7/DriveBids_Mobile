@@ -89,7 +89,7 @@ export default Home = () => {
         showsVerticalScrollIndicator={false}
       >
         <HomeBanner />
-        <SectionHeader marginCustom={20} title={"Featured Adds"} />
+        <SectionHeader marginCustom={20} title={"Featured Ads"} />
 
         {!carsByBidCountLoading ?carsByBidCount.data.cars.length === 0? <Nodata/>: (
           <>
@@ -129,7 +129,7 @@ export default Home = () => {
           </TouchableOpacity>
           </>
         ) : <Loader/>}
-        <SectionHeader title={"Ending Soonest"} />
+        <SectionHeader title={"Ending Soon"} />
 
        {!endingCarListLoading ? endingCarList.data.cars.length === 0? <Nodata/>:  (
         <>
