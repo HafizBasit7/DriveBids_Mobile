@@ -129,7 +129,8 @@ const DamageInspection = () => {
 
       <SectionHeader title={`Step ${carFacing + 1} of 4`} />
       <Text style={styles.instruction}>
-        Click on the part of car where damage exists
+      Click on the part of the car where
+      damage exists
       </Text>
 
       {/* Damage Info */}

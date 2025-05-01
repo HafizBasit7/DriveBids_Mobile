@@ -22,7 +22,7 @@ const options = [
   { label: "Requires Immediate Attention", color: "#C0392B", icon: "report" },
 ];
 const tests = [
-  {name: "Break Efficiency", target: "breakEfficiency"},
+  {name: "Brake Efficiency", target: "breakEfficiency"},
   {name: "Hand Brake Test", target: "handBrakeTest"},
   {name: "Static Gear Selection", target: "staticGearSelection"},
   {name: "Reverse Clutch Slip", target: "reverseClutchSlip"},
@@ -32,7 +32,7 @@ const tests = [
   {name: "Sat Nav Power", target: "satNavPower"},
   {name: "Ice Power", target: "icePower"},
   {name: "Central Locking", target: "centralLocking"},
-  {name: "Converitble Sunroof Electics", target: "convertibleSunroofElectrics"},
+  {name: "Convertible / Sunroof Electronics", target: "convertibleSunroofElectrics"},
   {name: "Horn", target: "horn"}
 ];
 //

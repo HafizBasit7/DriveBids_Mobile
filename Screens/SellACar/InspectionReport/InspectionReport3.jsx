@@ -24,7 +24,7 @@ const options = [
 const tests = [
   {name: "Engine Management Light", target: "engineManagementLight"},
   {name: "Brake Wear Indicator Light", target: "breakWearIndicatorLight"},
-  {name: "Abs Warning Light", target: "absWarningLight"},
+  {name: "ABS Warning Light", target: "absWarningLight"},
   {name: "Oil Warning Light", target: "oilWarningLight"},
   {name: "Airbag warning light", target: "airbagWarningLight"},
   {name: "Glow plug light", target: "glowPlugLight"},

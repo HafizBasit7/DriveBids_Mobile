@@ -30,7 +30,14 @@ const InteriorFeature1 = () => {
     { id: 8, label: "Rear AC Vents" },
     { id: 9, label: "Cruise Control" },
     { id: 10, label: "Wireless Charging" },
-    { id: 10, label: "Sunroof" },
+    { id: 11, label: "Sunroof" },
+    {id: 12,   label:"Ambient Interior Lighting"},
+    {id: 13,   label:"Power Adjustable Seats"},
+    {id: 14,   label:"    Rear Seat Armrest with Cupholders"},
+
+
+    
+    
   ];
 
   const toggleSelection = (value) => {
@@ -91,27 +98,52 @@ const InteriorFeature1 = () => {
       {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>Interior Features</Text>
+        <Text style={styles.lineText2}>Interior & Convenience Features</Text>
         <View style={styles.line} />
       </View>
 
       {/* Clickable List with Checkboxes */}
       <FlatList
-        data={options}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => toggleSelection(item.label)}>
-            <View style={styles.optionContainer}>
-              <CheckBox
-                checked={carState.features?.interior?.includes(item.label)}
-                onPress={() => toggleSelection(item.label)}
-                checkedColor="#007BFF"
-              />
-              <Text style={styles.entityText}>{item.label}</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+      style={{paddingTop: 20}}
+  data={options}
+  numColumns={2}
+  
+  columnWrapperStyle={{ justifyContent: 'space-between',  }}
+  keyExtractor={(item) => item.id.toString()}
+  renderItem={({ item }) => (
+    <TouchableOpacity
+    key={item.id}
+      onPress={() => toggleSelection(item.label)}
+      style={{
+        width: '48%',
+        marginBottom: 8,
+       
+        justifyContent: 'flex-start',
+        borderRadius: 6,
+        padding: 8,
+      }}
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+        <CheckBox
+          checked={carState.features?.interior?.includes(item.label)}
+          onPress={() => toggleSelection(item.label)}
+          checkedColor="#007BFF"
+          containerStyle={{ padding: 0, margin: 0 }}
+        />
+        <Text style={{ marginLeft: 2, fontSize: 14 ,   marginLeft: 4,
+    fontSize: 14,
+    flexShrink: 1,
+    flexWrap: 'wrap',}}>{item.label} </Text>
+      </View>
+    </TouchableOpacity>
+  )}
+/>
+
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
@@ -136,7 +168,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingBottom: 20,
+    paddingBottom: 5,
   },
   lineContainer: {
     flexDirection: "row",
@@ -163,17 +195,7 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "700",
   },
-  inputWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginHorizontal: 20,
-    height: 55,
-    marginTop: 10,
-  },
+ 
   input: {
     flex: 1,
     fontSize: 16,
@@ -182,8 +204,10 @@ const styles = StyleSheet.create({
   optionContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 4,
-    paddingHorizontal: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 1,
+   
+   
   },
   entityText: {
     fontSize: 16,

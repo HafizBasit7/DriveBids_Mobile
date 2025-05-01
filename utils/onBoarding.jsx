@@ -16,8 +16,8 @@ export const onboardingData = [
   {
     id: "3",
     image: require("../assets/SVG/TahirSvgs/mainlogo.svg"),
-    title: "Car Marketplace",
-    description: "The easy way to buy or sell your car. The only place to be",
+    title: "Welcome to DriveBidz Marketplace",
+    description: "Buy, sell, and bid for cars — all in one trusted place. A smarter, faster way to move your next ride",
   },
   {
     id: "4",

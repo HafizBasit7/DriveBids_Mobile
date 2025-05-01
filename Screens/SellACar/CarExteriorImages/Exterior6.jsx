@@ -146,8 +146,9 @@ const Exterior6 = () => {
       <SectionHeader title={"Step 6 of 6"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
-          Take a picture of your car from the back as shown below
-        </Text>
+        Capture a clear photo of your car’s
+rear view following the example
+below.        </Text>
         <TouchableOpacity onPress={() => setImageModalVisible(true)} style={styles.imageContainer}>
           {(carState.images.exterior || [])[index]?.url ? (
             <>

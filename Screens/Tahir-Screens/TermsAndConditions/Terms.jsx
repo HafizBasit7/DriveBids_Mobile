@@ -19,11 +19,15 @@ export default function Terms() {
       >
         
         <Text style={styles.headerText}>
-          Please read these terms of service, carefully before using our app
-          operated by us.
+        Welcome to DriveBidz!
+By accessing or using our services, you
+agree to comply with these Terms of Use
+and our Privacy Policy. Please read them
+carefully.
         </Text>
 
-        <Text style={styles.titleText}>Conditions of Uses</Text>
+        <Text style={styles.titleText}>Terms and
+        Conditions</Text>
 
         <Text style={styles.paragraphText}>
           Neque earum quo ea est porro asperiores reprehenderit sint. Dolore

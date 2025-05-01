@@ -27,10 +27,10 @@ const ExteriorFeature1 = () => {
     { id: 8, label: "Daytime Running Lights (DRLs)" },
     { id: 9, label: "Power Folding Mirrors" },
     { id: 10, label: "Rain Sensing Wipers" },
-    { id: 10, label: "Parking Sensors" },
-    { id: 10, label: "3D Camera" },
-    { id: 10, label: "Reverse Camera" },
-    { id: 10, label: "Immoblizer" },
+    { id: 11, label: "Parking Sensors" },
+    { id: 12, label: "3D Camera" },
+    { id: 13, label: "Reverse Camera" },
+    { id: 14, label: "Immobilizer" },
   ];
 
   const toggleSelection = (value) => {
@@ -62,24 +62,44 @@ const ExteriorFeature1 = () => {
       {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>Exterior Features</Text>
+        <Text style={styles.lineText2}>Exterior & Safety Features</Text> 
         <View style={styles.line} />
       </View>
 
       {/* Clickable List with Checkboxes */}
       <FlatList
+            style={{paddingTop: 20}}
+
         data={options}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: 'space-between',  }}
+
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => toggleSelection(item.label)}>
-            <View style={styles.optionContainer}>
+          <TouchableOpacity   key={item.id} onPress={() => toggleSelection(item.label)}     
+            style={{
+            width: '48%',
+            marginBottom: 8,
+           
+            justifyContent: 'flex-start',
+            borderRadius: 6,
+            padding: 8,
+          }}>
+            <View   style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
               <CheckBox
                 checked={carState.features?.exterior?.includes(item.label)}
                 onPress={() => toggleSelection(item.label)}
                 checkedColor="#007BFF"
+                containerStyle={{ padding: 0, margin: 0 }}
+
               />
-              <Text style={styles.entityText}>{item.label}</Text>
-            </View>
+<Text style={{ marginLeft: 2, fontSize: 14 ,   marginLeft: 4,
+    fontSize: 14,
+    flexShrink: 1,
+    flexWrap: 'wrap',}}>{item.label} </Text>            </View>
           </TouchableOpacity>
         )}
       />

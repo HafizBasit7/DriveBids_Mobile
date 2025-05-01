@@ -36,7 +36,9 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
   return (
     <View style={{ paddingBottom: 10 }}>
       <View style={{ paddingVertical: 10 }}>
-        <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 5 }}>Make</Text>
+        <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 5 }}>
+          Make
+        </Text>
 
         {/* Button to Open Bottom Sheet */}
         <TouchableOpacity
@@ -65,7 +67,7 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
           style={{
             flex: 1,
             justifyContent: "flex-end",
-            backgroundColor: "rgba(0, 0, 0, 0.4)", // Modal background
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
           }}
         >
           <View
@@ -74,7 +76,8 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
               padding: 20,
               borderTopLeftRadius: 16,
               borderTopRightRadius: 16,
-              maxHeight: "80%", // Restrict modal height
+              maxHeight: "80%",
+              minHeight: "80%",
             }}
           >
             {/* Modal Header */}
@@ -86,7 +89,9 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
                 marginBottom: 10,
               }}
             >
-              <Text style={{ fontSize: 18, fontWeight: "bold" }}>Select Make</Text>
+              <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                Select Make
+              </Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
                 <Icon name="close" type="material" size={24} color="#333" />
               </TouchableOpacity>
@@ -106,24 +111,30 @@ const MakeSelection = ({ makes, selectedMakes, setSelectedMakes }) => {
               onChangeText={setMakeSearch}
             />
 
-            {/* Search Results */}
-            <FlatList
-              data={filteredMakes}
-              keyExtractor={(item) => item}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={{
-                    padding: 12,
-                    borderBottomWidth: 1,
-                    borderBottomColor: "#ddd",
-                  }}
-                  onPress={() => selectMake(item)}
-                >
-                  <Text>{item}</Text>
-                </TouchableOpacity>
-              )}
-              showsVerticalScrollIndicator={false}  // Hides the scrollbar
-            />
+            {/* Search Results or No Results */}
+            {filteredMakes.length > 0 ? (
+              <FlatList
+                data={filteredMakes}
+                keyExtractor={(item) => item}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={{
+                      padding: 12,
+                      borderBottomWidth: 1,
+                      borderBottomColor: "#ddd",
+                    }}
+                    onPress={() => selectMake(item)}
+                  >
+                    <Text>{item}</Text>
+                  </TouchableOpacity>
+                )}
+                showsVerticalScrollIndicator={false}
+              />
+            ) : (
+              <View style={{ alignItems: "center", padding: 20 }}>
+                <Text style={{ color: "#888" }}>No make found </Text>
+              </View>
+            )}
           </View>
         </View>
       </Modal>

@@ -21,7 +21,7 @@ const options = [
 ];
 
 const tests = [
-  {name: "Head lights", target: "headLight"},
+  {name: "Headlights", target: "headLight"},
   {name: "Brake lights", target: "brakeLight"},
   {name: "Side Lights", target: "sideLight"},
   {name: "Fog lights", target: "fogLight"},

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet, Text } from "react-native";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
@@ -51,6 +51,18 @@ const VehicleInfo = () => {
   };
 
   const navigation = useNavigation("");
+  const totalSections = 6;
+  const completedSections = [
+    carPricingCompletion.success,
+    carInspectionReportCompletion.success,
+    carDetailsCompletion.success,
+    imageCompletion.success,
+    carDamageReportComplection.success,
+    carFeaturesCompletion.success
+  ].filter(Boolean).length;
+  
+  const completionPercentage = Math.round((completedSections / totalSections) * 100);
+  
   return (
     <View style={styles.container}>
 
@@ -65,10 +77,23 @@ const VehicleInfo = () => {
       />
 
       <SectionHeader title={"Vehicle Information"} />
+      <View style={styles.progressContainer}>
+        <View style={styles.progressBar}>
+          <View 
+            style={[
+              styles.progressFill, 
+              { width: `${completionPercentage}%` }
+            ]} 
+          />
+        </View>
+        <Text style={styles.progressText}>
+          You're {completionPercentage}% done — keep going!
+        </Text>
+      </View>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent} // Allows content to expand
+        contentContainerStyle={styles.scrollContent} 
       >
         <VehicleInfoCard
           name="Car Details"
@@ -156,6 +181,28 @@ const styles = StyleSheet.create({
   saveDraftText: {
     color: GlobalStyles.colors.ButtonColor,
     fontFamily: "Inter-SemiBold",
+  },
+  progressContainer: {
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  progressBar: {
+    height: 8,
+    backgroundColor: "#ccc",
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: GlobalStyles.colors.ButtonColor,
+    borderRadius: 4,
+  },
+  progressText: {
+    marginTop: 8,
+    fontSize: 14,
+    color: GlobalStyles.colors.TextColor,
+    textAlign: 'center',
+    fontFamily: 'Inter-Regular',
   },
 });
 

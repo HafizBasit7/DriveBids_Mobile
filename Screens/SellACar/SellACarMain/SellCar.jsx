@@ -12,13 +12,13 @@ const SellCar = () => {
   const navigation = useNavigation(); // Initialize navigation
   return (
     <View style={styles.container}>
-      <SectionHeader title={"Sell Car"} />
+      <SectionHeader title={"Sell Your Car"} />
       <TouchableOpacity
         style={styles.buttonPrimary}
         onPress={() => {navigation.navigate("VehicleReg"); resetDraftState();}}
       >
         <FontAwesome5 name="car" size={24} color="white" />
-        <Text style={styles.buttonText}>Post a new ad</Text>
+        <Text style={styles.buttonText}>Create New Listing</Text>
         <MaterialIcons name="keyboard-arrow-right" size={24} color="white" />
       </TouchableOpacity>
 
