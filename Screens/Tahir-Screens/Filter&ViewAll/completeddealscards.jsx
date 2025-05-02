@@ -88,9 +88,9 @@ const CompletedDealsCard = ({
       
       <View style={styles.infoContainer}>
   <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-    <Text style={styles.modelText} numberOfLines={1} ellipsizeMode="tail">
-      {ad.title}
-    </Text>
+  <Text style={styles.modelText} numberOfLines={1} ellipsizeMode="tail">
+  {ad.title.length > 18 ? ad.title.substring(0, 18) + '..' : ad.title}
+</Text>
     
       <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 0,marginBottom:3,
      // Black color
