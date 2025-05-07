@@ -18,8 +18,8 @@ const SimilarAds = ({make, carId}) => {
   const queryClient = useQueryClient();
 
   const {data, isLoading} = useQuery({
-    queryKey: ['similarCars'],
-    queryFn: () => getSimilarCars(1, 10, make),
+    queryKey: ['similarCars', carId],
+    queryFn: () => getSimilarCars(1, 10, carId),
   });
 
   

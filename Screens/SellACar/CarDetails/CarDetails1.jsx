@@ -21,6 +21,7 @@ import { useCar } from "../../../R1_Contexts/carContext";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import apiClient from "../../../API_Callings/R1_API/axios-client";
 
 const { height } = Dimensions.get("window");
 
@@ -31,16 +32,14 @@ const CarDetails1 = () => {
   const navigation = useNavigation();
   const bottomSheetAnimation = useRef(new Animated.Value(height)).current;
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["make"],
+  const {data, isLoading} = useQuery({
+    queryKey: ['make'],
     queryFn: async () => {
-      const result = await axios.get(
-        "https://www.carqueryapi.com/api/0.3/?cmd=getMakes"
-      );
+      const result = await apiClient.get('/makes');
       return result.data;
     },
+    refetchOnMount: false,
   });
-
   const makes = data?.Makes;
 
   const { carState, dispatch } = useCar();

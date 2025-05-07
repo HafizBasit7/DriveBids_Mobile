@@ -20,6 +20,7 @@ import { useCar } from "../../../R1_Contexts/carContext";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { TouchableWithoutFeedback } from "react-native";
+import apiClient from "../../../API_Callings/R1_API/axios-client";
 
 const { height } = Dimensions.get("window");
 
@@ -33,16 +34,14 @@ const CarDetails2 = () => {
   const { carState, dispatch } = useCar();
   const make = carState.carDetails.make;
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["variant", make.toLowerCase()],
+  const {data, isLoading} = useQuery({
+    queryKey: ['variant', make.toLowerCase()],
     queryFn: async () => {
-      const result = await axios.get(
-        `https://www.carqueryapi.com/api/0.3/?cmd=getModels&make=${make.toLowerCase()}`
-      );
+      const result = await apiClient.get(`/models?make=${make?.toLowerCase()}`);
       return result.data;
     },
+    refetchOnMount: false,
   });
-
   const variants = data?.Models;
 
   function onChangeCarVariant(value) {
