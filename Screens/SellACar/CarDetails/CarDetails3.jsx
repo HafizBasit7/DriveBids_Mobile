@@ -78,7 +78,7 @@ const CarDetails3 = () => {
   // Filter years based on search text
   const filteredYears = useMemo(() => {
     if (!searchText) return years;
-    return years.filter(year =>
+    return years?.filter(year =>
       year.toString().includes(searchText)
     );
   }, [searchText, years]);

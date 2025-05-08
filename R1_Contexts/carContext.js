@@ -131,7 +131,7 @@ const carReducerFunction = (state, action) => {
             };
         }
         case 'REMOVE_FEATURE': {
-            const filtered = state.features[action.section].filter(val => val !== action.value);
+            const filtered = state?.features[action?.section].filter(val => val !== action.value);
             return {
                 ...state,
                 features: {

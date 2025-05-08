@@ -73,7 +73,7 @@ const CarDetails7 = () => {
 
   let filteredOptions = options;
   if (inputValue) {
-    filteredOptions = options.filter((option) =>
+    filteredOptions = options?.filter((option) =>
       option.label.toLowerCase().includes(inputValue.toLowerCase())
     );
   }

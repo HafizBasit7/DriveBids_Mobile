@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const FilterChips = (filters) => {
-  if(Object.keys(filters.filters).length === 0) {
+  if(Object.keys(filters?.filters).length === 0) {
     return null;
   }
 
@@ -23,7 +23,7 @@ const FilterChips = (filters) => {
     const chipsList = [];
 
     // Price Range Chip
-    if (filters.filters.minPrice || filters.filters.maxPrice) {
+    if (filters?.filters.minPrice || filters?.filters.maxPrice) {
       chipsList.push({ 
         iconName: 'attach-money', 
         label: `${filters.filters.minPrice || 0} - ${filters.filters.maxPrice || 'Max'} AED`, 
@@ -32,7 +32,7 @@ const FilterChips = (filters) => {
     }
 
     // Model Year Chip (if applicable)
-    if (filters.filters.model) {
+    if (filters?.filters.model) {
       chipsList.push({ 
         iconName: 'calendar', 
         label: filters.filters.model, 
@@ -59,10 +59,10 @@ const FilterChips = (filters) => {
     }
 
     // Condition Chip
-    if (filters.filters.condition) {
+    if (filters?.filters.condition) {
       chipsList.push({ 
         iconName: 'file-document-outline', 
-        label: filters.filters.condition, 
+        label: filters?.filters?.condition, 
         type: 'material-community' 
       });
     }

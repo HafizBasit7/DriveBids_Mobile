@@ -144,13 +144,13 @@ const CarDetails2 = () => {
                         const updateLocation = {
                           name: data.description,
                           coordinates: [
-                            details.geometry.location.lng,
-                            details.geometry.location.lat,
+                            details?.geometry?.location?.lng,
+                            details?.geometry?.location?.lat,
                           ]
                         };
                         onChangeCarCity(updateLocation);
                       }}
-                      onFail={(error) => console.error(error)}
+                      onFail={(error) => console.error('123', error)}
                       query={{
                         key: 'AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI',
                         language: 'en',

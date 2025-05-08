@@ -68,7 +68,7 @@ const CarDetails6 = () => {
 
   let filteredOptions = options;
   if (searchText) {
-    filteredOptions = options.filter((option) =>
+    filteredOptions = options?.filter((option) =>
       option.label.toLowerCase().includes(searchText.toLowerCase())
     );
   }

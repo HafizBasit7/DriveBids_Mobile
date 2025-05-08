@@ -49,7 +49,7 @@ const BottomSheetModal = ({
 
   const filteredData = searchText
     ? data?.filter((item) =>
-        item.make_display.toLowerCase().includes(searchText.toLowerCase())
+        item?.make_display.toLowerCase().includes(searchText.toLowerCase())
       )
     : data;
 
