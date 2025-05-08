@@ -264,7 +264,13 @@ const SignupScreen = () => {
             <Text style={styles.label}>Location</Text>
             <GooglePlacesAutocomplete
               placeholder='Enter location'
+              textInputProps={{ 
+                placeholderTextColor: '#000',
+                defaultValue: location?.name,
+              }}
               enablePoweredByContainer={false}
+              predefinedPlaces={[]}
+              predefinedPlacesAlwaysVisible={false}
               fetchDetails={true}
               onPress={(data, details) => {
                 const updateLocation = {
@@ -277,14 +283,39 @@ const SignupScreen = () => {
                 setLocation(updateLocation);
               }}
               onFail={(error) => console.error(error)}
+              debounce={200}
               query={{
                 key: 'AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI',
                 language: 'en',
               }}
               listViewDisplayed='auto'
-              textInputProps={{
-                defaultValue: location?.name,
+              autoFillOnNotFound={false}
+              currentLocation={false}
+              currentLocationLabel="Current location"
+              disableScroll={false}
+              enableHighAccuracyLocation={true}
+              filterReverseGeocodingByTypes={[]}
+              GooglePlacesDetailsQuery={{}}
+              GooglePlacesSearchQuery={{
+                rankby: 'distance',
+                type: 'restaurant',
               }}
+              GoogleReverseGeocodingQuery={{}}
+              isRowScrollable={true}
+              keyboardShouldPersistTaps="always"
+              listHoverColor="#ececec"
+              listUnderlayColor="#c8c7cc"
+              keepResultsAfterBlur={false}
+              minLength={0}
+              nearbyPlacesAPI="GooglePlacesSearch"
+              numberOfLines={1}
+              onNotFound={() => {}}
+              onTimeout={() => console.warn('google places autocomplete: request timeout')}
+              suppressDefaultStyles={false}
+              textInputHide={false}
+              timeout={20000}
+              isNewPlacesAPI={false}
+              fields="*"
               styles={{
                 textInputContainer: {
                   borderWidth: 1,
@@ -293,8 +324,6 @@ const SignupScreen = () => {
                   paddingHorizontal: 3,
                   marginBottom: 15,
                 },
-              
-               
                 textInput: {
                   height: 46,
                   color: '#333',

@@ -138,6 +138,11 @@ const CarDetails2 = () => {
                     <GooglePlacesAutocomplete
                       ref={googlePlacesRef}
                       placeholder='Search location'
+                      predefinedPlaces={[]}
+                      textInputProps={{
+                        placeholderTextColor: '#000',
+                      }}
+                      predefinedPlacesAlwaysVisible={false}
                       enablePoweredByContainer={false}
                       fetchDetails={true}
                       onPress={(data, details = null) => {
@@ -155,6 +160,33 @@ const CarDetails2 = () => {
                         key: 'AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI',
                         language: 'en',
                       }}
+                      autoFillOnNotFound={false}
+                      currentLocation={false}
+                      currentLocationLabel="Current location"
+                      disableScroll={false}
+                      enableHighAccuracyLocation={true}
+                      filterReverseGeocodingByTypes={[]}
+                      GooglePlacesDetailsQuery={{}}
+                      GooglePlacesSearchQuery={{
+                        rankby: 'distance',
+                        type: 'restaurant',
+                      }}
+                      GoogleReverseGeocodingQuery={{}}
+                      isRowScrollable={true}
+                      keyboardShouldPersistTaps="always"
+                      listHoverColor="#ececec"
+                      listUnderlayColor="#c8c7cc"
+                      keepResultsAfterBlur={false}
+                      minLength={0}
+                      nearbyPlacesAPI="GooglePlacesSearch"
+                      numberOfLines={1}
+                      onNotFound={() => {}}
+                      onTimeout={() => console.warn('google places autocomplete: request timeout')}
+                      suppressDefaultStyles={false}
+                      textInputHide={false}
+                      timeout={20000}
+                      isNewPlacesAPI={false}
+                      fields="*"
                       styles={{
                         container: {
                           flex: 0,

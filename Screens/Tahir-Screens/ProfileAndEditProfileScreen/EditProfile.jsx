@@ -247,7 +247,36 @@ const handleCountrySelect = (item) => {
               listViewDisplayed='auto'
               textInputProps={{
                 placeholder: formData.location?.name,
+                placeholderTextColor: '#000',
               }}
+              autoFillOnNotFound={false}
+              currentLocation={false}
+              currentLocationLabel="Current location"
+              disableScroll={false}
+              enableHighAccuracyLocation={true}
+              filterReverseGeocodingByTypes={[]}
+              GooglePlacesDetailsQuery={{}}
+              GooglePlacesSearchQuery={{
+                rankby: 'distance',
+                type: 'restaurant',
+              }}
+              GoogleReverseGeocodingQuery={{}}
+              isRowScrollable={true}
+              keyboardShouldPersistTaps="always"
+              listHoverColor="#ececec"
+              listUnderlayColor="#c8c7cc"
+              keepResultsAfterBlur={false}
+              minLength={0}
+              nearbyPlacesAPI="GooglePlacesSearch"
+              numberOfLines={1}
+              onNotFound={() => {}}
+              onTimeout={() => console.warn('google places autocomplete: request timeout')}
+              suppressDefaultStyles={false}
+              textInputHide={false}
+              timeout={20000}
+              isNewPlacesAPI={false}
+              predefinedPlaces={[]}
+              fields="*"
               styles={{
                 textInputContainer: {
                   borderWidth: 1,
@@ -256,8 +285,14 @@ const handleCountrySelect = (item) => {
                   paddingHorizontal: 3,
                   marginBottom: 5,
                 }, 
-               
-               
+                textInput: {
+                  height: 46,
+                  color: '#333',
+                  fontSize: 14,
+                  fontWeight:400,
+                  paddingHorizontal: 8,
+                  borderRadius: 10,
+                },
                 listView: {
                   backgroundColor: '#fff',
                   marginHorizontal: 5,

@@ -176,10 +176,10 @@ const CarDetails2 = () => {
                       {
                         transform: [{ translateY: bottomSheetAnimation }],
                         maxHeight: Platform.OS === 'ios' 
-                          ? height * 0.45 
+                          ? height * 8
                           : height * 0.6,
                         minHeight: Platform.OS === 'ios' 
-                          ? height * 0.45
+                          ? height * 8
                           : height * 0.5,
                       },
                     ]}
