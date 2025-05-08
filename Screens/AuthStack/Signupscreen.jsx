@@ -491,7 +491,7 @@ const SignupScreen = () => {
 
       {/* Bottom Buttons Container */}
       <View style={styles.bottomContainer}>
-        <CustomButton title="Create Account" onPress={handleLogin} />
+        <CustomButton title="Create Account" disabled={!isChecked || !token} onPress={handleLogin} />
         <View style={styles.loginTextContainer}>
           <Text style={styles.accountText}>Already have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate("SignInScreen")}>

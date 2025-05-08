@@ -107,7 +107,7 @@ const CarDetails7 = () => {
             style={styles.input}
             placeholder="Select color"
             placeholderTextColor="#999"
-            value={inputValue}
+            value={carState.carDetails.color}
             editable={false}
             pointerEvents="none"
           />

@@ -31,7 +31,7 @@ const CarDetails6 = () => {
     { id: 1, label: "Petrol" },
     { id: 2, label: "Diesel" },
     { id: 3, label: "HI-Octane" },
-    { id: 4, label: "Electricity" },
+    { id: 4, label: "Electric" },
     { id: 5, label: "Hybrid" },
   ];
 
@@ -102,7 +102,7 @@ const CarDetails6 = () => {
             style={styles.input}
             placeholder="Select fuel type"
             placeholderTextColor="#999"
-            value={inputValue}
+            value={carState.carDetails.fuel}
             editable={false}
             pointerEvents="none"
           />

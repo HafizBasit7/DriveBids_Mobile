@@ -135,7 +135,7 @@ const CarDetails2 = () => {
               style={styles.input}
               placeholder="Search car variant"
               placeholderTextColor="#999"
-              value={inputValue}
+              value={carState.carDetails.variant}
               editable={false}
               pointerEvents="none"
             />
@@ -158,28 +158,29 @@ const CarDetails2 = () => {
           transparent={true}
           animationType="none"
         >
-          <TouchableWithoutFeedback onPress={closeBottomSheet}>
-            <View style={styles.modalOverlay}>
-              <StatusBar
-                barStyle="dark-content"
-                backgroundColor="rgba(0,0,0,0.5)"
-                translucent
-              />
-              <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={{ flex: 1 }}
-              >
+          <KeyboardAvoidingView 
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            style={{ flex: 1 }}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+          >
+            <TouchableWithoutFeedback onPress={closeBottomSheet}>
+              <View style={[styles.modalOverlay, { justifyContent: 'flex-end' }]}>
+                <StatusBar
+                  barStyle="dark-content"
+                  backgroundColor="rgba(0,0,0,0.5)"
+                  translucent
+                />
                 <TouchableWithoutFeedback>
                   <Animated.View
-                     style={[
+                    style={[
                       styles.bottomSheet,
                       {
                         transform: [{ translateY: bottomSheetAnimation }],
                         maxHeight: Platform.OS === 'ios' 
-                          ? height * 8
+                          ? height * 0.45 
                           : height * 0.6,
                         minHeight: Platform.OS === 'ios' 
-                          ? height * 8
+                          ? height * 0.45
                           : height * 0.5,
                       },
                     ]}
@@ -237,9 +238,9 @@ const CarDetails2 = () => {
                     </SafeAreaView>
                   </Animated.View>
                 </TouchableWithoutFeedback>
-              </KeyboardAvoidingView>
-            </View>
-          </TouchableWithoutFeedback>
+              </View>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
         </Modal>
       </View>
     </TouchableWithoutFeedback>

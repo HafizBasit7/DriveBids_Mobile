@@ -140,7 +140,7 @@ const CarDetails1 = () => {
             style={styles.input}
             placeholder="Search car make"
             placeholderTextColor="#999"
-            value={inputValue}
+            value={carState.carDetails.make}
             editable={false}
             pointerEvents="none"
           />
