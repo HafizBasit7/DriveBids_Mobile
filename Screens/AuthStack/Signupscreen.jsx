@@ -10,6 +10,7 @@ import {
   Linking,
   KeyboardAvoidingView,
   Platform,
+  Modal,
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
@@ -19,7 +20,6 @@ import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { useAuth } from "../../R1_Contexts/authContext";
 import DialogBox from "../../CustomComponents/DialogBox";
 import { Icon } from "react-native-elements";
-import { Modal } from "react-native-paper";
 import { Image } from "expo-image";
 import {
   loginValidation,
