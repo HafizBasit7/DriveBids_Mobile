@@ -9,13 +9,12 @@ import { acceptBid } from "../../API_Callings/R1_API/Bid";
 import DialogBox from "../DialogBox";
 import { Image } from "expo-image";
 
-const BiddingList = ({car}) => {
+const BiddingList = ({ car }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [message, setMessage] = useState(null);
-  
 
-  const {data, isLoading} = useQuery({
-    queryKey: ['biddingHistory', car],
+  const { data, isLoading } = useQuery({
+    queryKey: ["biddingHistory", car],
     queryFn: () => getMyCarBiddingHistory(car),
     enabled: isExpanded,
   });
@@ -27,57 +26,78 @@ const BiddingList = ({car}) => {
   const bids = data?.data?.bids;
 
   const handlePressAcceptBid = async (bidId) => {
-    if(mutation.isPending) return;
+    if (mutation.isPending) return;
 
     try {
-      const result = await mutation.mutateAsync({carId: car, bidId});
-      setMessage({type: 'success', message: result.message, title: 'Success'});
+      const result = await mutation.mutateAsync({ carId: car, bidId });
+      setMessage({
+        type: "success",
+        message: result.message,
+        title: "Success",
+      });
     } catch (e) {
-      setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+      setMessage({
+        type: "error",
+        message: e.message || e.msg,
+        title: "Error",
+      });
     }
   };
 
   return (
     <View style={styles.container}>
-
       <DialogBox
         visible={message ? true : false}
         message={message?.message}
         onOkPress={() => setMessage(null)}
         type={message?.type}
         loading={false}
-        title={message?.title || ''}
+        title={message?.title || ""}
       />
 
-      {/* Header Line */}
       <View style={styles.lineContainer}>
         <View style={styles.fullLine} />
         <Text style={styles.lineText}>Bidding List</Text>
         <View style={styles.fullLine} />
       </View>
 
-      {(isExpanded && isLoading) && (<ActivityIndicator style={{marginTop: 20}}/>)}
-      {(isExpanded && !isLoading && bids && bids.length < 1) && (
-              <Text style={{margin:30}}>No Data To Show</Text>
-            ) }
-      {/* Expandable Content */}
-      {(isExpanded && !isLoading && bids && bids.length > 0) && (
+      {isExpanded && isLoading && (
+        <ActivityIndicator style={{ marginTop: 20 }} />
+      )}
+      {isExpanded && !isLoading && bids && bids.length < 1 && (
+        <Text style={{ margin: 30 }}>No Data To Show</Text>
+      )}
+
+      {isExpanded && !isLoading && bids && bids.length > 0 && (
         <View style={styles.listContainer}>
           {bids.map((bidder, index) => (
             <View key={bidder._id} style={styles.bidderCard}>
-              <Image source={{ uri: bidder.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }} style={styles.avatar} />
+              <Image
+                source={{
+                  uri:
+                    bidder.user.imgUrl ||
+                    "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png",
+                }}
+                style={styles.avatar}
+              />
               <View style={styles.bidDetails}>
                 {index === 0 && (
                   <Text style={styles.highestBid}>Highest Bid</Text>
                 )}
-                <Text style={styles.bidAmount}>Bid: AED {formatAmount(bidder.bidAmount)}</Text>
+                <Text style={styles.bidAmount}>
+                  Bid: AED {formatAmount(bidder.bidAmount)}
+                </Text>
                 <Text style={styles.bidderName}>by {bidder.user.name}</Text>
               </View>
               <View style={styles.rightSection}>
-                <Text style={styles.bidDate}>{formatDateTime(bidder.createdAt)}</Text>
-                <TouchableOpacity style={styles.acceptButton} onPress={() => handlePressAcceptBid(bidder._id)}>
-                  
-                  {mutation.isPending && (<ActivityIndicator color="white"/>)}
+                <Text style={styles.bidDate}>
+                  {formatDateTime(bidder.createdAt)}
+                </Text>
+                <TouchableOpacity
+                  style={styles.acceptButton}
+                  onPress={() => handlePressAcceptBid(bidder._id)}
+                >
+                  {mutation.isPending && <ActivityIndicator color="white" />}
                   {!mutation.isPending && (
                     <Text style={styles.acceptText}>Accept</Text>
                   )}
@@ -88,7 +108,6 @@ const BiddingList = ({car}) => {
         </View>
       )}
 
-      {/* Toggle Button */}
       <TouchableOpacity
         style={styles.dropdownButton}
         onPress={() => setIsExpanded(!isExpanded)}
@@ -146,9 +165,6 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     shadowColor: "#000",
-    // shadowOpacity: 0.1,
-    // shadowRadius: 5,
-    // elevation: 3,
   },
   bidderCard: {
     flexDirection: "row",

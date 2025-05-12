@@ -19,7 +19,6 @@ export default function R1_AuthStack() {
         authState.isFirstTime ? "onboardingScreen" : "SignInScreen"
       }
     >
-      {/* Onboarding Screen without Header */}
       <Stack.Screen
         name="onboardingScreen"
         component={OnboardingScreen}

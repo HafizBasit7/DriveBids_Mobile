@@ -29,7 +29,10 @@ import {
 import { validateForm } from "../../utils/validate";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import OTPModal from "./OtpModal";
-import { generateEmailVerificationOtp, verifyEmailOtp } from "../../API_Callings/R1_API/Reset";
+import {
+  generateEmailVerificationOtp,
+  verifyEmailOtp,
+} from "../../API_Callings/R1_API/Reset";
 const { width, height } = Dimensions.get("window");
 
 const SignupScreen = () => {
@@ -66,6 +69,7 @@ const SignupScreen = () => {
     { code: "+44", country: "UK" },
     { code: "+971", country: "UAE" },
     { code: "+61", country: "Australia" },
+    { code: "+92", country: "Pakistan" },
   ];
 
   const handleCountrySelect = (item) => {
@@ -77,21 +81,15 @@ const SignupScreen = () => {
   const handleTermsClick = () => {
     Linking.openURL("https://example.com/terms");
   };
-
-  // const handleConditionsClick = () => {
-  //   Linking.openURL("https://example.com/conditions");
-  // };
-
   const handleRequestOtp = async () => {
     setLoading(true);
     try {
-      await generateEmailVerificationOtp({email});
+      await generateEmailVerificationOtp({ email });
       setLoading(false);
       setOtpSent(true);
-    }
-    catch(e) {
+    } catch (e) {
       setLoading(false);
-      if(e?.message === 'OTP is already generated, please check your email') {
+      if (e?.message === "OTP is already generated, please check your email") {
         setOtpSent(true);
       } else {
         setMessage({
@@ -106,12 +104,11 @@ const SignupScreen = () => {
   const verifyOtp = async () => {
     setLoading(true);
     try {
-      const result = await verifyEmailOtp({email, otp: parseInt(otp)});
+      const result = await verifyEmailOtp({ email, otp: parseInt(otp) });
       setToken(result.data.token);
       setOtp();
       setLoading(false);
-    }
-    catch(e) {
+    } catch (e) {
       setMessage({
         type: "error",
         message: e.message || e.msg,
@@ -190,7 +187,7 @@ const SignupScreen = () => {
 
       <StatusBar
         barStyle="dark-content"
-        backgroundColor={visible ? "rgba(0,0,0,0.7)" : 'transparent'}
+        backgroundColor={visible ? "rgba(0,0,0,0.7)" : "transparent"}
         translucent
       />
 
@@ -245,253 +242,258 @@ const SignupScreen = () => {
           selectedTab === "private" ? styles.privateBg : styles.tradeBg,
         ]}
       >
-          <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 280 : 180} 
-    >
-        <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewContent}>
-          <View>
-            <View style={styles.inputWrapper}>
-              <Text style={styles.label}>Name</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your name"
-                value={name}
-                onChangeText={setName}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 280 : 180}
+        >
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollViewContent}
+          >
+            <View>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>Name</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your name"
+                  value={name}
+                  onChangeText={setName}
+                />
+              </View>
+
+              <Text style={styles.label}>Location</Text>
+              <GooglePlacesAutocomplete
+                placeholder="Enter location"
+                textInputProps={{
+                  placeholderTextColor: "#000",
+                  defaultValue: location?.name,
+                }}
+                enablePoweredByContainer={false}
+                predefinedPlaces={[]}
+                predefinedPlacesAlwaysVisible={false}
+                fetchDetails={true}
+                onPress={(data, details) => {
+                  const updateLocation = {
+                    name: data.description,
+                    coordinates: [
+                      details.geometry.location.lng,
+                      details.geometry.location.lat,
+                    ],
+                  };
+                  setLocation(updateLocation);
+                }}
+                onFail={(error) => console.error(error)}
+                debounce={200}
+                query={{
+                  key: "AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI",
+                  language: "en",
+                }}
+                listViewDisplayed="auto"
+                autoFillOnNotFound={false}
+                currentLocation={false}
+                currentLocationLabel="Current location"
+                disableScroll={false}
+                enableHighAccuracyLocation={true}
+                filterReverseGeocodingByTypes={[]}
+                GooglePlacesDetailsQuery={{}}
+                GooglePlacesSearchQuery={{
+                  rankby: "distance",
+                  type: "restaurant",
+                }}
+                GoogleReverseGeocodingQuery={{}}
+                isRowScrollable={true}
+                keyboardShouldPersistTaps="always"
+                listHoverColor="#ececec"
+                listUnderlayColor="#c8c7cc"
+                keepResultsAfterBlur={false}
+                minLength={0}
+                nearbyPlacesAPI="GooglePlacesSearch"
+                numberOfLines={1}
+                onNotFound={() => {}}
+                onTimeout={() =>
+                  console.warn("google places autocomplete: request timeout")
+                }
+                suppressDefaultStyles={false}
+                textInputHide={false}
+                timeout={20000}
+                isNewPlacesAPI={false}
+                fields="*"
+                styles={{
+                  textInputContainer: {
+                    borderWidth: 1,
+                    borderColor: "#ccc",
+                    borderRadius: 10,
+                    paddingHorizontal: 3,
+                    marginBottom: 15,
+                  },
+                  textInput: {
+                    height: 46,
+                    color: "#333",
+                    fontSize: 14,
+                    fontWeight: 400,
+                    paddingHorizontal: 8,
+                    borderRadius: 10,
+                  },
+                  listView: {
+                    backgroundColor: "#fff",
+                    marginHorizontal: 2,
+                    borderRadius: 10,
+                    elevation: 1,
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 3,
+                    marginTop: 1,
+                  },
+                  row: {
+                    padding: 13,
+                    height: 44,
+                    flexDirection: "row",
+                  },
+                  separator: {
+                    height: 0.5,
+                    backgroundColor: "#c8c7cc",
+                  },
+                  description: {
+                    fontSize: 14,
+                    color: "#555",
+                  },
+                }}
               />
-            </View>
 
-            <Text style={styles.label}>Location</Text>
-            <GooglePlacesAutocomplete
-              placeholder='Enter location'
-              textInputProps={{ 
-                placeholderTextColor: '#000',
-                defaultValue: location?.name,
-              }}
-              enablePoweredByContainer={false}
-              predefinedPlaces={[]}
-              predefinedPlacesAlwaysVisible={false}
-              fetchDetails={true}
-              onPress={(data, details) => {
-                const updateLocation = {
-                  name: data.description,
-                  coordinates: [
-                    details.geometry.location.lng,
-                    details.geometry.location.lat,
-                  ]
-                };
-                setLocation(updateLocation);
-              }}
-              onFail={(error) => console.error(error)}
-              debounce={200}
-              query={{
-                key: 'AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI',
-                language: 'en',
-              }}
-              listViewDisplayed='auto'
-              autoFillOnNotFound={false}
-              currentLocation={false}
-              currentLocationLabel="Current location"
-              disableScroll={false}
-              enableHighAccuracyLocation={true}
-              filterReverseGeocodingByTypes={[]}
-              GooglePlacesDetailsQuery={{}}
-              GooglePlacesSearchQuery={{
-                rankby: 'distance',
-                type: 'restaurant',
-              }}
-              GoogleReverseGeocodingQuery={{}}
-              isRowScrollable={true}
-              keyboardShouldPersistTaps="always"
-              listHoverColor="#ececec"
-              listUnderlayColor="#c8c7cc"
-              keepResultsAfterBlur={false}
-              minLength={0}
-              nearbyPlacesAPI="GooglePlacesSearch"
-              numberOfLines={1}
-              onNotFound={() => {}}
-              onTimeout={() => console.warn('google places autocomplete: request timeout')}
-              suppressDefaultStyles={false}
-              textInputHide={false}
-              timeout={20000}
-              isNewPlacesAPI={false}
-              fields="*"
-              styles={{
-                textInputContainer: {
-                  borderWidth: 1,
-                  borderColor: "#ccc",
-                  borderRadius: 10,
-                  paddingHorizontal: 3,
-                  marginBottom: 15,
-                },
-                textInput: {
-                  height: 46,
-                  color: '#333',
-                  fontSize: 14,
-                  fontWeight:400,
-                  paddingHorizontal: 8,
-                  borderRadius: 10,
-                },
-                listView: {
-                  backgroundColor: '#fff',
-                  marginHorizontal: 2,
-                  borderRadius: 10,
-                  elevation: 1,
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.1,
-                  shadowRadius: 3,
-                  marginTop:1
-                },
-                row: {
-                  padding: 13,
-                  height: 44,
-                  flexDirection: 'row',
-                },
-                separator: {
-                  height: 0.5,
-                  backgroundColor: '#c8c7cc',
-                },
-                description: {
-                  fontSize: 14,
-                  color: '#555',
-                },
-              }}
-            />
-           
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>Phone Number</Text>
+                <View style={styles.phoneInputContainer}>
+                  <TouchableOpacity
+                    style={styles.countryCodePicker}
+                    onPress={() => setCountryModalVisible(true)}
+                  >
+                    <Text style={styles.countryCodeText}>{countryCode}</Text>
+                    <Icon
+                      name="arrow-drop-down"
+                      type="material"
+                      size={20}
+                      color="#333"
+                    />
+                  </TouchableOpacity>
 
-            <View style={styles.inputWrapper}>
-              <Text style={styles.label}>Phone Number</Text>
-              <View style={styles.phoneInputContainer}>
+                  <TextInput
+                    style={styles.inputnum}
+                    placeholder="Enter your phone number"
+                    keyboardType="phone-pad"
+                    value={phoneNumber}
+                    onChangeText={setPhoneNumber}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your email"
+                  value={email}
+                  onChangeText={setEmail}
+                />
+              </View>
+
+              {!otpSent && email && (
                 <TouchableOpacity
-                  style={styles.countryCodePicker}
-                  onPress={() => setCountryModalVisible(true)}
+                  onPress={handleRequestOtp}
+                  style={styles.requestOtpButton}
                 >
-                  <Text style={styles.countryCodeText}>{countryCode}</Text>
+                  <Text style={styles.requestOtpText}>Request OTP</Text>
+                </TouchableOpacity>
+              )}
+
+              {token && otpSent && (
+                <Text
+                  style={{
+                    color: "#008000",
+                    fontWeight: 500,
+                    marginBottom: 8,
+                    marginTop: -10,
+                    fontSize: 12,
+                  }}
+                >
+                  Email Verified
+                </Text>
+              )}
+
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>Password</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your password"
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={styles.eyeIcon}
+                >
                   <Icon
-                    name="arrow-drop-down"
-                    type="material"
+                    name={showPassword ? "eye-off" : "eye"}
+                    type="feather"
+                    size={22}
+                    color="#888"
+                  />
+                </TouchableOpacity>
+              </View>
+
+              {selectedTab === "trade" && (
+                <View style={styles.inputWrapper}>
+                  <Text style={styles.label}>Business Address</Text>
+                  <TextInput
+                    value={businessAddress}
+                    onChangeText={setBusinessAddress}
+                    style={styles.input}
+                    placeholder="Enter your business address"
+                  />
+                </View>
+              )}
+
+              {/* Checkbox */}
+
+              <View style={styles.checkboxContainer}>
+                <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
+                  <BouncyCheckbox
                     size={20}
-                    color="#333"
+                    fillColor="#2F61BF"
+                    unfillColor="#FFFFFF"
+                    iconStyle={{ borderColor: "#2F61BF" }}
+                    isChecked={isChecked}
+                    disableBuiltInState={true}
+                    onPress={() => setIsChecked(!isChecked)}
+                    style={{ marginTop: 5 }}
                   />
                 </TouchableOpacity>
 
-                <TextInput
-                  style={styles.inputnum}
-                  placeholder="Enter your phone number"
-                  keyboardType="phone-pad"
-                  value={phoneNumber}
-                  onChangeText={setPhoneNumber}
-                />
-              </View>
-            </View>
-
-            <View style={styles.inputWrapper}>
-              <Text style={styles.label}>Email</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your email"
-                value={email}
-                onChangeText={setEmail}
-              />
-            </View>
-
-            {(!otpSent && email) && (
-              <TouchableOpacity onPress={handleRequestOtp}>
-                <Text style={{
-                  textDecorationLine: 'underline',
-                  color: '#2F61BF',
-                  marginBottom: 10,
-                }}>
-                  Request OTP
+                <Text style={styles.checkboxText}>
+                  I agree to the{"  "}
+                  <TouchableOpacity onPress={handleTermsClick}>
+                    <Text style={styles.clickableText}>terms&conditions</Text>
+                  </TouchableOpacity>
+                  {""}
+                  <TouchableOpacity onPress={handleTermsClick}>
+                    <Text style={styles.clickableText}></Text>
+                  </TouchableOpacity>
                 </Text>
-              </TouchableOpacity>
-            )}
-
-            {(token && otpSent) && (
-              <Text
-                style={{
-                  color: '#008000',
-                  fontWeight: 500,
-                  marginBottom: 8,
-                  marginTop: -10,
-                  fontSize: 12,
-                }}
-              >
-                Email Verified
-              </Text>
-            )}
-            
-
-            <View style={styles.inputWrapper}>
-              <Text style={styles.label}>Password</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your password"
-                secureTextEntry={!showPassword}
-                value={password}
-                onChangeText={setPassword}
-              />
-              <TouchableOpacity
-                onPress={() => setShowPassword(!showPassword)}
-                style={styles.eyeIcon}
-              >
-                <Icon
-                  name={showPassword ? "eye-off" : "eye"}
-                  type="feather"
-                  size={22}
-                  color="#888"
-                />
-              </TouchableOpacity>
-            </View>
-
-            {selectedTab === "trade" && (
-              <View style={styles.inputWrapper}>
-                <Text style={styles.label}>Business Address</Text>
-                <TextInput
-                  value={businessAddress}
-                  onChangeText={setBusinessAddress}
-                  style={styles.input}
-                  placeholder="Enter your business address"
-                />
               </View>
-            )}
-
-            {/* Checkbox */}
-
-            <View style={styles.checkboxContainer}>
-              <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
-                <BouncyCheckbox
-                  size={20}
-                  fillColor="#2F61BF"
-                  unfillColor="#FFFFFF"
-                  iconStyle={{ borderColor: "#2F61BF" }}
-                  isChecked={isChecked}
-                  disableBuiltInState={true}
-                  onPress={() => setIsChecked(!isChecked)}
-                  style={{ marginTop: 5 }}
-                />
-              </TouchableOpacity>
-
-              <Text style={styles.checkboxText}>
-                I agree to the{"  "}
-                <TouchableOpacity onPress={handleTermsClick}>
-                  <Text style={styles.clickableText}>terms&conditions</Text>
-                </TouchableOpacity>
-                {""}
-                <TouchableOpacity onPress={handleTermsClick}>
-                  <Text style={styles.clickableText}></Text>
-                </TouchableOpacity>
-              </Text>
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
         </KeyboardAvoidingView>
       </View>
 
       {/* Bottom Buttons Container */}
       <View style={styles.bottomContainer}>
-        <CustomButton title="Create Account" disabled={!isChecked || !token} onPress={handleLogin} />
+        <CustomButton
+          title="Create Account"
+          disabled={!isChecked || !token}
+          onPress={handleLogin}
+        />
         <View style={styles.loginTextContainer}>
           <Text style={styles.accountText}>Already have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate("SignInScreen")}>
@@ -526,7 +528,7 @@ const SignupScreen = () => {
               style={styles.modalCloseButton}
               onPress={() => setCountryModalVisible(false)}
             >
-              <Text style={styles.modalCloseText}>Close </Text>
+              <Text style={styles.modalCloseText}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -556,8 +558,6 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     flexGrow: 1,
-    
-  
   },
   topImage: {
     width: "100%",
@@ -569,7 +569,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: height * 0.09,
     marginTop: -height * 0.09,
-    backgroundColor:""
+    backgroundColor: "",
   },
   leftBox: {
     flex: 1,
@@ -595,19 +595,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     backgroundColor: "#FEE226",
   },
-  activeTabIndicator: {
-    // position: "absolute",
-    // width: "64%",
-    // height: 14,
-    // backgroundColor: "green",
-    // borderRadius: 10,
-    // opacity: 0.6,
-    // transform: [{ rotate: "-1deg" }],
-    // shadowColor: "#000",
-    // shadowOffset: { width: 2, height: 2 },
-    // bottom: "35%",
-    // zIndex: -1,
-  },
+
   boxText: {
     fontSize: 20,
     fontWeight: "900",
@@ -616,7 +604,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     padding: 15,
-    backgroundColor:"#fff",
+    backgroundColor: "#fff",
 
     shadowColor: "#000",
 
@@ -681,6 +669,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
   },
+  requestOtpButton: {
+    backgroundColor: "#f0f4ff", // Light blue background
+    paddingVertical: 4,
+    paddingHorizontal: 6,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#2F61BF", // Matching blue border
+    marginBottom: 10,
+    alignSelf: "flex-end", // Or 'center' if you want it centered
+  },
+  requestOtpText: {
+    color: "#2F61BF",
+    textDecorationLine: "none",
+    fontWeight: "500",
+    textAlign: "center",
+    fontSize: 12,
+  },
   checkboxContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -729,23 +734,33 @@ const styles = StyleSheet.create({
     top: 45,
   },
   modalOverlay: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.0)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent black
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   modalContent: {
     backgroundColor: "white",
     padding: 20,
     borderRadius: 8,
     width: "80%",
+    maxHeight: "70%", // Prevent modal from being too tall
   },
   modalTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
+    textAlign: "center",
   },
   modalItem: {
     padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
   },
   modalText: {
     fontSize: 16,
@@ -761,6 +776,7 @@ const styles = StyleSheet.create({
   modalCloseText: {
     fontSize: 16,
     color: "#333",
+    fontWeight: "bold",
   },
 });
 

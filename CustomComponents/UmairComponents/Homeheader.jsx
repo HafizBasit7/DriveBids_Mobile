@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import {
   View,
@@ -28,8 +27,8 @@ import { Image } from "expo-image";
 const { width, height } = Dimensions.get("window");
 
 const HomeHeader = ({ carId, scrollY }) => {
-  const {data, isLoading} = useQuery({
-    queryKey: ['car', carId],
+  const { data, isLoading } = useQuery({
+    queryKey: ["car", carId],
     queryFn: () => getCar(carId),
     enabled: false,
   });
@@ -97,15 +96,14 @@ const HomeHeader = ({ carId, scrollY }) => {
   const openModal = (imageIndex) => {
     setSelectedImageIndex(imageIndex);
     setModalVisible(true);
-    setIsPaused(true); // Stop slider when modal opens
-    
-    // Slight delay to ensure FlatList is rendered before scrolling
+    setIsPaused(true);
+
     setTimeout(() => {
       if (thumbnailsRef.current) {
         thumbnailsRef.current.scrollToIndex({
           index: imageIndex,
           animated: true,
-          viewPosition: 0.5
+          viewPosition: 0.5,
         });
       }
     }, 100);
@@ -113,18 +111,17 @@ const HomeHeader = ({ carId, scrollY }) => {
 
   const closeModal = () => {
     setModalVisible(false);
-    setIsPaused(false); // Resume slider when modal closes
+    setIsPaused(false);
   };
 
   const selectImage = (index) => {
     setSelectedImageIndex(index);
-    
-    // Scroll thumbnails to keep selected thumbnail centered
+
     if (thumbnailsRef.current) {
       thumbnailsRef.current.scrollToIndex({
         index: index,
         animated: true,
-        viewPosition: 0.5
+        viewPosition: 0.5,
       });
     }
   };
@@ -139,26 +136,26 @@ const HomeHeader = ({ carId, scrollY }) => {
   };
 
   const animatedContainerHeight = scrollY.interpolate({
-    inputRange: [0, 150], 
-    outputRange: [90, 65], 
+    inputRange: [0, 150],
+    outputRange: [90, 65],
     extrapolate: "clamp",
   });
-  
+
   const animatedLabelFontSize = scrollY.interpolate({
     inputRange: [0, 150],
-    outputRange: [20, 14], 
+    outputRange: [20, 14],
     extrapolate: "clamp",
   });
-  
+
   const animatedPriceFontSize = scrollY.interpolate({
     inputRange: [0, 150],
     outputRange: [14, 10],
     extrapolate: "clamp",
   });
-  
+
   const animatedTimerFontSize = scrollY.interpolate({
     inputRange: [0, 150],
-    outputRange: [13, 9], 
+    outputRange: [13, 9],
     extrapolate: "clamp",
   });
   const renderThumbnail = ({ item, index }) => (
@@ -179,25 +176,19 @@ const HomeHeader = ({ carId, scrollY }) => {
     fontWeight: "bold",
     ...(Platform.OS === "ios"
       ? {
-          // iOS-specific style
           position: "absolute",
           top: 40,
           right: 20,
         }
       : {
-          // Android-specific style
           position: "absolute",
           top: -10,
           right: 15,
         }),
   };
-  
-  return (
-    <View >
-           
 
-       
-      
+  return (
+    <View>
       <View style={styles.container}>
         <ScrollView
           ref={scrollViewRef}
@@ -237,79 +228,74 @@ const HomeHeader = ({ carId, scrollY }) => {
         </View>
       </View>
 
-      {/* Yellow Container Below Slider */}
-      <Animated.View style={[styles.yellowContainer, { height: animatedContainerHeight }]}>
-    <View style={styles.leftContainer}>
-      <Animated.Text
-        style={[styles.labelText, { fontSize: animatedLabelFontSize }]}
+      <Animated.View
+        style={[styles.yellowContainer, { height: animatedContainerHeight }]}
       >
-        Buy Now price
-      </Animated.Text>
-      <Animated.Text
-        style={[styles.priceText, { fontSize: animatedPriceFontSize }]}
-      >
-        AED {formatAmount(car.buyNowPrice)}
-      </Animated.Text>
-    </View>
-    <View style={styles.verticalLine} />
-    <View style={styles.rightContainer}>
-      <Animated.Text
-        style={[styles.labelText, { fontSize: animatedLabelFontSize }]}
-      >
-        Highest Bid
-      </Animated.Text>
-      <Animated.Text
-        style={[styles.priceText, { fontSize: animatedPriceFontSize }]}
-      >
-        AED {formatAmount(car.highestBid)}
-      </Animated.Text>
-      {!isCarSold && (
-        <>
-          <Text style={styles.labelText2}>Ends in</Text>
+        <View style={styles.leftContainer}>
           <Animated.Text
-            style={[styles.timerText, { fontSize: animatedTimerFontSize }]}
+            style={[styles.labelText, { fontSize: animatedLabelFontSize }]}
           >
-            {timeLeft}
+            Buy Now price
           </Animated.Text>
-        </>
-      )}
-    </View>
-  </Animated.View>
+          <Animated.Text
+            style={[styles.priceText, { fontSize: animatedPriceFontSize }]}
+          >
+            AED {formatAmount(car.buyNowPrice)}
+          </Animated.Text>
+        </View>
+        <View style={styles.verticalLine} />
+        <View style={styles.rightContainer}>
+          <Animated.Text
+            style={[styles.labelText, { fontSize: animatedLabelFontSize }]}
+          >
+            Highest Bid
+          </Animated.Text>
+          <Animated.Text
+            style={[styles.priceText, { fontSize: animatedPriceFontSize }]}
+          >
+            AED {formatAmount(car.highestBid)}
+          </Animated.Text>
+          {!isCarSold && (
+            <>
+              <Text style={styles.labelText2}>Ends in</Text>
+              <Animated.Text
+                style={[styles.timerText, { fontSize: animatedTimerFontSize }]}
+              >
+                {timeLeft}
+              </Animated.Text>
+            </>
+          )}
+        </View>
+      </Animated.View>
 
-      {/* Modal for displaying larger image */}
-   
       <Modal
         transparent={true}
         visible={modalVisible}
         onRequestClose={closeModal}
       >
         <View style={styles.modalOverlay}>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor="rgba(0, 0, 0, 0.8)"
-          translucent
-        />
-          <TouchableOpacity 
-            style={styles.closeButton} 
-            onPress={closeModal}
-          >
-            <Text  style={closeButtonText}>✕</Text>
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor="rgba(0, 0, 0, 0.8)"
+            translucent
+          />
+          <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+            <Text style={closeButtonText}>✕</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.leftButton} onPress={prevImage}>
             <Text style={styles.navText}>❮</Text>
           </TouchableOpacity>
-          
+
           <Image
             source={{ uri: images[selectedImageIndex] }}
             style={styles.modalImage}
           />
-          
+
           <TouchableOpacity style={styles.rightButton} onPress={nextImage}>
             <Text style={styles.navText}>❯</Text>
           </TouchableOpacity>
-          
-          {/* Horizontal thumbnails carousel */}
+
           <View style={styles.thumbnailCarouselContainer}>
             <FlatList
               ref={thumbnailsRef}
@@ -338,9 +324,8 @@ const styles = StyleSheet.create({
     // height: 170,
     backgroundColor: GlobalStyles.colors.HomeHeaderColour,
     position: "relative",
-    
   },
-  
+
   image: {
     width: width,
     height: 170,
@@ -429,24 +414,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.8)",
   },
-  modalImage: { 
-    width: width, 
-    height: width, 
-    resizeMode: "contain" 
+  modalImage: {
+    width: width,
+    height: width,
+    resizeMode: "contain",
   },
-  leftButton: { 
-    position: "absolute", 
-    left: 20, 
-    zIndex: 10 
+  leftButton: {
+    position: "absolute",
+    left: 20,
+    zIndex: 10,
   },
-  rightButton: { 
-    position: "absolute", 
-    right: 20, 
-    zIndex: 10 
+  rightButton: {
+    position: "absolute",
+    right: 20,
+    zIndex: 10,
   },
-  navText: { 
-    fontSize: 40, 
-    color: "#FFD700" 
+  navText: {
+    fontSize: 40,
+    color: "#FFD700",
   },
   closeButton: {
     position: "absolute",
@@ -464,7 +449,6 @@ const styles = StyleSheet.create({
     color: "#FFD700",
     fontSize: 20,
     fontWeight: "bold",
-   
   },
   // Thumbnail styles
   thumbnailCarouselContainer: {
@@ -491,14 +475,13 @@ const styles = StyleSheet.create({
   },
   thumbnail: {
     borderColor: "#FFD700",
-    padding:1,
+    padding: 1,
 
     width: "100%",
     height: "100%",
     resizeMode: "cover",
-    borderWidth:0.4,
-    borderRadius:10
-
+    borderWidth: 0.4,
+    borderRadius: 10,
   },
 });
 

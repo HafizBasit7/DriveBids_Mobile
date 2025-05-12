@@ -22,49 +22,52 @@ const inspectionReportEnum = [
 
 //Dynamic operations
 const dynamicOperations = [
-  {name: "Brake Efficiency", target: "breakEfficiency"},
-  {name: "Hand Brake Test", target: "handBrakeTest"},
-  {name: "Static Gear Selection", target: "staticGearSelection"},
-  {name: "Reverse Clutch Slip", target: "reverseClutchSlip"},
-  {name: "Steering Noise", target: "steeringNoise"},
-  {name: "Suspension Ride Height", target: "suspensionRideHeight"},
-  {name: "Air Conditioning Power", target: "airconPower"},
-  {name: "Sat Nav Power", target: "satNavPower"},
-  {name: "Ice Power", target: "icePower"},
-  {name: "Central Locking", target: "centralLocking"},
-  {name: "Converitble Sunroof Electics", target: "convertibleSunroofElectrics"},
-  {name: "Horn", target: "horn"}
+  { name: "Brake Efficiency", target: "breakEfficiency" },
+  { name: "Hand Brake Test", target: "handBrakeTest" },
+  { name: "Static Gear Selection", target: "staticGearSelection" },
+  { name: "Reverse Clutch Slip", target: "reverseClutchSlip" },
+  { name: "Steering Noise", target: "steeringNoise" },
+  { name: "Suspension Ride Height", target: "suspensionRideHeight" },
+  { name: "Air Conditioning Power", target: "airconPower" },
+  { name: "Sat Nav Power", target: "satNavPower" },
+  { name: "Ice Power", target: "icePower" },
+  { name: "Central Locking", target: "centralLocking" },
+  {
+    name: "Converitble Sunroof Electics",
+    target: "convertibleSunroofElectrics",
+  },
+  { name: "Horn", target: "horn" },
 ];
 
 const essentialsChecks = [
-  {name: "Head lights", target: "headLight"},
-  {name: "Brake lights", target: "brakeLight"},
-  {name: "Side Lights", target: "sideLight"},
-  {name: "Fog lights", target: "fogLight"},
-  {name: "Indicators", target: "indicators"},
-  {name: "Electric Windows", target: "electricWindows"},
-  {name: "Electric Mirrors", target: "electricMirrors"},
-  {name: "Wipers", target: "wipers"},
+  { name: "Head lights", target: "headLight" },
+  { name: "Brake lights", target: "brakeLight" },
+  { name: "Side Lights", target: "sideLight" },
+  { name: "Fog lights", target: "fogLight" },
+  { name: "Indicators", target: "indicators" },
+  { name: "Electric Windows", target: "electricWindows" },
+  { name: "Electric Mirrors", target: "electricMirrors" },
+  { name: "Wipers", target: "wipers" },
 ];
 
 const interiorChecks = [
-  {name: "Engine Management Light", target: "engineManagementLight"},
-  {name: "Brake Wear Indicator Light", target: "breakWearIndicatorLight"},
-  {name: "Abs Warning Light", target: "absWarningLight"},
-  {name: "Oil Warning Light", target: "oilWarningLight"},
-  {name: "Airbag warning light", target: "airbagWarningLight"},
-  {name: "Glow plug light", target: "glowPlugLight"},
+  { name: "Engine Management Light", target: "engineManagementLight" },
+  { name: "Brake Wear Indicator Light", target: "breakWearIndicatorLight" },
+  { name: "Abs Warning Light", target: "absWarningLight" },
+  { name: "Oil Warning Light", target: "oilWarningLight" },
+  { name: "Airbag warning light", target: "airbagWarningLight" },
+  { name: "Glow plug light", target: "glowPlugLight" },
 ];
 
-const InspectionReport = ({car}) => {
+const InspectionReport = ({ car }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const {data, isLoading} = useQuery({
-    queryKey: ['inspectionReport', car],
+  const { data, isLoading } = useQuery({
+    queryKey: ["inspectionReport", car],
     queryFn: () => getCarInspectionReport(car),
     enabled: isExpanded,
     refetchOnMount: false,
-  })
+  });
 
   const inspectionReport = data?.data?.inspectionReport;
 
@@ -76,11 +79,9 @@ const InspectionReport = ({car}) => {
         <View style={styles.fullLine} />
       </View>
 
-      {(isExpanded && isLoading) && (
-        <ActivityIndicator style={{margin: 30}}/>
-      )}
+      {isExpanded && isLoading && <ActivityIndicator style={{ margin: 30 }} />}
 
-      {(isExpanded && !isLoading) && (
+      {isExpanded && !isLoading && (
         <View>
           <View style={styles.card}>
             <Text style={styles.cardHeader}>Symbols</Text>
@@ -98,10 +99,6 @@ const InspectionReport = ({car}) => {
                   color: "red",
                   label: "Requires Immediate Attention",
                 },
-                // { icon: "check-circle", color: "green", label: "Passed" },
-                // { icon: "error", color: "orange", label: "Minor Issue" },
-                // { icon: "error-outline", color: "red", label: "Major Issue" },
-                // { icon: "block", color: "gray", label: "Not Applicable" },
               ])}
             </View>
           </View>
@@ -109,106 +106,72 @@ const InspectionReport = ({car}) => {
           <View style={styles.card}>
             <Text style={styles.cardHeader}>Dynamic Operations</Text>
             <View style={styles.cardContent}>
-              {inspectionReport?.dynamicOperations && renderGrid(Object.keys(inspectionReport.dynamicOperations).map(key => {
+              {inspectionReport?.dynamicOperations &&
+                renderGrid(
+                  Object.keys(inspectionReport.dynamicOperations).map((key) => {
+                    const test = inspectionReportEnum.find(
+                      (value) =>
+                        value.label === inspectionReport.dynamicOperations[key]
+                    );
+                    const label = dynamicOperations.find(
+                      (val) => val.target === key
+                    );
 
-                const test = inspectionReportEnum.find(value => value.label === inspectionReport.dynamicOperations[key]);
-                const label = dynamicOperations.find(val => val.target === key);
-                
-                return {
-                  icon: test.icon,
-                  color: test.color,
-                  label: label.name,
-                };
-              }))}
-              {/* {renderGrid([
-                {
-                  icon: "check-circle",
-                  color: "green",
-                  label: "Brake Efficiency Test",
-                },
-                {
-                  icon: "error",
-                  color: "orange",
-                  label: "Static Gear Selection",
-                },
-                {
-                  icon: "error-outline",
-                  color: "red",
-                  label: "Reverse Clutch Slip Test",
-                },
-                {
-                  icon: "check-circle",
-                  color: "green",
-                  label: "Hand Brake Test",
-                },
-                {
-                  icon: "error",
-                  color: "orange",
-                  label: "Suspension Performance",
-                },
-                {
-                  icon: "error-outline",
-                  color: "red",
-                  label: "Engine Idle Stability",
-                },
-              ])} */}
+                    return {
+                      icon: test.icon,
+                      color: test.color,
+                      label: label.name,
+                    };
+                  })
+                )}
             </View>
           </View>
 
           <View style={styles.card}>
             <Text style={styles.cardHeader}>Essential Checks</Text>
             <View style={styles.cardContent}>
-              {inspectionReport?.essentialChecks && renderGrid(Object.keys(inspectionReport.essentialChecks).map(key => {
+              {inspectionReport?.essentialChecks &&
+                renderGrid(
+                  Object.keys(inspectionReport.essentialChecks).map((key) => {
+                    const test = inspectionReportEnum.find(
+                      (value) =>
+                        value.label === inspectionReport.essentialChecks[key]
+                    );
+                    const label = essentialsChecks.find(
+                      (val) => val.target === key
+                    );
 
-                const test = inspectionReportEnum.find(value => value.label === inspectionReport.essentialChecks[key]);
-                const label = essentialsChecks.find(val => val.target === key);
-
-                return {
-                  icon: test.icon,
-                  color: test.color,
-                  label: label.name,
-                };
-              }))}
+                    return {
+                      icon: test.icon,
+                      color: test.color,
+                      label: label.name,
+                    };
+                  })
+                )}
             </View>
           </View>
 
           <View style={styles.card}>
             <Text style={styles.cardHeader}>Interior Checks</Text>
             <View style={styles.cardContent}>
-              {inspectionReport?.interiorChecks && renderGrid(Object.keys(inspectionReport.interiorChecks).map(key => {
+              {inspectionReport?.interiorChecks &&
+                renderGrid(
+                  Object.keys(inspectionReport.interiorChecks).map((key) => {
+                    const test = inspectionReportEnum.find(
+                      (value) =>
+                        value.label === inspectionReport.interiorChecks[key]
+                    );
+                    const label = interiorChecks.find(
+                      (val) => val.target === key
+                    );
 
-                  const test = inspectionReportEnum.find(value => value.label === inspectionReport.interiorChecks[key]);
-                  const label = interiorChecks.find(val => val.target === key);
-
-                  return {
-                    icon: test.icon,
-                    color: test.color,
-                    label: label.name,
-                  };
-              }))}
-              {/* {renderGrid([
-                { icon: "check-circle", color: "green", label: "Seat Belts" },
-                {
-                  icon: "error",
-                  color: "orange",
-                  label: "Dashboard Warning Lights",
-                },
-                {
-                  icon: "error-outline",
-                  color: "red",
-                  label: "Horn Functionality",
-                },
-                {
-                  icon: "check-circle",
-                  color: "green",
-                  label: "AC/Heater Functionality",
-                },
-                {
-                  icon: "block",
-                  color: "gray",
-                  label: "Radio/Multimedia System",
-                },
-              ])} */}
+                    return {
+                      icon: test.icon,
+                      color: test.color,
+                      label: label.name,
+                    };
+                  })
+                )}
             </View>
           </View>
         </View>

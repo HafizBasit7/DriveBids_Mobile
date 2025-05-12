@@ -37,8 +37,8 @@ const CarDetails2 = () => {
   const { carState, dispatch } = useCar();
   const make = carState.carDetails.make;
 
-  const {data, isLoading} = useQuery({
-    queryKey: ['variant', make.toLowerCase()],
+  const { data, isLoading } = useQuery({
+    queryKey: ["variant", make.toLowerCase()],
     queryFn: async () => {
       const result = await apiClient.get(`/models?make=${make?.toLowerCase()}`);
       return result.data;
@@ -49,13 +49,13 @@ const CarDetails2 = () => {
 
   useEffect(() => {
     const keyboardWillShow = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
       (e) => {
         setKeyboardHeight(e.endCoordinates.height);
       }
     );
     const keyboardWillHide = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
       () => {
         setKeyboardHeight(0);
       }
@@ -79,7 +79,7 @@ const CarDetails2 = () => {
   }
 
   const openBottomSheet = () => {
-    setSearchText(""); // Reset search text when opening
+    setSearchText("");
     setBottomSheetVisible(true);
     Animated.timing(bottomSheetAnimation, {
       toValue: 0,
@@ -123,8 +123,14 @@ const CarDetails2 = () => {
           <Text style={styles.lineText2}>Variant</Text>
           <View style={styles.line} />
         </View>
-        <View style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: height * 0.65 }}>
-
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: height * 0.65,
+          }}
+        >
           {/* Input Field (acting as a button to open bottom sheet) */}
           <TouchableOpacity
             style={styles.inputWrapper}
@@ -158,13 +164,15 @@ const CarDetails2 = () => {
           transparent={true}
           animationType="none"
         >
-          <KeyboardAvoidingView 
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
             style={{ flex: 1 }}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
           >
             <TouchableWithoutFeedback onPress={closeBottomSheet}>
-              <View style={[styles.modalOverlay, { justifyContent: 'flex-end' }]}>
+              <View
+                style={[styles.modalOverlay, { justifyContent: "flex-end" }]}
+              >
                 <StatusBar
                   barStyle="dark-content"
                   backgroundColor="rgba(0,0,0,0.5)"
@@ -176,18 +184,18 @@ const CarDetails2 = () => {
                       styles.bottomSheet,
                       {
                         transform: [{ translateY: bottomSheetAnimation }],
-                        maxHeight: Platform.OS === 'ios' 
-                          ? height * 0.45 
-                          : height * 0.6,
-                        minHeight: Platform.OS === 'ios' 
-                          ? height * 0.45
-                          : height * 0.5,
+                        maxHeight:
+                          Platform.OS === "ios" ? height * 0.45 : height * 0.6,
+                        minHeight:
+                          Platform.OS === "ios" ? height * 0.45 : height * 0.5,
                       },
                     ]}
                   >
                     <SafeAreaView style={styles.bottomSheetContent}>
                       <View style={styles.bottomSheetHeader}>
-                        <Text style={styles.bottomSheetTitle}>Select Car Variant</Text>
+                        <Text style={styles.bottomSheetTitle}>
+                          Select Car Variant
+                        </Text>
                         <TouchableOpacity onPress={closeBottomSheet}>
                           <Text style={styles.closeButton}>✕</Text>
                         </TouchableOpacity>
@@ -218,13 +226,15 @@ const CarDetails2 = () => {
                           keyExtractor={(item, index) => index.toString()}
                           renderItem={({ item }) => (
                             <TouchableOpacity
-                              onPress={() => onChangeCarVariant(item.model_name)}
+                              onPress={() =>
+                                onChangeCarVariant(item.model_name)
+                              }
                             >
                               <Text
                                 style={[
                                   styles.entityText,
-                                  carState.carDetails.variant === item.model_name &&
-                                  styles.selectedText,
+                                  carState.carDetails.variant ===
+                                    item.model_name && styles.selectedText,
                                 ]}
                               >
                                 {item.model_name}

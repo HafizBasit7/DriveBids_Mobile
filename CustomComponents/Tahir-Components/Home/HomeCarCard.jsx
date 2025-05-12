@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text,  StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon, Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -17,19 +17,18 @@ const HomeCarCard = ({
   bid,
   notHome = false,
 }) => {
-
   //Calculate if from bids
   let winning = false;
-  if(isFromMyBids) {
+  if (isFromMyBids) {
     winning = bid.bidAmount === ad.highestBid;
   }
-  const isCarSold = ad.status === 'sold';
+  const isCarSold = ad.status === "sold";
 
-  const {authState} = useAuth();
+  const { authState } = useAuth();
   const user = authState.user;
 
   const countdownInterval = useRef();
-  const [timeLeft, setTimeLeft] = useState('0hr:0m:0s');
+  const [timeLeft, setTimeLeft] = useState("0hr:0m:0s");
 
   const queryClient = useQueryClient();
   const toggleWatchListMutation = useMutation({
@@ -40,14 +39,23 @@ const HomeCarCard = ({
       const previousWatchlist = queryClient.getQueryData(["carsInWatchList"]);
 
       queryClient.setQueryData(["carsInWatchList"], (oldData) => {
-        if (!oldData) return { data: { carsInWatchList: [{ car: carId }] }, status: true, statusCode: 200 };
-        const isAlreadyInWatchlist = oldData.data.carsInWatchList.some((item) => item.car === carId);
+        if (!oldData)
+          return {
+            data: { carsInWatchList: [{ car: carId }] },
+            status: true,
+            statusCode: 200,
+          };
+        const isAlreadyInWatchlist = oldData.data.carsInWatchList.some(
+          (item) => item.car === carId
+        );
         return {
           ...oldData,
           data: {
             ...oldData.data,
             carsInWatchList: isAlreadyInWatchlist
-              ? oldData.data.carsInWatchList.filter((item) => item.car !== carId)
+              ? oldData.data.carsInWatchList.filter(
+                  (item) => item.car !== carId
+                )
               : [...oldData.data.carsInWatchList, { car: carId }],
           },
         };
@@ -57,37 +65,45 @@ const HomeCarCard = ({
     },
     onError: (_error, _newMessage, context) => {
       if (context?.previousWatchlist) {
-        queryClient.setQueryData(["carsInWatchList"], context.previousWatchlist);
+        queryClient.setQueryData(
+          ["carsInWatchList"],
+          context.previousWatchlist
+        );
       }
     },
     onSettled: () => {
       // queryClient.invalidateQueries(["carsInWatchList"]);
-      queryClient.invalidateQueries({queryKey: ["watchlist"]});
+      queryClient.invalidateQueries({ queryKey: ["watchlist"] });
     },
   });
 
   const navigation = useNavigation();
 
   useEffect(() => {
-    if(isCarSold) return;
+    if (isCarSold) return;
     countdownInterval.current = setInterval(() => {
       setTimeLeft(calculateTimeLeft(ad.duration));
     }, 1000);
 
     return () => {
-      if(!countdownInterval.current) return;
+      if (!countdownInterval.current) return;
       clearInterval(countdownInterval.current);
     };
   }, [isCarSold]);
 
-
-  const isCarInWatchList = (carsInWatchList?.data.carsInWatchList.findIndex(val => val.car === ad._id) !== -1);
+  const isCarInWatchList =
+    carsInWatchList?.data.carsInWatchList.findIndex(
+      (val) => val.car === ad._id
+    ) !== -1;
   const onViewAd = () => {
-    if(notHome) {
-      navigation.navigate('Home', {screen: 'AdDetails', params: {carId: ad._id}})
+    if (notHome) {
+      navigation.navigate("Home", {
+        screen: "AdDetails",
+        params: { carId: ad._id },
+      });
       return;
     }
-    navigation.navigate('AdDetails', {carId: ad._id})
+    navigation.navigate("AdDetails", { carId: ad._id });
   };
 
   return (
@@ -104,7 +120,7 @@ const HomeCarCard = ({
         color={isCarInWatchList ? "#E63946" : "rgba(244, 244, 244, 0.9)"}
         containerStyle={styles.favoriteIcon}
       />
-      {(ad.user !== user._id && isFromMyBids) && (
+      {ad.user !== user._id && isFromMyBids && (
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Text
             style={{
@@ -118,46 +134,47 @@ const HomeCarCard = ({
               color: winning ? "#008B27" : "#B3261E",
             }}
           >
-            {winning ? 'Winning' : 'Losing'}
+            {winning ? "Winning" : "Losing"}
           </Text>
         </View>
       )}
       <View style={styles.details}>
-        <Text style={styles.title}>{ad.make} {ad.variant}</Text>
+        <Text style={styles.title}>
+          {ad.make} {ad.variant}
+        </Text>
         <View style={styles.infoRow}>
-  <View style={styles.iconTextContainer}>
-    <Icon name="calendar-today" type="material" size={14} color="black" />
-    <Text style={styles.infoText} numberOfLines={1}>{ad.model}</Text>
-  </View>
+          <View style={styles.iconTextContainer}>
+            <Icon
+              name="calendar-today"
+              type="material"
+              size={14}
+              color="black"
+            />
+            <Text style={styles.infoText} numberOfLines={1}>
+              {ad.model}
+            </Text>
+          </View>
 
-  <Text style={styles.separator}>|</Text>
+          <Text style={styles.separator}>|</Text>
 
-  <View style={styles.iconTextContainer}>
-    <Icon name="speed" type="material" size={14} color="black" />
-    <Text style={styles.infoText}>{ad.engineSize} cc</Text>
-  </View>
+          <View style={styles.iconTextContainer}>
+            <Icon name="speed" type="material" size={14} color="black" />
+            <Text style={styles.infoText}>{ad.engineSize} cc</Text>
+          </View>
 
-  <Text style={styles.separator}>|</Text>
+          <Text style={styles.separator}>|</Text>
 
-  <View style={styles.iconTextContainer}>
-    <Icon name="settings" type="material" size={14} color="black" />
-    <Text style={styles.infoText}>{ad.transmission}</Text>
-  </View>
-</View>
+          <View style={styles.iconTextContainer}>
+            <Icon name="settings" type="material" size={14} color="black" />
+            <Text style={styles.infoText}>{ad.transmission}</Text>
+          </View>
+        </View>
         <Text style={styles.bidText}>
-          Top Bid{" "}
-          <Text style={styles.bidAmount}>
-           
-            AED {ad.highestBid}
-          </Text>
+          Top Bid <Text style={styles.bidAmount}>AED {ad.highestBid}</Text>
         </Text>
         {isFromMyBids && (
           <Text style={styles.bidText}>
-            My Bid{" "}
-            <Text style={styles.bidAmount}>
-  
-              AED {bid.bidAmount}
-            </Text>
+            My Bid <Text style={styles.bidAmount}>AED {bid.bidAmount}</Text>
           </Text>
         )}
         {isCarSold && (
@@ -168,101 +185,32 @@ const HomeCarCard = ({
                 marginTop: 5,
                 paddingHorizontal: 10,
                 paddingVertical: 1,
-                fontSize:12,
+                fontSize: 12,
                 borderRadius: 12,
                 color: "black",
-                minWidth: 50, 
-      textAlign: 'center', 
-                
+                minWidth: 50,
+                textAlign: "center",
               }}
             >
-            Sold 
+              Sold
             </Text>
           </View>
         )}
-        {!isCarSold && (<Text style={styles.timer}>{timeLeft}</Text>)}
+        {!isCarSold && <Text style={styles.timer}>{timeLeft}</Text>}
       </View>
       <Button
-            title="View Auction"
-            buttonStyle={styles.button}
-            titleStyle={styles.buttonText}
-            icon={{
-              name: "campaign",
-              type: "material",
-              size: 15,
-              color: "white",
-            }}
-            onPress={onViewAd}
-            iconPosition="right"
-          />
-          {/* todo: button add or no */}
-      {/* {isFromMyBids ? (
-        <View
-          style={{
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "space-around",
-            marginBottom: 10,
-            paddingHorizontal: 10,
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              borderColor: "#B3261E",
-              borderWidth: 1,
-              paddingHorizontal: 10,
-              paddingVertical: 10,
-              borderRadius: 10,
-              width: "48%",
-            }}
-            onPress={() => {}}
-          >
-            <Text
-              style={[
-                styles.buttonText,
-                { color: "#B3261E", textAlign: "center" },
-              ]}
-            >
-              Cancel Bid
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {}}
-            style={{
-              paddingHorizontal: 10,
-              paddingVertical: 10,
-              borderRadius: 10,
-              width: "48%",
-              backgroundColor: GlobalStyles.colors.ButtonColor,
-            }}
-          >
-            <Text
-              style={[
-                styles.buttonText,
-                { color: "white", textAlign: "center" },
-              ]}
-            >
-              Increase Bid
-            </Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <>
-          <Button
-            title="View Ad"
-            buttonStyle={styles.button}
-            titleStyle={styles.buttonText}
-            icon={{
-              name: "campaign",
-              type: "material",
-              size: 18,
-              color: "white",
-            }}
-            onPress={onViewAd}
-            iconPosition="right"
-          />
-        </>
-      )} */}
+        title="View Auction"
+        buttonStyle={styles.button}
+        titleStyle={styles.buttonText}
+        icon={{
+          name: "campaign",
+          type: "material",
+          size: 15,
+          color: "white",
+        }}
+        onPress={onViewAd}
+        iconPosition="right"
+      />
     </View>
   );
 };
@@ -272,15 +220,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 15,
     overflow: "hidden",
-    shadowColor:"#000",
+    shadowColor: "#000",
     shadowOpacity: 0.5,
-    shadowRadius: 9, 
+    shadowRadius: 9,
     elevation: 2,
     marginVertical: 10,
   },
   image: {
     width: "100%",
-    height: 140, 
+    height: 140,
   },
   favoriteIcon: {
     position: "absolute",
@@ -289,13 +237,12 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(101, 101, 101, 0.8)",
     padding: 3,
     borderRadius: 10,
-    width:30,
-    height:30
-    
+    width: 30,
+    height: 30,
   },
   details: {
     padding: 6,
-    alignItems: "center", 
+    alignItems: "center",
   },
   title: {
     fontSize: 15,
@@ -322,7 +269,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: "Inter-SemiBold",
     color: "black",
-    marginHorizontal: 6, 
+    marginHorizontal: 6,
   },
 
   bidText: {
@@ -342,11 +289,11 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#2F61BF",
-    
+
     marginVertical: 3,
     borderRadius: 10,
     width: "60%",
-    
+
     alignSelf: "center",
   },
   buttonText: {

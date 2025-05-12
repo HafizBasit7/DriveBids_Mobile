@@ -4,13 +4,15 @@ import { useAuth } from "./R1_Contexts/authContext";
 import { SafeAreaView } from "react-native";
 
 export default function R1_App() {
-    const {authState} = useAuth();
-    
-    if(authState.isLoading) {
-        return <SafeAreaView ><ActivityIndicator/></SafeAreaView>;
-    }
+  const { authState } = useAuth();
 
+  if (authState.isLoading) {
     return (
-        <AppNavigator/>
+      <SafeAreaView>
+        <ActivityIndicator />
+      </SafeAreaView>
     );
+  }
+
+  return <AppNavigator />;
 }

@@ -2,28 +2,23 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-const SellersComment = ({car}) => {
+const SellersComment = ({ car }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <View style={styles.container}>
-      {/* Header Line */}
       <View style={styles.lineContainer}>
         <View style={styles.fullLine} />
         <Text style={styles.lineText}>Seller's Comments</Text>
         <View style={styles.fullLine} />
       </View>
 
-      {/* Expandable Content */}
       {isExpanded && (
         <View style={styles.commentBox}>
-          <Text style={styles.commentText}>
-            {car.description}
-          </Text>
+          <Text style={styles.commentText}>{car.description}</Text>
         </View>
       )}
 
-      {/* Toggle Button */}
       <TouchableOpacity
         style={styles.dropdownButton}
         onPress={() => setIsExpanded(!isExpanded)}
@@ -46,7 +41,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     marginTop: 20,
-    marginBottom:30
+    marginBottom: 30,
   },
   lineContainer: {
     flexDirection: "row",

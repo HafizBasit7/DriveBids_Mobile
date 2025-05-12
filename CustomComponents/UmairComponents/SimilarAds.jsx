@@ -13,35 +13,30 @@ import { getSimilarCars } from "../../API_Callings/R1_API/Car";
 import { getCarsIdInWatchList } from "../../API_Callings/R1_API/Watchlist";
 import Nodata from "../NoData";
 
-const SimilarAds = ({make, carId}) => {
+const SimilarAds = ({ make, carId }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const queryClient = useQueryClient();
 
-  const {data, isLoading} = useQuery({
-    queryKey: ['similarCars', carId],
+  const { data, isLoading } = useQuery({
+    queryKey: ["similarCars", carId],
     queryFn: () => getSimilarCars(1, 10, carId),
   });
 
-  
-  const {data: carsInWatchList, isLoading: watchlistLoading} = useQuery({
-      queryKey: ['carsInWatchList'],
-      queryFn: getCarsIdInWatchList,
-      enabled: false,
+  const { data: carsInWatchList, isLoading: watchlistLoading } = useQuery({
+    queryKey: ["carsInWatchList"],
+    queryFn: getCarsIdInWatchList,
+    enabled: false,
   });
 
-
-  const cars = data?.data.cars.filter(car => car._id !== carId);
+  const cars = data?.data.cars.filter((car) => car._id !== carId);
 
   return (
     <View style={styles.container}>
-      {/* Header Line */}
       <View style={styles.lineContainer}>
         <View style={styles.fullLine} />
         <Text style={styles.lineText}>Similar Ads</Text>
         <View style={styles.fullLine} />
       </View>
-
-      {/* Expandable Content */}
 
       {cars?.length === 0 ? (
         <Nodata isSimilar={true} />
@@ -60,21 +55,10 @@ const SimilarAds = ({make, carId}) => {
         </ScrollView>
       )}
 
-      {/* Toggle Button */}
       <TouchableOpacity
         style={styles.dropdownButton}
         onPress={() => setIsExpanded(!isExpanded)}
-      >
-        {/* <Icon
-          name={isExpanded ? "keyboard-arrow-up" : "keyboard-arrow-down"}
-          size={24}
-          color="#2A5DB0"
-          style={styles.icon}
-        />
-        <Text style={styles.dropdownText}>
-          {isExpanded ? "Hide Similar Ads" : "View Similar Ads"}
-        </Text> */}
-      </TouchableOpacity>
+      ></TouchableOpacity>
     </View>
   );
 };
@@ -117,10 +101,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   scrollViewContent: {
-    paddingHorizontal: 3, 
+    paddingHorizontal: 3,
   },
   cardSpacing: {
-    marginRight: 10, 
+    marginRight: 10,
   },
 });
 

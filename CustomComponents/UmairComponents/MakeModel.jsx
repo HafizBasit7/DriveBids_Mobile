@@ -1,11 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons"; // ✅ Import icons
+import { FontAwesome5 } from "@expo/vector-icons";
 
-
-
-const MakeModel = ({car}) => {
-
+const MakeModel = ({ car }) => {
   const carDetails = [
     { icon: "pencil-alt", label: "MAKE", value: car.make },
     { icon: "tools", label: "VARIANT", value: car.variant },
@@ -47,7 +44,7 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    width: "30%", // Three items per row
+    width: "30%",
     alignItems: "center",
     marginVertical: 10,
   },
@@ -62,9 +59,9 @@ const styles = StyleSheet.create({
   },
   iconBorder: {
     backgroundColor: "#fff",
-    borderWidth: 4, // ✅ Blue Border
+    borderWidth: 4,
     borderColor: "#2F61BF",
-    borderRadius: 12, // ✅ Circular Border
+    borderRadius: 12,
     padding: 10,
     alignItems: "center",
     justifyContent: "center",
