@@ -394,7 +394,6 @@ const SignupScreen = () => {
                   style={styles.input}
                   placeholder="Enter your email"
                   value={email}
-                 
                   onChangeText={(text) => setEmail(text.toLowerCase())}
                 />
               </View>
