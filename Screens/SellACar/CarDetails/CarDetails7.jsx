@@ -132,7 +132,7 @@ const CarDetails7 = () => {
             <View style={styles.modalOverlay}>
                <StatusBar
                                     barStyle="dark-content"
-                                    backgroundColor= "rgba(0,0,0,0.3)" 
+                                    backgroundColor= "rgba(0,0,0,0.5)" 
                                     translucent
                                   />
               <TouchableWithoutFeedback>

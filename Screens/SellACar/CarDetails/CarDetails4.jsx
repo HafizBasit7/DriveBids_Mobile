@@ -107,7 +107,6 @@ const CarDetails2 = () => {
           </View>
         </View>
 
-        {/* Bottom Sheet Modal with GooglePlacesAutocomplete */}
         <Modal
           visible={bottomSheetVisible}
           transparent={true}

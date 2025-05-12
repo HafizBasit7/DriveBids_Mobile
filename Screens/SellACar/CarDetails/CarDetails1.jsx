@@ -79,7 +79,7 @@ const CarDetails1 = () => {
   }
 
   const openBottomSheet = () => {
-    setSearchText(""); // Reset search text when opening
+    setSearchText("");
     setBottomSheetVisible(true);
     Animated.timing(bottomSheetAnimation, {
       toValue: 0,
@@ -153,15 +153,15 @@ const CarDetails1 = () => {
         </View>
         </View>
         {/* Bottom Sheet Modal */}
-        <Modal
+   <Modal
           visible={bottomSheetVisible}
           transparent={true}
           animationType="none"
         >
           <KeyboardAvoidingView 
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={{ flex: 1 }}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
           >
             <TouchableWithoutFeedback onPress={closeBottomSheet}>
               <View style={[styles.modalOverlay, { justifyContent: 'flex-end' }]}>
@@ -170,66 +170,65 @@ const CarDetails1 = () => {
                   backgroundColor="rgba(0,0,0,0.5)"
                   translucent
                 />
-                <TouchableWithoutFeedback>
-                  <Animated.View
-                    style={[
-                      styles.bottomSheet,
-                      {
-                        transform: [{ translateY: bottomSheetAnimation }],
-                        maxHeight: Platform.OS === 'ios' 
-                          ? height * 0.45 
-                          : height * 0.55,
-                        minHeight: Platform.OS === 'ios' 
-                          ? height * 0.45
-                          : height * 0.3,
-                      },
-                    ]}
-                  >
-                    <SafeAreaView style={styles.bottomSheetContent}>
-                      <View style={styles.bottomSheetHeader}>
-                        <Text style={styles.bottomSheetTitle}>Select Car Make</Text>
-                        <TouchableOpacity onPress={closeBottomSheet}>
-                          <Text style={styles.closeButton}>✕</Text>
-                        </TouchableOpacity>
-                      </View>
-                      
-                      <View style={styles.searchContainer}>
-                        <TextInput
-                          style={styles.searchInput}
-                          placeholder="Search car make"
-                          placeholderTextColor="#999"
-                          value={searchText}
-                          onChangeText={setSearchText}
-                          autoFocus={false}
-                        />
-                      </View>
-                      
-                      {/* Car makes list */}
-                      {isLoading ? (
-                        <ActivityIndicator size="large" color={GlobalStyles.colors.ButtonColor} style={styles.loader} />
-                      ) : (
-                        <FlatList
-                          data={filteredMakes}
-                          keyExtractor={(item) => item.make_id}
-                          renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => onChangeCarMake(item.make_display)}>
-                              <Text
-                                style={[
-                                  styles.entityText,
-                                  carState.carDetails.make === item.make_display && styles.selectedText,
-                                ]}
-                              >
-                                {item.make_display}
-                              </Text>
-                              <View style={styles.separator} />
-                            </TouchableOpacity>
-                          )}
-                          style={styles.makesList}
-                        />
-                      )}
-                    </SafeAreaView>
-                  </Animated.View>
-                </TouchableWithoutFeedback>
+                <Animated.View
+                  style={[
+                    styles.bottomSheet,
+                    {
+                      transform: [{ translateY: bottomSheetAnimation }],
+                      maxHeight: height * 0.65,
+                      minHeight: height * 0.6,
+                    },
+                  ]}
+                >
+                  <SafeAreaView style={styles.bottomSheetContent}>
+                    <View style={styles.bottomSheetHeader}>
+                      <Text style={styles.bottomSheetTitle}>Select Car Make</Text>
+                      <TouchableOpacity onPress={closeBottomSheet}>
+                        <Text style={styles.closeButton}>✕</Text>
+                      </TouchableOpacity>
+                    </View>
+                    
+                    <View style={styles.searchContainer}>
+                      <TextInput
+                        style={styles.searchInput}
+                        placeholder="Search car make"
+                        placeholderTextColor="#999"
+                        value={searchText}
+                        onChangeText={setSearchText}
+                        autoFocus={true}
+                      />
+                    </View>
+                    
+                    {/* Car makes list */}
+                    {isLoading ? (
+                      <ActivityIndicator 
+                        size="large" 
+                        color={GlobalStyles.colors.ButtonColor} 
+                        style={styles.loader} 
+                      />
+                    ) : (
+                      <FlatList
+                        data={filteredMakes}
+                        keyExtractor={(item) => item.make_id}
+                        renderItem={({ item }) => (
+                          <TouchableOpacity onPress={() => onChangeCarMake(item.make_display)}>
+                            <Text
+                              style={[
+                                styles.entityText,
+                                carState.carDetails.make === item.make_display && styles.selectedText,
+                              ]}
+                            >
+                              {item.make_display}
+                            </Text>
+                            <View style={styles.separator} />
+                          </TouchableOpacity>
+                        )}
+                        style={styles.makesList}
+                        contentContainerStyle={styles.listContent}
+                      />
+                    )}
+                  </SafeAreaView>
+                </Animated.View>
               </View>
             </TouchableWithoutFeedback>
           </KeyboardAvoidingView>
@@ -378,6 +377,21 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+    bottomSheet: {
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    width: "100%",
+  },
+  bottomSheetContent: {
+    flex: 1,
+  },
+  makesList: {
+    flex: 1, 
+  },
+  listContent: {
+    paddingBottom: 20, 
   },
 });
 

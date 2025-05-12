@@ -159,99 +159,88 @@ const CarDetails2 = () => {
         </View>
 
         {/* Bottom Sheet Modal */}
-        <Modal
-          visible={bottomSheetVisible}
-          transparent={true}
-          animationType="none"
+       <Modal
+  visible={bottomSheetVisible}
+  transparent={true}
+  animationType="none"
+>
+  <KeyboardAvoidingView
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    style={{ flex: 1 }}
+    keyboardVerticalOffset={Platform.OS === "ios" ? 40 : 0}
+  >
+    <TouchableWithoutFeedback onPress={closeBottomSheet}>
+      <View style={[styles.modalOverlay, { justifyContent: "flex-end" }]}>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="rgba(0,0,0,0.5)"
+          translucent
+        />
+        <Animated.View
+          style={[
+            styles.bottomSheet,
+            {
+              transform: [{ translateY: bottomSheetAnimation }],
+              maxHeight: height * 0.6, // Increased height
+              minHeight: height * 0.6,
+            },
+          ]}
         >
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
-            style={{ flex: 1 }}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-          >
-            <TouchableWithoutFeedback onPress={closeBottomSheet}>
-              <View
-                style={[styles.modalOverlay, { justifyContent: "flex-end" }]}
-              >
-                <StatusBar
-                  barStyle="dark-content"
-                  backgroundColor="rgba(0,0,0,0.5)"
-                  translucent
-                />
-                <TouchableWithoutFeedback>
-                  <Animated.View
-                    style={[
-                      styles.bottomSheet,
-                      {
-                        transform: [{ translateY: bottomSheetAnimation }],
-                        maxHeight:
-                          Platform.OS === "ios" ? height * 0.45 : height * 0.6,
-                        minHeight:
-                          Platform.OS === "ios" ? height * 0.45 : height * 0.5,
-                      },
-                    ]}
+          <SafeAreaView style={styles.bottomSheetContent}>
+            <View style={styles.bottomSheetHeader}>
+              <Text style={styles.bottomSheetTitle}>Select Car Variant</Text>
+              <TouchableOpacity onPress={closeBottomSheet}>
+                <Text style={styles.closeButton}>✕</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.searchContainer}>
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search car variant"
+                placeholderTextColor="#999"
+                value={searchText}
+                onChangeText={setSearchText}
+                autoFocus={true} // Changed to true for better UX
+              />
+            </View>
+
+            {isLoading ? (
+              <ActivityIndicator
+                size="large"
+                color="#007BFF"
+                style={styles.loader}
+              />
+            ) : (
+              <FlatList
+                data={filteredVariants}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() => onChangeCarVariant(item.model_name)}
                   >
-                    <SafeAreaView style={styles.bottomSheetContent}>
-                      <View style={styles.bottomSheetHeader}>
-                        <Text style={styles.bottomSheetTitle}>
-                          Select Car Variant
-                        </Text>
-                        <TouchableOpacity onPress={closeBottomSheet}>
-                          <Text style={styles.closeButton}>✕</Text>
-                        </TouchableOpacity>
-                      </View>
-
-                      {/* Search input in bottom sheet */}
-                      <View style={styles.searchContainer}>
-                        <TextInput
-                          style={styles.searchInput}
-                          placeholder="Search car variant"
-                          placeholderTextColor="#999"
-                          value={searchText}
-                          onChangeText={setSearchText}
-                          autoFocus={false}
-                        />
-                      </View>
-
-                      {/* Car variants list */}
-                      {isLoading ? (
-                        <ActivityIndicator
-                          size="large"
-                          color="#007BFF"
-                          style={styles.loader}
-                        />
-                      ) : (
-                        <FlatList
-                          data={filteredVariants}
-                          keyExtractor={(item, index) => index.toString()}
-                          renderItem={({ item }) => (
-                            <TouchableOpacity
-                              onPress={() =>
-                                onChangeCarVariant(item.model_name)
-                              }
-                            >
-                              <Text
-                                style={[
-                                  styles.entityText,
-                                  carState.carDetails.variant ===
-                                    item.model_name && styles.selectedText,
-                                ]}
-                              >
-                                {item.model_name}
-                              </Text>
-                              <View style={styles.separator} />
-                            </TouchableOpacity>
-                          )}
-                          style={styles.variantsList}
-                        />
-                      )}
-                    </SafeAreaView>
-                  </Animated.View>
-                </TouchableWithoutFeedback>
-              </View>
-            </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
-        </Modal>
+                    <Text
+                      style={[
+                        styles.entityText,
+                        carState.carDetails.variant === item.model_name &&
+                          styles.selectedText,
+                      ]}
+                    >
+                      {item.model_name}
+                    </Text>
+                    <View style={styles.separator} />
+                  </TouchableOpacity>
+                )}
+                style={styles.variantsList}
+                contentContainerStyle={styles.listContent}
+              />
+            )}
+          </SafeAreaView>
+        </Animated.View>
+      </View>
+    </TouchableWithoutFeedback>
+  </KeyboardAvoidingView>
+</Modal>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -345,8 +334,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     width: "100%",
-    position: "absolute",
-    bottom: 0,
+    // position: "absolute",
+    // bottom: 0,
   },
   bottomSheetContent: {
     flex: 1,
@@ -383,14 +372,20 @@ const styles = StyleSheet.create({
     height: 45,
     fontSize: 16,
   },
-  variantsList: {
-    flexGrow: 1,
-  },
+ 
   loader: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
+
+variantsList: {
+  flex: 1,
+},
+listContent: {
+  paddingBottom: 20,
+}
+
 });
 
 export default CarDetails2;
