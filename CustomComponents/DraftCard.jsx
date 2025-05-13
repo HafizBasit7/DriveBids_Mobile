@@ -9,10 +9,13 @@ const DraftCard = ({
   onCompleteRegistration
 }) => {
 
+  const allImages = Object.values(item.images || {}).flatMap(arr => arr);
+  const imgUrl = allImages[0] || null;
+
   return (
     <View style={styles.container}>
       {/* Car Image */}
-      <Image source={{ uri: 'https://img.lovepik.com/free-png/20210926/lovepik-a-car-png-image_401434180_wh1200.png' }} style={styles.carImage} />
+      <Image source={{ uri: imgUrl?.url || 'https://i.ibb.co/hxgGZbR9/placeholder.png' }} style={styles.carImage} />
 
       {/* Registration Number */}
       <Text style={styles.regNumber}>Reg No: {item.regNo}</Text>

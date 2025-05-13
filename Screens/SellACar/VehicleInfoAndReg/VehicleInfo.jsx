@@ -12,7 +12,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const VehicleInfo = () => {
 
-  const {carState, carPostAd} = useCar();
+  const {carState, carPostAd, dispatch} = useCar();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
@@ -20,7 +20,7 @@ const VehicleInfo = () => {
   const carInspectionReportCompletion = carInspectionReportValidation.safeParse(carState.carInspectionReport);
   const carDetailsCompletion = carDetailsValidation.safeParse(carState.carDetails);
   const imageCompletion = imagesValidation.safeParse(carState.images);
-  const carDamageReportComplection = carDamageReportValidation.safeParse(carState.carDamageReport || undefined);
+  const carDamageReportComplection = carDamageReportValidation.safeParse(carState.carDamageReport);
   const carFeaturesCompletion = carFeaturesValidation.safeParse(carState.features);
 
   const postAdAllow = (carPricingCompletion.success && carInspectionReportCompletion.success && carDetailsCompletion.success && imageCompletion.success
@@ -62,6 +62,13 @@ const VehicleInfo = () => {
   ].filter(Boolean).length;
   
   const completionPercentage = Math.round((completedSections / totalSections) * 100);
+
+  const handleDamageNavigate = () => {
+    if(carState?.carDamageReport === null || carState?.carDamageReport?.damageReport?.length === 0) {
+      dispatch({type: 'SET_DRAFT', payload: {...carState, carDamageReport: undefined}});
+    }
+    navigation.navigate("DamageInspection");
+  };
   
   return (
     <View style={styles.container}>
@@ -128,7 +135,7 @@ const VehicleInfo = () => {
           steps={4}
           iconName="car-wrench"
           completionStatus={carDamageReportComplection.success ? "Completed" : "Incomplete"}
-          onPress={() => navigation.navigate("DamageInspection")}
+          onPress={handleDamageNavigate}
         />
         <VehicleInfoCard
           name="Car Pricing"
