@@ -51,8 +51,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "22aa4512-e0c0-4dc6-befa-212c54da3d21"
+        "projectId": "8d766b39-daaa-4d07-96b2-84c91a0969a3"
       }
-    }
+    },
+    "owner": "corax0"
   }
 }
