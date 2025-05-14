@@ -84,7 +84,7 @@ const SignupScreen = () => {
   const handleRequestOtp = async () => {
     setLoading(true);
     try {
-      await generateEmailVerificationOtp({ email });
+      await generateEmailVerificationOtp({ email: email.trim() });
       setLoading(false);
       setOtpSent(true);
     } catch (e) {
