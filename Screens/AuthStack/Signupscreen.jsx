@@ -81,6 +81,10 @@ const SignupScreen = () => {
   const handleTermsClick = () => {
     Linking.openURL("https://example.com/terms");
   };
+  const handleResendOtp = async () => {
+    await generateEmailVerificationOtp({ email: email.trim() });
+    // console.log(JSON.stringify(res));
+  };
   const handleRequestOtp = async () => {
     setLoading(true);
     try {
@@ -101,10 +105,13 @@ const SignupScreen = () => {
     }
   };
 
-  const verifyOtp = async () => {
+  const verifyOtp = async (otpNew) => {
     setLoading(true);
     try {
-      const result = await verifyEmailOtp({ email, otp: parseInt(otp) });
+      const result = await verifyEmailOtp({
+        email: email.trim(),
+        otp: parseInt(otpNew),
+      });
       setToken(result.data.token);
       setOtp();
       setLoading(false);
@@ -539,6 +546,7 @@ const SignupScreen = () => {
         onSubmit={verifyOtp}
         otp={otp}
         setOtp={setOtp}
+        onResendOtp={handleResendOtp}
       />
     </View>
   );
