@@ -8,7 +8,7 @@
     "newArchEnabled": true,
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/adaptive-icon.png",
+      "image": "./assets/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#FEE226"
     },
@@ -51,9 +51,8 @@
     },
     "extra": {
       "eas": {
-        "projectId": "8d766b39-daaa-4d07-96b2-84c91a0969a3"
+        "projectId": "2c4b22db-799d-488d-8e42-c34432ec2bbd"
       }
-    },
-    "owner": "corax0"
+    }
   }
 }
