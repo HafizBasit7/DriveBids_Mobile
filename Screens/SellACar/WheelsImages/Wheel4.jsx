@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity,  Modal, StatusBar } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  StatusBar,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
 import SectionHeader from "../../../CustomComponents/SectionHeader";
@@ -13,107 +20,125 @@ import { Image } from "expo-image";
 import { uploadImage } from "../../../utils/upload";
 import { Icon } from "react-native-elements";
 const Wheel4 = () => {
-  const {carState, dispatch, draftSave} = useCar();
+  const { carState, dispatch, draftSave } = useCar();
   const index = 3;
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const [imageModalVisible, setImageModalVisible] = useState(false);
   const navigation = useNavigation();
-    const handleGallery = async () => {
-              const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-              if (status !== "granted") {
-                alert("Sorry, we need camera roll permissions to make this work!");
-                return;
-              }
-          
-              let result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ["images" ],
-                aspect: [4, 3],
-                quality: 1,
-              });
-          
-              if (!result.canceled) {
-                setImageModalVisible(false);
-                setLoading(true);
-                try {
-                  const imgUrl = await uploadImage(result.assets[0]);
-                  dispatch({
-                    type: 'UPDATE_IMAGE',
-                    section: "wheels",
-                    index: index,
-                    value: {type: 'image', url: imgUrl}
-                  });
-                }
-                catch(e) {
-                  setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
-                } finally {
-                  setLoading(false);
-                }
-              }
-            };
-        
-        const handleCamera = async () => {
-          const {status} = await ImagePicker.requestCameraPermissionsAsync();
-          if (status !== "granted") {
-              alert("Sorry, we need camera permissions to make this work!");
-              return;
-            }
-          const result = await ImagePicker.launchCameraAsync({
-            mediaTypes: ["images"],
-            aspect: [4, 3],
-            quality: 1,
-          });
-          if (!result.canceled) {
-            setImageModalVisible(false);
-            setLoading(true);
-            try {
-              const imgUrl = await uploadImage(result.assets[0], `wheels-${index}`);
-              dispatch({
-                type: 'UPDATE_IMAGE',
-                section: "wheels",
-                index: index,
-                value: {type: 'image', url: imgUrl}
-              });
-            }
-            catch(e) {
-              setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
-            } finally {
-              setLoading(false);
-            }
-          }
-        };
-      
-        const openGallery = async () => {
-          setImageModalVisible(true);
-        };
+  const handleGallery = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work!");
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImageModalVisible(false);
+      setLoading(true);
+      try {
+        const imgUrl = await uploadImage(result.assets[0]);
+        dispatch({
+          type: "UPDATE_IMAGE",
+          section: "wheels",
+          index: index,
+          value: { type: "image", url: imgUrl },
+        });
+      } catch (e) {
+        setMessage({
+          type: "error",
+          message: "Error uploading image",
+          title: "Error",
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleCamera = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera permissions to make this work!");
+      return;
+    }
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ["images"],
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      setImageModalVisible(false);
+      setLoading(true);
+      try {
+        const imgUrl = await uploadImage(result.assets[0], `wheels-${index}`);
+        dispatch({
+          type: "UPDATE_IMAGE",
+          section: "wheels",
+          index: index,
+          value: { type: "image", url: imgUrl },
+        });
+      } catch (e) {
+        setMessage({
+          type: "error",
+          message: "Error uploading image",
+          title: "Error",
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const openGallery = async () => {
+    setImageModalVisible(true);
+  };
 
   const handleSaveDraft = async () => {
     setLoading(true);
     try {
-        await draftSave('images', 'wheels');
-        setMessage({type: 'success', message: 'Car Saved', title: 'Success'});
-    }
-    catch(e) {
-        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+      await draftSave("images", "wheels");
+      setMessage({ type: "success", message: "Car Saved", title: "Success" });
+    } catch (e) {
+      setMessage({
+        type: "error",
+        message: e.message || e.msg,
+        title: "Error",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const onOk = () => {
-    if(message?.type === 'error') {
+    if (message?.type === "error") {
       setMessage(null);
     } else {
-      setMessage(null); navigation.popTo("CarImages");
+      setMessage(null);
+      navigation.popTo("CarImages");
     }
   };
 
   return (
     <View style={styles.container}>
-        <Modal visible={imageModalVisible} animationType="slide" transparent={true}>
+      <Modal
+        visible={imageModalVisible}
+        animationType="slide"
+        transparent={true}
+      >
         <View style={styles.modalOverlay}>
-                     <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />
-          
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor="rgba(0,0,0,0.7)"
+            translucent
+          />
+
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Select or Take a Photo</Text>
             <TouchableOpacity style={styles.modalItem} onPress={handleCamera}>
@@ -133,13 +158,14 @@ const Wheel4 = () => {
           </View>
         </View>
       </Modal>
+
       <DialogBox
         visible={loading ? true : message ? true : false}
         message={message?.message}
         onOkPress={onOk}
         type={message?.type}
         loading={loading}
-        title={message?.title || ''}
+        title={message?.title || ""}
       />
       <SectionHeader title={"Step 4 of 4"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
@@ -149,7 +175,10 @@ const Wheel4 = () => {
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
           {(carState.images.wheels || [])[index]?.url ? (
             <>
-              <Image source={{ uri: (carState.images.wheels || [])[index]?.url }} style={styles.image} />
+              <Image
+                source={{ uri: (carState.images.wheels || [])[index]?.url }}
+                style={styles.image}
+              />
               <View style={styles.penIconContainer}>
                 <MaterialIcons
                   name="edit"
@@ -224,7 +253,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     justifyContent: "flex-end",
-     marginBottom:"8%"
+    marginBottom: "8%",
   },
   nextButton: {
     backgroundColor: "transparent",
@@ -238,20 +267,20 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContent: {
-    width: '80%',
-    backgroundColor: '#fff',
+    width: "80%",
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
-    maxHeight: '60%',
+    maxHeight: "60%",
   },
   modalTitle: {
     fontSize: 18,
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: "Inter-SemiBold",
     marginBottom: 15,
   },
   modalItem: {
@@ -259,23 +288,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
   },
   modalText: {
     fontSize: 16,
-    fontFamily: 'Inter-Regular',
+    fontFamily: "Inter-Regular",
     marginLeft: 10,
   },
   modalCloseButton: {
     marginTop: 20,
     paddingVertical: 12,
-    backgroundColor: '#2F61BF',
+    backgroundColor: "#2F61BF",
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   modalCloseText: {
-    color: '#fff',
-    fontFamily: 'Inter-SemiBold',
+    color: "#fff",
+    fontFamily: "Inter-SemiBold",
     fontSize: 16,
   },
 });

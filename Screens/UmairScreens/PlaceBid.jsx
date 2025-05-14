@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import CustomButton from "../../CustomComponents/CustomButton";
 import WrapperComponent from "../../CustomComponents/WrapperComponent";
@@ -15,12 +17,11 @@ import { placeBidOnCar } from "../../API_Callings/R1_API/Bid";
 import DialogBox from "../../CustomComponents/DialogBox";
 import { ActivityIndicator } from "react-native-paper";
 
-const PlaceBid = ({route}) => {
-  const [bidAmount, setBidAmount] = useState(""); 
+const PlaceBid = ({ route }) => {
+  const [bidAmount, setBidAmount] = useState("");
   const [message, setMessage] = useState(null);
 
   const scrollY = useRef(new Animated.Value(0)).current; // Animated Value
-
 
   const mutation = useMutation({
     mutationFn: placeBidOnCar,
@@ -36,82 +37,101 @@ const PlaceBid = ({route}) => {
 
   const handlePlaceBid = async () => {
     try {
-      const result = await mutation.mutateAsync({carId: car._id, bidAmount: parseInt(bidAmount)});
+      const result = await mutation.mutateAsync({
+        carId: car._id,
+        bidAmount: parseInt(bidAmount),
+      });
 
-      setMessage({type: 'success', message: result.message, title: 'Success'});
+      setMessage({
+        type: "success",
+        message: result.message,
+        title: "Success",
+      });
       setBidAmount(0);
     } catch (e) {
-      setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+      setMessage({
+        type: "error",
+        message: e.message || e.msg,
+        title: "Error",
+      });
     }
   };
 
   return (
     <WrapperComponent>
-
       <DialogBox
         visible={message ? true : false}
         message={message?.message}
         onOkPress={() => setMessage(null)}
         type={message?.type}
         loading={false}
-        title={message?.title || ''}
+        title={message?.title || ""}
       />
 
-      <HomeHeader carId={car._id} scrollY={scrollY}/>
-      <View style={styles.container}>
-        {/* Main Content */}
-        <View style={styles.content}>
-          {/* Title */}
-          <View style={styles.titleContainer}>
-            <View style={styles.line} />
-            <Text style={styles.title}>Place your bid</Text>
-            <View style={styles.line} />
+      <HomeHeader carId={car._id} scrollY={scrollY} />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={styles.container}>
+          {/* Main Content */}
+          <View style={styles.content}>
+            {/* Title */}
+            <View style={styles.titleContainer}>
+              <View style={styles.line} />
+              <Text style={styles.title}>Place your bid</Text>
+              <View style={styles.line} />
+            </View>
+
+            <Text style={styles.subtitle}>
+              When you confirm your bid, it means you're committing to buy this
+              car if you're the winning bidder.
+            </Text>
+
+            {/* Input Box */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.currencySymbol}>AED</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Bid"
+                keyboardType="numeric"
+                value={bidAmount}
+                onChangeText={setBidAmount}
+              />
+            </View>
+
+            {/* Warning Text */}
+            <Text style={styles.warning}>
+              Please bid AED {minBidPrice.toLocaleString()} or higher.
+            </Text>
+
+            {/* Predefined Bid Options */}
+            <View style={styles.buttonContainer}>
+              {[minBidPrice + 49, minBidPrice + 99, minBidPrice + 249].map(
+                (amount) => (
+                  <TouchableOpacity
+                    key={amount}
+                    style={styles.bidButton}
+                    onPress={() => handleBidSelection(amount)}
+                  >
+                    <Text style={styles.bidText}>
+                      AED {amount.toLocaleString()}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              )}
+            </View>
           </View>
 
-          <Text style={styles.subtitle}>
-            When you confirm your bid, it means you’re committing to buy this car
-            if you’re the winning bidder.
-          </Text>
+          {mutation.isPending && (
+            <ActivityIndicator style={{ marginBottom: 25 }} />
+          )}
 
-          {/* Input Box */}
-          <View style={styles.inputContainer}>
-            <Text style={styles.currencySymbol}>AED</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Bid"
-              keyboardType="numeric"
-              value={bidAmount} // Empty string shows placeholder, non-empty string hides it
-              onChangeText={setBidAmount}
-              
-            />
-          </View>
-
-          {/* Warning Text */}
-          <Text style={styles.warning}>Please bid AED {minBidPrice.toLocaleString()} or higher.</Text>
-
-          {/* Predefined Bid Options */}
-          <View style={styles.buttonContainer}>
-            {[minBidPrice + 100, minBidPrice + 200, minBidPrice + 300].map((amount) => (
-              <TouchableOpacity
-                key={amount}
-                style={styles.bidButton}
-                onPress={() => handleBidSelection(amount)}
-              >
-                <Text style={styles.bidText}>AED {amount.toLocaleString()}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+          {/* Button at the Bottom */}
+          {!mutation.isPending && (
+            <View style={styles.buttonWrapper}>
+              <CustomButton title={"Place Bid Now"} onPress={handlePlaceBid} />
+            </View>
+          )}
         </View>
-
-        {mutation.isPending && (<ActivityIndicator style={{marginBottom: 25}}/>)}
-
-        {/* Button at the Bottom */}
-        {!mutation.isPending && (
-          <View style={styles.buttonWrapper}>
-            <CustomButton title={"Place Bid Now"} onPress={handlePlaceBid} />
-          </View>
-        )}
-      </View>
+      </TouchableWithoutFeedback>
     </WrapperComponent>
   );
 };
@@ -146,7 +166,7 @@ const styles = StyleSheet.create({
     color: "#777",
     textAlign: "center",
     marginVertical: 15,
-    fontWeight:300
+    fontWeight: 300,
   },
   inputContainer: {
     flexDirection: "row",
@@ -157,7 +177,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     height: 65, // Fixed size
     minWidth: 200, // Prevent shrinking
-    marginBottom:5
+    marginBottom: 5,
   },
   currencySymbol: {
     fontSize: 18,
@@ -176,14 +196,14 @@ const styles = StyleSheet.create({
     color: "#B3261E",
     fontSize: 13,
     marginVertical: 10,
-    marginLeft:25
+    marginLeft: 25,
   },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 10,
-    flexWrap:"wrap",
-    gap:10
+    flexWrap: "wrap",
+    gap: 10,
   },
   bidButton: {
     paddingVertical: 12,

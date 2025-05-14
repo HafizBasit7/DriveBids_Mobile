@@ -21,11 +21,10 @@ import TransmissionSelection from "./TransmissionSelection";
 import ColorSelection from "./ColorSelection";
 import FuelTypeSelection from "./FuelTypeSelection";
 
-const FiltersScreen = ({route}) => {
+const FiltersScreen = ({ route }) => {
   const styles = FilterStyles;
   const navigation = useNavigation();
   const fromSearch = route?.params?.fromSearch;
- 
 
   // State for filter values
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
@@ -41,7 +40,7 @@ const FiltersScreen = ({route}) => {
   const [horsePowerRange, setHorsePowerRange] = useState({ min: "", max: "" });
 
   // Predefined lists for filtering
-  const conditions = ["Excellent", "Poor", "Fair", "Good",];
+  const conditions = ["Excellent", "Poor", "Fair", "Good"];
   const fuelTypes = ["Petrol", "Diesel", "HI-Octane", "Electric", "Hybrid"];
   const colors = ["White", "Black", "Silver", "Red", "Blue", "Grey"];
   const transmissionTypes = [
@@ -73,11 +72,6 @@ const FiltersScreen = ({route}) => {
     "Tesla",
     "Porsche",
   ];
-
-
-
-
-
 
   // Clear all filters
   const clearFilters = () => {
@@ -126,7 +120,7 @@ const FiltersScreen = ({route}) => {
   };
 
   useEffect(() => {
-    if(fromSearch) {
+    if (fromSearch) {
       const filters = {
         make: selectedMakes,
         model: model || undefined,
@@ -146,7 +140,7 @@ const FiltersScreen = ({route}) => {
           ? parseFloat(horsePowerRange.max)
           : undefined,
       };
-  
+
       // Remove undefined values
       Object.keys(filters).forEach(
         (key) => filters[key] === undefined && delete filters[key]
@@ -163,47 +157,48 @@ const FiltersScreen = ({route}) => {
       <Header showSearch={false} />
       <View
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
           paddingHorizontal: 16,
           marginBottom: 10,
           marginTop: 10,
         }}
       >
-        <Text style={{ fontSize: 28, fontWeight: 'bold' }}>Filters</Text>
+        <Text style={{ fontSize: 28, fontWeight: "bold" }}>Filters</Text>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
           <TouchableOpacity onPress={clearFilters}>
             <Text
               style={{
                 fontSize: 14,
-                color: '#000',
-                backgroundColor: '#fff',
+                color: "#000",
+                backgroundColor: "#fff",
                 padding: 5,
                 borderRadius: 5,
                 paddingVertical: 7,
 
-                borderColor: '#000',
+                borderColor: "#000",
                 borderWidth: 0.2,
-                fontWeight: 700
+                fontWeight: 700,
               }}
             >
-              Clear Filters </Text>
+              Clear Filters{" "}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={applyFilters}>
             <Text
               style={{
                 fontSize: 14,
-                color: '#fff',
-                backgroundColor: '#2F61BF',
+                color: "#fff",
+                backgroundColor: "#2F61BF",
                 padding: 5,
                 borderRadius: 5,
                 paddingVertical: 7,
                 width: 100,
-                textAlign: 'center',
-                fontWeight: 700
+                textAlign: "center",
+                fontWeight: 700,
               }}
             >
               Apply
@@ -212,16 +207,16 @@ const FiltersScreen = ({route}) => {
         </View>
       </View>
 
-
-
       <ScrollView
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-       
-
-        <MakeSelection makes={makes} selectedMakes={selectedMakes} setSelectedMakes={setSelectedMakes} />
+        <MakeSelection
+          makes={makes}
+          selectedMakes={selectedMakes}
+          setSelectedMakes={setSelectedMakes}
+        />
 
         {/* Model */}
         <View style={styles.section}>
@@ -233,8 +228,6 @@ const FiltersScreen = ({route}) => {
             onChangeText={setModel}
           />
         </View>
-
-
 
         <View style={{ paddingBottom: 10 }}>
           {/* Header */}
@@ -266,12 +259,15 @@ const FiltersScreen = ({route}) => {
                   borderColor: "#000",
                   margin: 3,
                   backgroundColor:
-                    selectedCondition === condition ? GlobalStyles.colors.ButtonColor : "#fff",
+                    selectedCondition === condition
+                      ? GlobalStyles.colors.ButtonColor
+                      : "#fff",
                 }}
               >
                 <Text
                   style={{
-                    color: selectedCondition === condition ? "#ffffff" : "#333333",
+                    color:
+                      selectedCondition === condition ? "#ffffff" : "#333333",
                     fontWeight: "bold",
                   }}
                 >
@@ -282,44 +278,30 @@ const FiltersScreen = ({route}) => {
           </View>
         </View>
 
-
-
-
-
         <View style={{ flex: 1, padding: 2 }}>
-
           <FuelTypeSelection
             fuelTypes={fuelTypes}
             selectedFuel={selectedFuel}
             setSelectedFuel={setSelectedFuel}
           />
-
-
         </View>
 
-
         <View style={{ flex: 1, padding: 2 }}>
-
           <ColorSelection
             colors={colors}
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor}
           />
-
-
         </View>
 
-
         <View style={{ flex: 1, padding: 2 }}>
-
-
           <TransmissionSelection
             transmissionTypes={transmissionTypes}
             selectedTransmission={selectedTransmission}
             setSelectedTransmission={setSelectedTransmission}
           />
         </View>
-         <View style={styles.section}>
+        <View style={styles.section}>
           <Text style={styles.sectionTitle}>Price Range (AED)</Text>
           <View style={styles.rangeInputs}>
             <TextInput
@@ -367,8 +349,7 @@ const FiltersScreen = ({route}) => {
           </View>
         </View>
 
-
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <Text style={styles.sectionTitle}>Horse Power</Text>
           <View style={styles.rangeInputs}>
             <TextInput
@@ -390,16 +371,12 @@ const FiltersScreen = ({route}) => {
               keyboardType="numeric"
             />
           </View>
-        </View>
+        </View> */}
 
         <View style={styles.bottomPadding} />
       </ScrollView>
 
-      <View style={styles.floatingButtonContainer}>
-
-
-
-      </View>
+      <View style={styles.floatingButtonContainer}></View>
     </KeyboardAvoidingView>
   );
 };

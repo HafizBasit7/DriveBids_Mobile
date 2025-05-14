@@ -1,5 +1,16 @@
 import React, { useState, useRef } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal, Animated, Dimensions, TouchableWithoutFeedback, StatusBar } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Modal,
+  Animated,
+  Dimensions,
+  TouchableWithoutFeedback,
+  StatusBar,
+} from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
@@ -15,11 +26,11 @@ const CarDetails9 = () => {
 
   const options = [
     { id: 1, label: "Manual" },
-    { id: 3, label: "CVT" },
-    { id: 4, label: "DCT" },
-    { id: 5, label: "AGS" },
-    { id: 6, label: "AMT" },
-    { id: 10, label: "EV Single-Speed" },
+    { id: 3, label: "CVT - Continuously Variable Transmission" },
+    { id: 4, label: "DCT - Dual Clutch Transmission" },
+    { id: 5, label: "AGS - Auto Gear Shift (semi-automatic)" },
+    { id: 6, label: "AMT - Automated Manual Transmission " },
+    { id: 10, label: "EV Single-Speed – Used in most electric vehicles " },
   ];
 
   const toggleSelection = (value) => {
@@ -66,8 +77,14 @@ const CarDetails9 = () => {
         <Text style={styles.lineText2}>Transmission</Text>
         <View style={styles.line} />
       </View>
-      <View style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: height * 0.65 }}>
-
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          height: height * 0.65,
+        }}
+      >
         {/* Button to open the bottom sheet */}
         <TouchableOpacity onPress={openBottomSheet}>
           <View style={styles.inputWrapper}>
@@ -93,11 +110,11 @@ const CarDetails9 = () => {
       >
         <TouchableWithoutFeedback onPress={closeBottomSheet}>
           <View style={styles.modalOverlay}>
-             <StatusBar
-                                  barStyle="dark-content"
-                                  backgroundColor= "rgba(0,0,0,0.5)" 
-                                  translucent
-                                />
+            <StatusBar
+              barStyle="dark-content"
+              backgroundColor="rgba(0,0,0,0.5)"
+              translucent
+            />
             <TouchableWithoutFeedback>
               <Animated.View
                 style={[
@@ -107,7 +124,9 @@ const CarDetails9 = () => {
               >
                 <View style={styles.bottomSheetContent}>
                   <View style={styles.bottomSheetHeader}>
-                    <Text style={styles.bottomSheetTitle}>Select Transmission</Text>
+                    <Text style={styles.bottomSheetTitle}>
+                      Select Transmission
+                    </Text>
                     <TouchableOpacity onPress={closeBottomSheet}>
                       <Text style={styles.closeButton}>✕</Text>
                     </TouchableOpacity>
@@ -118,13 +137,15 @@ const CarDetails9 = () => {
                     data={options}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
-                      <TouchableOpacity onPress={() => toggleSelection(item.label)}>
+                      <TouchableOpacity
+                        onPress={() => toggleSelection(item.label)}
+                      >
                         <View style={styles.row}>
                           <Text
                             style={[
                               styles.tableData,
                               carState.carDetails.transmission === item.label &&
-                              styles.selectedText,
+                                styles.selectedText,
                             ]}
                           >
                             {item.label}
@@ -141,7 +162,6 @@ const CarDetails9 = () => {
       </Modal>
 
       {/* Buttons */}
-
     </View>
   );
 };

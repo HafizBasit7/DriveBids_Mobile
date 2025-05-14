@@ -1,7 +1,14 @@
 import React, { useState, useRef } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Modal,
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import ReportModal from "./ReportModal"; 
+import ReportModal from "./ReportModal";
 import { useQuery } from "@tanstack/react-query";
 import { getCarDamageReport } from "../../API_Callings/R1_API/Car";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -21,16 +28,15 @@ const damageOptions = [
 
 const descriptions = ["Front View", "Right View", "Left View", "Back View"];
 
-const DamageReportCarousel = ({car}) => {
-
-
+const DamageReportCarousel = ({ car }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const [damage, setDamage] = useState(null);
+  const [noDamageModalVisible, setNoDamageModalVisible] = useState(false);
   const imagePixels = useRef();
 
-  const {data, isLoading} = useQuery({
-    queryKey: ['damageReport', car],
+  const { data, isLoading } = useQuery({
+    queryKey: ["damageReport", car],
     queryFn: () => getCarDamageReport(car),
     enabled: isExpanded,
     refetchOnMount: false,
@@ -52,6 +58,17 @@ const DamageReportCarousel = ({car}) => {
     setDamage(damage);
   };
 
+  const handleViewClick = () => {
+    // Check if there are any damage markers for the current view
+    const hasDamageForCurrentView = damageReport?.some(
+      (marker) => marker.imageIndex === currentIndex
+    );
+
+    if (!hasDamageForCurrentView) {
+      setNoDamageModalVisible(true);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.lineContainer}>
@@ -69,26 +86,31 @@ const DamageReportCarousel = ({car}) => {
           <Text style={styles.instructionText}>
             Click the label to reveal the damage report
           </Text>
-          <Text style={styles.viewText}>{descriptions[currentIndex]} </Text>
+
+          <TouchableOpacity onPress={handleViewClick}>
+            <Text style={styles.viewText}>{descriptions[currentIndex]}</Text>
+          </TouchableOpacity>
 
           <View style={styles.imageContainer}>
             <TouchableOpacity onPress={handlePrev}>
               <Icon name="chevron-left" size={24} color="#2A5DB0" />
             </TouchableOpacity>
 
-            {/* <TouchableOpacity onPress={() => {}}> */}
-              <View style={{position: 'relative'}}>
-                <Image
-                  source={carSides[currentIndex]}
-                  style={styles.carImage}
-                  onLayout={(e) => {
-                    const { width, height } = e.nativeEvent.layout;
-                    imagePixels.current = { width, height };
-                  }}
-                />
-                {damageReport && damageReport.map((marker, index) => {
-                  if(marker.imageIndex === currentIndex) {
-                    const option = damageOptions.find(val => val.label === marker.damageType);
+            <View style={{ position: "relative" }}>
+              <Image
+                source={carSides[currentIndex]}
+                style={styles.carImage}
+                onLayout={(e) => {
+                  const { width, height } = e.nativeEvent.layout;
+                  imagePixels.current = { width, height };
+                }}
+              />
+              {damageReport &&
+                damageReport.map((marker, index) => {
+                  if (marker.imageIndex === currentIndex) {
+                    const option = damageOptions.find(
+                      (val) => val.label === marker.damageType
+                    );
                     return (
                       <MaterialIcons
                         onPress={() => toggleDamage(marker)}
@@ -98,15 +120,14 @@ const DamageReportCarousel = ({car}) => {
                         color={option.color}
                         style={{
                           position: "absolute",
-                          left: marker.x * imagePixels.current.width - 10, 
-                          top: marker.y * imagePixels.current.height - 10, 
+                          left: marker.x * imagePixels.current.width - 10,
+                          top: marker.y * imagePixels.current.height - 10,
                         }}
                       />
-                      
                     );
                   }
                 })}
-              </View>
+            </View>
 
             <TouchableOpacity onPress={handleNext}>
               <Icon name="chevron-right" size={24} color="#2A5DB0" />
@@ -138,6 +159,29 @@ const DamageReportCarousel = ({car}) => {
           {isExpanded ? "Hide Report" : "View Detailed Report"}
         </Text>
       </TouchableOpacity>
+
+      {/* No Damage Reported Modal */}
+      <Modal
+        visible={noDamageModalVisible}
+        transparent={true}
+        animationType="fade"
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>No Damage Reported</Text>
+            <Text style={styles.modalText}>
+              No damage has been reported for the{" "}
+              {descriptions[currentIndex].toLowerCase()}.
+            </Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => setNoDamageModalVisible(false)}
+            >
+              <Text style={styles.modalButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       {damage && (
         <ReportModal
@@ -239,6 +283,41 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textDecorationLine: "underline",
     color: "#2A5DB0",
+  },
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#2A5DB0",
+  },
+  modalText: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  modalButton: {
+    backgroundColor: "#2A5DB0",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  modalButtonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
 

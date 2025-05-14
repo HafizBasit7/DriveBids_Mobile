@@ -1,20 +1,14 @@
 import React, { useRef, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Svg, Circle } from "react-native-svg";
 import { MaterialIcons } from "@expo/vector-icons";
-import {uploadImage} from "../../../utils/upload";
+import { uploadImage } from "../../../utils/upload";
 
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import SectionHeader from "../../../CustomComponents/SectionHeader";
 // import DamageReportModal from "../../../CustomComponents/DamageReportModal";
-import DamageReportModal from "../../../CustomComponents/DamageReportModal"
+import DamageReportModal from "../../../CustomComponents/DamageReportModal";
 import { useCar } from "../../../R1_Contexts/carContext";
 import DialogBox from "../../../CustomComponents/DialogBox";
 import { useNavigation } from "@react-navigation/native";
@@ -33,28 +27,26 @@ const carSides = [
 ];
 
 const DamageInspection = () => {
-
   const [modalVisible, setModalVisible] = useState(false);
   const [carFacing, setCarFacing] = useState(0);
-  const imagePixels = useRef({width: 0, height: 0});
+  const imagePixels = useRef({ width: 0, height: 0 });
 
   const navigation = useNavigation();
-  
+
   //Loading
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
   //Draft State
-  const {carState, dispatch, draftSave} = useCar();
-  const location = useRef({locationX: 0, locationY: 0});
-  
+  const { carState, dispatch, draftSave } = useCar();
+  const location = useRef({ locationX: 0, locationY: 0 });
 
   const handleCarPress = (event) => {
     const { locationX, locationY } = event.nativeEvent;
     const x = locationX / imagePixels.current.width;
     const y = locationY / imagePixels.current.height;
 
-    location.current = {locationX: x, locationY: y};
+    location.current = { locationX: x, locationY: y };
     setModalVisible(true);
   };
 
@@ -67,18 +59,21 @@ const DamageInspection = () => {
     try {
       setLoading(true);
       imgUrl = await uploadImage(damageReport.imageUrl);
-    }
-    catch(e) {
-      setMessage({type: 'error', message: 'Error uploading image', title: 'Error'});
+    } catch (e) {
+      setMessage({
+        type: "error",
+        message: "Error uploading image",
+        title: "Error",
+      });
     } finally {
       setLoading(false);
     }
 
-    if(!imgUrl) return;
+    if (!imgUrl) return;
 
     //Save new damage report
     dispatch({
-      type: 'INSERT_DAMAGE',
+      type: "INSERT_DAMAGE",
       value: {
         imageIndex: carFacing,
         x: location.current.locationX,
@@ -97,21 +92,25 @@ const DamageInspection = () => {
   const handleSaveDraft = async () => {
     setLoading(true);
     try {
-        await draftSave('carDamageReport');
-        setMessage({type: 'success', message: 'Car Saved', title: 'Success'});
-    }
-    catch(e) {
-        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+      await draftSave("carDamageReport");
+      setMessage({ type: "success", message: "Car Saved", title: "Success" });
+    } catch (e) {
+      setMessage({
+        type: "error",
+        message: e.message || e.msg,
+        title: "Error",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const onOk = () => {
-    if(message?.type === 'error') {
+    if (message?.type === "error") {
       setMessage(null);
     } else {
-      setMessage(null); navigation.popTo("VehicleInfo");
+      setMessage(null);
+      navigation.popTo("VehicleInfo");
     }
   };
 
@@ -124,29 +123,16 @@ const DamageInspection = () => {
         onOkPress={onOk}
         type={message?.type}
         loading={loading}
-        title={message?.title || ''}
+        title={message?.title || ""}
       />
 
       <SectionHeader title={`Step ${carFacing + 1} of 4`} />
-      <Text style={styles.instruction}>
-      Click on the part of the car where
-      damage exists
-      </Text>
+      <Text style={styles.instruction}>Choose Label & Upload Area Image</Text>
 
       {/* Damage Info */}
       <View style={styles.damageSelector}>
         {damageOptions.map((option, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.damageOption,
-              // selectedDamage?.label === option.label && {
-              //   backgroundColor: "#E8F0FF",
-              //   fontWeight: "700",
-              // },
-            ]}
-            // onPress={() => handleSelectDamage(option)}
-          >
+          <TouchableOpacity key={index} style={[styles.damageOption]}>
             <View
               style={[
                 {
@@ -155,10 +141,6 @@ const DamageInspection = () => {
                   borderRadius: 8,
                   padding: 2,
                 },
-                // selectedDamage?.label === option.label && {
-                //   borderColor: GlobalStyles.colors.ButtonColor,
-                //   borderWidth: 2,
-                // },
               ]}
             >
               <MaterialIcons
@@ -167,14 +149,7 @@ const DamageInspection = () => {
                 color={option.color}
               />
             </View>
-            <Text
-              style={[
-                styles.optionText,
-                // selectedDamage?.label === option.label && { fontWeight: "700" },
-              ]}
-            >
-              {option.label}
-            </Text>
+            <Text style={[styles.optionText]}>{option.label}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -188,8 +163,10 @@ const DamageInspection = () => {
         }}
       >
         <View style={styles.carContainer}>
-          {/* <Svg width={250} height={200} viewBox="0 0 250 200"> */}
-          <TouchableOpacity style={{position: 'relative' }} onPress={handleCarPress}>
+          <TouchableOpacity
+            style={{ position: "relative" }}
+            onPress={handleCarPress}
+          >
             <Image
               source={carSides[carFacing]}
               style={styles.carImage}
@@ -199,31 +176,29 @@ const DamageInspection = () => {
               }}
             />
             {carState.carDamageReport?.damageReport.map((marker, index) => {
-            if(marker.imageIndex === carFacing) {
-              const option = damageOptions.find(val => val.label === marker.damageType);
-              return (
-                <MaterialIcons
-                  // onPress={() => {}}
-                  key={index}
-                  name={option.icon}
-                  size={25}
-                  color={option.color}
-                  style={{
-                    position: "absolute",
-                    zIndex: 3,
-                    left: marker.x * imagePixels.current.width - 10, 
-                    top: marker.y * imagePixels.current.height - 10, 
-                  }}
-                />
-                
-              );
-            }
-          })}
+              if (marker.imageIndex === carFacing) {
+                const option = damageOptions.find(
+                  (val) => val.label === marker.damageType
+                );
+                return (
+                  <MaterialIcons
+                    key={index}
+                    name={option.icon}
+                    size={25}
+                    color={option.color}
+                    style={{
+                      position: "absolute",
+                      zIndex: 3,
+                      left: marker.x * imagePixels.current.width - 10,
+                      top: marker.y * imagePixels.current.height - 10,
+                    }}
+                  />
+                );
+              }
+            })}
           </TouchableOpacity>
-          {/* </Svg> */}
         </View>
 
-        {/* Instruction */}
         <Text style={[styles.instruction, { fontSize: 15, marginTop: 7 }]}>
           {carFacing === 0
             ? "[ Front Side ]"
@@ -231,21 +206,22 @@ const DamageInspection = () => {
             ? "[ Right Side ]"
             : carFacing === 2
             ? "[ Left Side ]"
-            : "[ Back Side ]"}
+            : "[ Rear View ]"}
         </Text>
 
-        {/* Button */}
-        <View style={[styles.buttonContainer, {marginBottom: carFacing > 0 ? 95 : 80}]}>
+        <View
+          style={[
+            styles.buttonContainer,
+            { marginBottom: carFacing > 0 ? 95 : 80 },
+          ]}
+        >
           {carFacing < 3 ? (
             <CustomButton
               title="Next"
               onPress={() => setCarFacing(carFacing + 1)}
             />
           ) : (
-            <CustomButton
-              title="Finish"
-              onPress={handleSaveDraft}
-            />
+            <CustomButton title="Finish" onPress={handleSaveDraft} />
           )}
           {carFacing > 0 && (
             <CustomButton
@@ -287,7 +263,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",  },
+    width: "100%",
+  },
   damageOption: {
     flexDirection: "row",
     alignItems: "center",
@@ -311,8 +288,8 @@ const styles = StyleSheet.create({
   carImage: {
     width: 200,
     height: 200,
-    resizeMode: "contain",  
-    marginHorizontal:"auto"
+    resizeMode: "contain",
+    marginHorizontal: "auto",
   },
   modalContainer: {
     maxHeight: "85%",
@@ -382,8 +359,8 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     justifyContent: "flex-end",
-   
-    marginTop:"43%"
+
+    marginTop: "43%",
   },
   nextButton: {
     backgroundColor: "transparent",

@@ -14,7 +14,7 @@ import DialogBox from "../../../CustomComponents/DialogBox";
 
 const InteriorFeature1 = () => {
   const navigation = useNavigation(); // Initialize navigation
-  const {carState, dispatch, draftSave} = useCar();
+  const { carState, dispatch, draftSave } = useCar();
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
@@ -30,29 +30,25 @@ const InteriorFeature1 = () => {
     { id: 8, label: "Rear AC Vents" },
     { id: 9, label: "Cruise Control" },
     { id: 10, label: "Wireless Charging" },
-    { id: 11, label: "Sunroof" },
-    {id: 12,   label:"Ambient Interior Lighting"},
-    {id: 13,   label:"Power Adjustable Seats"},
-    {id: 14,   label:"    Rear Seat Armrest with Cupholders"},
-
-
-    
-    
+    // { id: 11, label: "Sunroof" },
+    { id: 12, label: "Ambient Interior Lighting" },
+    { id: 13, label: "Power Adjustable Seats" },
+    { id: 14, label: "    Rear Seat Armrest with Cupholders" },
   ];
 
   const toggleSelection = (value) => {
-    if(carState.features?.interior?.includes(value)) {
+    if (carState.features?.interior?.includes(value)) {
       dispatch({
-        type: 'REMOVE_FEATURE',
-        section: 'interior',
+        type: "REMOVE_FEATURE",
+        section: "interior",
         value,
       });
       return;
-    };
+    }
 
     dispatch({
-      type: 'UPDATE_FEATURE',
-      section: 'interior',
+      type: "UPDATE_FEATURE",
+      section: "interior",
       value,
     });
   };
@@ -60,21 +56,25 @@ const InteriorFeature1 = () => {
   const handleSaveDraft = async () => {
     setLoading(true);
     try {
-        await draftSave('features');
-        setMessage({type: 'success', message: 'Car Saved', title: 'Success'});
-    }
-    catch(e) {
-        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+      await draftSave("features");
+      setMessage({ type: "success", message: "Car Saved", title: "Success" });
+    } catch (e) {
+      setMessage({
+        type: "error",
+        message: e.message || e.msg,
+        title: "Error",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const onOk = () => {
-    if(message?.type === 'error') {
+    if (message?.type === "error") {
       setMessage(null);
     } else {
-      setMessage(null); navigation.popTo("VehicleInfo");
+      setMessage(null);
+      navigation.popTo("VehicleInfo");
     }
   };
 
@@ -86,7 +86,7 @@ const InteriorFeature1 = () => {
         onOkPress={onOk}
         type={message?.type}
         loading={loading}
-        title={message?.title || ''}
+        title={message?.title || ""}
       />
       {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
@@ -104,46 +104,52 @@ const InteriorFeature1 = () => {
 
       {/* Clickable List with Checkboxes */}
       <FlatList
-      style={{paddingTop: 20}}
-  data={options}
-  numColumns={2}
-  
-  columnWrapperStyle={{ justifyContent: 'space-between',  }}
-  keyExtractor={(item) => item.id.toString()}
-  renderItem={({ item }) => (
-    <TouchableOpacity
-    key={item.id}
-      onPress={() => toggleSelection(item.label)}
-      style={{
-        width: '48%',
-        marginBottom: 8,
-       
-        justifyContent: 'flex-start',
-        borderRadius: 6,
-        padding: 8,
-      }}
-    >
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-      >
-        <CheckBox
-          checked={carState.features?.interior?.includes(item.label)}
-          onPress={() => toggleSelection(item.label)}
-          checkedColor="#007BFF"
-          containerStyle={{ padding: 0, margin: 0 }}
-        />
-        <Text style={{ marginLeft: 2, fontSize: 14 ,   marginLeft: 4,
-    fontSize: 14,
-    flexShrink: 1,
-    flexWrap: 'wrap',}}>{item.label} </Text>
-      </View>
-    </TouchableOpacity>
-  )}
-/>
+        style={{ paddingTop: 20 }}
+        data={options}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: "space-between" }}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            key={item.id}
+            onPress={() => toggleSelection(item.label)}
+            style={{
+              width: "48%",
+              marginBottom: 8,
 
+              justifyContent: "flex-start",
+              borderRadius: 6,
+              padding: 8,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <CheckBox
+                checked={carState.features?.interior?.includes(item.label)}
+                onPress={() => toggleSelection(item.label)}
+                checkedColor="#007BFF"
+                containerStyle={{ padding: 0, margin: 0 }}
+              />
+              <Text
+                style={{
+                  marginLeft: 2,
+                  fontSize: 14,
+                  marginLeft: 4,
+                  fontSize: 14,
+                  flexShrink: 1,
+                  flexWrap: "wrap",
+                }}
+              >
+                {item.label}{" "}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
@@ -195,7 +201,7 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "700",
   },
- 
+
   input: {
     flex: 1,
     fontSize: 16,
@@ -206,8 +212,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 5,
     paddingHorizontal: 1,
-   
-   
   },
   entityText: {
     fontSize: 16,
@@ -219,7 +223,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: 10,
-    marginBottom:"3%"
+    marginBottom: "3%",
   },
   button: {
     marginBottom: 5,
