@@ -259,6 +259,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     backgroundColor: "#fff",
     marginBottom: 15,
+    color: "#000",
     fontFamily: "Inter-Regular",
   },
   rememberContainer: {
