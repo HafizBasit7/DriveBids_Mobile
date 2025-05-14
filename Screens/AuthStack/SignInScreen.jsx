@@ -129,6 +129,7 @@ const SignInScreen = () => {
                       borderColor:
                         focusedInput === "password" ? "#2F61BF" : "#ccc",
                       paddingRight: 40,
+                      color: "black",
                     },
                   ]}
                   placeholder="Enter your password"
