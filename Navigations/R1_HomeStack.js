@@ -11,6 +11,7 @@ import OwnerProfile from "../Screens/Tahir-Screens/OwnerProfile/OwnerProfile";
 import Filters_ViewAll from "../Screens/Tahir-Screens/Filter&ViewAll/Filter&ViewAll";
 import ViewAllCarsScreen from "../Screens/Tahir-Screens/Filter&ViewAll/ViewAllCarsScreen";
 import ChangeLocationScreen from "../Screens/RehanScreens/ChangeLocation";
+import ActiveChatBox from "../Screens/Tahir-Screens/Messages/ActiveChatBox";
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,8 @@ export default function R1_HomeStack() {
           headerShown: false,
         }}
       />
+
+      <Stack.Screen name="ActiveChatBox" component={ActiveChatBox} options={{headerShown: false}} />
 
       <Stack.Screen
         name="ChangeLocation"

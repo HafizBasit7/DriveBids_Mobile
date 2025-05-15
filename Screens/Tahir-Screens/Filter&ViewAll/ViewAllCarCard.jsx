@@ -84,10 +84,10 @@ const ViewAllCarCard = ({
   }
 
   const handleViewAd = () => {
-    if(notHome) {
-      navigation.navigate('Home', {screen: 'AdDetails', params: {carId: ad._id}});
-      return;
-    }
+    // if(notHome) {
+    //   navigation.navigate('Home', {screen: 'AdDetails', params: {carId: ad._id}});
+    //   return;
+    // }
     navigation.navigate('AdDetails', {carId: ad._id})
   };
 

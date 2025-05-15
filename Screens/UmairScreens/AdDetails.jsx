@@ -142,7 +142,7 @@ const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
           )}
           <InspectionReport car={car._id}/>
           <DamageReportCarousel car={car._id}/>
-          {isMyBid && (<BiddingList car={car._id}/>)}
+          {isMyBid && (<BiddingList car={car._id} isSold={car.status === 'sold'}/>)}
           {!isMyBid && (<BiddingHistory car={car._id}/>)}
           {/* todo: do */}
           <CarFeatures features={car.features}/>

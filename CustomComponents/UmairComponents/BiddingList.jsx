@@ -9,7 +9,7 @@ import { acceptBid } from "../../API_Callings/R1_API/Bid";
 import DialogBox from "../DialogBox";
 import { Image } from "expo-image";
 
-const BiddingList = ({ car }) => {
+const BiddingList = ({ car, isSold }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [message, setMessage] = useState(null);
 
@@ -93,15 +93,18 @@ const BiddingList = ({ car }) => {
                 <Text style={styles.bidDate}>
                   {formatDateTime(bidder.createdAt)}
                 </Text>
-                <TouchableOpacity
-                  style={styles.acceptButton}
-                  onPress={() => handlePressAcceptBid(bidder._id)}
-                >
-                  {mutation.isPending && <ActivityIndicator color="white" />}
-                  {!mutation.isPending && (
-                    <Text style={styles.acceptText}>Accept</Text>
-                  )}
-                </TouchableOpacity>
+                {!isSold && (
+                  <TouchableOpacity
+                    style={styles.acceptButton}
+                    onPress={() => handlePressAcceptBid(bidder._id)}
+                  >
+                    {mutation.isPending && <ActivityIndicator color="white" />}
+                    {!mutation.isPending && (
+                      <Text style={styles.acceptText}>Accept</Text>
+                    )}
+                  </TouchableOpacity>
+                )}
+                {isSold && <Text></Text>}
               </View>
             </View>
           ))}

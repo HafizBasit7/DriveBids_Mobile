@@ -31,13 +31,15 @@ const CompletedDealsCard = ({
 
 
   const handleViewAd = () => {
-      navigation.navigate('Home', {screen: 'AdDetails', params: {carId: ad._id}});
+      // navigation.navigate('Home', {screen: 'AdDetails', params: {carId: ad._id}});
+      navigation.navigate("AdDetails", { carId: ad._id });
   };
 
   const handleChatNow = async  () => {
     try {
       const result = await chatNowMutation.mutateAsync({userId: item.user._id, carId: ad._id});
-      navigation.navigate('Messages' , {screen: 'ActiveChatBox', params: {chatId: result.data.chatId}})
+      // navigation.navigate('Messages' , {screen: '', params: {}});
+      navigation.navigate('ActiveChatBox', {chatId: result.data.chatId});
     }
     catch(e) {
       console.log(e);

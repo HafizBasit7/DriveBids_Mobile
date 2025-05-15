@@ -58,7 +58,7 @@ const DamageInspection = () => {
     //Upload image
     try {
       setLoading(true);
-      imgUrl = await uploadImage(damageReport.imageUrl);
+      imgUrl = await uploadImage(damageReport.imageUrl, 'camera-report');
     } catch (e) {
       setMessage({
         type: "error",
@@ -93,7 +93,7 @@ const DamageInspection = () => {
     setLoading(true);
     try {
       await draftSave("carDamageReport");
-      setMessage({ type: "success", message: "Car Saved", title: "Success" });
+      setMessage({ type: "success", message: !carState.carDamageReport ? "Car Saved, No Damage Reported." : 'Car Saved', title: "Success" });
     } catch (e) {
       setMessage({
         type: "error",

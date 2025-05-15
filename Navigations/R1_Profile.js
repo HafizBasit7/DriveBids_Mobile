@@ -10,6 +10,10 @@ import NotificationSettingsScreen from "../Screens/Tahir-Screens/NotificationSet
 import PasswordChangeScreen from "../Screens/Tahir-Screens/ChangePassword/ChangePassword";
 import MyAds from "../Screens/Tahir-Screens/MyAds/MyAds";
 import CompletedDeals from "../Screens/RehanScreens/CompletedDeals";
+import AdDetails from "../Screens/UmairScreens/AdDetails";
+import ActiveChatBox from "../Screens/Tahir-Screens/Messages/ActiveChatBox";
+import PlaceBid from "../Screens/UmairScreens/PlaceBid";
+import OwnerProfile from "../Screens/Tahir-Screens/OwnerProfile/OwnerProfile";
 
 const Stack = createStackNavigator();
 
@@ -29,6 +33,23 @@ export default function R1_Profile() {
       <Stack.Screen name="NotificationSettingsScreen" component={NotificationSettingsScreen}/>
       <Stack.Screen name="PasswordChangeScreen" component={PasswordChangeScreen}/>
       <Stack.Screen name="Terms" component={Terms} />
+      <Stack.Screen
+        name="AdDetails"
+        component={AdDetails}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PlaceBid"
+        component={PlaceBid}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        name="OwnerProfile"
+        component={OwnerProfile}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen name="ActiveChatBox" component={ActiveChatBox} options={{headerShown: false}} />
     </Stack.Navigator>
   );
 }

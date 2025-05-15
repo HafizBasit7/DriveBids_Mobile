@@ -48,6 +48,14 @@ const BidsButtons = ({
   const bids = data?.data?.bids;
   const bid = bids?.find((c) => c.user === authState.user._id);
 
+  let computedQuickBid = car.highestBid ? car.highestBid + 1 : car.staringBidPrice;
+  if(bid) {
+    //Self user highest bid
+    if(bid.bidAmount === car.highestBid) {
+      computedQuickBid = bid.maxBudget + 1;
+    }
+  }
+
   const mutation = useMutation({
     mutationFn: placeBidOnCar,
   });
@@ -61,7 +69,7 @@ const BidsButtons = ({
       const result = await mutation.mutateAsync({
         carId: car._id,
         bidAmount: parseInt(
-          car.highestBid ? car.highestBid + 1 : car.staringBidPrice
+          computedQuickBid
         ),
       });
       setMessage({
@@ -185,9 +193,7 @@ const BidsButtons = ({
                   <Text style={styles.blueText}>{quickBidTitle}</Text>
                   <Text style={styles.price}>AED </Text>
                   <Text style={styles.price}>
-                    {car.highestBid
-                      ? (car.highestBid + 1).toLocaleString()
-                      : car.staringBidPrice.toLocaleString()}
+                    {computedQuickBid.toLocaleString()}
                   </Text>
                 </>
               ) : (

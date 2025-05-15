@@ -87,12 +87,9 @@ const NotificationScreen = () => {
       onPress={() => {
         mutation.mutate(item._id);
         if (item.notificationType === "car") {
-          navigation.navigate("Home", {
-            screen: "AdDetails",
-            params: { carId: item.metaData.car },
-          });
+          navigation.navigate('AdDetails', { carId: item.metaData.car });
         } else if(item.notificationType === 'message') {
-          navigation.navigate('Messages' , {screen: 'ActiveChatBox', params: {chatId: item.metaData.chat}});
+          navigation.navigate('ActiveChatBox', {chatId: item.metaData.chat});
         }
       }}
       style={[

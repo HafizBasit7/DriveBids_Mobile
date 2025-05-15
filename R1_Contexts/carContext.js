@@ -213,6 +213,13 @@ export default function CarContextProvider({children}) {
                     cleanedSubSection[sub] = carState[section][sub];
                 }
             }
+
+            if(Object.keys(cleanedSubSection).length === 0) {
+                throw {
+                    name: 'app',
+                    message: 'No info to save',
+                };
+            }
             
             const result = await saveDraft({
                 [section]: {
@@ -241,6 +248,13 @@ export default function CarContextProvider({children}) {
                 }
             } else if(carState[section]) {
                 body[section] = carState[section];
+            }
+            
+            if(!body[section] && section !== 'carDamageReport') {
+                throw {
+                    name: 'app',
+                    message: 'No info to save',
+                }
             }
 
             const result = await saveDraft(body);

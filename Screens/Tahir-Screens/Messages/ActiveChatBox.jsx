@@ -359,10 +359,7 @@ const ActiveChatBox = ({route}) => {
   </Text>
 </View>
         </View>
-        <Ionicons  onPress={() => navigation.navigate("Home", {
-          screen: "AdDetails",
-          params: { carId: chatHeadDataReal?.car._id },
-        })} name="chevron-forward" size={24} color="#999" />
+        <Ionicons  onPress={() => navigation.navigate('AdDetails', { carId: chatHeadDataReal?.car._id })} name="chevron-forward" size={24} color="#999" />
 
 
       </View>
