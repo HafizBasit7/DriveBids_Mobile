@@ -48,10 +48,12 @@ const BidsButtons = ({
   const bids = data?.data?.bids;
   const bid = bids?.find((c) => c.user === authState.user._id);
 
-  let computedQuickBid = car.highestBid ? car.highestBid + 1 : car.staringBidPrice;
-  if(bid) {
+  let computedQuickBid = car.highestBid
+    ? car.highestBid + 1
+    : car.staringBidPrice;
+  if (bid) {
     //Self user highest bid
-    if(bid.bidAmount === car.highestBid) {
+    if (bid.bidAmount === car.highestBid) {
       computedQuickBid = bid.maxBudget + 1;
     }
   }
@@ -68,9 +70,7 @@ const BidsButtons = ({
     try {
       const result = await mutation.mutateAsync({
         carId: car._id,
-        bidAmount: parseInt(
-          computedQuickBid
-        ),
+        bidAmount: parseInt(computedQuickBid),
       });
       setMessage({
         type: "success",
@@ -213,13 +213,37 @@ const BidsButtons = ({
             {showQuickBidTooltip && (
               <View style={[styles.tooltip, styles.quickBidTooltip]}>
                 <Text style={styles.tooltipText}>
-                  Minimum price users can start bidding from
+                  Minimum amount to outbid the top bidder, unless they increase
+                  their bid again.
                 </Text>
               </View>
             )}
           </View>
         </View>
-
+        <Text
+          style={{
+            color: "black",
+            fontWeight: "500",
+            textDecorationLine: "underline",
+            fontStyle: "italic",
+            marginLeft: 10,
+            marginTop: 10,
+          }}
+        >
+          Your offer:
+        </Text>
+        {!loadingBids && !bid && (
+          <View style={styles.container1}>
+            <View>
+              <Text style={{ color: "#696969" }}>Current bid:</Text>
+              <Text style={{ color: "#696969" }}>Total Budget: </Text>
+            </View>
+            <View>
+              <Text style={{ color: "#696969" }}>{0} AED</Text>
+              <Text style={{ color: "#696969" }}>{0} AED</Text>
+            </View>
+          </View>
+        )}
         {!loadingBids && bid && (
           <View style={styles.container1}>
             <View>
@@ -293,12 +317,12 @@ const styles = StyleSheet.create({
   },
   tooltip: {
     position: "absolute",
-    backgroundColor: "#333",
+    backgroundColor: "black",
     padding: 8,
     borderRadius: 4,
-    zIndex: 100,
+    zIndex: 101,
     width: 200,
-    opacity: 0.8,
+    // opacity: 0.8,
   },
   buyNowTooltip: {
     top: 70,

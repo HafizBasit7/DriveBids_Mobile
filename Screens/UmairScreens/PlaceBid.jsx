@@ -16,10 +16,12 @@ import { useMutation } from "@tanstack/react-query";
 import { placeBidOnCar } from "../../API_Callings/R1_API/Bid";
 import DialogBox from "../../CustomComponents/DialogBox";
 import { ActivityIndicator } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
 const PlaceBid = ({ route }) => {
   const [bidAmount, setBidAmount] = useState("");
   const [message, setMessage] = useState(null);
+  const navigation = useNavigation("");
 
   const scrollY = useRef(new Animated.Value(0)).current; // Animated Value
 
@@ -62,7 +64,10 @@ const PlaceBid = ({ route }) => {
       <DialogBox
         visible={message ? true : false}
         message={message?.message}
-        onOkPress={() => setMessage(null)}
+        onOkPress={() => {
+          setMessage(null);
+          navigation.goBack();
+        }}
         type={message?.type}
         loading={false}
         title={message?.title || ""}

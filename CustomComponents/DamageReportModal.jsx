@@ -29,53 +29,51 @@ export default DamageReportModal = ({
   handleSaveDamage,
   dismissModal,
 }) => {
-
   const [selectedDamage, setSelectedDamage] = useState(damageOptions[0]);
   const [image, setSelectImage] = useState(null);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
   const [imageModalVisible, setImageModalVisible] = useState(false);
-  
 
   //handle gallery image
-   const handleGallery = async () => {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== "granted") {
-        alert("Sorry, we need camera roll permissions to make this work!");
-        return;
-      }
+  const handleGallery = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work!");
+      return;
+    }
 
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ["images" ],
-        // allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      // allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-      if (!result.canceled) {
-        setImageModalVisible(false);
-        setSelectImage(result.assets[0]);
-      }
-    };
+    if (!result.canceled) {
+      setImageModalVisible(false);
+      setSelectImage(result.assets[0]);
+    }
+  };
 
   //handle camera image
   const handleCamera = async () => {
-      const {status} = await ImagePicker.requestCameraPermissionsAsync();
-      if (status !== "granted") {
-        alert("Sorry, we need camera permissions to make this work!");
-        return;
-      }
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera permissions to make this work!");
+      return;
+    }
 
-      const result = await ImagePicker.launchCameraAsync({
-        mediaTypes: ["images"],
-        aspect: [4, 3],
-        quality: 1,
-      });
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ["images"],
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-      if (!result.canceled) {
-        setImageModalVisible(false);
-        setSelectImage(result.assets[0]);
-      }
-    };
+    if (!result.canceled) {
+      setImageModalVisible(false);
+      setSelectImage(result.assets[0]);
+    }
+  };
 
   //Gallery
   const openGallery = async () => {
@@ -83,15 +81,14 @@ export default DamageReportModal = ({
   };
 
   const handleSaveDamageReport = () => {
-    if(!image && !description) return;
+    if (!image && !description) return;
     handleSaveDamage({
       imageUrl: image,
       description,
       damageType: selectedDamage.label,
     });
     resetState();
-    
-  }
+  };
 
   const resetState = () => {
     setSelectedDamage(damageOptions[0]);
@@ -102,10 +99,18 @@ export default DamageReportModal = ({
   return (
     <>
       {/* Image selection modal  */}
-      <Modal visible={imageModalVisible} animationType="slide" transparent={true}>
+      <Modal
+        visible={imageModalVisible}
+        animationType="slide"
+        transparent={true}
+      >
         <View style={styles2.modalOverlay}>
-          <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />
-          
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor="rgba(0,0,0,0.7)"
+            translucent
+          />
+
           <View style={styles2.modalContent}>
             <Text style={styles2.modalTitle}>Select or Take a Photo</Text>
             <TouchableOpacity style={styles2.modalItem} onPress={handleCamera}>
@@ -126,7 +131,11 @@ export default DamageReportModal = ({
         </View>
       </Modal>
 
-      <Modal visible={modalVisible && !imageModalVisible} transparent animationType="fade">
+      <Modal
+        visible={modalVisible && !imageModalVisible}
+        transparent
+        animationType="fade"
+      >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View
             style={{
@@ -191,7 +200,9 @@ export default DamageReportModal = ({
                       <Text
                         style={[
                           styles.optionText,
-                          selectedDamage?.label === option.label && { fontWeight: "700" },
+                          selectedDamage?.label === option.label && {
+                            fontWeight: "700",
+                          },
                         ]}
                       >
                         {option.label}
@@ -210,7 +221,6 @@ export default DamageReportModal = ({
                   onChangeText={setDescription}
                 />
                 <Text style={{ fontFamily: "Inter-SemiBold" }}>
-                  {" "}
                   Original Damage Image
                 </Text>
                 <TouchableOpacity
@@ -219,10 +229,7 @@ export default DamageReportModal = ({
                 >
                   {image ? (
                     <>
-                      <Image
-                        source={{ uri: image.uri }}
-                        style={styles.image}
-                      />
+                      <Image source={{ uri: image.uri }} style={styles.image} />
                       <View style={styles.penIconContainer}>
                         <MaterialIcons
                           name="edit"
@@ -272,20 +279,20 @@ export default DamageReportModal = ({
 const styles2 = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContent: {
-    width: '80%',
-    backgroundColor: '#fff',
+    width: "80%",
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
-    maxHeight: '60%',
+    maxHeight: "60%",
   },
   modalTitle: {
     fontSize: 18,
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: "Inter-SemiBold",
     marginBottom: 15,
   },
   modalItem: {
@@ -293,23 +300,23 @@ const styles2 = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
   },
   modalText: {
     fontSize: 16,
-    fontFamily: 'Inter-Regular',
+    fontFamily: "Inter-Regular",
     marginLeft: 10,
   },
   modalCloseButton: {
     marginTop: 20,
     paddingVertical: 12,
-    backgroundColor: '#2F61BF',
+    backgroundColor: "#2F61BF",
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   modalCloseText: {
-    color: '#fff',
-    fontFamily: 'Inter-SemiBold',
+    color: "#fff",
+    fontFamily: "Inter-SemiBold",
     fontSize: 16,
   },
 });

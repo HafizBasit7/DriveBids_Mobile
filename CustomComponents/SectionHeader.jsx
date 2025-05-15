@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     justifyContent: "center",
-    
+    zIndex: 100,
   },
   title: {
     fontSize: 22,
