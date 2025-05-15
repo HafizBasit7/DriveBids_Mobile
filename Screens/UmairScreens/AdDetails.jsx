@@ -1,8 +1,18 @@
-import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Dimensions, ScrollView, SafeAreaView ,  Animated, 
+import React, { useEffect, useRef, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  SafeAreaView,
+  Animated,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
-const { width } = Dimensions.get("window"); // Get screen width
+const { width, height } = Dimensions.get("window");
 import MakeModel from "../../CustomComponents/UmairComponents/MakeModel";
 import BidsButtons from "../../CustomComponents/UmairComponents/BidsButtons";
 import InspectionReport from "../../CustomComponents/UmairComponents/InspectionReport";
@@ -11,7 +21,6 @@ import BiddingHistory from "../../CustomComponents/UmairComponents/BiddingHistor
 import CarFeatures from "../../CustomComponents/UmairComponents/CarFetauresCard";
 import SellersComment from "../../CustomComponents/UmairComponents/SellersComment";
 import SimilarAds from "../../CustomComponents/UmairComponents/SimilarAds";
-// import HomeHeader from "../../CustomComponents/UmairComponents/Homeheader";
 import SellerProfileCard from "../../CustomComponents/UmairComponents/SellerProfileCard";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
 import SectionHeader from "../../CustomComponents/SectionHeader";
@@ -25,55 +34,47 @@ import { useSocket } from "../../R1_Contexts/socketContext";
 import { ActivityIndicator } from "react-native-paper";
 import CarLoader from "../../CustomComponents/CarLoader";
 
-const AdDetails = ({route}) => {
-  
-  const {carId} = route.params;
-  const {authState} = useAuth();
- 
-  const {bidSocket: socket} = useSocket();
-
-  const scrollY = useRef(new Animated.Value(0)).current; // Animated Value
-
+const AdDetails = ({ route }) => {
+  const { carId } = route.params;
+  const { authState } = useAuth();
+  const [showReserveTooltip, setShowReserveTooltip] = useState(false);
+  const { bidSocket: socket } = useSocket();
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if(socket) {
-      socket.emit('join-room', {roomId: carId});
+    if (socket) {
+      socket.emit("join-room", { roomId: carId });
     }
     return () => {
-      if(socket) {
-        socket.emit('leave-room', {roomId: carId});
+      if (socket) {
+        socket.emit("leave-room", { roomId: carId });
       }
     };
-  }, [socket]);
+  }, [socket, carId]);
 
-
-  const {data, isLoading} = useQuery({
-    queryKey: ['car', carId],
+  const { data, isLoading } = useQuery({
+    queryKey: ["car", carId],
     queryFn: () => getCar(carId),
   });
 
-
-  if(isLoading) {
-    return <CarLoader/>;
+  if (isLoading) {
+    return <CarLoader />;
   }
 
   const car = data.data.car;
-  
   const reservePrice = car.reserveBidPrice;
-const highestBid = car.highestBid;
-const percentageMet = Math.min((highestBid / reservePrice) * 100, 100);
-
-
-const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
- 
-  
-  
-  //Calculation
+  const highestBid = car.highestBid;
+  const percentageMet = Math.min((highestBid / reservePrice) * 100, 100);
+  const progressWidth = car.reserveMet ? "100%" : `${percentageMet}%`;
   const isMyBid = car.user._id === authState.user._id;
 
   return (
     <WrapperComponent>
-      <HomeHeader style={{backgroundColor:"#fff"}} carId={carId} scrollY={scrollY}/>
+      <HomeHeader
+        style={{ backgroundColor: "#fff" }}
+        carId={carId}
+        scrollY={scrollY}
+      />
       <Animated.ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -83,101 +84,150 @@ const progressWidth = car.reserveMet ? '100%' : `${percentageMet}%`;
         )}
         scrollEventThrottle={16}
       >
-        <View style={styles.container}>
-          <View style={styles.lineContainer}>
-            <View style={styles.fullLine} />
-            <Text style={styles.lineText}>{car.title}</Text>
-            <View style={styles.fullLine} />
+        <TouchableWithoutFeedback onPress={() => setShowReserveTooltip(false)}>
+          <View style={styles.container}>
+            <View style={styles.lineContainer}>
+              <View style={styles.fullLine} />
+              <Text style={styles.lineText}>{car.title}</Text>
+              <View style={styles.fullLine} />
+            </View>
+
+            <View style={styles.reserveSection}>
+              <View style={styles.boxedLineContainer}>
+                <View style={styles.smallLine}>
+                  <View
+                    style={[
+                      ...(car.status === "sold" ? [] : [styles.progressFill]),
+                      { width: car.status === "sold" ? "100%" : progressWidth },
+                    ]}
+                  />
+                </View>
+
+                <View
+                  style={[
+                    styles.centerBox,
+                    {
+                      backgroundColor: car.status === "sold" ? "#D70040" : null,
+                    },
+                  ]}
+                >
+                  {car.status !== "sold" ? (
+                    <View style={styles.reserveTextContainer}>
+                      <Text
+                        style={[
+                          styles.centerText,
+                          car.reserveMet && { color: "#3BBF2F" },
+                        ]}
+                      >
+                        RESERVE {car.reserveMet ? "" : "NOT"} MET
+                      </Text>
+                      <TouchableOpacity
+                        onPress={(e) => {
+                          e.stopPropagation();
+                          setShowReserveTooltip(!showReserveTooltip);
+                        }}
+                        style={styles.inlineTooltipIcon}
+                      >
+                        <MaterialIcons
+                          name="info-outline"
+                          size={18}
+                          color={car.reserveMet ? "#3BBF2F" : "#2a5db0"}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <Text style={[styles.centerText, { color: "#fff" }]}>
+                      CAR SOLD
+                    </Text>
+                  )}
+                </View>
+
+                <View style={styles.smallLine}>
+                  <View
+                    style={[
+                      ...(car.status === "sold" ? [] : [styles.progressFill]),
+                      styles.rightProgress,
+                      { width: car.status === "sold" ? "100%" : progressWidth },
+                    ]}
+                  />
+                </View>
+              </View>
+            </View>
+
+            {showReserveTooltip && (
+              <View
+                style={[
+                  styles.tooltipContainer,
+                  car.reserveMet ? styles.greenTooltip : styles.blueTooltip,
+                ]}
+              >
+                <Text style={styles.tooltipText}>
+                  {car.reserveMet
+                    ? "The minimum price set by the seller, which must be met for the vehicle to be sold."
+                    : "The minimum price set by the seller, which must be met for the vehicle to be sold."}
+                </Text>
+              </View>
+            )}
+
+            <MakeModel car={car} />
+            {!isMyBid && car.status !== "sold" && <BidsButtons car={car} />}
+            {!isMyBid && (
+              <>
+                <SectionHeader title={"Owner Details"} />
+                <SellerProfileCard
+                  user={car.user._id}
+                  name={car.user.name}
+                  car={car}
+                  status={
+                    car.user.type === "trader" ? "Trader" : "Private Seller"
+                  }
+                  profileImage={
+                    car.user.imgUrl ||
+                    "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                  }
+                />
+              </>
+            )}
+            <InspectionReport car={car._id} />
+            <DamageReportCarousel car={car._id} />
+            {isMyBid && (
+              <BiddingList car={car._id} isSold={car.status === "sold"} />
+            )}
+            {!isMyBid && <BiddingHistory car={car._id} />}
+            <CarFeatures features={car.features} />
+            <SellersComment car={car} />
+            <SimilarAds make={car.make} carId={car._id} />
           </View>
-
-  
-<View style={styles.boxedLineContainer}>
-  {/* Left Line - Fills left to right */}
-  <View style={styles.smallLine}>
-    <View style={[...(car.status === 'sold' ?  [] : [styles.progressFill]), { width: car.status === 'sold' ? '100%' : progressWidth }]} />
-  </View>
-
-  {/* Center Box */}
-  <View style={[styles.centerBox, {backgroundColor: car.status === 'sold' ? '#D70040' : null}]}>
-  {car.status !== 'sold' && (
-    <Text
-      style={[
-        styles.centerText,
-        car.reserveMet && { color: '#3BBF2F' } 
-      ]}
-    >
-      RESERVE {car.reserveMet ? '' : 'NOT'} MET
-    </Text>
-  )}
-  {car.status === 'sold' && (
-    <Text
-      style={[
-        styles.centerText,
-        { color: '#fff' } 
-      ]}
-    >
-      CAR SOLD
-    </Text>
-  )}
-  </View>
-
-  {/* Right Line - Fills right to left */}
-  <View style={styles.smallLine}>
-    <View style={[...(car.status === 'sold' ?  [] : [styles.progressFill]), styles.rightProgress, { width: car.status === 'sold' ? '100%' : progressWidth }]} />
-  </View>
-</View>
-          <MakeModel car={car}/>
-          {(!isMyBid && car.status !== 'sold') && (<BidsButtons car={car}/>)}
-          {!isMyBid && (
-            <>
-              <SectionHeader title={"Owner Details"} />
-              <SellerProfileCard
-                user={car.user._id}
-                name={car.user.name}
-                car={car}
-                status={car.user.type === 'trader' ? 'Trader' : 'Private Seller'}
-                profileImage={car.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png'}
-              />
-            </>
-          )}
-          <InspectionReport car={car._id}/>
-          <DamageReportCarousel car={car._id}/>
-          {isMyBid && (<BiddingList car={car._id} isSold={car.status === 'sold'}/>)}
-          {!isMyBid && (<BiddingHistory car={car._id}/>)}
-          {/* todo: do */}
-          <CarFeatures features={car.features}/>
-        <SellersComment car={car}/>
-          <SimilarAds make={car.make} carId={car._id}/>
-        </View>
+        </TouchableWithoutFeedback>
       </Animated.ScrollView>
     </WrapperComponent>
   );
 };
 
 const styles = StyleSheet.create({
-
- 
+  scrollContainer: {
+    flexGrow: 1,
+    paddingBottom: 20,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     paddingHorizontal: 20,
-    
   },
-  /* First Line Container (Full Width) */
   lineContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 25, 
-    width: width, 
-    marginTop:15
+    marginBottom: 25,
+    width: width,
+    marginTop: 15,
   },
   fullLine: {
     flex: 1,
     height: 2,
     backgroundColor: "#000",
-    marginHorizontal: 0, // Ensure no gaps at the edges
+    marginHorizontal: 0,
   },
   lineText: {
     marginHorizontal: 8,
@@ -186,7 +236,6 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "700",
   },
-  /* Second Container with Centered Box */
   boxedLineContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -196,21 +245,17 @@ const styles = StyleSheet.create({
   smallLine: {
     flex: 1,
     height: 3,
-    backgroundColor: "#ccc", // Base gray line
+    backgroundColor: "#ccc",
     borderRadius: 5,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
-  
   progressFill: {
-    height: '100%',
-    backgroundColor: '#3BBF2F',
+    height: "100%",
+    backgroundColor: "#3BBF2F",
   },
-  
-  // This reverses the fill direction for the right side
   rightProgress: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
   },
-  
   centerBox: {
     backgroundColor: "#fff",
     paddingVertical: 8,
@@ -224,14 +269,55 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
   },
-  
   centerText: {
     fontSize: 15,
     color: "#2a5db0",
     fontWeight: "800",
   },
-  
-  
+  reserveSection: {
+    alignItems: "center",
+    marginBottom: 15,
+    width: "100%",
+  },
+  reserveTextContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inlineTooltipIcon: {
+    marginLeft: 8,
+  },
+  tooltipContainer: {
+    position: "absolute",
+    top: 110,
+    left: width * 0.05,
+    padding: 12,
+    borderRadius: 8,
+    width: width * 0.9,
+    zIndex: 100,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  greenTooltip: {
+    backgroundColor: "#3BBF2F",
+    opacity: 0.8,
+  },
+  blueTooltip: {
+    backgroundColor: "#2a5db0",
+    opacity: 0.8,
+  },
+  tooltipText: {
+    color: "#fff",
+    fontSize: 14,
+    lineHeight: 18,
+    textAlign: "center",
+  },
 });
 
 export default AdDetails;

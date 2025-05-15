@@ -8,12 +8,12 @@ import {
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
-import { CheckBox } from "react-native-elements"; // Importing CheckBox
+import { CheckBox } from "react-native-elements";
 import { useCar } from "../../../R1_Contexts/carContext";
 import DialogBox from "../../../CustomComponents/DialogBox";
 
 const InteriorFeature1 = () => {
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation();
   const { carState, dispatch, draftSave } = useCar();
 
   const [loading, setLoading] = useState(false);
@@ -21,19 +21,25 @@ const InteriorFeature1 = () => {
 
   const options = [
     { id: 1, label: "Leather Seats" },
-    { id: 2, label: "Power Steering" },
-    { id: 3, label: "Power Windows" },
-    { id: 4, label: "Climate Control" },
-    { id: 5, label: "Heated Seats" },
-    { id: 6, label: "Push Start Button" },
-    { id: 7, label: "Touchscreen Infotainment" },
-    { id: 8, label: "Rear AC Vents" },
-    { id: 9, label: "Cruise Control" },
-    { id: 10, label: "Wireless Charging" },
-    // { id: 11, label: "Sunroof" },
-    { id: 12, label: "Ambient Interior Lighting" },
-    { id: 13, label: "Power Adjustable Seats" },
-    { id: 14, label: "    Rear Seat Armrest with Cupholders" },
+    { id: 2, label: "Navigation/GPS" },
+    { id: 3, label: "Audio System" },
+    { id: 4, label: "Apple CarPlay" },
+    { id: 5, label: "Bluetooth" },
+    { id: 6, label: "USB Port" },
+    { id: 7, label: "Android Auto" },
+    { id: 8, label: "Blind Spot Monitor" },
+    { id: 9, label: "Power Windows" },
+    { id: 10, label: "Climate Control" },
+    { id: 11, label: "Heated Seats" },
+    { id: 12, label: "Push Start Button" },
+    { id: 13, label: "Touchscreen Infotainment" },
+    { id: 14, label: "Rear AC Vents" },
+    { id: 15, label: "Cruise Control" },
+    { id: 16, label: "Wireless Charging" },
+    { id: 17, label: "Memory Seats" },
+    { id: 18, label: "Power Steering" },
+    { id: 19, label: "Ambient Lighting" },
+    { id: 20, label: "Heads-up Display" },
   ];
 
   const toggleSelection = (value) => {
@@ -88,21 +94,16 @@ const InteriorFeature1 = () => {
         loading={loading}
         title={message?.title || ""}
       />
-      {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText}>Step 2 of 2</Text>
         <View style={styles.line} />
       </View>
-
-      {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText2}>Interior & Convenience Features</Text>
         <View style={styles.line} />
       </View>
-
-      {/* Clickable List with Checkboxes */}
       <FlatList
         style={{ paddingTop: 20 }}
         data={options}
@@ -150,8 +151,7 @@ const InteriorFeature1 = () => {
           </TouchableOpacity>
         )}
       />
-
-      {/* Buttons */}
+      =
       <View style={styles.buttonContainer}>
         <CustomButton
           style={styles.button}
@@ -159,12 +159,6 @@ const InteriorFeature1 = () => {
           onPress={handleSaveDraft}
         />
         <View style={{ height: 10 }} />
-        {/* <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
-        /> */}
       </View>
     </View>
   );

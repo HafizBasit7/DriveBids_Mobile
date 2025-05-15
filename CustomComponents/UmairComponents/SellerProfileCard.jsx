@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text,  TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Icon } from "react-native-elements";
 import SectionHeader from "../SectionHeader";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
@@ -16,7 +16,6 @@ const SellerProfileCard = ({
   ShowChatOptions = true,
   profileImage = "https://randomuser.me/api/portraits/men/32.jpg",
 }) => {
-
   const navigation = useNavigation();
 
   const chatNowMutation = useMutation({
@@ -25,10 +24,12 @@ const SellerProfileCard = ({
 
   const handleChatNow = async () => {
     try {
-      const result = await chatNowMutation.mutateAsync({userId: car.user._id, carId: car._id});
-      navigation.navigate('ActiveChatBox', {chatId: result.data.chatId})
-    }
-    catch(e) {
+      const result = await chatNowMutation.mutateAsync({
+        userId: car.user._id,
+        carId: car._id,
+      });
+      navigation.navigate("ActiveChatBox", { chatId: result.data.chatId });
+    } catch (e) {
       console.log(e);
     }
   };
@@ -45,8 +46,13 @@ const SellerProfileCard = ({
         </View>
         {ShowChatOptions && (
           <View>
-            <TouchableOpacity style={styles.viewAllButton} onPress={() => navigation.navigate("OwnerProfile", {userId: user})}>
-              <Text style={styles.viewAllText}>All Listings</Text>
+            <TouchableOpacity
+              style={styles.viewAllButton}
+              onPress={() =>
+                navigation.navigate("OwnerProfile", { userId: user })
+              }
+            >
+              <Text style={styles.viewAllText}>View Seller’s Other Ads</Text>
               <Icon
                 name="chevron-right"
                 type="material"
@@ -54,8 +60,13 @@ const SellerProfileCard = ({
                 color={GlobalStyles.colors.ButtonColor}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.viewAllButton} onPress={handleChatNow}>
-              <Text style={styles.viewAllText}>{chatNowMutation.isPending ? 'Please wait...' : 'Chat Now'}</Text>
+            <TouchableOpacity
+              style={styles.viewAllButton}
+              onPress={handleChatNow}
+            >
+              <Text style={styles.viewAllText}>
+                {chatNowMutation.isPending ? "Please wait..." : "Chat Now"}
+              </Text>
             </TouchableOpacity>
           </View>
         )}
@@ -107,7 +118,7 @@ const styles = StyleSheet.create({
   viewAllButton: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: '1',
+    marginBottom: "1",
   },
   viewAllText: {
     fontFamily: "Inter-SemiBold",

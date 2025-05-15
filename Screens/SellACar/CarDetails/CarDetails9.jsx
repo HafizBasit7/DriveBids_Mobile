@@ -28,9 +28,9 @@ const CarDetails9 = () => {
     { id: 1, label: "Manual" },
     { id: 3, label: "CVT - Continuously Variable Transmission" },
     { id: 4, label: "DCT - Dual Clutch Transmission" },
-    { id: 5, label: "AGS - Auto Gear Shift (semi-automatic)" },
-    { id: 6, label: "AMT - Automated Manual Transmission " },
-    { id: 10, label: "EV Single-Speed – Used in most electric vehicles " },
+    { id: 5, label: "AMT - Automated Manual Transmission" },
+    { id: 6, label: "AGS - Auto Gear Shift (semi-automatic)" },
+    { id: 10, label: "EV Single-Speed - Used in most electric vehicles" },
   ];
 
   const toggleSelection = (value) => {

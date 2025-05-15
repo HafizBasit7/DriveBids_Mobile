@@ -9,12 +9,12 @@ import {
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
-import { CheckBox } from "react-native-elements"; // Importing CheckBox
+import { CheckBox } from "react-native-elements";
 
 const ExteriorFeature3 = () => {
-  const [selectedOptions, setSelectedOptions] = useState([]); // Multiple selections
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation();
 
   const options = [
     { id: 1, label: "Airbags" },
@@ -30,31 +30,27 @@ const ExteriorFeature3 = () => {
   ];
 
   const toggleSelection = (id) => {
-    setSelectedOptions(
-      (prevSelected) =>
-        prevSelected.includes(id)
-          ? prevSelected.filter((item) => item !== id) // Deselect if already selected
-          : [...prevSelected, id] // Select otherwise
+    setSelectedOptions((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((item) => item !== id)
+        : [...prevSelected, id]
     );
   };
 
   return (
     <View style={styles.container}>
-      {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText}>Step 3 of 3</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText2}>Exterior Features</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Clickable List with Checkboxes */}
       <FlatList
         data={options}
         keyExtractor={(item) => item.id.toString()}
@@ -72,7 +68,6 @@ const ExteriorFeature3 = () => {
         )}
       />
 
-      {/* Buttons */}
       <View style={styles.buttonContainer}>
         <CustomButton
           style={styles.button}
@@ -80,12 +75,6 @@ const ExteriorFeature3 = () => {
           onPress={() => navigation.navigate("VehicleInfo")}
         />
         <View style={{ height: 10 }} />
-        {/* <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.navigate("ExteriorFeature2")}
-        /> */}
       </View>
     </View>
   );

@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
@@ -7,21 +14,18 @@ import { useCar } from "../../../R1_Contexts/carContext";
 const PriceRange2 = () => {
   const navigation = useNavigation();
   const { carState, dispatch } = useCar();
-  
 
- // Function to format numbers with commas
- const formatNumberWithCommas = (num) => {
-  return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-
+  // Function to format numbers with commas
+  const formatNumberWithCommas = (num) => {
+    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   const [formattedBidPrice, setFormattedBidPrice] = useState(
-    formatNumberWithCommas(carState.carPricing.reserveBidPrice?.toString() || "0")
+    formatNumberWithCommas(
+      carState.carPricing.reserveBidPrice?.toString() || "0"
+    )
   );
 
-  
-
- 
   // Function to handle input change
   const handleBidInput = (text) => {
     // Remove non-numeric characters
@@ -29,7 +33,6 @@ const PriceRange2 = () => {
 
     // Format the number with commas
     const formattedNumber = formatNumberWithCommas(rawNumber);
-
 
     // Update state for display
     setFormattedBidPrice(formattedNumber);
@@ -45,49 +48,49 @@ const PriceRange2 = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-      {/* Content */}
-      <View style={styles.content}>
-        {/* Step Progress Indicator */}
-        <View style={styles.lineContainer}>
-          <View style={styles.line} />
-          <Text style={styles.lineText}>Step 2 of 4</Text>
-          <View style={styles.line} />
-        </View>
+        {/* Content */}
+        <View style={styles.content}>
+          {/* Step Progress Indicator */}
+          <View style={styles.lineContainer}>
+            <View style={styles.line} />
+            <Text style={styles.lineText}>Step 2 of 4</Text>
+            <View style={styles.line} />
+          </View>
 
-        {/* Section Title */}
-        <View style={styles.lineContainer}>
-          <View style={styles.line} />
-          <Text style={styles.lineText2}>Reserved Bid</Text>
-          <View style={styles.line} />
-        </View>
+          {/* Section Title */}
+          <View style={styles.lineContainer}>
+            <View style={styles.line} />
+            <Text style={styles.lineText2}>Reserved Bid</Text>
+            <View style={styles.line} />
+          </View>
 
-        {/* Input Container */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputHeading}>
-            Enter reserved bid price for your car
-          </Text>
-          <View style={styles.inputBox}>
-            <Text style={styles.currencyText}>AED</Text>
-            <TextInput
-              style={styles.input}
-              keyboardType="numeric"
-              value={formattedBidPrice}
-              onChangeText={handleBidInput}
-            />
+          {/* Input Container */}
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputHeading}>
+              Enter reserved bid price for your car
+            </Text>
+            <View style={styles.inputBox}>
+              <Text style={styles.currencyText}>AED</Text>
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                value={formattedBidPrice}
+                onChangeText={handleBidInput}
+              />
+            </View>
           </View>
         </View>
-      </View>
 
-      {/* Buttons Fixed at Bottom */}
-      <View style={styles.buttonContainer}>
-        <CustomButton
-          style={styles.button}
-          title="Next"
-          onPress={() => navigation.navigate("PriceRange3")}
-        />
-        <View style={{ height: 10 }} />
+        {/* Buttons Fixed at Bottom */}
+        <View style={styles.buttonContainer}>
+          <CustomButton
+            style={styles.button}
+            title="Next"
+            onPress={() => navigation.navigate("PriceRange3")}
+          />
+          <View style={{ height: 10 }} />
+        </View>
       </View>
-    </View>
     </TouchableWithoutFeedback>
   );
 };

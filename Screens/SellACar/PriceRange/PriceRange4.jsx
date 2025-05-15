@@ -13,34 +13,37 @@ import { useCar } from "../../../R1_Contexts/carContext";
 import DialogBox from "../../../CustomComponents/DialogBox";
 
 const PriceRange4 = () => {
-
   const navigation = useNavigation(); // Initialize navigation
-  const {carState, dispatch, draftSave} = useCar();
+  const { carState, dispatch, draftSave } = useCar();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
   const handleSaveDraft = async () => {
     setLoading(true);
     try {
-        await draftSave('carPricing');
-        setMessage({type: 'success', message: 'Car Saved', title: 'Success'});
-    }
-    catch(e) {
-        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+      await draftSave("carPricing");
+      setMessage({ type: "success", message: "Car Saved", title: "Success" });
+    } catch (e) {
+      setMessage({
+        type: "error",
+        message: e.message || e.msg,
+        title: "Error",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const onOk = () => {
-    if(message?.type === 'error') {
+    if (message?.type === "error") {
       setMessage(null);
     } else {
-      setMessage(null); navigation.popTo("VehicleInfo");
+      setMessage(null);
+      navigation.popTo("VehicleInfo");
     }
   };
 
-  function setDuration (value) {
+  function setDuration(value) {
     const getFutureDateUTC = (weeks) => {
       const currentDateUTC = new Date();
       const futureDateUTC = new Date(currentDateUTC);
@@ -49,18 +52,18 @@ const PriceRange4 = () => {
     };
 
     dispatch({
-      type: 'UPDATE_FIELD',
-      section: 'carPricing',
-      field: 'duration',
+      type: "UPDATE_FIELD",
+      section: "carPricing",
+      field: "duration",
       value: getFutureDateUTC(value),
     });
 
     dispatch({
-      type: 'UPDATE_FIELD',
-      field: 'selectedWeek',
+      type: "UPDATE_FIELD",
+      field: "selectedWeek",
       value,
     });
-  };
+  }
 
   const entities = [
     { id: "1", name: "1 week" },
@@ -77,7 +80,7 @@ const PriceRange4 = () => {
         onOkPress={onOk}
         type={message?.type}
         loading={loading}
-        title={message?.title || ''}
+        title={message?.title || ""}
       />
 
       {/* Step Progress Indicator */}
@@ -108,7 +111,8 @@ const PriceRange4 = () => {
                 <View
                   style={[
                     styles.radioButton,
-                    carState.selectedWeek === item.id && styles.radioButtonSelected,
+                    carState.selectedWeek === item.id &&
+                      styles.radioButtonSelected,
                   ]}
                 >
                   {carState.selectedWeek === item.id && (

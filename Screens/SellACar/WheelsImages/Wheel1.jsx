@@ -183,8 +183,11 @@ const Wheel1 = () => {
       <SectionHeader title={"Step 1 of 4"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
-          Take a picture of the front driver wheel as shown below
+          Take a picture of{" "}
+          <Text style={{ fontWeight: "bold" }}>the front driver wheel</Text> as
+          illustrated
         </Text>
+
         <TouchableOpacity onPress={openGallery} style={styles.imageContainer}>
           {(carState.images.wheels || [])[index]?.url ? (
             <>
@@ -226,7 +229,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontFamily: "Inter-SemiBold",
+    // fontFamily: "Inter-SemiBold",
     textAlign: "center",
     fontSize: 16,
   },

@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
@@ -7,21 +14,18 @@ import { useCar } from "../../../R1_Contexts/carContext";
 const PriceRange1 = () => {
   const navigation = useNavigation();
   const { carState, dispatch } = useCar();
-  
 
- // Function to format numbers with commas
- const formatNumberWithCommas = (num) => {
-  return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-
+  // Function to format numbers with commas
+  const formatNumberWithCommas = (num) => {
+    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   const [formattedBidPrice, setFormattedBidPrice] = useState(
-    formatNumberWithCommas(carState.carPricing.staringBidPrice?.toString() || "0")
+    formatNumberWithCommas(
+      carState.carPricing.staringBidPrice?.toString() || "0"
+    )
   );
 
-  
-
- 
   // Function to handle input change
   const handleBidInput = (text) => {
     // Remove non-numeric characters
@@ -29,7 +33,6 @@ const PriceRange1 = () => {
 
     // Format the number with commas
     const formattedNumber = formatNumberWithCommas(rawNumber);
-
 
     // Update state for display
     setFormattedBidPrice(formattedNumber);

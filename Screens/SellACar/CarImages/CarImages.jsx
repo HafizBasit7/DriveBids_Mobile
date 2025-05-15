@@ -12,18 +12,31 @@ import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import VehicleInfoCard from "../../../CustomComponents/VehicleInfoCard";
 import { useNavigation } from "@react-navigation/native";
-import {useCar} from "../../../R1_Contexts/carContext";
-import { exteriorImageValidation, interiorImageValidation, tyreTreadsValidation, wheelsImageValidation } from "../../../R1_Validations/CarValidations";
+import { useCar } from "../../../R1_Contexts/carContext";
+import {
+  exteriorImageValidation,
+  interiorImageValidation,
+  tyreTreadsValidation,
+  wheelsImageValidation,
+} from "../../../R1_Validations/CarValidations";
 
 const CarImages = () => {
   const navigation = useNavigation(); // Initialize navigation
 
-  const {carState} = useCar();
+  const { carState } = useCar();
 
-  const exteriorImageCompletion = exteriorImageValidation.safeParse(carState.images.exterior);
-  const interiorImageCompletion = interiorImageValidation.safeParse(carState.images.interior);
-  const wheelsImageCompletion = wheelsImageValidation.safeParse(carState.images.wheels);
-  const tyreTreadsImageCompletion = tyreTreadsValidation.safeParse(carState.images.tyreTreads);
+  const exteriorImageCompletion = exteriorImageValidation.safeParse(
+    carState.images.exterior
+  );
+  const interiorImageCompletion = interiorImageValidation.safeParse(
+    carState.images.interior
+  );
+  const wheelsImageCompletion = wheelsImageValidation.safeParse(
+    carState.images.wheels
+  );
+  const tyreTreadsImageCompletion = tyreTreadsValidation.safeParse(
+    carState.images.tyreTreads
+  );
 
   return (
     <View style={styles.container}>
@@ -33,28 +46,36 @@ const CarImages = () => {
           name="Exterior Images"
           steps={6}
           iconName="car-hatchback"
-          completionStatus={exteriorImageCompletion.success ? "Completed" : "Incomplete"}
+          completionStatus={
+            exteriorImageCompletion.success ? "Completed" : "Incomplete"
+          }
           onPress={() => navigation.navigate("Exterior1")}
         />
         <VehicleInfoCard
           name="Interior Images"
           steps={5}
           iconName="steering"
-          completionStatus={interiorImageCompletion.success ? "Completed" : "Incomplete"}
+          completionStatus={
+            interiorImageCompletion.success ? "Completed" : "Incomplete"
+          }
           onPress={() => navigation.navigate("Interior1")}
         />
         <VehicleInfoCard
           name="Wheels"
           steps={4}
           iconName="ship-wheel"
-          completionStatus={wheelsImageCompletion.success ? "Completed" : "Incomplete"}
+          completionStatus={
+            wheelsImageCompletion.success ? "Completed" : "Incomplete"
+          }
           onPress={() => navigation.navigate("Wheel1")}
         />
         <VehicleInfoCard
-          name="Tyres Threads"
+          name="Tyres Treads"
           steps={4}
           iconName="tire"
-          completionStatus={tyreTreadsImageCompletion.success ? "Completed" : "Incomplete"}
+          completionStatus={
+            tyreTreadsImageCompletion.success ? "Completed" : "Incomplete"
+          }
           onPress={() => navigation.navigate("Thread1")}
         />
       </ScrollView>
@@ -68,7 +89,7 @@ const CarImages = () => {
       >
         <CustomButton
           style={{
-            marginBottom: "10%"
+            marginBottom: "10%",
           }}
           title="Back"
           onPress={() => navigation.goBack()}

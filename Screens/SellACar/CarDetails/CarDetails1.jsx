@@ -35,10 +35,10 @@ const CarDetails1 = () => {
   const navigation = useNavigation();
   const bottomSheetAnimation = useRef(new Animated.Value(height)).current;
 
-  const {data, isLoading} = useQuery({
-    queryKey: ['make'],
+  const { data, isLoading } = useQuery({
+    queryKey: ["make"],
     queryFn: async () => {
-      const result = await apiClient.get('/makes');
+      const result = await apiClient.get("/makes");
       return result.data;
     },
     refetchOnMount: false,
@@ -49,13 +49,13 @@ const CarDetails1 = () => {
 
   useEffect(() => {
     const keyboardWillShow = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
       (e) => {
         setKeyboardHeight(e.endCoordinates.height);
       }
     );
     const keyboardWillHide = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
       () => {
         setKeyboardHeight(0);
       }
@@ -82,13 +82,14 @@ const CarDetails1 = () => {
     setSearchText("");
     setBottomSheetVisible(true);
     Animated.timing(bottomSheetAnimation, {
-      toValue: 0,
+      toValue: height * 0.15,
       duration: 300,
       useNativeDriver: true,
     }).start();
   };
 
   const closeBottomSheet = () => {
+    Keyboard.dismiss(); // Dismiss keyboard when closing bottom sheet
     Animated.timing(bottomSheetAnimation, {
       toValue: height,
       duration: 300,
@@ -106,6 +107,15 @@ const CarDetails1 = () => {
   } else {
     filteredMakes = makes;
   }
+
+  // Check if the search text doesn't match any make in the list
+  const noMatchFound =
+    searchText && filteredMakes && filteredMakes.length === 0;
+
+  // Function to handle manual entry selection
+  const handleManualEntry = () => {
+    onChangeCarMake(searchText);
+  };
 
   const onNext = () => {
     if (carState.carDetails.make) {
@@ -126,45 +136,55 @@ const CarDetails1 = () => {
         {/* Section Title */}
         <View style={styles.lineContainer}>
           <View style={styles.line} />
-          <Text style={styles.lineText2}>Company</Text>
+          <Text style={styles.lineText2}>Brand</Text>
           <View style={styles.line} />
         </View>
 
-        <View style={{display:"flex",flexDirection:"column",justifyContent:"space-between",height:height*0.65}}>
-        <TouchableOpacity
-          style={styles.inputWrapper}
-          onPress={openBottomSheet}
-          activeOpacity={0.7}
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: height * 0.65,
+          }}
         >
-          <TextInput
-            style={styles.input}
-            placeholder="Search car make"
-            placeholderTextColor="#999"
-            value={carState.carDetails.make}
-            editable={false}
-            pointerEvents="none"
-          />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.inputWrapper}
+            onPress={openBottomSheet}
+            activeOpacity={0.7}
+          >
+            <TextInput
+              style={styles.input}
+              placeholder="Search car make"
+              placeholderTextColor="#999"
+              value={carState.carDetails.make}
+              editable={false}
+              pointerEvents="none"
+            />
+          </TouchableOpacity>
 
-        {/* Buttons */}
-        <View style={styles.buttonContainer}>
-          <CustomButton style={styles.button} title="Next" onPress={onNext} />
-          <View style={{ height: 10 }} />
-        </View>
+          {/* Buttons */}
+          <View style={styles.buttonContainer}>
+            <CustomButton style={styles.button} title="Next" onPress={onNext} />
+            <View style={{ height: 10 }} />
+          </View>
         </View>
         {/* Bottom Sheet Modal */}
-   <Modal
+        <Modal
           visible={bottomSheetVisible}
           transparent={true}
           animationType="none"
+          onRequestClose={closeBottomSheet}
         >
-          <KeyboardAvoidingView 
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 40 : 0}
           >
             <TouchableWithoutFeedback onPress={closeBottomSheet}>
-              <View style={[styles.modalOverlay, { justifyContent: 'flex-end' }]}>
+              <View
+                style={[styles.modalOverlay, { justifyContent: "flex-end" }]}
+              >
                 <StatusBar
                   barStyle="dark-content"
                   backgroundColor="rgba(0,0,0,0.5)"
@@ -182,12 +202,14 @@ const CarDetails1 = () => {
                 >
                   <SafeAreaView style={styles.bottomSheetContent}>
                     <View style={styles.bottomSheetHeader}>
-                      <Text style={styles.bottomSheetTitle}>Select Car Make</Text>
+                      <Text style={styles.bottomSheetTitle}>
+                        Select Car Make
+                      </Text>
                       <TouchableOpacity onPress={closeBottomSheet}>
                         <Text style={styles.closeButton}>✕</Text>
                       </TouchableOpacity>
                     </View>
-                    
+
                     <View style={styles.searchContainer}>
                       <TextInput
                         style={styles.searchInput}
@@ -198,24 +220,31 @@ const CarDetails1 = () => {
                         autoFocus={true}
                       />
                     </View>
-                    
+
                     {/* Car makes list */}
                     {isLoading ? (
-                      <ActivityIndicator 
-                        size="large" 
-                        color={GlobalStyles.colors.ButtonColor} 
-                        style={styles.loader} 
+                      <ActivityIndicator
+                        size="large"
+                        color={GlobalStyles.colors.ButtonColor}
+                        style={styles.loader}
                       />
                     ) : (
                       <FlatList
                         data={filteredMakes}
                         keyExtractor={(item) => item.make_id}
                         renderItem={({ item }) => (
-                          <TouchableOpacity onPress={() => onChangeCarMake(item.make_display)}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              Keyboard.dismiss(); // Dismiss keyboard before selection
+                              onChangeCarMake(item.make_display);
+                            }}
+                            activeOpacity={0.7}
+                          >
                             <Text
                               style={[
                                 styles.entityText,
-                                carState.carDetails.make === item.make_display && styles.selectedText,
+                                carState.carDetails.make ===
+                                  item.make_display && styles.selectedText,
                               ]}
                             >
                               {item.make_display}
@@ -225,6 +254,23 @@ const CarDetails1 = () => {
                         )}
                         style={styles.makesList}
                         contentContainerStyle={styles.listContent}
+                        ListFooterComponent={
+                          noMatchFound && searchText.trim() !== "" ? (
+                            <TouchableOpacity
+                              onPress={handleManualEntry}
+                              activeOpacity={0.7}
+                              style={styles.manualEntryContainer}
+                            >
+                              <Text style={styles.manualEntryText}>
+                                Can't find it? Enter manually
+                              </Text>
+                              <Text style={styles.manualEntryValue}>
+                                "{searchText}"
+                              </Text>
+                              <View style={styles.separator} />
+                            </TouchableOpacity>
+                          ) : null
+                        }
                       />
                     )}
                   </SafeAreaView>
@@ -249,7 +295,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: "5%",
-    
   },
   line: {
     flex: 1,
@@ -280,10 +325,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     height: 55,
     marginTop: 10,
-    backgroundColor:"#fff",
-   
-
-    
+    backgroundColor: "#fff",
   },
   input: {
     flex: 1,
@@ -378,20 +420,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-    bottomSheet: {
-    backgroundColor: "white",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    width: "100%",
-  },
-  bottomSheetContent: {
-    flex: 1,
-  },
-  makesList: {
-    flex: 1, 
-  },
   listContent: {
-    paddingBottom: 20, 
+    paddingBottom: 20,
+  },
+  manualEntryContainer: {
+    paddingTop: 15,
+    paddingBottom: 5,
+  },
+  manualEntryText: {
+    fontSize: 16,
+    color: GlobalStyles.colors.ButtonColor || "#007BFF",
+    fontWeight: "700",
+    paddingHorizontal: 25,
+    paddingBottom: 5,
+  },
+  manualEntryValue: {
+    fontSize: 14,
+    color: "#666",
+    fontStyle: "italic",
+    paddingHorizontal: 25,
+    paddingBottom: 10,
   },
 });
 

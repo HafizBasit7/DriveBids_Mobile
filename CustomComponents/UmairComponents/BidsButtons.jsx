@@ -27,12 +27,14 @@ const BidsButtons = ({
   const [message, setMessage] = useState(null);
   const [buyNowDialogVisible, setBuyNowDialogVisible] = useState(false);
   const [showBuyNowTooltip, setShowBuyNowTooltip] = useState(false);
+  const [showPlaceBidTooltip, setShowPlaceBidTooltip] = useState(false);
   const [showQuickBidTooltip, setShowQuickBidTooltip] = useState(false);
 
   useEffect(() => {
     // Close tooltips when clicking anywhere
     const closeTooltips = () => {
       setShowBuyNowTooltip(false);
+      setShowPlaceBidTooltip(false);
       setShowQuickBidTooltip(false);
     };
 
@@ -108,6 +110,7 @@ const BidsButtons = ({
     <TouchableWithoutFeedback
       onPress={() => {
         setShowBuyNowTooltip(false);
+        setShowPlaceBidTooltip(false);
         setShowQuickBidTooltip(false);
       }}
     >
@@ -157,6 +160,7 @@ const BidsButtons = ({
               onPress={(e) => {
                 e.stopPropagation();
                 setShowBuyNowTooltip(!showBuyNowTooltip);
+                setShowPlaceBidTooltip(false);
                 setShowQuickBidTooltip(false);
               }}
             >
@@ -172,7 +176,7 @@ const BidsButtons = ({
             )}
           </View>
 
-          {/* Place Bid Button */}
+          {/* Place Bid Button with bottom icon */}
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.button, styles.primaryButton]}
@@ -180,6 +184,24 @@ const BidsButtons = ({
             >
               <Text style={styles.primaryText}>{placeBidTitle}</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.infoIconBottom}
+              onPress={(e) => {
+                e.stopPropagation();
+                setShowPlaceBidTooltip(!showPlaceBidTooltip);
+                setShowBuyNowTooltip(false);
+                setShowQuickBidTooltip(false);
+              }}
+            >
+              <MaterialIcons name="info-outline" size={16} color="#777" />
+            </TouchableOpacity>
+            {showPlaceBidTooltip && (
+              <View style={[styles.tooltip, styles.placeBidTooltip]}>
+                <Text style={styles.tooltipText}>
+                  Place a custom bid amount with your maximum budget.
+                </Text>
+              </View>
+            )}
           </View>
 
           {/* Quick Bid Button with bottom icon */}
@@ -206,6 +228,7 @@ const BidsButtons = ({
                 e.stopPropagation();
                 setShowQuickBidTooltip(!showQuickBidTooltip);
                 setShowBuyNowTooltip(false);
+                setShowPlaceBidTooltip(false);
               }}
             >
               <MaterialIcons name="info-outline" size={16} color="#777" />
@@ -322,15 +345,18 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     zIndex: 101,
     width: 200,
-    // opacity: 0.8,
   },
   buyNowTooltip: {
     top: 70,
-    left: "25%", // Adjust horizontal position for Buy Now tooltip
+    left: "25%",
+  },
+  placeBidTooltip: {
+    top: 70,
+    right: "25%",
   },
   quickBidTooltip: {
     top: 70,
-    right: "25%", // Adjust horizontal position for Quick Bid tooltip
+    right: "25%",
   },
   tooltipText: {
     color: "#fff",

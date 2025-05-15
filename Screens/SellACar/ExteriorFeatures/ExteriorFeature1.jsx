@@ -9,102 +9,109 @@ import {
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { CheckBox } from "react-native-elements"; // Importing CheckBox
-import {useCar} from "../../../R1_Contexts/carContext";
+import { useCar } from "../../../R1_Contexts/carContext";
 
 const ExteriorFeature1 = () => {
-
   const navigation = useNavigation(); // Initialize navigation
-  const {carState, dispatch} = useCar();
+  const { carState, dispatch } = useCar();
 
   const options = [
     { id: 1, label: "Sunroof" },
     { id: 2, label: "Fog Lights" },
     { id: 3, label: "Alloy Wheels" },
-    { id: 4, label: "LED Headlights" },
-    { id: 5, label: "Rear Spoiler" },
-    { id: 6, label: "Roof Rails" },
-    { id: 7, label: "Chrome Grille" },
-    { id: 8, label: "Daytime Running Lights (DRLs)" },
-    { id: 9, label: "Power Folding Mirrors" },
+    { id: 4, label: "Keyless Entry" },
+    { id: 5, label: "LED Headlights" },
+    { id: 6, label: "Rear Spoiler" },
+    { id: 7, label: "Roof Rails" },
+    { id: 8, label: "Chrome Grille" },
+    { id: 9, label: "Daytime Running Lights (DRLs)" },
     { id: 10, label: "Rain Sensing Wipers" },
     { id: 11, label: "Parking Sensors" },
     { id: 12, label: "3D Camera" },
     { id: 13, label: "Reverse Camera" },
     { id: 14, label: "Immobilizer" },
+    { id: 15, label: "Power Folding Mirrors" },
   ];
 
   const toggleSelection = (value) => {
-    if(carState.features?.exterior?.includes(value)) {
+    if (carState.features?.exterior?.includes(value)) {
       dispatch({
-        type: 'REMOVE_FEATURE',
-        section: 'exterior',
+        type: "REMOVE_FEATURE",
+        section: "exterior",
         value,
       });
       return;
-    };
+    }
 
     dispatch({
-      type: 'UPDATE_FEATURE',
-      section: 'exterior',
+      type: "UPDATE_FEATURE",
+      section: "exterior",
       value,
     });
   };
 
   return (
     <View style={styles.container}>
-      {/* Step Progress Indicator */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
         <Text style={styles.lineText}>Step 1 of 2</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Section Title */}
       <View style={styles.lineContainer}>
         <View style={styles.line} />
-        <Text style={styles.lineText2}>Exterior & Safety Features</Text> 
+        <Text style={styles.lineText2}>Exterior & Safety Features</Text>
         <View style={styles.line} />
       </View>
 
-      {/* Clickable List with Checkboxes */}
       <FlatList
-            style={{paddingTop: 20}}
-
+        style={{ paddingTop: 20 }}
         data={options}
         numColumns={2}
-        columnWrapperStyle={{ justifyContent: 'space-between',  }}
-
+        columnWrapperStyle={{ justifyContent: "space-between" }}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity   key={item.id} onPress={() => toggleSelection(item.label)}     
+          <TouchableOpacity
+            key={item.id}
+            onPress={() => toggleSelection(item.label)}
             style={{
-            width: '48%',
-            marginBottom: 8,
-           
-            justifyContent: 'flex-start',
-            borderRadius: 6,
-            padding: 8,
-          }}>
-            <View   style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
+              width: "48%",
+              marginBottom: 8,
+
+              justifyContent: "flex-start",
+              borderRadius: 6,
+              padding: 8,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
               <CheckBox
                 checked={carState.features?.exterior?.includes(item.label)}
                 onPress={() => toggleSelection(item.label)}
                 checkedColor="#007BFF"
                 containerStyle={{ padding: 0, margin: 0 }}
-
               />
-<Text style={{ marginLeft: 2, fontSize: 14 ,   marginLeft: 4,
-    fontSize: 14,
-    flexShrink: 1,
-    flexWrap: 'wrap',}}>{item.label} </Text>            </View>
+              <Text
+                style={{
+                  marginLeft: 2,
+                  fontSize: 14,
+                  marginLeft: 4,
+                  fontSize: 14,
+                  flexShrink: 1,
+                  flexWrap: "wrap",
+                }}
+              >
+                {item.label}{" "}
+              </Text>{" "}
+            </View>
           </TouchableOpacity>
         )}
       />
 
-      {/* Buttons */}
       <View style={styles.buttonContainer}>
         <CustomButton
           style={styles.button}
@@ -112,12 +119,6 @@ const ExteriorFeature1 = () => {
           onPress={() => navigation.navigate("InteriorFeature1")}
         />
         <View style={{ height: 10 }} />
-        {/* <CustomButton
-          title="Back"
-          style={styles.backButton}
-          textStyle={{ color: "#007BFF" }}
-          onPress={() => navigation.goBack()}
-        /> */}
       </View>
     </View>
   );
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     marginTop: 10,
-    marginBottom: "3%"
+    marginBottom: "3%",
   },
   button: {
     marginBottom: 5,

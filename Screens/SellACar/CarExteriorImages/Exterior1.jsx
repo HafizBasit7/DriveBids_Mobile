@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Modal, StatusBar } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  StatusBar,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -7,17 +14,16 @@ import SectionHeader from "../../../CustomComponents/SectionHeader";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import Exterior from "../../../assets/tahirAssets/exterior1";
-import { useNavigation } from "@react-navigation/native"; 
+import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
-import {uploadImage} from "../../../utils/upload";
+import { uploadImage } from "../../../utils/upload";
 import DialogBox from "../../../CustomComponents/DialogBox";
 import { Icon } from "react-native-elements";
 import { Image } from "expo-image";
 
 const Exterior1 = () => {
-
-  const navigation = useNavigation(); 
-  const {carState, dispatch} = useCar();
+  const navigation = useNavigation();
+  const { carState, dispatch } = useCar();
   const index = 0;
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
@@ -31,7 +37,7 @@ const Exterior1 = () => {
     }
 
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images" ],
+      mediaTypes: ["images"],
       aspect: [4, 3],
       quality: 1,
     });
@@ -43,14 +49,17 @@ const Exterior1 = () => {
         const imgUrl = await uploadImage(result.assets[0]);
 
         dispatch({
-          type: 'UPDATE_IMAGE',
+          type: "UPDATE_IMAGE",
           section: "exterior",
           index: index,
-          value: {type: 'image', url: imgUrl}
+          value: { type: "image", url: imgUrl },
         });
-      }
-      catch(e) {
-        setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
+      } catch (e) {
+        setMessage({
+          type: "error",
+          message: "Error uploading image",
+          title: "Error",
+        });
       } finally {
         setLoading(false);
       }
@@ -58,11 +67,11 @@ const Exterior1 = () => {
   };
 
   const handleCamera = async () => {
-    const {status} = await ImagePicker.requestCameraPermissionsAsync();
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== "granted") {
-        alert("Sorry, we need camera permissions to make this work!");
-        return;
-      }
+      alert("Sorry, we need camera permissions to make this work!");
+      return;
+    }
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ["images"],
       aspect: [4, 3],
@@ -75,14 +84,17 @@ const Exterior1 = () => {
         const imgUrl = await uploadImage(result.assets[0], `exterior-${index}`);
 
         dispatch({
-          type: 'UPDATE_IMAGE',
+          type: "UPDATE_IMAGE",
           section: "exterior",
           index: index,
-          value: {type: 'image', url: imgUrl}
+          value: { type: "image", url: imgUrl },
         });
-      }
-      catch(e) {
-        setMessage({type: 'error', message: 'Error uploading image', title: 'Error'})
+      } catch (e) {
+        setMessage({
+          type: "error",
+          message: "Error uploading image",
+          title: "Error",
+        });
       } finally {
         setLoading(false);
       }
@@ -91,11 +103,19 @@ const Exterior1 = () => {
 
   return (
     <View style={styles.container}>
-      <Modal visible={imageModalVisible} animationType="slide" transparent={true}>
+      <Modal
+        visible={imageModalVisible}
+        animationType="slide"
+        transparent={true}
+      >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-                       <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />
-            
+            <StatusBar
+              barStyle="dark-content"
+              backgroundColor="rgba(0,0,0,0.7)"
+              translucent
+            />
+
             <Text style={styles.modalTitle}>Select or Take a Photo</Text>
             <TouchableOpacity style={styles.modalItem} onPress={handleCamera}>
               <Icon name="camera" type="material" size={24} color="#3b82f6" />
@@ -121,18 +141,27 @@ const Exterior1 = () => {
         onOkPress={() => setMessage(null)}
         type={message?.type}
         loading={loading}
-        title={message?.title || ''}
+        title={message?.title || ""}
       />
 
       <SectionHeader title={"Step 1 of 6"} />
       <View style={{ gap: 20, justifySelf: "center" }}>
         <Text style={styles.text}>
-          Take a picture of your car from the right front as shown below
+          Take a picture of your car{" "}
+          <Text style={{ fontWeight: "bold" }}>from the right front</Text> as
+          illustrated
         </Text>
-        <TouchableOpacity onPress={() => setImageModalVisible(true)} style={styles.imageContainer}>
+
+        <TouchableOpacity
+          onPress={() => setImageModalVisible(true)}
+          style={styles.imageContainer}
+        >
           {(carState.images.exterior || [])[index]?.url ? (
             <>
-              <Image source={{ uri: (carState.images.exterior || [])[index]?.url }} style={styles.image} />
+              <Image
+                source={{ uri: (carState.images.exterior || [])[index]?.url }}
+                style={styles.image}
+              />
               <View style={styles.penIconContainer}>
                 <MaterialIcons
                   name="edit"
@@ -173,7 +202,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontFamily: "Inter-SemiBold",
+    // fontFamily: "Inter-SemiBold",
     textAlign: "center",
     fontSize: 16,
   },
@@ -206,7 +235,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     justifyContent: "flex-end",
-    marginBottom:"8%"
+    marginBottom: "8%",
   },
   nextButton: {
     backgroundColor: "transparent",
@@ -220,20 +249,20 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContent: {
-    width: '80%',
-    backgroundColor: '#fff',
+    width: "80%",
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
-    maxHeight: '60%',
+    maxHeight: "60%",
   },
   modalTitle: {
     fontSize: 18,
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: "Inter-SemiBold",
     marginBottom: 15,
   },
   modalItem: {
@@ -241,23 +270,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
   },
   modalText: {
     fontSize: 16,
-    fontFamily: 'Inter-Regular',
+    fontFamily: "Inter-Regular",
     marginLeft: 10,
   },
   modalCloseButton: {
     marginTop: 20,
     paddingVertical: 12,
-    backgroundColor: '#2F61BF',
+    backgroundColor: "#2F61BF",
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   modalCloseText: {
-    color: '#fff',
-    fontFamily: 'Inter-SemiBold',
+    color: "#fff",
+    fontFamily: "Inter-SemiBold",
     fontSize: 16,
   },
 });

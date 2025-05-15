@@ -44,12 +44,12 @@ const FiltersScreen = ({ route }) => {
   const fuelTypes = ["Petrol", "Diesel", "HI-Octane", "Electric", "Hybrid"];
   const colors = ["White", "Black", "Silver", "Red", "Blue", "Grey"];
   const transmissionTypes = [
-    "AGS",
     "Manual",
-    "CVT",
-    "DCT",
-    "AMT",
-    "EV Single-Speed",
+    "CVT - Continuously Variable Transmission",
+    "DCT - Dual Clutch Transmission",
+    "AGS - Auto Gear Shift (semi-automatic)",
+    "AMT - Automated Manual Transmission ",
+    "EV Single-Speed – Used in most electric vehicles",
   ];
 
   const makes = [
