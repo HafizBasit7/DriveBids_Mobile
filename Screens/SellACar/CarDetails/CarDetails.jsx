@@ -5,12 +5,15 @@ import { useNavigation } from "@react-navigation/native";
 import { useCar } from "../../../R1_Contexts/carContext";
 
 const CarDetails3 = () => {
-  const years = Array.from({ length: (new Date().getFullYear() + 4) - 1980 + 1 }, (_, i) => 1980 + i);
+  const years = Array.from(
+    { length: new Date().getFullYear() + 4 - 1980 + 1 },
+    (_, i) => 1980 + i
+  );
   const scrollY = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
   const flatListRef = useRef(null);
 
-  const {carState, dispatch} = useCar();
+  const { carState, dispatch } = useCar();
 
   useEffect(() => {
     const index = years.indexOf(carState.carDetails.model);
@@ -61,11 +64,11 @@ const CarDetails3 = () => {
     const index = Math.round(offsetY / 50);
 
     dispatch({
-      type: 'UPDATE_FIELD',
-      section: 'carDetails',
-      field: 'model',
+      type: "UPDATE_FIELD",
+      section: "carDetails",
+      field: "model",
       value: parseInt(years[index]),
-    })
+    });
   };
 
   return (
@@ -109,7 +112,6 @@ const CarDetails3 = () => {
           title="Next"
           onPress={() => navigation.navigate("CarDetails4")}
         />
-        
       </View>
     </View>
   );

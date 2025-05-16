@@ -46,9 +46,9 @@ const CarDetails3 = () => {
 
   const updateValue = (value) => {
     dispatch({
-      type: 'UPDATE_FIELD',
-      section: 'carDetails',
-      field: 'model',
+      type: "UPDATE_FIELD",
+      section: "carDetails",
+      field: "model",
       value: parseInt(value),
     });
     setInputValue(value);
@@ -78,9 +78,7 @@ const CarDetails3 = () => {
   // Filter years based on search text
   const filteredYears = useMemo(() => {
     if (!searchText) return years;
-    return years?.filter(year =>
-      year.toString().includes(searchText)
-    );
+    return years?.filter((year) => year.toString().includes(searchText));
   }, [searchText, years]);
 
   return (
@@ -151,7 +149,9 @@ const CarDetails3 = () => {
                 >
                   <SafeAreaView style={styles.bottomSheetContent}>
                     <View style={styles.bottomSheetHeader}>
-                      <Text style={styles.bottomSheetTitle}>Select Model Year</Text>
+                      <Text style={styles.bottomSheetTitle}>
+                        Select Model Year
+                      </Text>
                       <TouchableOpacity onPress={closeBottomSheet}>
                         <Text style={styles.closeButton}>✕</Text>
                       </TouchableOpacity>
@@ -159,17 +159,19 @@ const CarDetails3 = () => {
 
                     {/* Search input in bottom sheet */}
 
-
                     {/* Years list */}
                     <FlatList
                       data={filteredYears}
                       keyExtractor={(item) => item.toString()}
                       renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => updateValue(item.toString())}>
+                        <TouchableOpacity
+                          onPress={() => updateValue(item.toString())}
+                        >
                           <Text
                             style={[
                               styles.entityText,
-                              carState.carDetails.model === item && styles.selectedText,
+                              carState.carDetails.model === item &&
+                                styles.selectedText,
                             ]}
                           >
                             {item}

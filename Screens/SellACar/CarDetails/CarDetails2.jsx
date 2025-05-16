@@ -146,7 +146,7 @@ const CarDetails2 = () => {
           >
             <TextInput
               style={styles.input}
-              placeholder="Search car variant"
+              placeholder="Car's Variant"
               placeholderTextColor="#999"
               value={carState.carDetails.variant}
               editable={false}
@@ -209,7 +209,7 @@ const CarDetails2 = () => {
                     <View style={styles.searchContainer}>
                       <TextInput
                         style={styles.searchInput}
-                        placeholder="Search car variant"
+                        placeholder="Car's Variant"
                         placeholderTextColor="#999"
                         value={searchText}
                         onChangeText={setSearchText}
