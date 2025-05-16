@@ -25,12 +25,16 @@ const CarDetails9 = () => {
   const bottomSheetAnimation = useRef(new Animated.Value(height)).current;
 
   const options = [
-    { id: 1, label: "Manual" },
-    { id: 3, label: "CVT - Continuously Variable Transmission" },
-    { id: 4, label: "DCT - Dual Clutch Transmission" },
-    { id: 5, label: "AMT - Automated Manual Transmission" },
-    { id: 6, label: "AGS - Auto Gear Shift (semi-automatic)" },
-    { id: 10, label: "EV Single-Speed - Used in most electric vehicles" },
+    { id: 1, label: "Manual", value: "Manual" },
+    { id: 3, label: "CVT - Continuously Variable Transmission", value: "CVT" },
+    { id: 4, label: "DCT - Dual Clutch Transmission", value: "DCT" },
+    { id: 5, label: "AMT - Automated Manual Transmission", value: "AMT" },
+    { id: 6, label: "AGS - Auto Gear Shift (semi-automatic)", value: "AGS" },
+    {
+      id: 10,
+      label: "EV Single-Speed - Used in most electric vehicles",
+      value: "EV",
+    },
   ];
 
   const toggleSelection = (value) => {
@@ -139,13 +143,13 @@ const CarDetails9 = () => {
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
                       <TouchableOpacity
-                        onPress={() => toggleSelection(item.label)}
+                        onPress={() => toggleSelection(item.value)}
                       >
                         <View style={styles.row}>
                           <Text
                             style={[
                               styles.tableData,
-                              carState.carDetails.transmission === item.label &&
+                              carState.carDetails.transmission === item.value &&
                                 styles.selectedText,
                             ]}
                           >

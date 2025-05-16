@@ -82,14 +82,7 @@ export const carDetailsValidation = zod.object({
   fuel: zod.enum(["Petrol", "Diesel", "HI-Octane", "Electric", "Hybrid"]),
   color: zod.string({ required_error: "color is missing" }),
   engineSize: zod.number({ required_error: "engine size is missing" }),
-  transmission: zod.enum([
-    "Manual",
-    "CVT - Continuously Variable Transmission",
-    "DCT - Dual Clutch Transmission",
-    "AMT - Automated Manual Transmission ",
-    "AGS - Auto Gear Shift (semi-automatic)",
-    "EV Single-Speed - Used in most electric vehicles",
-  ]),
+  transmission: zod.enum(["Manual", "CVT", "DCT", "AMT", "AGS", "EV"]),
   noOfOwners: zod.number({ required_error: "no of owners missing" }),
   horsePower: zod.number({ required_error: "horse power missing" }),
   accidentHistory: zod.string({
