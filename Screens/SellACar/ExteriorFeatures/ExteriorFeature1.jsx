@@ -117,6 +117,8 @@ const ExteriorFeature1 = () => {
           style={styles.button}
           title="Next"
           onPress={() => navigation.navigate("InteriorFeature1")}
+disabled={!carState?.features?.exterior?.length}
+
         />
         <View style={{ height: 10 }} />
       </View>

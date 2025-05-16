@@ -165,7 +165,10 @@ const CarDetails1 = () => {
 
           {/* Buttons */}
           <View style={styles.buttonContainer}>
-            <CustomButton style={styles.button} title="Next" onPress={onNext} />
+            <CustomButton  style={[
+    styles.button,
+    !carState.carDetails.make && { backgroundColor: "#ccc" },
+  ]} title="Next" onPress={onNext}  disabled={!carState.carDetails.make} />
             <View style={{ height: 10 }} />
           </View>
         </View>
@@ -231,6 +234,7 @@ const CarDetails1 = () => {
                     ) : (
                       <FlatList
                         data={filteredMakes}
+                        
                         keyExtractor={(item) => item.make_id}
                         renderItem={({ item }) => (
                           <TouchableOpacity
@@ -363,7 +367,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   bottomSheetContent: {
-    flex: 1,
+    
   },
   bottomSheetHeader: {
     flexDirection: "row",

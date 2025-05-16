@@ -199,6 +199,8 @@ const Interior5 = () => {
           style={{ marginBottom: 10 }}
           title="Save"
           onPress={handleSaveDraft}
+                               disabled={!(carState.images.interior && carState.images.interior[index]?.url)}
+
         />
         {/* <CustomButton
           title="Back"

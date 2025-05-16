@@ -117,6 +117,7 @@ const CarDetails14 = () => {
             style={styles.button}
             title="Finish"
             onPress={handleSaveDraft}
+            disabled={!carState.carDetails.description}
           />
           <View style={{ height: 10 }} />
           {/* <CustomButton

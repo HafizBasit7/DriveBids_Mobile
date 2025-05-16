@@ -205,6 +205,8 @@ const Exterior6 = () => {
           style={{ marginBottom: 10 }}
           title="Save"
           onPress={handleSaveDraft}
+                     disabled={!(carState.images.exterior && carState.images.exterior[index]?.url)}
+
         />
         {/* <CustomButton
           title="Back"

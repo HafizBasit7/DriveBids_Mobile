@@ -71,6 +71,7 @@ const PriceRange4 = () => {
     { id: "3", name: "3 weeks" },
     { id: "4", name: "4 weeks" },
   ];
+const isDurationSelected = !!carState.selectedWeek;
 
   return (
     <View style={styles.container}>
@@ -129,6 +130,8 @@ const PriceRange4 = () => {
             style={styles.button}
             title="Save"
             onPress={handleSaveDraft}
+              disabled={!isDurationSelected}
+
           />
         </View>
       </View>

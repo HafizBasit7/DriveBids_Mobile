@@ -213,6 +213,8 @@ const Wheel1 = () => {
           style={{ marginBottom: 10 }}
           title="Next"
           onPress={handleNext}
+                               disabled={!(carState.images.wheels && carState.images.wheels[index]?.url)}
+
         />
       </View>
     </View>

@@ -206,6 +206,8 @@ const Thread4 = () => {
           style={{ marginBottom: 10 }}
           title="Save"
           onPress={handleSaveDraft}
+          disabled={!(carState.images.tyreTreads && carState.images.tyreTreads[index]?.url)}
+
         />
         {/* <CustomButton
           title="Back"

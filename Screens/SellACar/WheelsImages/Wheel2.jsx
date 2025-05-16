@@ -175,6 +175,9 @@ const Wheel2 = () => {
           style={{ marginBottom: 10 }}
           title="Next"
           onPress={() => navigation.navigate("Wheel3")}
+                                         disabled={!(carState.images.wheels && carState.images.wheels[index]?.url)}
+
+          
         />
         {/* <CustomButton
           title="Back"

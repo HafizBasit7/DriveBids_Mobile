@@ -160,6 +160,7 @@ const CarDetails2 = () => {
               style={styles.button}
               title="Next"
               onPress={() => navigation.navigate("CarDetails3")}
+               disabled={!carState.carDetails.variant}
             />
             <View style={{ height: 10 }} />
           </View>

@@ -68,7 +68,9 @@ const InspectionReport3 = () => {
       value,
     });
   };
-
+const isAllTestsSelected = tests.every(
+  test => carState.carInspectionReport?.interiorChecks?.[test.target]
+);
   return (
     <View style={styles.container}>
       <DialogBox
@@ -176,6 +178,8 @@ const InspectionReport3 = () => {
       <CustomButton
         title="Save"
         onPress={handleSaveDraft}
+              disabled={!isAllTestsSelected}
+
       />
       {/* <CustomButton
         onPress={() => navigation.goBack()}

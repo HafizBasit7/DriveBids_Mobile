@@ -122,6 +122,7 @@ const CarDetails3 = () => {
             style={styles.button}
             title="Next"
             onPress={() => navigation.navigate("CarDetails4")}
+            disabled={!carState.carDetails.model}
           />
         </View>
 

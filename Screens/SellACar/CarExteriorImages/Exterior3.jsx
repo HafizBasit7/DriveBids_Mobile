@@ -180,6 +180,8 @@ const Exterior3 = () => {
           style={{ marginBottom: 10 }}
           title="Next"
           onPress={() => navigation.navigate("Exterior4")}
+                     disabled={!(carState.images.exterior && carState.images.exterior[index]?.url)}
+
         />
         {/* <CustomButton
           title="Back"

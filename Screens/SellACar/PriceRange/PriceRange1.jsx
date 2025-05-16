@@ -44,6 +44,7 @@ const PriceRange1 = () => {
       value: rawNumber ? parseInt(rawNumber) : 0,
     });
   };
+const isBidValid = carState.carPricing.staringBidPrice > 0;
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -87,6 +88,9 @@ const PriceRange1 = () => {
             style={styles.button}
             title="Next"
             onPress={() => navigation.navigate("PriceRange2")}
+            
+              disabled={!isBidValid}
+
           />
           <View style={{ height: 10 }} />
         </View>

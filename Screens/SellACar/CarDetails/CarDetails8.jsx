@@ -56,6 +56,7 @@ const CarDetails8 = () => {
             style={styles.button}
             title="Next"
             onPress={() => navigation.navigate("CarDetails9")}
+            disabled={!carState.carDetails.engineSize}
           />
         </View>
       </View>

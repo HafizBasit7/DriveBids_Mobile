@@ -181,6 +181,8 @@ const Thread1 = () => {
           style={{ marginBottom: 10 }}
           title="Next"
           onPress={() => navigation.navigate("Thread2")}
+                                         disabled={!(carState.images.tyreTreads && carState.images.tyreTreads[index]?.url)}
+
         />
         {/* <CustomButton
           title="Back"

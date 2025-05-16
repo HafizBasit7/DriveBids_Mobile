@@ -200,6 +200,8 @@ const Wheel4 = () => {
           style={{ marginBottom: 10 }}
           title="Save"
           onPress={handleSaveDraft}
+                                         disabled={!(carState.images.wheels && carState.images.wheels[index]?.url)}
+
         />
         {/* <CustomButton
           title="Back"

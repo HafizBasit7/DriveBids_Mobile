@@ -157,6 +157,8 @@ const InteriorFeature1 = () => {
           style={styles.button}
           title="Save"
           onPress={handleSaveDraft}
+          disabled={!carState?.features?.interior?.length}
+
         />
         <View style={{ height: 10 }} />
       </View>

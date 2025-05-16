@@ -66,6 +66,7 @@ const CarDetails12 = () => {
     style={styles.button}
     title="Next"
     onPress={() => navigation.navigate("CarDetails13")}
+    disabled={!carState.carDetails.accidentHistory}
   />
   <View style={{ height: 10 }} />
   {/* <CustomButton

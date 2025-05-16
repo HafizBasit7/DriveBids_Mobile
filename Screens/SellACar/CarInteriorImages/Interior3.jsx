@@ -176,6 +176,8 @@ const Interior3 = () => {
           style={{ marginBottom: 10 }}
           title="Next"
           onPress={() => navigation.navigate("Interior4")}
+                               disabled={!(carState.images.interior && carState.images.interior[index]?.url)}
+
         />
         {/* <CustomButton
           title="Back"

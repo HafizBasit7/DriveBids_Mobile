@@ -45,7 +45,9 @@ const InspectionReport2 = () => {
       value,
     });
   };
-
+const isAllTestsSelected = tests.every(
+  test => carState.carInspectionReport?.essentialChecks?.[test.target]
+);
   return (
     <View style={styles.container}>
       <View style={{ width: "100%" }}>
@@ -143,6 +145,8 @@ const InspectionReport2 = () => {
       <CustomButton
         title="Next"
         onPress={() => navigation.navigate("InspectionReport3")}
+              disabled={!isAllTestsSelected}
+
       />
       {/* <CustomButton
         onPress={() => navigation.goBack()}
