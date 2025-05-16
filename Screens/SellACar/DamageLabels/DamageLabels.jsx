@@ -1,5 +1,13 @@
 import React, { useRef, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { Svg, Circle } from "react-native-svg";
 import { MaterialIcons } from "@expo/vector-icons";
 import { uploadImage } from "../../../utils/upload";
@@ -57,7 +65,15 @@ const DamageInspection = () => {
     let imgUrl = false;
     //Upload image
     try {
+      if (!damageReport.imageUrl) {
+        setMessage({
+          type: "error",
+          message: "Orignal Image against the marked damage is required.",
+          title: "Error",
+        });
+      }
       setLoading(true);
+
       imgUrl = await uploadImage(damageReport.imageUrl, "camera-report");
     } catch (e) {
       setMessage({
@@ -133,10 +149,18 @@ const DamageInspection = () => {
       />
 
       <SectionHeader title={`Step ${carFacing + 1} of 4`} />
-      <Text style={styles.instruction}>Choose Label & Upload Area Image</Text>
-
+      <Text
+        style={[
+          styles.instruction,
+          { textAlign: "left", marginHorizontal: 20 },
+        ]}
+      >
+        Click on the damaged area to select the damage type (e.g., Scratch,
+        Dent, Rust), add a description, and attach a clear photo of the actual
+        damage.
+      </Text>
       {/* Damage Info */}
-      <View style={styles.damageSelector}>
+      {/* <View style={styles.damageSelector}>
         {damageOptions.map((option, index) => (
           <TouchableOpacity key={index} style={[styles.damageOption]}>
             <View
@@ -158,7 +182,7 @@ const DamageInspection = () => {
             <Text style={[styles.optionText]}>{option.label}</Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </View> */}
 
       <View
         style={{
@@ -190,7 +214,7 @@ const DamageInspection = () => {
                   <MaterialIcons
                     key={index}
                     name={option.icon}
-                    size={25}
+                    size={20}
                     color={option.color}
                     style={{
                       position: "absolute",
@@ -207,11 +231,11 @@ const DamageInspection = () => {
 
         <Text style={[styles.instruction, { fontSize: 15, marginTop: 7 }]}>
           {carFacing === 0
-            ? "[ Front Side ]"
+            ? "[ Front View ]"
             : carFacing === 1
-            ? "[ Right Side ]"
+            ? "[ Right View ]"
             : carFacing === 2
-            ? "[ Left Side ]"
+            ? "[ Left View ]"
             : "[ Rear View ]"}
         </Text>
 
@@ -260,10 +284,10 @@ const styles = StyleSheet.create({
 
   instruction: {
     fontFamily: "Inter-SemiBold",
-    fontSize: 14,
+    fontSize: 15,
 
     textAlign: "center",
-    marginBottom: 5,
+    marginBottom: 0,
   },
   damageSelector: {
     flexDirection: "row",
@@ -280,7 +304,7 @@ const styles = StyleSheet.create({
   optionText: {
     marginLeft: 8,
     fontFamily: "Inter-Regular",
-    fontSize: 14,
+    fontSize: 13,
   },
   carContainer: {
     borderWidth: 2,
@@ -320,7 +344,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#DADADA",
     fontFamily: "Inter-Regular",
-    height: "40%",
+    height: "25%",
     textAlignVertical: "top",
     padding: 8,
     marginBottom: 10,
@@ -336,7 +360,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   imageContainer: {
-    maxHeight: 300,
+    maxHeight: "25%",
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
@@ -344,8 +368,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: "hidden",
     position: "relative",
-    height: "20%",
-    width: "30%",
+    // height: "20%",
+    // width: "30%",
   },
   image: {
     width: "100%",

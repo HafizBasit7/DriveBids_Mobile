@@ -33,7 +33,6 @@ export default DamageReportModal = ({
   const [image, setSelectImage] = useState(null);
   const [description, setDescription] = useState("");
   const [imageModalVisible, setImageModalVisible] = useState(false);
-
   //handle gallery image
   const handleGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -81,7 +80,9 @@ export default DamageReportModal = ({
   };
 
   const handleSaveDamageReport = () => {
-    if (!image && !description) return;
+    if (image == null) return;
+    // console.log(image);
+
     handleSaveDamage({
       imageUrl: image,
       description,
@@ -136,7 +137,12 @@ export default DamageReportModal = ({
         transparent
         animationType="fade"
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            if (Keyboard.isVisible()) Keyboard.dismiss();
+            else dismissModal();
+          }}
+        >
           <View
             style={{
               flex: 1,
@@ -183,7 +189,7 @@ export default DamageReportModal = ({
                             borderColor: "#DADADA",
                             borderWidth: 2,
                             borderRadius: 8,
-                            padding: 2,
+                            padding: 1,
                           },
                           selectedDamage?.label === option.label && {
                             borderColor: GlobalStyles.colors.ButtonColor,
@@ -193,7 +199,7 @@ export default DamageReportModal = ({
                       >
                         <MaterialIcons
                           name={option.icon}
-                          size={20}
+                          size={16}
                           color={option.color}
                         />
                       </View>
@@ -246,9 +252,11 @@ export default DamageReportModal = ({
                 </TouchableOpacity>
 
                 <TouchableOpacity
+                  disabled={image == null}
                   style={{
                     width: "30%",
-                    backgroundColor: GlobalStyles.colors.ButtonColor,
+                    backgroundColor:
+                      image == null ? "gray" : GlobalStyles.colors.ButtonColor,
                     justifyContent: "center",
                     alignItems: "center",
                     marginTop: 5,
