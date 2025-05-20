@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, FlatList, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, StyleSheet, FlatList, Text, ScrollView, TouchableOpacity, TextInput, Modal } from 'react-native';
 import ViewAllCarCard from './ViewAllCarCard';
 import Header from '../../../CustomComponents/Header';
 import SectionHeader from '../../../CustomComponents/SectionHeader';
@@ -117,6 +117,79 @@ const FilterChips = (filters) => {
   );
 };
 
+const SortFilter = ({ selectedSort, onSelectSort }) => {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const sortOptions = [
+    { label: 'Most Relevant', value: 'relevant' },
+    { label: 'Newly Listed', value: 'recent' },
+    { label: 'Highest Price', value: 'highPrice' },
+    { label: 'Lowest Price', value: 'lowPrice' },
+  ];
+
+  return (
+    <View style={styles.sortContainer}>
+      <TouchableOpacity 
+        style={styles.sortButton}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.sortButtonText}>
+          Sort by: {sortOptions.find(option => option.value === selectedSort)?.label || 'Most Relevant'}
+        </Text>
+        <Icon
+          name="chevron-down"
+          type="material-community"
+          size={20}
+          color="#6F6F6F"
+        />
+      </TouchableOpacity>
+
+      <Modal
+        visible={isModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <TouchableOpacity 
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setModalVisible(false)}
+        >
+          <View style={styles.modalContent}>
+            {sortOptions.map((option) => (
+              <TouchableOpacity
+                key={option.value}
+                style={[
+                  styles.sortOption,
+                  selectedSort === option.value && styles.selectedSortOption
+                ]}
+                onPress={() => {
+                  onSelectSort(option.value);
+                  setModalVisible(false);
+                }}
+              >
+                <Text style={[
+                  styles.sortOptionText,
+                  selectedSort === option.value && styles.selectedSortOptionText
+                ]}>
+                  {option.label}
+                </Text>
+                {selectedSort === option.value && (
+                  <Icon
+                    name="check"
+                    type="material"
+                    size={20}
+                    color="#2A5DB0"
+                  />
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        </TouchableOpacity>
+      </Modal>
+    </View>
+  );
+};
+
 const LIMIT = 10;
 
 const Filters_ViewAll = ({ route }) => {
@@ -136,8 +209,12 @@ const Filters_ViewAll = ({ route }) => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: ["search", {...filters, ...((title === '' || title === undefined || !title) ? {} : {title})}],
-    queryFn: ({ pageParam = 1 }) => searchCars({...filters, ...((title === '' || title === undefined || !title) ? {} : {title})}, pageParam, LIMIT, currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1]),
+    queryKey: ["search", {...filters, ...((title === '' || title === undefined || !title) ? {} : {title}), sort: selectedSort}],
+    queryFn: ({ pageParam = 1 }) => searchCars({
+      ...filters, 
+      ...((title === '' || title === undefined || !title) ? {} : {title}),
+      sort: selectedSort
+    }, pageParam, LIMIT, currentSelectedLocation.coordinates[0], currentSelectedLocation.coordinates[1]),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage?.data?.cars?.length === LIMIT ? allPages.length + 1 : undefined;
     },
@@ -153,12 +230,19 @@ const Filters_ViewAll = ({ route }) => {
     };
   }, [title]);
 
+  const [selectedSort, setSelectedSort] = useState('relevant');
+
+  useEffect(() => {
+    queryClient.invalidateQueries({queryKey: ['search']});
+  }, [selectedSort]);
+
   const { data: carsInWatchList } = useQuery({
     queryKey: ["carsInWatchList"],
     queryFn: getCarsIdInWatchList,
   });
 
   const filteredCars = data?.pages?.flatMap((page) => page.data.cars) || [];
+  
 
   return (
     <>
@@ -186,6 +270,10 @@ const Filters_ViewAll = ({ route }) => {
           </TouchableOpacity>
         </View>
         
+        <SortFilter 
+          selectedSort={selectedSort}
+          onSelectSort={setSelectedSort}
+        />
         <FilterChips filters={filters} />
         {isLoading && <ActivityIndicator/>}
        {!isLoading && (
@@ -293,6 +381,59 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#000000",
     textAlignVertical: "center",
+  },
+  sortContainer: {
+    paddingHorizontal: 10,
+    marginTop: 10,
+  },
+  sortButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#F3F3F3',
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    borderRadius: 10,
+  },
+  sortButtonText: {
+    fontSize: 14,
+    color: '#6F6F6F',
+    fontWeight: '600',
+    fontFamily: 'Inter-Regular',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 15,
+    width: '80%',
+    maxWidth: 300,
+  },
+  sortOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E1E3E5',
+  },
+  selectedSortOption: {
+    backgroundColor: '#F8F9FA',
+  },
+  sortOptionText: {
+    fontSize: 14,
+    color: '#6F6F6F',
+    fontFamily: 'Inter-Regular',
+  },
+  selectedSortOptionText: {
+    color: '#2A5DB0',
+    fontWeight: '600',
   },
 });
 
