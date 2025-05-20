@@ -33,7 +33,7 @@ const CodeScreen = ({route}) => {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const [timeLeft, setTimeLeft] = useState(300);
+  const [timeLeft, setTimeLeft] = useState(60);
 
   const ref = useBlurOnFulfill({ value: otp, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -79,7 +79,7 @@ const CodeScreen = ({route}) => {
     setLoading(true);
     try {
           await sendResetOtp({ email: email ? email.trim() : email });
-          setTimeLeft(300);
+          setTimeLeft(60);
         } catch (e) {
           setMessage({
             type: "error",
