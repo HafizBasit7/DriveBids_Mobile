@@ -77,6 +77,7 @@ const ChangeLocationScreen = () => {
               queryClient.invalidateQueries({ queryKey: ["carsByBidCount"] });
               queryClient.invalidateQueries({ queryKey: ["carsAll"] });
               queryClient.invalidateQueries({ queryKey: ["carsEndingAll"] });
+              queryClient.invalidateQueries({ queryKey: ["search"] });
               queryClient.invalidateQueries({
                 queryKey: ["carsByBidCountAll"],
               });
