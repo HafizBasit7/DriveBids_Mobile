@@ -122,7 +122,8 @@ const styles = StyleSheet.create({
   },
   viewAllText: {
     fontFamily: "Inter-SemiBold",
-    fontSize: 14,
+    fontSize: 12,
+
     color: GlobalStyles.colors.ButtonColor,
     marginLeft: 5,
   },

@@ -31,7 +31,7 @@ const OTPModal = ({
   onClose,
   onSubmit,
   otpLength = 4,
-  resendDelay = 302,
+  resendDelay = 60,
   onResendOtp,
 }) => {
   // State variables

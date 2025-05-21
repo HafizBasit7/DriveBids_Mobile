@@ -263,7 +263,7 @@ const SignupScreen = () => {
                 <Text style={styles.label}>Name</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Enter your name"
+                  placeholder="Full Name"
                   value={name}
                   onChangeText={setName}
                 />
@@ -271,9 +271,9 @@ const SignupScreen = () => {
 
               <Text style={styles.label}>Location</Text>
               <GooglePlacesAutocomplete
-                placeholder="Enter location"
+                placeholder="City/State"
                 textInputProps={{
-                  placeholderTextColor: "#000",
+                  placeholderTextColor: "gray",
                   defaultValue: location?.name,
                 }}
                 enablePoweredByContainer={false}
@@ -332,7 +332,7 @@ const SignupScreen = () => {
                     borderColor: "#ccc",
                     borderRadius: 10,
                     paddingHorizontal: 3,
-                    marginBottom: 15,
+                    marginBottom: 10,
                   },
                   textInput: {
                     height: 46,
@@ -387,7 +387,7 @@ const SignupScreen = () => {
 
                   <TextInput
                     style={styles.inputnum}
-                    placeholder="Enter your phone number"
+                    placeholder="Phone Number"
                     keyboardType="phone-pad"
                     value={phoneNumber}
                     onChangeText={setPhoneNumber}
@@ -399,7 +399,7 @@ const SignupScreen = () => {
                 <Text style={styles.label}>Email</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Enter your email"
+                  placeholder="Email"
                   value={email}
                   onChangeText={(text) => setEmail(text.toLowerCase())}
                 />
@@ -432,7 +432,7 @@ const SignupScreen = () => {
                 <Text style={styles.label}>Password</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Enter your password"
+                  placeholder="Password"
                   secureTextEntry={!showPassword}
                   value={password}
                   onChangeText={setPassword}
@@ -457,7 +457,7 @@ const SignupScreen = () => {
                     value={businessAddress}
                     onChangeText={setBusinessAddress}
                     style={styles.input}
-                    placeholder="Enter your business address"
+                    placeholder="Business Address"
                   />
                 </View>
               )}
@@ -575,8 +575,8 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: "row",
     width: "100%",
-    height: height * 0.09,
-    marginTop: -height * 0.09,
+    height: height * 0.08,
+    marginTop: -height * 0.08,
     backgroundColor: "",
   },
   leftBox: {
@@ -602,6 +602,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     backgroundColor: "#FEE226",
+    // borderRadius: 10,
+    // borderWidth: 5,
+    // borderColor: "#FEE226",
   },
 
   boxText: {
@@ -639,7 +642,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    height: 55,
+    height: 50,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
@@ -675,7 +678,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   countryCodeText: {
-    fontSize: 16,
+    fontSize: 15,
     color: "#333",
   },
   requestOtpButton: {

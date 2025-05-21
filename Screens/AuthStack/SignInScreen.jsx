@@ -109,7 +109,7 @@ const SignInScreen = () => {
                     borderColor: focusedInput === "email" ? "#2F61BF" : "#ccc",
                   },
                 ]}
-                placeholder="Enter your email"
+                placeholder="Email"
                 placeholderTextColor="#888"
                 keyboardType="email-address"
                 autoCapitalize="none" // Disable automatic capitalization
@@ -132,7 +132,7 @@ const SignInScreen = () => {
                       color: "black",
                     },
                   ]}
-                  placeholder="Enter your password"
+                  placeholder="Password"
                   placeholderTextColor="#888"
                   secureTextEntry={!showPassword}
                   onFocus={() => setFocusedInput("password")}
