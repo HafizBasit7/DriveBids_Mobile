@@ -3,7 +3,6 @@ import {
   View,
   Text,
   Modal,
- 
   TouchableOpacity,
   TouchableWithoutFeedback,
   StyleSheet,
@@ -16,17 +15,15 @@ const ReportModal = ({ visible, onClose, damage }) => {
 
   // const description =
   //   "There is a 6-inch scratch on the front passenger-side door, penetrating the clear coat and exposing the paint layer. While not deep enough to reach the primer, it is visible and may worsen over time.";
-  const damageImages = [
-    { uri: damage.imageUrl },
-  ];
+  const damageImages = [{ uri: damage.imageUrl }];
 
   // Function to limit words and add "See More" / "See Less"
   const maxChars = 120; // Adjust to fit approx 3 lines
-const truncatedText = expanded
-  ? damage.description
-  : damage.description.length > maxChars
-  ? damage.description.substring(0, maxChars).trim() + "..."
-  : damage.description;
+  const truncatedText = expanded
+    ? damage.description
+    : damage.description.length > maxChars
+    ? damage.description.substring(0, maxChars).trim() + "..."
+    : damage.description;
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -135,17 +132,16 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     lineHeight: 20, // Adjust based on font
   },
-  
+
   seeMoreText: {
     color: "blue",
     fontWeight: "bold",
-    fontSize:10
+    fontSize: 10,
   },
   seeLessText: {
     color: "red",
     fontWeight: "bold",
-    fontSize:10
-
+    fontSize: 10,
   },
   imageContainer: {
     flexDirection: "row",

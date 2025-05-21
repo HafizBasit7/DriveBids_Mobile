@@ -10,21 +10,20 @@ import {
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
-import {useCar} from "../../../R1_Contexts/carContext";
+import { useCar } from "../../../R1_Contexts/carContext";
 import DialogBox from "../../../CustomComponents/DialogBox";
 
 const CarDetails14 = () => {
-
   const navigation = useNavigation();
-  const {carState, dispatch, draftSave} = useCar();
+  const { carState, dispatch, draftSave } = useCar();
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
   function updateField(field, value) {
     dispatch({
-      type: 'UPDATE_FIELD',
-      section: 'carDetails',
+      type: "UPDATE_FIELD",
+      section: "carDetails",
       field,
       value,
     });
@@ -33,21 +32,25 @@ const CarDetails14 = () => {
   const handleSaveDraft = async () => {
     setLoading(true);
     try {
-        await draftSave('carDetails');
-        setMessage({type: 'success', message: 'Car Saved', title: 'Success'});
-    }
-    catch(e) {
-        setMessage({type: 'error', message: e.message || e.msg, title: 'Error'});
+      await draftSave("carDetails");
+      setMessage({ type: "success", message: "Car Saved", title: "Success" });
+    } catch (e) {
+      setMessage({
+        type: "error",
+        message: e.message || e.msg,
+        title: "Error",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const onOk = () => {
-    if(message?.type === 'error') {
+    if (message?.type === "error") {
       setMessage(null);
     } else {
-      setMessage(null); navigation.popTo("VehicleInfo");
+      setMessage(null);
+      navigation.popTo("VehicleInfo");
     }
   };
 
@@ -63,7 +66,7 @@ const CarDetails14 = () => {
           onOkPress={onOk}
           type={message?.type}
           loading={loading}
-          title={message?.title || ''}
+          title={message?.title || ""}
         />
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
@@ -91,8 +94,8 @@ const CarDetails14 = () => {
             <TextInput
               style={[styles.input, { height: 50 }]}
               value={carState.carDetails.title}
-              onChangeText={(value) => updateField('title', value)}
-              placeholder="Enter Ad Title"
+              onChangeText={(value) => updateField("title", value)}
+              placeholder="Ad Title"
             />
           </View>
 
@@ -102,10 +105,10 @@ const CarDetails14 = () => {
               Ad Description <Text style={styles.required}>*</Text>
             </Text>
             <TextInput
-              style={[styles.input, { height: 100 }]}
+              style={[styles.input, { height: 120, textAlignVertical: "top" }]}
               value={carState.carDetails.description}
-              onChangeText={(value) => updateField('description', value)}
-              placeholder="Enter Ad Description"
+              onChangeText={(value) => updateField("description", value)}
+              placeholder="Detailed Description"
               multiline
             />
           </View>
@@ -168,7 +171,7 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     marginBottom: 15,
-    marginTop:"6%"
+    marginTop: "6%",
   },
   label: {
     fontSize: 16,
@@ -188,6 +191,7 @@ const styles = StyleSheet.create({
     color: "#000",
     backgroundColor: "#F9F9F9",
   },
+
   buttonContainer: {
     position: "absolute",
     bottom: 0,
