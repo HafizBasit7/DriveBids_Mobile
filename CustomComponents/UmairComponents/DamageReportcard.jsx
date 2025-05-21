@@ -90,7 +90,9 @@ const DamageReportCarousel = ({ car }) => {
           </Text>
 
           <TouchableOpacity onPress={handleViewClick}>
-            <Text style={styles.viewText}>{descriptions[currentIndex]}</Text>
+            <Text style={styles.viewText}>
+              [ {descriptions[currentIndex]} ]
+            </Text>
           </TouchableOpacity>
 
           <View style={styles.imageContainer}>
@@ -242,6 +244,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     color: "#000",
+    textAlign: "center",
+    marginBottom: 5,
   },
   viewText: {
     fontSize: 14,
