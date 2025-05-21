@@ -15,7 +15,7 @@ const MakeModel = ({ car }) => {
     { icon: "exchange-alt", label: "TRANSMISSION", value: car.transmission },
     { icon: "car-battery", label: "CONDITION", value: car.condition },
     { icon: "users", label: "PREVIOUS OWNERS", value: car.noOfOwners },
-    { icon: "users", label: "Horse Power", value: car.horsePower },
+    { icon: "horse", label: "Horse Power", value: car.horsePower },
   ];
 
   return (
