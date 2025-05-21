@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 import MakeModel from "../../CustomComponents/UmairComponents/MakeModel";
@@ -89,9 +89,26 @@ const AdDetails = ({ route }) => {
             <View style={styles.lineContainer}>
               <View style={styles.fullLine} />
               <Text style={styles.lineText}>{car.title}</Text>
+
               <View style={styles.fullLine} />
             </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 5,
 
+                // marginHorizontal: 10,
+                marginBottom: 10,
+              }}
+            >
+              <FontAwesome5 name="map-marker-alt" size={15} color="#2F61BF" />
+              <Text
+                style={{ fontSize: 13, fontWeight: "bold", color: "#2F61BF" }}
+              >
+                {car.location.name}
+              </Text>
+            </View>
             <View style={styles.reserveSection}>
               <View style={styles.boxedLineContainer}>
                 <View style={styles.smallLine}>
@@ -195,7 +212,9 @@ const AdDetails = ({ route }) => {
             )}
             {!isMyBid && <BiddingHistory car={car._id} />}
             <CarFeatures features={car.features} />
-            <SellersComment car={car} />
+            <SellersComment car={car} isAccident={true} />
+            <SellersComment car={car} isAccident={false} />
+
             <SimilarAds make={car.make} carId={car._id} />
           </View>
         </TouchableWithoutFeedback>
@@ -219,9 +238,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 25,
+    marginBottom: 12,
     width: width,
-    marginTop: 15,
+    marginTop: 5,
   },
   fullLine: {
     flex: 1,
@@ -276,7 +295,7 @@ const styles = StyleSheet.create({
   },
   reserveSection: {
     alignItems: "center",
-    marginBottom: 15,
+    marginBottom: 0,
     width: "100%",
   },
   reserveTextContainer: {

@@ -80,11 +80,16 @@ const DamageReportCarousel = ({ car }) => {
       {isExpanded && (
         <View style={styles.borderedContainer}>
           <View style={styles.damageLabelContainer}>
-            <Text style={styles.damageLabel}>Damage Label</Text>
+            <Text style={styles.damageLabel}>Damages</Text>
           </View>
 
           <Text style={styles.instructionText}>
-            Click the label to reveal the damage report
+            {damageReport.map((marker, index) => {
+              if (marker.imageIndex === currentIndex) return true;
+              return false;
+            })
+              ? "Click the damage icon (if any) to reveal the details of damage."
+              : "NA"}
           </Text>
 
           <TouchableOpacity onPress={handleViewClick}>

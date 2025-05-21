@@ -2,20 +2,24 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-const SellersComment = ({ car }) => {
+const SellersComment = ({ car, isAccident = true }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <View style={styles.container}>
       <View style={styles.lineContainer}>
         <View style={styles.fullLine} />
-        <Text style={styles.lineText}>Seller's Comments</Text>
+        <Text style={styles.lineText}>
+          {isAccident ? "Accident History" : "Seller's Comment"}
+        </Text>
         <View style={styles.fullLine} />
       </View>
 
       {isExpanded && (
         <View style={styles.commentBox}>
-          <Text style={styles.commentText}>{car.description}</Text>
+          <Text style={styles.commentText}>
+            {isAccident ? car.accidentHistory : car.description}
+          </Text>
         </View>
       )}
 
@@ -30,7 +34,13 @@ const SellersComment = ({ car }) => {
           style={styles.icon}
         />
         <Text style={styles.dropdownText}>
-          {isExpanded ? "Hide Seller's Comment" : "View Seller's Comment"}
+          {isAccident
+            ? isExpanded
+              ? "Hide Accident History"
+              : "View Accident History"
+            : isExpanded
+            ? "Hide Seller's Comment"
+            : "View Seller's Comment"}
         </Text>
       </TouchableOpacity>
     </View>
@@ -40,8 +50,8 @@ const SellersComment = ({ car }) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    marginTop: 20,
-    marginBottom: 30,
+    marginTop: 10,
+    marginBottom: 10,
   },
   lineContainer: {
     flexDirection: "row",
@@ -74,15 +84,16 @@ const styles = StyleSheet.create({
   },
   commentBox: {
     backgroundColor: "#fff",
-    padding: 15,
+    padding: 10,
+    paddingVertical: 12,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
+    shadowRadius: 2,
+    elevation: 1,
   },
   commentText: {
-    fontSize: 14,
+    fontSize: 13,
     color: "#333",
   },
 });

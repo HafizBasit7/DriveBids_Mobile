@@ -46,6 +46,19 @@ const ReportModal = ({ visible, onClose, damage }) => {
                 style={styles.contentScrollView}
                 showsVerticalScrollIndicator={false}
               >
+                <View style={styles.section}>
+                  <Text style={styles.sectionTitle}>Damage Type</Text>
+                  <View style={styles.descriptionBox}>
+                    <TouchableOpacity
+                      onPress={() => setExpanded(!expanded)}
+                      activeOpacity={0.7}
+                    >
+                      <Text style={styles.descriptionText}>
+                        {damage?.damageType}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
                 {/* Damage Description Section */}
                 <View style={styles.section}>
                   <Text style={styles.sectionTitle}>Description</Text>
@@ -142,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#2A5DB0",
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "700",
     color: "#FFFFFF",
   },
@@ -169,10 +182,10 @@ const styles = StyleSheet.create({
     borderBottomColor: "#EEEEEE",
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
     color: "#2A5DB0",
-    marginBottom: 12,
+    marginBottom: 5,
   },
   descriptionBox: {
     backgroundColor: "#F8F9FA",

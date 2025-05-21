@@ -13,6 +13,9 @@ const MakeModel = ({ car }) => {
     { icon: "cogs", label: "ENGINE", value: `${car.engineSize} CC` },
     { icon: "gas-pump", label: "FUEL", value: car.fuel },
     { icon: "exchange-alt", label: "TRANSMISSION", value: car.transmission },
+    { icon: "car-battery", label: "CONDITION", value: car.condition },
+    { icon: "users", label: "PREVIOUS OWNERS", value: car.noOfOwners },
+    { icon: "users", label: "Horse Power", value: car.horsePower },
   ];
 
   return (
@@ -71,6 +74,7 @@ const styles = StyleSheet.create({
     color: "#777",
     fontWeight: "bold",
     marginTop: 5,
+    textAlign: "center",
   },
   value: {
     fontSize: 12,

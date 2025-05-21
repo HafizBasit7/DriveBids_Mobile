@@ -6,14 +6,15 @@ import { getCarBiddingHistory } from "../../API_Callings/R1_API/Car";
 import { ActivityIndicator } from "react-native-paper";
 import { formatAmount, formatDateTime } from "../../utils/R1_utils";
 import { useAuth } from "../../R1_Contexts/authContext";
+import Nodata from "../NoData";
 
-const BiddingHistory = ({car}) => {
+const BiddingHistory = ({ car }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const {authState} = useAuth();
+  const { authState } = useAuth();
   const user = authState.user;
 
-  const {data, isLoading} = useQuery({
-    queryKey: ['biddingHistory', car],
+  const { data, isLoading } = useQuery({
+    queryKey: ["biddingHistory", car],
     queryFn: () => getCarBiddingHistory(car),
     enabled: isExpanded,
   });
@@ -30,18 +31,25 @@ const BiddingHistory = ({car}) => {
       </View>
 
       {/* Expandable Content */}
-      {(isExpanded && isLoading) && (<ActivityIndicator style={{marginTop: 20}}/>)}
-      {(isExpanded && !isLoading && bids && bids.length < 1) && (
-        <Text style={{margin:30}}>No Data To Show</Text>
-      ) }
-      {(isExpanded && !isLoading && bids && bids.length > 0) && (
+      {isExpanded && isLoading && (
+        <ActivityIndicator style={{ marginTop: 20 }} />
+      )}
+      {isExpanded && !isLoading && bids && bids.length < 1 && <Nodata />}
+      {isExpanded && !isLoading && bids && bids.length > 0 && (
         <View style={styles.biddingList}>
           {bids.map((bid, index) => {
             const isOwnBid = bid.user === user._id;
 
             return (
               <View key={index} style={styles.bidItem}>
-                <View style={{flex: '1', flexDirection: 'row', gap: '8', marginBottom: '5'}}>
+                <View
+                  style={{
+                    flex: "1",
+                    flexDirection: "row",
+                    gap: "8",
+                    marginBottom: "5",
+                  }}
+                >
                   {index === 0 && (
                     <View style={styles.highestBidContainer}>
                       <Text style={styles.highestBidText}>Highest Bid</Text>
@@ -53,15 +61,21 @@ const BiddingHistory = ({car}) => {
                     </View>
                   )}
                 </View>
-                <Text style={styles.bidAmount}>Bid: AED {formatAmount(bid.bidAmount)}</Text>
-                {isOwnBid && (<Text style={[styles.bidAmount, {marginBottom: 2}]}>Budget: AED {formatAmount(bid.maxBudget)}</Text>)}
+                <Text style={styles.bidAmount}>
+                  Bid: AED {formatAmount(bid.bidAmount)}
+                </Text>
+                {isOwnBid && (
+                  <Text style={[styles.bidAmount, { marginBottom: 2 }]}>
+                    Budget: AED {formatAmount(bid.maxBudget)}
+                  </Text>
+                )}
                 {/* <Text style={styles.bidRank}>{index} Bid</Text> */}
                 <Text style={styles.bidDate}>
                   Bided on {formatDateTime(bid.createdAt)}
                 </Text>
                 {index !== bids.length - 1 && <View style={styles.separator} />}
               </View>
-            )
+            );
           })}
         </View>
       )}
