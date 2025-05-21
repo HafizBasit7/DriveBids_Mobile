@@ -84,12 +84,7 @@ const DamageReportCarousel = ({ car }) => {
           </View>
 
           <Text style={styles.instructionText}>
-            {damageReport.map((marker, index) => {
-              if (marker.imageIndex === currentIndex) return true;
-              return false;
-            })
-              ? "Click the damage icon (if any) to reveal the details of damage."
-              : "NA"}
+            Click the damage icon (if any) to reveal the details of damage.
           </Text>
 
           <TouchableOpacity onPress={handleViewClick}>
