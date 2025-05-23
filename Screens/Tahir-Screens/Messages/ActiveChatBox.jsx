@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
-  
   KeyboardAvoidingView,
   Platform,
   StatusBar,
@@ -19,86 +18,88 @@ import { MaterialIcons } from "@expo/vector-icons"; // make sure this is importe
 import { chatData } from "./DummyMessages";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
-import {useInfiniteQuery, useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import { getChatCarHead, getChatMessages, sendMessage } from "../../../API_Callings/R1_API/Chat";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import {
+  getChatCarHead,
+  getChatMessages,
+  sendMessage,
+} from "../../../API_Callings/R1_API/Chat";
 import { formatAmount } from "../../../utils/R1_utils";
 import { useAuth } from "../../../R1_Contexts/authContext";
 import * as ImagePicker from "expo-image-picker";
 import { useSocket } from "../../../R1_Contexts/socketContext";
-import moment from "moment"; 
+import moment from "moment";
 import SvgBack from "../../../assets/SVG/TahirSvgs/back.svg";
 import { ActivityIndicator } from "react-native-paper";
 import { Icon } from "react-native-elements";
 import { uploadImage } from "../../../utils/upload";
 import { Image } from "expo-image";
-import ImageViewer from 'react-native-image-zoom-viewer';
-
+import ImageViewer from "react-native-image-zoom-viewer";
 
 const LIMIT = 15;
 
-const ActiveChatBox = ({route}) => {
+const ActiveChatBox = ({ route }) => {
   const [newMessage, setNewMessage] = useState("");
   const [keyboardStatus, setKeyboardStatus] = useState(false);
-  const [imageModalVisible, setImageModalVisible] = useState(false); 
+  const [imageModalVisible, setImageModalVisible] = useState(false);
   const navigation = useNavigation();
-  const {chatSocket: socket} = useSocket();
-  const {authState} = useAuth();
+  const { chatSocket: socket } = useSocket();
+  const { authState } = useAuth();
   const user = authState.user;
-  const {chatId} = route.params;
+  const { chatId } = route.params;
   const [optionsVisible, setOptionsVisible] = useState(false); // Toggle for showing options
   const queryClient = useQueryClient();
   // const [isUserConnected, setIsUserConnected] = useState(false);
   const [sending, setSending] = useState(false);
 
- 
-  const {data: chatHeadData, isLoadingChatHead} = useQuery({
-    queryKey: ['chatCarHead', chatId],
-    queryFn: () => getChatCarHead(chatId)
+  const { data: chatHeadData, isLoadingChatHead } = useQuery({
+    queryKey: ["chatCarHead", chatId],
+    queryFn: () => getChatCarHead(chatId),
   });
   const chatHeadDataReal = chatHeadData?.data.chatHead;
 
-  const {
-    data,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ['messages', chatId],
-    queryFn: ({pageParam = 1}) => getChatMessages(chatId, pageParam, LIMIT),
-    getNextPageParam: (lastPage, allPages) => {
-      return lastPage?.data?.messages?.length === LIMIT
-        ? allPages.length + 1
-        : undefined;
-    },
-  });
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["messages", chatId],
+      queryFn: ({ pageParam = 1 }) => getChatMessages(chatId, pageParam, LIMIT),
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.data?.messages?.length === LIMIT
+          ? allPages.length + 1
+          : undefined;
+      },
+    });
 
   const mutation = useMutation({
     mutationFn: sendMessage,
   });
   const messages = data?.pages.flatMap((page) => page?.data?.messages) || [];
 
-  if(!isLoading && !isFetchingNextPage) {
-    queryClient.invalidateQueries({queryKey: ["messagesCount"]});
+  if (!isLoading && !isFetchingNextPage) {
+    queryClient.invalidateQueries({ queryKey: ["messagesCount"] });
   }
-  
+
   //Socket
   useEffect(() => {
-    if(socket) {
-      socket.emit('join-room', {roomId: chatId});
-      socket.on('new-message', handleNewMessageUpdate);
+    if (socket) {
+      socket.emit("join-room", { roomId: chatId });
+      socket.on("new-message", handleNewMessageUpdate);
     }
 
     return () => {
-      if(socket) {
-        socket?.emit('leave-room', {roomId: chatId});
-        socket?.off('new-message');
+      if (socket) {
+        socket?.emit("leave-room", { roomId: chatId });
+        socket?.off("new-message");
       }
     };
   }, [socket]);
 
   useEffect(() => {
-    navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
+    navigation.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
       setKeyboardStatus(true);
     });
@@ -114,17 +115,14 @@ const ActiveChatBox = ({route}) => {
 
   const handleNewMessageUpdate = (message) => {
     //Update messages list
-    queryClient.setQueryData(['messages', chatId], (pages) => {
-      const newPages = {...pages};
+    queryClient.setQueryData(["messages", chatId], (pages) => {
+      const newPages = { ...pages };
       newPages.pages = [
         {
           ...pages.pages[0],
           data: {
-            messages: [
-              message,
-              ...pages.pages[0].data.messages,
-            ],
-          }
+            messages: [message, ...pages.pages[0].data.messages],
+          },
         },
         ...pages.pages.slice(1),
       ];
@@ -138,10 +136,10 @@ const ActiveChatBox = ({route}) => {
 
   const sendMessageNew = async () => {
     setSending(true);
-    mutation.mutateAsync({chatId, message: newMessage}).then((val) => {
+    mutation.mutateAsync({ chatId, message: newMessage }).then((val) => {
       setSending(false);
     });
-    setNewMessage('');
+    setNewMessage("");
   };
 
   const handleReport = () => {
@@ -168,88 +166,98 @@ const ActiveChatBox = ({route}) => {
       >
         {/* Image message  */}
         {attachment && attachment.type?.includes("image") && (
-                    <TouchableOpacity onPress={() => openModal(attachment.url)}>
-
-          <Image
-            source={{ uri: attachment.url }}
-            style={styles.attachmentImage}
-            contentFit="cover"
-          />
-                    </TouchableOpacity>
-
-          
+          <TouchableOpacity onPress={() => openModal(attachment.url)}>
+            <Image
+              source={{ uri: attachment.url }}
+              style={styles.attachmentImage}
+              contentFit="cover"
+            />
+          </TouchableOpacity>
         )}
 
         {/* Message Text */}
         {!attachment && (
           <Text
+            style={[
+              styles.messageText,
+              item.sender === user._id ? styles.userText : styles.agentText,
+            ]}
+          >
+            {item.message}
+          </Text>
+        )}
+
+        {/* Timer (formatted time) */}
+        <Text
           style={[
-            styles.messageText,
-            item.sender === user._id ? styles.userText : styles.agentText,
+            styles.timeText,
+            item.sender === user._id ? styles.userTime : styles.agentTime,
           ]}
         >
-          {item.message}
-        </Text>
-        )}
-  
-        {/* Timer (formatted time) */}
-        <Text style={[styles.timeText, item.sender === user._id ? styles.userTime : styles.agentTime]}>
-          {moment(item.createdAt).format("hh:mm A")} {/* Example: 02:15 PM */}
+          {moment(item.createdAt).calendar(null, {
+            sameDay: "[Today, ]hh:mm A", // Today: 02:15 PM
+            lastDay: "[Yesterday,] hh:mm A", // Yesterday 02:15 PM
+            lastWeek: "DD/MM, hh:mm A", // Dec 15, 02:15 PM
+            sameElse: "DD/MM/YY hh:mm A", // Dec 15, 2023 02:15 PM
+          })}
+          {""}
         </Text>
       </View>
     );
   };
 
   const handleCamera = async () => {
-  
-     const {status} = await ImagePicker.requestCameraPermissionsAsync();
-     if (status !== "granted") {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== "granted") {
       alert("Sorry, we need camera permissions to make this work!");
       return;
-      }
-      const result = await ImagePicker.launchCameraAsync({
-        mediaTypes: ["images"],
-        aspect: [4, 3],
-        quality: 1,
-      });
-  
-      if(!result.canceled) {
-        setImageModalVisible(false);
-        try {
-          const imageResult = await uploadImage(result.assets[0], 'messageFile');
-          mutation.mutate({chatId, attachments: [{type: 'image', url: imageResult}]});
-        }
-        catch(e) {
-          console.log(e);
-        }
-      }
-    };
-  
-    const handleGallery = async () => {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== "granted") {
-        alert("Sorry, we need camera roll permissions to make this work!");
-        return;
-      }
-  
-      const result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ["images"],
-          aspect: [4, 3],
-          quality: 1,
+    }
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ["images"],
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImageModalVisible(false);
+      try {
+        const imageResult = await uploadImage(result.assets[0], "messageFile");
+        mutation.mutate({
+          chatId,
+          attachments: [{ type: "image", url: imageResult }],
         });
-  
-        if(!result.canceled) {
-          setImageModalVisible(false);
-          try {
-            const imageResult = await uploadImage(result.assets[0], 'messageFile');
-            mutation.mutate({chatId, attachments: [{type: 'image', url: imageResult}]});
-          }
-          catch(e) {
-            console.log(e);
-          }
-        }
-    };
-  
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  const handleGallery = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImageModalVisible(false);
+      try {
+        const imageResult = await uploadImage(result.assets[0], "messageFile");
+        mutation.mutate({
+          chatId,
+          attachments: [{ type: "image", url: imageResult }],
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -260,11 +268,19 @@ const ActiveChatBox = ({route}) => {
       />
 
       {/* Image selector dialog  */}
-      <Modal visible={imageModalVisible} animationType="slide" transparent={true}>
+      <Modal
+        visible={imageModalVisible}
+        animationType="slide"
+        transparent={true}
+      >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-          <StatusBar barStyle="dark-content" backgroundColor='rgba(0,0,0,0.7)' translucent />
-            
+            <StatusBar
+              barStyle="dark-content"
+              backgroundColor="rgba(0,0,0,0.7)"
+              translucent
+            />
+
             <Text style={styles.modalTitle}>Select or Take a Photo</Text>
             <TouchableOpacity style={styles.modalItem} onPress={handleCamera}>
               <Icon name="camera" type="material" size={24} color="#3b82f6" />
@@ -286,15 +302,17 @@ const ActiveChatBox = ({route}) => {
 
       {/* Header */}
       <View style={styles.header}>
-         {navigation.canGoBack() && (
-                    <TouchableOpacity
-                      onPress={() => navigation.goBack()}
-                    >
-                      <SvgBack width={25} height={30} style={{marginRight:10}} />
-                    </TouchableOpacity>
-                  )}
+        {navigation.canGoBack() && (
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <SvgBack width={25} height={30} style={{ marginRight: 10 }} />
+          </TouchableOpacity>
+        )}
         <Image
-          source={{ uri: chatHeadDataReal?.user.imgUrl || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' }}
+          source={{
+            uri:
+              chatHeadDataReal?.user.imgUrl ||
+              "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png",
+          }}
           style={styles.avatar}
         />
         <Text style={styles.username}>{chatHeadDataReal?.user.name}</Text>
@@ -307,17 +325,18 @@ const ActiveChatBox = ({route}) => {
           />
         </TouchableOpacity>
         {optionsVisible && (
-       <View style={styles.optionsBox}>
-       <TouchableOpacity onPress={handleReport} style={styles.option}>
-         <View style={{ flexDirection: "row", alignItems: "center" }}>
-           <MaterialIcons name="report" size={20} color="#FF3B30" />
-           <Text style={[styles.optionText, { marginLeft: 5 }]}>
-             Report User </Text>
-         </View>
-       </TouchableOpacity>
-       {/* Add more options here if needed */}
-     </View>
-      )}
+          <View style={styles.optionsBox}>
+            <TouchableOpacity onPress={handleReport} style={styles.option}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <MaterialIcons name="report" size={20} color="#FF3B30" />
+                <Text style={[styles.optionText, { marginLeft: 5 }]}>
+                  Report User{" "}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            {/* Add more options here if needed */}
+          </View>
+        )}
       </View>
 
       {/* Item Details */}
@@ -348,20 +367,34 @@ const ActiveChatBox = ({route}) => {
                 marginTop: 3,
               }}
             >
-              AED {chatHeadDataReal ? formatAmount(chatHeadDataReal?.car.highestBid) : 0}
+              AED{" "}
+              {chatHeadDataReal
+                ? formatAmount(chatHeadDataReal?.car.highestBid)
+                : 0}
             </Text>
-            
           </View>
           <View style={styles.connectionStatusContainer}>
-  <View style={[styles.statusDot, socket ? styles.statusDotOnline : styles.statusDotOffline]} />
-  <Text style={styles.statusText}>
-    {socket ? "Connected" : "Disconnected, Connecting..."}
-  </Text>
-</View>
+            <View
+              style={[
+                styles.statusDot,
+                socket ? styles.statusDotOnline : styles.statusDotOffline,
+              ]}
+            />
+            <Text style={styles.statusText}>
+              {socket ? "Connected" : "Disconnected, Connecting..."}
+            </Text>
+          </View>
         </View>
-        <Ionicons  onPress={() => navigation.navigate('AdDetails', { carId: chatHeadDataReal?.car._id })} name="chevron-forward" size={24} color="#999" />
-
-
+        <Ionicons
+          onPress={() =>
+            navigation.navigate("AdDetails", {
+              carId: chatHeadDataReal?.car._id,
+            })
+          }
+          name="chevron-forward"
+          size={24}
+          color="#999"
+        />
       </View>
 
       <KeyboardAvoidingView
@@ -392,17 +425,18 @@ const ActiveChatBox = ({route}) => {
         />
         {sending && (
           <View
-          style={{alignSelf: 'flex-end',
-            marginBottom:5,
-            marginRight:15
-          }}
-          
-          ><Text style={{color:"#ccc"}}>Sending...</Text></View>
+            style={{ alignSelf: "flex-end", marginBottom: 5, marginRight: 15 }}
+          >
+            <Text style={{ color: "#ccc" }}>Sending...</Text>
+          </View>
         )}
 
         {/* Input Container */}
         <View style={styles.inputContainer}>
-          <TouchableOpacity style={styles.plusButton} onPress={() => setImageModalVisible(true)}>
+          <TouchableOpacity
+            style={styles.plusButton}
+            onPress={() => setImageModalVisible(true)}
+          >
             <Ionicons
               name="add-outline"
               size={24}
@@ -433,32 +467,33 @@ const ActiveChatBox = ({route}) => {
           </TouchableOpacity>
         </View>
 
-{modalVisible && (
-  <Modal visible={modalVisible} transparent={true} animationType="fade">
-    <StatusBar barStyle="light-content" backgroundColor="rgba(0,0,0,0.95)" />
+        {modalVisible && (
+          <Modal visible={modalVisible} transparent={true} animationType="fade">
+            <StatusBar
+              barStyle="light-content"
+              backgroundColor="rgba(0,0,0,0.95)"
+            />
 
-    <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.95)' }}>
-      <ImageViewer
-        imageUrls={[{ url: selectedImage }]} // expects array of {url: ...}
-        enableSwipeDown
-        onSwipeDown={() => setModalVisible(false)} // Close on swipe down
-        onCancel={() => setModalVisible(false)}   // Close on cancel
-        renderIndicator={() => null} // optional: hide indicator (1/1)
-        backgroundColor="rgba(0,0,0,0.9)"
-      />
+            <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.95)" }}>
+              <ImageViewer
+                imageUrls={[{ url: selectedImage }]} // expects array of {url: ...}
+                enableSwipeDown
+                onSwipeDown={() => setModalVisible(false)} // Close on swipe down
+                onCancel={() => setModalVisible(false)} // Close on cancel
+                renderIndicator={() => null} // optional: hide indicator (1/1)
+                backgroundColor="rgba(0,0,0,0.9)"
+              />
 
-      {/* Close Icon */}
-      <TouchableOpacity
-        style={styles.closeButton}
-        onPress={() => setModalVisible(false)} // Close the modal when the icon is pressed
-      >
-        <Ionicons name="close-circle" size={40} color="#fff" />
-      </TouchableOpacity>
-    </View>
-  </Modal>
-)}
-
- 
+              {/* Close Icon */}
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setModalVisible(false)} // Close the modal when the icon is pressed
+              >
+                <Ionicons name="close-circle" size={40} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        )}
       </KeyboardAvoidingView>
     </View>
   );
@@ -558,7 +593,8 @@ const styles = StyleSheet.create({
     padding: 8,
     marginVertical: 5,
     position: "relative", // Make the message container relative to position time
-    minWidth:"27%"
+    minWidth: "27%",
+    // width: "auto",
   },
   userMessage: {
     alignSelf: "flex-end",
@@ -574,7 +610,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: "Inter-Regular",
     color: "#333",
-    marginBottom:6
+    marginBottom: 6,
   },
   userText: {
     color: "white",
@@ -587,9 +623,11 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontFamily: "Inter-Regular",
     color: "#999", // Color of the time text
-    position: "absolute", // Position time absolutely within the message bubble
+    position: "", // Position time absolutely within the message bubble
     bottom: 2, // Position at the bottom of the message bubble
     right: 5, // Position at the right of the message bubble
+    textAlign: "right",
+    // paddingLeft: 10,
   },
   userTime: {
     color: "white", // White time for user messages
@@ -643,24 +681,24 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 14,
     color: "#000",
-    fontWeight:900
+    fontWeight: 900,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContent: {
-    width: '80%',
-    backgroundColor: '#fff',
+    width: "80%",
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
-    maxHeight: '60%',
+    maxHeight: "60%",
   },
   modalTitle: {
     fontSize: 18,
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: "Inter-SemiBold",
     marginBottom: 15,
   },
   modalItem: {
@@ -668,23 +706,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
   },
   modalText: {
     fontSize: 16,
-    fontFamily: 'Inter-Regular',
+    fontFamily: "Inter-Regular",
     marginLeft: 10,
   },
   modalCloseButton: {
     marginTop: 20,
     paddingVertical: 12,
-    backgroundColor: '#2F61BF',
+    backgroundColor: "#2F61BF",
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   modalCloseText: {
-    color: '#fff',
-    fontFamily: 'Inter-SemiBold',
+    color: "#fff",
+    fontFamily: "Inter-SemiBold",
     fontSize: 16,
   },
   attachmentImage: {
@@ -706,7 +744,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   statusDotOnline: {
-    backgroundColor: "#4CAF50", 
+    backgroundColor: "#4CAF50",
   },
   statusDotOffline: {
     backgroundColor: "#F44336",
@@ -717,7 +755,7 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 45,
     right: 20,
     zIndex: 999,
