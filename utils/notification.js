@@ -20,12 +20,12 @@ async function registerForPushToken() {
     const tokenData = await Notifications.getExpoPushTokenAsync({
       projectId: "2c4b22db-799d-488d-8e42-c34432ec2bbd",
     });
-    Alert.alert("Notification Registered", JSON.stringify(tokenData));
+    // Alert.alert("Notification Registered", JSON.stringify(tokenData));
     const token = tokenData.data;
 
     updateProfile({ expoToken: token || "NA" });
   } catch (e) {
-    Alert.alert("Error", e.message);
+    // Alert.alert("Error", e.message);
   }
 
   // Save to your backend
