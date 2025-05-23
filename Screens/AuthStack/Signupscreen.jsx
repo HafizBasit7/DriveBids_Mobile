@@ -79,7 +79,7 @@ const SignupScreen = () => {
   };
 
   const handleTermsClick = () => {
-    Linking.openURL("https://example.com/terms");
+    Linking.openURL("https://drivebidz.netlify.app/terms");
   };
   const handleResendOtp = async () => {
     await generateEmailVerificationOtp({ email: email.trim() });
@@ -481,7 +481,7 @@ const SignupScreen = () => {
                 <Text style={styles.checkboxText}>
                   I agree to the{"  "}
                   <TouchableOpacity onPress={handleTermsClick}>
-                    <Text style={styles.clickableText}>terms&conditions</Text>
+                    <Text style={styles.clickableText}>Terms & Conditions</Text>
                   </TouchableOpacity>
                   {""}
                   <TouchableOpacity onPress={handleTermsClick}>
