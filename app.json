@@ -16,6 +16,7 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "useNextNotificationsApi": true,
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
@@ -53,8 +54,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "2c4b22db-799d-488d-8e42-c34432ec2bbd"
+        "projectId": "9a84d4af-add0-4180-be83-b02e725341ca"
       }
-    }
+    },
+    "owner": "corax1007"
   }
 }
