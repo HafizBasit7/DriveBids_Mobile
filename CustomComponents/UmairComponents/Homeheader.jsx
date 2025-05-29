@@ -154,9 +154,9 @@ const HomeHeader = ({ carId, scrollY }) => {
             source={{ uri: item.url }}
             style={styles.image}
             resizeMode="cover"
-            shouldPlay={index === 0} // Auto-play only if it's the first item
+            shouldPlay={index === 0} 
             isLooping={true}
-            useNativeControls={false} // Hide controls in slider
+            useNativeControls={false} 
             onPlaybackStatusUpdate={(status) => {
               if (status.isPlaying) {
                 setIsVideoPlaying(true);
