@@ -9,6 +9,7 @@ import Draft from "../Screens/SellACar/Drafts/Draft";
 import VehicleReg from "../Screens/SellACar/VehicleInfoAndReg/VehicleReg";
 import VehicleInfo from "../Screens/SellACar/VehicleInfoAndReg/VehicleInfo";
 import CarImages from "../Screens/SellACar/CarImages/CarImages";
+import CarVideo from "../Screens/SellACar/CarVideo/CarVideo";
 
 // Car Details
 import CarDetails1 from "../Screens/SellACar/CarDetails/CarDetails1";
@@ -93,6 +94,7 @@ export default function R1_SellCarStack() {
         <Stack.Screen name="VehicleReg" component={VehicleReg} />
         <Stack.Screen name="VehicleInfo" component={VehicleInfo} />
         <Stack.Screen name="CarImages" component={CarImages} />
+        <Stack.Screen name="CarVideo" component={CarVideo} />
 
         <Stack.Screen name="ExteriorFeature1" component={ExteriorFeature1} />
         <Stack.Screen name="InteriorFeature1" component={InteriorFeature1} />

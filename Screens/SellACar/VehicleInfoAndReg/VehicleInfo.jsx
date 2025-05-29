@@ -117,8 +117,8 @@ const VehicleInfo = () => {
           onPress={() => navigation.navigate("ExteriorFeature1")}
         />
         <VehicleInfoCard
-          name="Car Images"
-          steps={4}
+          name="Car Images & Video"
+          steps={5}
           iconName="car"
           completionStatus={imageCompletion.success ? "Completed" : "Incomplete"}
           onPress={() => navigation.navigate("CarImages")}

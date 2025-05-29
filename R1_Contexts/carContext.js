@@ -35,6 +35,7 @@ const initialState = {
     interior: null,
     wheels: null,
     tyreTreads: null,
+    carVideo: null,
   },
   carInspectionReport: {
     dynamicOperations: {

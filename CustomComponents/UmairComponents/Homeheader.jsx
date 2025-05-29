@@ -23,6 +23,7 @@ import WrapperComponent from "../WrapperComponent";
 import { useQuery } from "@tanstack/react-query";
 import { getCar } from "../../API_Callings/R1_API/Car";
 import { Image } from "expo-image";
+import { Video } from "expo-av";
 
 const { width, height } = Dimensions.get("window");
 
@@ -38,9 +39,9 @@ const HomeHeader = ({ carId, scrollY }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
-  // const [selectedImage, setSelectedImage] = useState("");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const thumbnailsRef = useRef(null);
+  const videoRef = useRef(null);
 
   const countdownInterval = useRef();
   const [timeLeft, setTimeLeft] = useState("0hr:0m:0s");
@@ -62,11 +63,16 @@ const HomeHeader = ({ carId, scrollY }) => {
     };
   }, []);
 
-  const images = Object.values(car.images)
-    .flat()
-    .map((val) => val.url);
+  // Combine images and video into a single array with video first
+  const mediaItems = [
+    ...(car.images.carVideo ? car.images.carVideo.map((val) => ({ type: 'video', url: val.url })) : []),
+    ...Object.values(car.images)
+      .flat()
+      .map((val) => ({ type: 'image', url: val.url }))
+  ];
 
   const [isPaused, setIsPaused] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
     let index = 0;
@@ -74,34 +80,37 @@ const HomeHeader = ({ carId, scrollY }) => {
 
     if (!isPaused) {
       interval = setInterval(() => {
-        if (scrollViewRef.current) {
-          scrollViewRef.current.scrollTo({
-            x: index * width,
-            animated: true,
-          });
+        // If we're at the video and it's playing, don't auto-scroll
+        if (index === 0 && mediaItems[0]?.type === 'video' && isVideoPlaying) {
+          return;
+        }
 
-          setCurrentIndex(index);
-          index++;
+        scrollViewRef.current.scrollTo({
+          x: index * width,
+          animated: true,
+        });
 
-          if (index >= images.length) {
-            index = 0;
-          }
+        setCurrentIndex(index);
+        index++;
+
+        if (index >= mediaItems.length) {
+          index = 0;
         }
       }, 3000);
     }
 
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, isVideoPlaying]);
 
-  const openModal = (imageIndex) => {
-    setSelectedImageIndex(imageIndex);
+  const openModal = (mediaIndex) => {
+    setSelectedImageIndex(mediaIndex);
     setModalVisible(true);
     setIsPaused(true);
 
     setTimeout(() => {
       if (thumbnailsRef.current) {
         thumbnailsRef.current.scrollToIndex({
-          index: imageIndex,
+          index: mediaIndex,
           animated: true,
           viewPosition: 0.5,
         });
@@ -114,7 +123,7 @@ const HomeHeader = ({ carId, scrollY }) => {
     setIsPaused(false);
   };
 
-  const selectImage = (index) => {
+  const selectMedia = (index) => {
     setSelectedImageIndex(index);
 
     if (thumbnailsRef.current) {
@@ -125,13 +134,89 @@ const HomeHeader = ({ carId, scrollY }) => {
       });
     }
   };
-  const nextImage = () => {
-    setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+
+  const nextMedia = () => {
+    setSelectedImageIndex((prevIndex) => (prevIndex + 1) % mediaItems.length);
   };
 
-  const prevImage = () => {
+  const prevMedia = () => {
     setSelectedImageIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+      (prevIndex) => (prevIndex - 1 + mediaItems.length) % mediaItems.length
+    );
+  };
+
+  const renderMediaItem = ({ item, index }) => {
+    if (item.type === 'video') {
+      return (
+        <TouchableOpacity key={index} onPress={() => openModal(index)}>
+          <Video
+            ref={videoRef}
+            source={{ uri: item.url }}
+            style={styles.image}
+            resizeMode="cover"
+            shouldPlay={index === 0} // Auto-play only if it's the first item
+            isLooping={true}
+            useNativeControls={false} // Hide controls in slider
+            onPlaybackStatusUpdate={(status) => {
+              if (status.isPlaying) {
+                setIsVideoPlaying(true);
+              } else {
+                setIsVideoPlaying(false);
+              }
+            }}
+          />
+        </TouchableOpacity>
+      );
+    }
+    return (
+      <TouchableOpacity key={index} onPress={() => openModal(index)}>
+        <Image source={{ uri: item.url }} style={styles.image} />
+      </TouchableOpacity>
+    );
+  };
+
+  const renderThumbnail = ({ item, index }) => (
+    <TouchableOpacity
+      onPress={() => selectMedia(index)}
+      style={[
+        styles.thumbnailContainer,
+        selectedImageIndex === index && styles.selectedThumbnail,
+      ]}
+    >
+      {item.type === 'video' ? (
+        <View style={styles.videoThumbnail}>
+          <Video
+            source={{ uri: item.url }}
+            style={styles.thumbnail}
+            resizeMode="cover"
+            shouldPlay={false}
+            isLooping={false}
+          />
+        </View>
+      ) : (
+        <Image source={{ uri: item.url }} style={styles.thumbnail} />
+      )}
+    </TouchableOpacity>
+  );
+
+  const renderModalContent = () => {
+    const currentItem = mediaItems[selectedImageIndex];
+    if (currentItem.type === 'video') {
+      return (
+        <Video
+          source={{ uri: currentItem.url }}
+          style={styles.modalImage}
+          useNativeControls={true} // Show controls in modal
+          shouldPlay={true}
+          isLooping={true}
+        />
+      );
+    }
+    return (
+      <Image
+        source={{ uri: currentItem.url }}
+        style={styles.modalImage}
+      />
     );
   };
 
@@ -158,17 +243,6 @@ const HomeHeader = ({ carId, scrollY }) => {
     outputRange: [13, 9],
     extrapolate: "clamp",
   });
-  const renderThumbnail = ({ item, index }) => (
-    <TouchableOpacity
-      onPress={() => selectImage(index)}
-      style={[
-        styles.thumbnailContainer,
-        selectedImageIndex === index && styles.selectedThumbnail,
-      ]}
-    >
-      <Image source={{ uri: item }} style={styles.thumbnail} />
-    </TouchableOpacity>
-  );
 
   const closeButtonText = {
     color: "#FFD700",
@@ -201,11 +275,7 @@ const HomeHeader = ({ carId, scrollY }) => {
             { useNativeDriver: false }
           )}
         >
-          {images.map((image, index) => (
-            <TouchableOpacity key={index} onPress={() => openModal(index)}>
-              <Image source={{ uri: image }} style={styles.image} />
-            </TouchableOpacity>
-          ))}
+          {mediaItems.map((item, index) => renderMediaItem({ item, index }))}
         </ScrollView>
 
         <TouchableOpacity
@@ -216,7 +286,7 @@ const HomeHeader = ({ carId, scrollY }) => {
         </TouchableOpacity>
 
         <View style={styles.pagination}>
-          {images.map((_, index) => (
+          {mediaItems.map((_, index) => (
             <View
               key={index}
               style={[
@@ -283,23 +353,20 @@ const HomeHeader = ({ carId, scrollY }) => {
             <Text style={closeButtonText}>✕</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.leftButton} onPress={prevImage}>
+          <TouchableOpacity style={styles.leftButton} onPress={prevMedia}>
             <Text style={styles.navText}>❮</Text>
           </TouchableOpacity>
 
-          <Image
-            source={{ uri: images[selectedImageIndex] }}
-            style={styles.modalImage}
-          />
+          {renderModalContent()}
 
-          <TouchableOpacity style={styles.rightButton} onPress={nextImage}>
+          <TouchableOpacity style={styles.rightButton} onPress={nextMedia}>
             <Text style={styles.navText}>❯</Text>
           </TouchableOpacity>
 
           <View style={styles.thumbnailCarouselContainer}>
             <FlatList
               ref={thumbnailsRef}
-              data={images}
+              data={mediaItems}
               renderItem={renderThumbnail}
               keyExtractor={(_, index) => index.toString()}
               horizontal
@@ -482,6 +549,11 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     borderWidth: 0.4,
     borderRadius: 10,
+  },
+  videoThumbnail: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
   },
 });
 

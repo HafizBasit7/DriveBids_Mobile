@@ -6,6 +6,7 @@ const inspectionReportEnum = [
   "Not Tested",
   "Requires Some Attention",
   "Requires Immediate Attention",
+  "Not Applicable",
 ];
 
 const attachmentValidation = zod.object({
@@ -110,12 +111,18 @@ export const tyreTreadsValidation = zod
     required_error: "tyre treads images are missing",
   })
   .length(4);
+export const carVideoValidation = zod
+  .array(attachmentValidation, {
+    required_error: "car video is missing",
+  })
+  .max(1);
 
 export const imagesValidation = zod.object({
   exterior: exteriorImageValidation,
   interior: interiorImageValidation,
   wheels: wheelsImageValidation,
   tyreTreads: tyreTreadsValidation,
+  carVideo: carVideoValidation,
 });
 
 //Damage report

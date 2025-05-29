@@ -40,7 +40,7 @@ const CarImages = () => {
 
   return (
     <View style={styles.container}>
-      <SectionHeader title={"Car Images"} />
+      <SectionHeader title={"Car Images & Video"} />
       <ScrollView showsVerticalScrollIndicator={false} style={styles.head}>
         <VehicleInfoCard
           name="Exterior Images"
@@ -77,6 +77,17 @@ const CarImages = () => {
             tyreTreadsImageCompletion.success ? "Completed" : "Incomplete"
           }
           onPress={() => navigation.navigate("Thread1")}
+        />
+        <VehicleInfoCard
+          name="Car Video"
+          steps={1}
+          iconName="video"
+          completionStatus={
+            carState.images.carVideo && carState.images.carVideo.length > 0
+              ? "Completed"
+              : "Incomplete"
+          }
+          onPress={() => navigation.navigate("CarVideo")}
         />
       </ScrollView>
 

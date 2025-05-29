@@ -20,6 +20,7 @@ const options = [
   { label: "Not Tested", color: "#D32F2F", icon: "cancel" },
   { label: "Requires Some Attention", color: "#F39C12", icon: "error" },
   { label: "Requires Immediate Attention", color: "#C0392B", icon: "report" },
+  { label: "Not Applicable", color: "#7F8C8D", icon: "block" },
 ];
 const tests = [
   {name: "Brake Efficiency", target: "breakEfficiency"},

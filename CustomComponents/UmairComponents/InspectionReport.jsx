@@ -7,7 +7,7 @@ import { ActivityIndicator } from "react-native-paper";
 
 const inspectionReportEnum = [
   { icon: "check-circle", color: "green", label: "OK" },
-  { icon: "block", color: "gray", label: "Not Tested" },
+  { icon: "cancel", color: "#D32F2F", label: "Not Tested" },
   {
     icon: "error",
     color: "orange",
@@ -17,6 +17,11 @@ const inspectionReportEnum = [
     icon: "error-outline",
     color: "red",
     label: "Requires Immediate Attention",
+  },
+  {
+    icon: "block",
+    color: "#7F8C8D",
+    label: "Not Applicable",
   },
 ];
 
@@ -88,7 +93,7 @@ const InspectionReport = ({ car }) => {
             <View style={styles.cardContent}>
               {renderGrid([
                 { icon: "check-circle", color: "green", label: "Ok" },
-                { icon: "block", color: "gray", label: "Not Tested" },
+                { icon: "cancel", color: "#D32F2F", label: "Not Tested" },
                 {
                   icon: "error",
                   color: "orange",
@@ -98,6 +103,11 @@ const InspectionReport = ({ car }) => {
                   icon: "error-outline",
                   color: "red",
                   label: "Requires Immediate Attention",
+                },
+                {
+                  icon: "block",
+                  color: "#7F8C8D",
+                  label: "Not Applicable",
                 },
               ])}
             </View>
