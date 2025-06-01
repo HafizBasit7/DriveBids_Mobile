@@ -13,6 +13,7 @@ import {
   FlatList,
   SafeAreaView,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import BackIcon from "../../assets/SVG/TahirSvgs/arrow-left.svg";
 import { GlobalStyles } from "../../Styles/GlobalStyles";
@@ -65,10 +66,12 @@ const HomeHeader = ({ carId, scrollY }) => {
 
   // Combine images and video into a single array with video first
   const mediaItems = [
-    ...(car.images.carVideo ? car.images.carVideo.map((val) => ({ type: 'video', url: val.url })) : []),
+    ...(car.images.carVideo
+      ? car.images.carVideo.map((val) => ({ type: "video", url: val.url }))
+      : []),
     ...Object.values(car.images)
       .flat()
-      .map((val) => ({ type: 'image', url: val.url }))
+      .map((val) => ({ type: "image", url: val.url })),
   ];
 
   const [isPaused, setIsPaused] = useState(false);
@@ -81,7 +84,7 @@ const HomeHeader = ({ carId, scrollY }) => {
     if (!isPaused) {
       interval = setInterval(() => {
         // If we're at the video and it's playing, don't auto-scroll
-        if (index === 0 && mediaItems[0]?.type === 'video' && isVideoPlaying) {
+        if (index === 0 && mediaItems[0]?.type === "video" && isVideoPlaying) {
           return;
         }
 
@@ -144,9 +147,10 @@ const HomeHeader = ({ carId, scrollY }) => {
       (prevIndex) => (prevIndex - 1 + mediaItems.length) % mediaItems.length
     );
   };
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
 
   const renderMediaItem = ({ item, index }) => {
-    if (item.type === 'video') {
+    if (item.type === "video") {
       return (
         <TouchableOpacity key={index} onPress={() => openModal(index)}>
           <Video
@@ -154,10 +158,17 @@ const HomeHeader = ({ carId, scrollY }) => {
             source={{ uri: item.url }}
             style={styles.image}
             resizeMode="cover"
-            shouldPlay={index === 0} 
+            shouldPlay={index === 0}
             isLooping={true}
-            useNativeControls={false} 
+            useNativeControls={false}
             onPlaybackStatusUpdate={(status) => {
+              // Handle buffering state
+              if (status.isBuffering) {
+                setIsVideoLoading(true);
+              } else if (status.isLoaded) {
+                setIsVideoLoading(false);
+              }
+
               if (status.isPlaying) {
                 setIsVideoPlaying(true);
               } else {
@@ -165,6 +176,11 @@ const HomeHeader = ({ carId, scrollY }) => {
               }
             }}
           />
+          {isVideoLoading && (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size="large" color="yellow" />
+            </View>
+          )}
         </TouchableOpacity>
       );
     }
@@ -183,7 +199,7 @@ const HomeHeader = ({ carId, scrollY }) => {
         selectedImageIndex === index && styles.selectedThumbnail,
       ]}
     >
-      {item.type === 'video' ? (
+      {item.type === "video" ? (
         <View style={styles.videoThumbnail}>
           <Video
             source={{ uri: item.url }}
@@ -201,7 +217,7 @@ const HomeHeader = ({ carId, scrollY }) => {
 
   const renderModalContent = () => {
     const currentItem = mediaItems[selectedImageIndex];
-    if (currentItem.type === 'video') {
+    if (currentItem.type === "video") {
       return (
         <Video
           source={{ uri: currentItem.url }}
@@ -213,10 +229,7 @@ const HomeHeader = ({ carId, scrollY }) => {
       );
     }
     return (
-      <Image
-        source={{ uri: currentItem.url }}
-        style={styles.modalImage}
-      />
+      <Image source={{ uri: currentItem.url }} style={styles.modalImage} />
     );
   };
 
@@ -387,6 +400,16 @@ const HomeHeader = ({ carId, scrollY }) => {
 };
 
 const styles = StyleSheet.create({
+  loaderContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.3)", // semi-transparent overlay
+  },
   container: {
     // height: 170,
     backgroundColor: GlobalStyles.colors.HomeHeaderColour,
@@ -497,7 +520,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   navText: {
-    fontSize: 40,
+    fontSize: 35,
     color: "#FFD700",
   },
   closeButton: {
@@ -551,9 +574,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   videoThumbnail: {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
+    position: "relative",
+    width: "100%",
+    height: "100%",
   },
 });
 

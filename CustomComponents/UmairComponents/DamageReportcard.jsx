@@ -84,7 +84,7 @@ const DamageReportCarousel = ({ car }) => {
           </View>
 
           <Text style={styles.instructionText}>
-            {damageReport.some((marker) => marker.imageIndex === currentIndex)
+            {damageReport?.some((marker) => marker.imageIndex === currentIndex)
               ? "Click the damage icon to reveal the details of damage."
               : "No Damage Reported for this view."}
           </Text>
