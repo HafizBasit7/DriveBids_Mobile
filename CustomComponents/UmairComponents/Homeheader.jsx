@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback, memo, useMemo } from "react";
 import {
   View,
   StyleSheet,
@@ -27,6 +27,75 @@ import { Image } from "expo-image";
 import { Video } from "expo-av";
 
 const { width, height } = Dimensions.get("window");
+
+// Memoized Media Item Component
+const MediaItem = memo(({ item, index, onPress, isVideoLoading, setIsVideoLoading, videoRef, setIsVideoPlaying }) => {
+  if (item.type === "video") {
+    return (
+      <TouchableOpacity onPress={() => onPress(index)}>
+        <Video
+          ref={videoRef}
+          source={{ uri: item.url }}
+          style={styles.image}
+          resizeMode="cover"
+          shouldPlay={index === 0}
+          isLooping={true}
+          useNativeControls={false}
+          onPlaybackStatusUpdate={(status) => {
+            if (status.isBuffering) {
+              setIsVideoLoading(true);
+            } else if (status.isLoaded) {
+              setIsVideoLoading(false);
+            }
+
+            if (status.isPlaying) {
+              setIsVideoPlaying(true);
+            } else {
+              setIsVideoPlaying(false);
+            }
+          }}
+        />
+        {isVideoLoading && (
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator size="large" color="yellow" />
+          </View>
+        )}
+      </TouchableOpacity>
+    );
+  }
+  return (
+    <TouchableOpacity onPress={() => onPress(index)}>
+      <Image source={{ uri: item.url }} style={styles.image} />
+    </TouchableOpacity>
+  );
+});
+
+// Memoized Thumbnail Component
+const ThumbnailItem = memo(({ item, index, isActive, onPress }) => {
+  return (
+    <TouchableOpacity
+      style={[styles.thumbnailItem, isActive && styles.thumbnailItemActive]}
+      onPress={() => onPress(index)}
+    >
+      {item.type === "video" ? (
+        <View>
+          <Video
+            source={{ uri: item.url }}
+            style={styles.thumbnailVideo}
+            resizeMode="cover"
+            shouldPlay={false}
+            useNativeControls={false}
+          />
+          <View style={styles.thumbnailVideoOverlay}>
+            <Text style={styles.playIcon}>▶</Text>
+          </View>
+        </View>
+      ) : (
+        <Image source={{ uri: item.url }} style={styles.thumbnailImage} />
+      )}
+    </TouchableOpacity>
+  );
+});
 
 const HomeHeader = ({ carId, scrollY }) => {
   const { data, isLoading } = useQuery({
@@ -64,15 +133,15 @@ const HomeHeader = ({ carId, scrollY }) => {
     };
   }, []);
 
-  // Combine images and video into a single array with video first
-  const mediaItems = [
+  // Memoize mediaItems array
+  const mediaItems = useMemo(() => [
     ...(car.images.carVideo
       ? car.images.carVideo.map((val) => ({ type: "video", url: val.url }))
       : []),
     ...Object.values(car.images)
       .flat()
       .map((val) => ({ type: "image", url: val.url })),
-  ];
+  ], [car.images]);
 
   const [isPaused, setIsPaused] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -105,7 +174,8 @@ const HomeHeader = ({ carId, scrollY }) => {
     return () => clearInterval(interval);
   }, [isPaused, isVideoPlaying]);
 
-  const openModal = (mediaIndex) => {
+  // Memoize callback functions
+  const openModal = useCallback((mediaIndex) => {
     setSelectedImageIndex(mediaIndex);
     setModalVisible(true);
     setIsPaused(true);
@@ -119,16 +189,15 @@ const HomeHeader = ({ carId, scrollY }) => {
         });
       }
     }, 100);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setModalVisible(false);
     setIsPaused(false);
-  };
+  }, []);
 
-  const selectMedia = (index) => {
+  const selectMedia = useCallback((index) => {
     setSelectedImageIndex(index);
-
     if (thumbnailsRef.current) {
       thumbnailsRef.current.scrollToIndex({
         index: index,
@@ -136,97 +205,51 @@ const HomeHeader = ({ carId, scrollY }) => {
         viewPosition: 0.5,
       });
     }
-  };
+  }, []);
 
-  const nextMedia = () => {
+  const nextMedia = useCallback(() => {
     setSelectedImageIndex((prevIndex) => (prevIndex + 1) % mediaItems.length);
-  };
+  }, [mediaItems.length]);
 
-  const prevMedia = () => {
+  const prevMedia = useCallback(() => {
     setSelectedImageIndex(
       (prevIndex) => (prevIndex - 1 + mediaItems.length) % mediaItems.length
     );
-  };
+  }, [mediaItems.length]);
+
   const [isVideoLoading, setIsVideoLoading] = useState(true);
 
-  const renderMediaItem = ({ item, index }) => {
-    if (item.type === "video") {
-      return (
-        <TouchableOpacity key={index} onPress={() => openModal(index)}>
-          <Video
-            ref={videoRef}
-            source={{ uri: item.url }}
-            style={styles.image}
-            resizeMode="cover"
-            shouldPlay={index === 0}
-            isLooping={true}
-            useNativeControls={false}
-            onPlaybackStatusUpdate={(status) => {
-              // Handle buffering state
-              if (status.isBuffering) {
-                setIsVideoLoading(true);
-              } else if (status.isLoaded) {
-                setIsVideoLoading(false);
-              }
+  // Memoize render functions
+  const renderMediaItem = useCallback(({ item, index }) => (
+    <MediaItem
+      item={item}
+      index={index}
+      onPress={openModal}
+      isVideoLoading={isVideoLoading}
+      setIsVideoLoading={setIsVideoLoading}
+      videoRef={videoRef}
+      setIsVideoPlaying={setIsVideoPlaying}
+    />
+  ), [isVideoLoading, openModal]);
 
-              if (status.isPlaying) {
-                setIsVideoPlaying(true);
-              } else {
-                setIsVideoPlaying(false);
-              }
-            }}
-          />
-          {isVideoLoading && (
-            <View style={styles.loaderContainer}>
-              <ActivityIndicator size="large" color="yellow" />
-            </View>
-          )}
-        </TouchableOpacity>
-      );
-    }
-    return (
-      <TouchableOpacity key={index} onPress={() => openModal(index)}>
-        <Image source={{ uri: item.url }} style={styles.image} />
-      </TouchableOpacity>
-    );
-  };
+  const renderThumbnail = useCallback(({ item, index }) => (
+    <ThumbnailItem
+      item={item}
+      index={index}
+      isActive={index === selectedImageIndex}
+      onPress={selectMedia}
+    />
+  ), [selectedImageIndex, selectMedia]);
 
-  const renderThumbnail = ({ item, index }) => {
-    const isActive = index === selectedImageIndex;
-
-    return (
-      <TouchableOpacity
-        style={[styles.thumbnailItem, isActive && styles.thumbnailItemActive]}
-        onPress={() => setSelectedImageIndex(index)}
-      >
-        {item.type === "video" ? (
-          <View>
-            <Video
-              source={{ uri: item.url }}
-              style={styles.thumbnailVideo}
-              resizeMode="cover"
-              shouldPlay={false}
-              useNativeControls={false}
-            />
-            <View style={styles.thumbnailVideoOverlay}>
-              <Text style={styles.playIcon}>▶</Text>
-            </View>
-          </View>
-        ) : (
-          <Image source={{ uri: item.url }} style={styles.thumbnailImage} />
-        )}
-      </TouchableOpacity>
-    );
-  };
-
-  const renderModalContent = () => {
+  const renderModalContent = useCallback(() => {
     const currentItem = mediaItems[selectedImageIndex];
     if (currentItem.type === "video") {
       return (
         <Video
-          source={{ uri: currentItem.url }}
+          source={{ uri: currentItem?.url }}
           style={styles.modalImage}
-          useNativeControls={true} // Show controls in modal
+          resizeMode="contain"
+          useNativeControls={true}
           shouldPlay={true}
           isLooping={true}
         />
@@ -235,7 +258,7 @@ const HomeHeader = ({ carId, scrollY }) => {
     return (
       <Image source={{ uri: currentItem.url }} style={styles.modalImage} />
     );
-  };
+  }, [mediaItems, selectedImageIndex]);
 
   const animatedContainerHeight = scrollY.interpolate({
     inputRange: [0, 150],
@@ -408,6 +431,9 @@ const HomeHeader = ({ carId, scrollY }) => {
                 offset: 85 * index,
                 index,
               })}
+              maxToRenderPerBatch={5}
+              windowSize={5}
+              removeClippedSubviews={true}
             />
           </View>
         </View>
@@ -428,11 +454,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.3)", // semi-transparent overlay
   },
   container: {
-    // height: 170,
     backgroundColor: GlobalStyles.colors.HomeHeaderColour,
     position: "relative",
   },
-
   image: {
     width: width,
     height: 170,
@@ -517,91 +541,15 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
-  },
-  modalImage: {
-    width: width,
-    height: width,
-    resizeMode: "contain",
-  },
-  leftButton: {
-    position: "absolute",
-    left: 20,
-    zIndex: 10,
-  },
-  rightButton: {
-    position: "absolute",
-    right: 20,
-    zIndex: 10,
-  },
-  navText: {
-    fontSize: 35,
-    color: "#FFD700",
-  },
-  closeButton: {
-    position: "absolute",
-    top: 40,
-    right: 12,
-    zIndex: 10,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 20,
-    width: 50,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  closeButtonText: {
-    color: "#FFD700",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  // Thumbnail styles
-  thumbnailCarouselContainer: {
-    position: "absolute",
-    bottom: 40,
-    left: 0,
-    right: 0,
-    height: 90,
-  },
-  thumbnailsContent: {
-    paddingHorizontal: 10,
-  },
-  thumbnailContainer: {
-    width: 70,
-    height: 70,
-    borderRadius: 8,
-    marginHorizontal: 3,
-    borderWidth: 2,
-    borderColor: "transparent",
-    overflow: "hidden",
-  },
-  selectedThumbnail: {
-    transform: [{ scale: 1.05 }],
-  },
-  thumbnail: {
-    borderColor: "#FFD700",
-    padding: 1,
-
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
-    borderWidth: 0.4,
-    borderRadius: 10,
-  },
-  videoThumbnail: {
-    position: "relative",
-    width: "100%",
-    height: "100%",
-  },
-  modalOverlay: {
-    flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.95)",
     justifyContent: "center",
     alignItems: "center",
   },
-
+  modalImage: {
+    width: width,
+    height: width,
+    resizeMode: "cover",
+  },
   // Close Button
   closeButton: {
     position: "absolute",
@@ -626,7 +574,6 @@ const styles = StyleSheet.create({
     fontWeight: "300",
     lineHeight: 20,
   },
-
   // Navigation Buttons
   leftButton: {
     position: "absolute",
@@ -658,7 +605,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "300",
   },
-
   // Main Content
   mainContentContainer: {
     flex: 1,
@@ -667,7 +613,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 80,
     paddingVertical: 100,
   },
-
   // Thumbnail Carousel
   thumbnailCarouselContainer: {
     position: "absolute",
@@ -681,7 +626,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
   },
-
   // Thumbnail Item
   thumbnailItem: {
     width: 70,
@@ -728,7 +672,6 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
-
   // Main Media Display
   mediaContainer: {
     width: "100%",
@@ -747,6 +690,33 @@ const styles = StyleSheet.create({
     height: "100%",
     borderRadius: 12,
   },
+  // Legacy thumbnail styles (keeping for backward compatibility)
+  thumbnailContainer: {
+    width: 70,
+    height: 70,
+    borderRadius: 8,
+    marginHorizontal: 3,
+    borderWidth: 2,
+    borderColor: "transparent",
+    overflow: "hidden",
+  },
+  selectedThumbnail: {
+    transform: [{ scale: 1.05 }],
+  },
+  thumbnail: {
+    borderColor: "#FFD700",
+    padding: 1,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+    borderWidth: 0.4,
+    borderRadius: 10,
+  },
+  videoThumbnail: {
+    position: "relative",
+    width: "100%",
+    height: "100%",
+  },
 });
 
-export default HomeHeader;
+export default memo(HomeHeader);
