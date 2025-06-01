@@ -1,4 +1,11 @@
-import React, { useRef, useEffect, useState, useCallback, memo, useMemo } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+  memo,
+  useMemo,
+} from "react";
 import {
   View,
   StyleSheet,
@@ -29,46 +36,56 @@ import { Video } from "expo-av";
 const { width, height } = Dimensions.get("window");
 
 // Memoized Media Item Component
-const MediaItem = memo(({ item, index, onPress, isVideoLoading, setIsVideoLoading, videoRef, setIsVideoPlaying }) => {
-  if (item.type === "video") {
+const MediaItem = memo(
+  ({
+    item,
+    index,
+    onPress,
+    isVideoLoading,
+    setIsVideoLoading,
+    videoRef,
+    setIsVideoPlaying,
+  }) => {
+    if (item.type === "video") {
+      return (
+        <TouchableOpacity onPress={() => onPress(index)}>
+          <Video
+            ref={videoRef}
+            source={{ uri: item.url }}
+            style={styles.image}
+            resizeMode="cover"
+            shouldPlay={index === 0}
+            isLooping={true}
+            useNativeControls={false}
+            onPlaybackStatusUpdate={(status) => {
+              if (status.isBuffering) {
+                setIsVideoLoading(true);
+              } else if (status.isLoaded) {
+                setIsVideoLoading(false);
+              }
+
+              if (status.isPlaying) {
+                setIsVideoPlaying(true);
+              } else {
+                setIsVideoPlaying(false);
+              }
+            }}
+          />
+          {isVideoLoading && (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size="large" color="yellow" />
+            </View>
+          )}
+        </TouchableOpacity>
+      );
+    }
     return (
       <TouchableOpacity onPress={() => onPress(index)}>
-        <Video
-          ref={videoRef}
-          source={{ uri: item.url }}
-          style={styles.image}
-          resizeMode="cover"
-          shouldPlay={index === 0}
-          isLooping={true}
-          useNativeControls={false}
-          onPlaybackStatusUpdate={(status) => {
-            if (status.isBuffering) {
-              setIsVideoLoading(true);
-            } else if (status.isLoaded) {
-              setIsVideoLoading(false);
-            }
-
-            if (status.isPlaying) {
-              setIsVideoPlaying(true);
-            } else {
-              setIsVideoPlaying(false);
-            }
-          }}
-        />
-        {isVideoLoading && (
-          <View style={styles.loaderContainer}>
-            <ActivityIndicator size="large" color="yellow" />
-          </View>
-        )}
+        <Image source={{ uri: item.url }} style={styles.image} />
       </TouchableOpacity>
     );
   }
-  return (
-    <TouchableOpacity onPress={() => onPress(index)}>
-      <Image source={{ uri: item.url }} style={styles.image} />
-    </TouchableOpacity>
-  );
-});
+);
 
 // Memoized Thumbnail Component
 const ThumbnailItem = memo(({ item, index, isActive, onPress }) => {
@@ -134,14 +151,17 @@ const HomeHeader = ({ carId, scrollY }) => {
   }, []);
 
   // Memoize mediaItems array
-  const mediaItems = useMemo(() => [
-    ...(car.images.carVideo
-      ? car.images.carVideo.map((val) => ({ type: "video", url: val.url }))
-      : []),
-    ...Object.values(car.images)
-      .flat()
-      .map((val) => ({ type: "image", url: val.url })),
-  ], [car.images]);
+  const mediaItems = useMemo(
+    () => [
+      ...(car.images.carVideo
+        ? car.images.carVideo.map((val) => ({ type: "video", url: val.url }))
+        : []),
+      ...Object.values(car.images)
+        .flat()
+        .map((val) => ({ type: "image", url: val.url })),
+    ],
+    [car.images]
+  );
 
   const [isPaused, setIsPaused] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -218,41 +238,64 @@ const HomeHeader = ({ carId, scrollY }) => {
   }, [mediaItems.length]);
 
   const [isVideoLoading, setIsVideoLoading] = useState(true);
+  const [isModalVideoLoading, setIsModalVideoLoading] = useState(true);
 
   // Memoize render functions
-  const renderMediaItem = useCallback(({ item, index }) => (
-    <MediaItem
-      item={item}
-      index={index}
-      onPress={openModal}
-      isVideoLoading={isVideoLoading}
-      setIsVideoLoading={setIsVideoLoading}
-      videoRef={videoRef}
-      setIsVideoPlaying={setIsVideoPlaying}
-    />
-  ), [isVideoLoading, openModal]);
+  const renderMediaItem = useCallback(
+    ({ item, index }) => (
+      <MediaItem
+        item={item}
+        index={index}
+        onPress={openModal}
+        isVideoLoading={isVideoLoading}
+        setIsVideoLoading={setIsVideoLoading}
+        videoRef={videoRef}
+        setIsVideoPlaying={setIsVideoPlaying}
+        setIsModalVideoLoading={setIsModalVideoLoading}
+        isModalVideoLoading={isModalVideoLoading}
+      />
+    ),
+    [isVideoLoading, openModal]
+  );
 
-  const renderThumbnail = useCallback(({ item, index }) => (
-    <ThumbnailItem
-      item={item}
-      index={index}
-      isActive={index === selectedImageIndex}
-      onPress={selectMedia}
-    />
-  ), [selectedImageIndex, selectMedia]);
+  const renderThumbnail = useCallback(
+    ({ item, index }) => (
+      <ThumbnailItem
+        item={item}
+        index={index}
+        isActive={index === selectedImageIndex}
+        onPress={selectMedia}
+      />
+    ),
+    [selectedImageIndex, selectMedia]
+  );
 
   const renderModalContent = useCallback(() => {
     const currentItem = mediaItems[selectedImageIndex];
     if (currentItem.type === "video") {
       return (
-        <Video
-          source={{ uri: currentItem?.url }}
-          style={styles.modalImage}
-          resizeMode="contain"
-          useNativeControls={true}
-          shouldPlay={true}
-          isLooping={true}
-        />
+        <>
+          <Video
+            source={{ uri: currentItem?.url }}
+            style={styles.modalImage}
+            resizeMode="contain"
+            useNativeControls={true}
+            onPlaybackStatusUpdate={(status) => {
+              if (status.isBuffering) {
+                setIsModalVideoLoading(true);
+              } else if (status.isLoaded) {
+                setIsModalVideoLoading(false);
+              }
+            }}
+            shouldPlay={true}
+            isLooping={true}
+          />
+          {isModalVideoLoading && (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size="large" color="yellow" />
+            </View>
+          )}
+        </>
       );
     }
     return (
