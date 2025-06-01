@@ -191,29 +191,33 @@ const HomeHeader = ({ carId, scrollY }) => {
     );
   };
 
-  const renderThumbnail = ({ item, index }) => (
-    <TouchableOpacity
-      onPress={() => selectMedia(index)}
-      style={[
-        styles.thumbnailContainer,
-        selectedImageIndex === index && styles.selectedThumbnail,
-      ]}
-    >
-      {item.type === "video" ? (
-        <View style={styles.videoThumbnail}>
-          <Video
-            source={{ uri: item.url }}
-            style={styles.thumbnail}
-            resizeMode="cover"
-            shouldPlay={false}
-            isLooping={false}
-          />
-        </View>
-      ) : (
-        <Image source={{ uri: item.url }} style={styles.thumbnail} />
-      )}
-    </TouchableOpacity>
-  );
+  const renderThumbnail = ({ item, index }) => {
+    const isActive = index === selectedImageIndex;
+
+    return (
+      <TouchableOpacity
+        style={[styles.thumbnailItem, isActive && styles.thumbnailItemActive]}
+        onPress={() => setSelectedImageIndex(index)}
+      >
+        {item.type === "video" ? (
+          <View>
+            <Video
+              source={{ uri: item.url }}
+              style={styles.thumbnailVideo}
+              resizeMode="cover"
+              shouldPlay={false}
+              useNativeControls={false}
+            />
+            <View style={styles.thumbnailVideoOverlay}>
+              <Text style={styles.playIcon}>▶</Text>
+            </View>
+          </View>
+        ) : (
+          <Image source={{ uri: item.url }} style={styles.thumbnailImage} />
+        )}
+      </TouchableOpacity>
+    );
+  };
 
   const renderModalContent = () => {
     const currentItem = mediaItems[selectedImageIndex];
@@ -359,23 +363,36 @@ const HomeHeader = ({ carId, scrollY }) => {
         <View style={styles.modalOverlay}>
           <StatusBar
             barStyle="light-content"
-            backgroundColor="rgba(0, 0, 0, 0.8)"
+            backgroundColor="rgba(0, 0, 0, 0.9)"
             translucent
           />
+
+          {/* Close Button */}
           <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-            <Text style={closeButtonText}>✕</Text>
+            <View style={styles.closeButtonContainer}>
+              <Text style={styles.closeButtonText}>✕</Text>
+            </View>
           </TouchableOpacity>
 
+          {/* Navigation Buttons */}
           <TouchableOpacity style={styles.leftButton} onPress={prevMedia}>
-            <Text style={styles.navText}>❮</Text>
+            <View style={styles.navButtonContainer}>
+              <Text style={styles.navText}>❮</Text>
+            </View>
           </TouchableOpacity>
 
-          {renderModalContent()}
+          {/* Main Content */}
+          <View style={styles.mainContentContainer}>
+            {renderModalContent()}
+          </View>
 
           <TouchableOpacity style={styles.rightButton} onPress={nextMedia}>
-            <Text style={styles.navText}>❯</Text>
+            <View style={styles.navButtonContainer}>
+              <Text style={styles.navText}>❯</Text>
+            </View>
           </TouchableOpacity>
 
+          {/* Thumbnail Carousel */}
           <View style={styles.thumbnailCarouselContainer}>
             <FlatList
               ref={thumbnailsRef}
@@ -387,8 +404,8 @@ const HomeHeader = ({ carId, scrollY }) => {
               contentContainerStyle={styles.thumbnailsContent}
               initialScrollIndex={selectedImageIndex}
               getItemLayout={(data, index) => ({
-                length: 80,
-                offset: 80 * index,
+                length: 85,
+                offset: 85 * index,
                 index,
               })}
             />
@@ -577,6 +594,158 @@ const styles = StyleSheet.create({
     position: "relative",
     width: "100%",
     height: "100%",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.95)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  // Close Button
+  closeButton: {
+    position: "absolute",
+    top: 50,
+    right: 20,
+    zIndex: 1000,
+  },
+  closeButtonContainer: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    backdropFilter: "blur(10px)",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.2)",
+  },
+  closeButtonText: {
+    color: "#ffffff",
+    fontSize: 20,
+    fontWeight: "300",
+    lineHeight: 20,
+  },
+
+  // Navigation Buttons
+  leftButton: {
+    position: "absolute",
+    left: 20,
+    top: "50%",
+    transform: [{ translateY: -25 }],
+    zIndex: 1000,
+  },
+  rightButton: {
+    position: "absolute",
+    right: 20,
+    top: "50%",
+    transform: [{ translateY: -25 }],
+    zIndex: 1000,
+  },
+  navButtonContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backdropFilter: "blur(10px)",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.15)",
+  },
+  navText: {
+    color: "#ffffff",
+    fontSize: 24,
+    fontWeight: "300",
+  },
+
+  // Main Content
+  mainContentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 80,
+    paddingVertical: 100,
+  },
+
+  // Thumbnail Carousel
+  thumbnailCarouselContainer: {
+    position: "absolute",
+    bottom: 30,
+    left: 0,
+    right: 0,
+    height: 80,
+    paddingHorizontal: 20,
+  },
+  thumbnailsContent: {
+    alignItems: "center",
+    paddingHorizontal: 10,
+  },
+
+  // Thumbnail Item
+  thumbnailItem: {
+    width: 70,
+    height: 70,
+    marginHorizontal: 7.5,
+    borderRadius: 8,
+    overflow: "hidden",
+    borderWidth: 2,
+    borderColor: "transparent",
+  },
+  thumbnailItemActive: {
+    borderColor: "#ffffff",
+    borderWidth: 3,
+    shadowColor: "#ffffff",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  thumbnailImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  thumbnailVideo: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  thumbnailVideoOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+  },
+  playIcon: {
+    color: "#ffffff",
+    fontSize: 16,
+    textShadowColor: "rgba(0, 0, 0, 0.5)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+
+  // Main Media Display
+  mediaContainer: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  mainImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "contain",
+    borderRadius: 12,
+  },
+  mainVideo: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 12,
   },
 });
 
