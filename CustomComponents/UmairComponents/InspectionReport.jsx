@@ -35,7 +35,7 @@ const dynamicOperations = [
   { name: "Suspension Ride Height", target: "suspensionRideHeight" },
   { name: "Air Conditioning Power", target: "airconPower" },
   { name: "Sat Nav Power", target: "satNavPower" },
-  { name: "Ice Power", target: "icePower" },
+  { name: "Internal Combustion Engine", target: "icePower" },
   { name: "Central Locking", target: "centralLocking" },
   {
     name: "Converitble Sunroof Electics",

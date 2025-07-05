@@ -16,6 +16,7 @@ const HomeCarCard = ({
   isFromMyBids = false,
   bid,
   notHome = false,
+  test = false,
 }) => {
   //Calculate if from bids
   let winning = false;
@@ -170,7 +171,8 @@ const HomeCarCard = ({
           </View>
         </View>
         <Text style={styles.bidText}>
-          Top Bid <Text style={styles.bidAmount}>AED {ad.highestBid}</Text>
+          Top Bid{": "}
+          <Text style={styles.bidAmount}>AED {ad.highestBid}</Text>
         </Text>
         {isFromMyBids && (
           <Text style={styles.bidText}>
@@ -198,19 +200,21 @@ const HomeCarCard = ({
         )}
         {!isCarSold && <Text style={styles.timer}>{timeLeft}</Text>}
       </View>
-      <Button
-        title="View Auction"
-        buttonStyle={styles.button}
-        titleStyle={styles.buttonText}
-        icon={{
-          name: "campaign",
-          type: "material",
-          size: 15,
-          color: "white",
-        }}
-        onPress={onViewAd}
-        iconPosition="right"
-      />
+      <View style={{ justifyContent: "flex-end", flex: 1 }}>
+        <Button
+          title="View Auction"
+          buttonStyle={styles.button}
+          titleStyle={styles.buttonText}
+          icon={{
+            name: "campaign",
+            type: "material",
+            size: 15,
+            color: "white",
+          }}
+          onPress={onViewAd}
+          iconPosition="right"
+        />
+      </View>
     </View>
   );
 };
@@ -243,6 +247,8 @@ const styles = StyleSheet.create({
   details: {
     padding: 6,
     alignItems: "center",
+    justifyContent: "space-between",
+    flex: 1,
   },
   title: {
     fontSize: 15,

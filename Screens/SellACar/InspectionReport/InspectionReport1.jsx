@@ -23,38 +23,41 @@ const options = [
   { label: "Not Applicable", color: "#7F8C8D", icon: "block" },
 ];
 const tests = [
-  {name: "Brake Efficiency", target: "breakEfficiency"},
-  {name: "Hand Brake Test", target: "handBrakeTest"},
-  {name: "Static Gear Selection", target: "staticGearSelection"},
-  {name: "Reverse Clutch Slip", target: "reverseClutchSlip"},
-  {name: "Steering Noise", target: "steeringNoise"},
-  {name: "Suspension Ride Height", target: "suspensionRideHeight"},
-  {name: "Air Conditioning Power", target: "airconPower"},
-  {name: "Sat Nav Power", target: "satNavPower"},
-  {name: "Ice Power", target: "icePower"},
-  {name: "Central Locking", target: "centralLocking"},
-  {name: "Convertible / Sunroof Electronics", target: "convertibleSunroofElectrics"},
-  {name: "Horn", target: "horn"}
+  { name: "Brake Efficiency", target: "breakEfficiency" },
+  { name: "Hand Brake Test", target: "handBrakeTest" },
+  { name: "Static Gear Selection", target: "staticGearSelection" },
+  { name: "Reverse Clutch Slip", target: "reverseClutchSlip" },
+  { name: "Steering Noise", target: "steeringNoise" },
+  { name: "Suspension Ride Height", target: "suspensionRideHeight" },
+  { name: "Air Conditioning Power", target: "airconPower" },
+  { name: "Sat Nav Power", target: "satNavPower" },
+  { name: "Internal Combustion Engine", target: "icePower" },
+  { name: "Central Locking", target: "centralLocking" },
+  {
+    name: "Convertible / Sunroof Electronics",
+    target: "convertibleSunroofElectrics",
+  },
+  { name: "Horn", target: "horn" },
 ];
 //
 
 const InspectionReport1 = () => {
   const navigation = useNavigation();
 
-  const {carState, dispatch} = useCar();
+  const { carState, dispatch } = useCar();
 
-  function handleSelectTest (field, value) {
+  function handleSelectTest(field, value) {
     dispatch({
       type: "UPDATE_FIELD",
-      section: 'carInspectionReport',
-      subSection: 'dynamicOperations',
+      section: "carInspectionReport",
+      subSection: "dynamicOperations",
       field: field,
       value,
     });
-  };
-const isAllTestsSelected = tests.every(
-  test => carState.carInspectionReport?.dynamicOperations?.[test.target]
-);
+  }
+  const isAllTestsSelected = tests.every(
+    (test) => carState.carInspectionReport?.dynamicOperations?.[test.target]
+  );
   return (
     <View style={styles.container}>
       <View style={{ width: "100%" }}>
@@ -90,7 +93,9 @@ const isAllTestsSelected = tests.every(
                   key={idx}
                   style={[
                     styles.option,
-                    (carState.carInspectionReport?.dynamicOperations ?? {})[test.target] === option.label && {
+                    (carState.carInspectionReport?.dynamicOperations ?? {})[
+                      test.target
+                    ] === option.label && {
                       backgroundColor: "#F5F5F5",
                       fontWeight: "700",
                     },
@@ -104,7 +109,9 @@ const isAllTestsSelected = tests.every(
                         borderWidth: 2,
                         borderRadius: 8,
                       },
-                      (carState.carInspectionReport?.dynamicOperations ?? {})[test.target] === option.label && {
+                      (carState.carInspectionReport?.dynamicOperations ?? {})[
+                        test.target
+                      ] === option.label && {
                         borderColor: GlobalStyles.colors.ButtonColor,
                         borderWidth: 1,
                       },
@@ -114,7 +121,9 @@ const isAllTestsSelected = tests.every(
                       name={option.icon}
                       size={18}
                       color={
-                        (carState.carInspectionReport?.dynamicOperations ?? {})[test.target] === option.label
+                        (carState.carInspectionReport?.dynamicOperations ?? {})[
+                          test.target
+                        ] === option.label
                           ? option.color
                           : "#B0B0B0"
                       }
@@ -123,7 +132,9 @@ const isAllTestsSelected = tests.every(
                   <Text
                     style={[
                       styles.optionText,
-                      (carState.carInspectionReport?.dynamicOperations ?? {})[test.target] === option.label && {
+                      (carState.carInspectionReport?.dynamicOperations ?? {})[
+                        test.target
+                      ] === option.label && {
                         fontWeight: "700",
                       },
                     ]}
@@ -148,19 +159,18 @@ const isAllTestsSelected = tests.every(
       </ScrollView>
 
       <View style={styles.buttonContainer}>
-  <CustomButton
-    title="Next"
-    onPress={() => navigation.navigate("InspectionReport2")}
-      disabled={!isAllTestsSelected}
-
-  />
-  {/* <CustomButton
+        <CustomButton
+          title="Next"
+          onPress={() => navigation.navigate("InspectionReport2")}
+          disabled={!isAllTestsSelected}
+        />
+        {/* <CustomButton
     onPress={() => navigation.goBack()}
     title="Back"
     style={styles.nextButton}
     textStyle={styles.nextButtonText}
   /> */}
-</View>
+      </View>
     </View>
   );
 };
@@ -225,9 +235,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
-    marginBottom: "9%"
+    marginBottom: "9%",
   },
-  
 });
 
 export default InspectionReport1;

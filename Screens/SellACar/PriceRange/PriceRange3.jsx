@@ -8,6 +8,7 @@ import { TouchableWithoutFeedback } from "react-native";
 const PriceRange3 = () => {
   const navigation = useNavigation();
   const { carState, dispatch } = useCar();
+  const MAX_SAFE_INTEGER = 9007199254740985;
 
   // Function to format numbers with commas
   const formatNumberWithCommas = (num) => {
@@ -23,20 +24,71 @@ const PriceRange3 = () => {
     // Remove non-numeric characters
     const rawNumber = text.replace(/[^0-9]/g, "").replace(/^0+/, "");
 
-    // Format the number with commas
-    const formattedNumber = formatNumberWithCommas(rawNumber);
+    // Handle empty input
+    if (!rawNumber) {
+      setFormattedBidPrice("");
+      dispatch({
+        type: "UPDATE_FIELD",
+        section: "carPricing",
+        field: "buyNowPrice",
+        value: 0,
+      });
+      return;
+    }
 
-    // Update state for display
-    setFormattedBidPrice(formattedNumber);
-    // Dispatch raw numeric value to context
-    dispatch({
-      type: "UPDATE_FIELD",
-      section: "carPricing",
-      field: "buyNowPrice",
-      value: rawNumber ? parseInt(rawNumber) : 0,
-    });
+    // Convert to number for validation
+    const numberValue = parseInt(rawNumber);
+
+    // Check if the value exceeds the maximum safe integer
+    if (numberValue > MAX_SAFE_INTEGER) {
+      // Use the maximum safe integer instead
+      const maxValueString = MAX_SAFE_INTEGER.toString();
+      const formattedMaxValue = formatNumberWithCommas(maxValueString);
+
+      // Update state with maximum value
+      setFormattedBidPrice(formattedMaxValue);
+      dispatch({
+        type: "UPDATE_FIELD",
+        section: "carPricing",
+        field: "buyNowPrice",
+        value: MAX_SAFE_INTEGER,
+      });
+
+      // Optional: Show user feedback
+      // Alert.alert('Maximum Limit', 'Maximum buy now price is 9,007,199,254,740,991');
+    } else {
+      // Format the number with commas
+      const formattedNumber = formatNumberWithCommas(rawNumber);
+
+      // Update state for display
+      setFormattedBidPrice(formattedNumber);
+      // Dispatch raw numeric value to context
+      dispatch({
+        type: "UPDATE_FIELD",
+        section: "carPricing",
+        field: "buyNowPrice",
+        value: numberValue,
+      });
+    }
   };
-const isBidValid = carState.carPricing.buyNowPrice > 0;
+  // const handleBidInput = (text) => {
+  //   // Remove non-numeric characters
+  //   const rawNumber = text.replace(/[^0-9]/g, "").replace(/^0+/, "");
+
+  //   // Format the number with commas
+  //   const formattedNumber = formatNumberWithCommas(rawNumber);
+
+  //   // Update state for display
+  //   setFormattedBidPrice(formattedNumber);
+  //   // Dispatch raw numeric value to context
+  //   dispatch({
+  //     type: "UPDATE_FIELD",
+  //     section: "carPricing",
+  //     field: "buyNowPrice",
+  //     value: rawNumber ? parseInt(rawNumber) : 0,
+  //   });
+  // };
+  const isBidValid = carState.carPricing.buyNowPrice > 0;
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

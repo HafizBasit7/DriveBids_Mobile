@@ -211,6 +211,7 @@ const FiltersScreen = ({ route }) => {
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
         <MakeSelection
           makes={makes}

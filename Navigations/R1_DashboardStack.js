@@ -124,7 +124,7 @@ export default function R1_DashboardStack() {
             <Icon name="home" size={24} color={color} />
           ),
           tabBarLabel: "Home",
-          tabBarLabelStyle: { fontSize: formattedWidth * 3 },
+          tabBarLabelStyle: { fontSize: formattedWidth * 2.7 },
         }}
       />
 
@@ -155,8 +155,8 @@ export default function R1_DashboardStack() {
               <RedDotNotification />
             </View>
           ),
-          tabBarLabel: "Notification",
-          tabBarLabelStyle: { fontSize: formattedWidth * 3 },
+          tabBarLabel: "Notifications",
+          tabBarLabelStyle: { fontSize: formattedWidth * 2.7 },
         }}
       />
 
@@ -196,7 +196,7 @@ export default function R1_DashboardStack() {
           ),
 
           tabBarLabel: "Messages",
-          tabBarLabelStyle: { fontSize: formattedWidth * 3 },
+          tabBarLabelStyle: { fontSize: formattedWidth * 2.7 },
         }}
       />
 
@@ -224,7 +224,7 @@ export default function R1_DashboardStack() {
             <Icon name="settings" size={24} color={color} />
           ),
           tabBarLabel: "Settings",
-          tabBarLabelStyle: { fontSize: formattedWidth * 3 },
+          tabBarLabelStyle: { fontSize: formattedWidth * 2.7 },
         }}
       />
     </Tab.Navigator>
@@ -258,6 +258,8 @@ const styles = StyleSheet.create({
   },
   sellButtonWrapper: {
     position: "absolute",
+    marginLeft: 15,
+    // backgroundColor: "red",
     top: -25,
     alignItems: "center",
   },
@@ -269,6 +271,7 @@ const styles = StyleSheet.create({
   plusButton: {
     justifyContent: "center",
     alignItems: "center",
+    marginLeft: 0,
   },
   sellLabel: {
     fontSize: 13,
@@ -276,11 +279,11 @@ const styles = StyleSheet.create({
     color: "#2C6BED",
     marginTop: 5,
     textAlign: "center",
-    marginLeft: 5,
+    marginRight: 3,
   },
   plusContainer: {
-    width: 55,
-    height: 55,
+    width: 50,
+    height: 50,
     borderRadius: 30,
     backgroundColor: "#2C6BED",
     justifyContent: "center",
@@ -290,6 +293,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 5,
-    marginLeft: 10,
   },
 });

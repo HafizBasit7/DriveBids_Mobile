@@ -145,9 +145,13 @@ const BidsButtons = ({
             >
               {!buyNowMutation.isPending ? (
                 <>
-                  <Text style={styles.blueText}>{buyItNowTitle}</Text>
-                  <Text style={styles.price}>AED</Text>
-                  <Text style={styles.price}>
+                  <Text numberOfLines={1} style={styles.blueText}>
+                    {buyItNowTitle}
+                  </Text>
+                  <Text numberOfLines={1} style={styles.price}>
+                    AED
+                  </Text>
+                  <Text numberOfLines={1} style={styles.price}>
                     {formatAmount(car.buyNowPrice)}
                   </Text>
                 </>
@@ -182,7 +186,9 @@ const BidsButtons = ({
               style={[styles.button, styles.primaryButton]}
               onPress={() => navigation.navigate("PlaceBid", { car })}
             >
-              <Text style={styles.primaryText}>{placeBidTitle}</Text>
+              <Text numberOfLines={1} style={styles.primaryText}>
+                {placeBidTitle}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.infoIconBottom}
@@ -212,9 +218,13 @@ const BidsButtons = ({
             >
               {!mutation.isPending ? (
                 <>
-                  <Text style={styles.blueText}>{quickBidTitle}</Text>
-                  <Text style={styles.price}>AED </Text>
-                  <Text style={styles.price}>
+                  <Text numberOfLines={1} style={styles.blueText}>
+                    {quickBidTitle}
+                  </Text>
+                  <Text numberOfLines={1} style={styles.price}>
+                    AED{" "}
+                  </Text>
+                  <Text numberOfLines={1} style={styles.price}>
                     {computedQuickBid.toLocaleString()}
                   </Text>
                 </>
@@ -270,15 +280,22 @@ const BidsButtons = ({
         {!loadingBids && bid && (
           <View style={styles.container1}>
             <View>
-              <Text style={{ color: "#696969" }}>Current bid:</Text>
-              <Text style={{ color: "#696969" }}>Total Budget: </Text>
+              <Text numberOfLines={1} style={{ color: "#696969" }}>
+                Current bid:
+              </Text>
+              <Text numberOfLines={1} style={{ color: "#696969" }}>
+                Total Budget:{" "}
+              </Text>
             </View>
             <View>
-              <Text style={{ color: "#696969" }}>
-                {bid.bidAmount.toLocaleString()} AED
+              <Text
+                numberOfLines={1}
+                style={{ color: "#696969", flexShrink: 1 }}
+              >
+                {bid.bidAmount} AED
               </Text>
-              <Text style={{ color: "#696969" }}>
-                {bid.maxBudget.toLocaleString()} AED
+              <Text numberOfLines={1} style={{ color: "#696969" }}>
+                {bid.maxBudget} AED
               </Text>
             </View>
           </View>
@@ -324,6 +341,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
     color: "#777",
+    flexShrink: 1, // Allow text to shrink
   },
   primaryText: {
     fontSize: 12,
@@ -331,9 +349,10 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   price: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: "bold",
     color: "#B22222",
+    flexShrink: 1, // Allow text to shrink
   },
   infoIconBottom: {
     marginTop: 4,

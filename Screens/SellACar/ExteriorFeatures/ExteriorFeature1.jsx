@@ -29,7 +29,7 @@ const ExteriorFeature1 = () => {
     { id: 11, label: "Parking Sensors" },
     { id: 12, label: "3D Camera" },
     { id: 13, label: "Reverse Camera" },
-    { id: 14, label: "Immobilizer" },
+    { id: 14, label: "Immobiliser" },
     { id: 15, label: "Power Folding Mirrors" },
   ];
 
@@ -117,8 +117,7 @@ const ExteriorFeature1 = () => {
           style={styles.button}
           title="Next"
           onPress={() => navigation.navigate("InteriorFeature1")}
-disabled={!carState?.features?.exterior?.length}
-
+          disabled={!carState?.features?.exterior?.length}
         />
         <View style={{ height: 10 }} />
       </View>

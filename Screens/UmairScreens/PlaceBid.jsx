@@ -8,6 +8,7 @@ import {
   Animated,
   Keyboard,
   TouchableWithoutFeedback,
+  ScrollView,
 } from "react-native";
 import CustomButton from "../../CustomComponents/CustomButton";
 import WrapperComponent from "../../CustomComponents/WrapperComponent";
@@ -20,6 +21,8 @@ import { useNavigation } from "@react-navigation/native";
 
 const PlaceBid = ({ route }) => {
   const [bidAmount, setBidAmount] = useState("");
+  const MAX_SAFE_INTEGER = 9007199254740985;
+
   const [message, setMessage] = useState(null);
   const navigation = useNavigation("");
 
@@ -34,14 +37,14 @@ const PlaceBid = ({ route }) => {
   const minBidPrice = car.highestBid ? car.highestBid + 1 : car.staringBidPrice;
 
   const handleBidSelection = (amount) => {
-    setBidAmount(amount.toString());
+    handleBidAmountChange(amount.toString());
   };
 
   const handlePlaceBid = async () => {
     try {
       const result = await mutation.mutateAsync({
         carId: car._id,
-        bidAmount: parseInt(bidAmount),
+        bidAmount: parseInt(bidAmount.replace(/,/g, "")),
       });
 
       setMessage({
@@ -58,7 +61,28 @@ const PlaceBid = ({ route }) => {
       });
     }
   };
+  const handleBidAmountChange = (text) => {
+    // Remove non-numeric characters
+    const numericValue = text.replace(/[^0-9]/g, "");
 
+    // If empty, allow it
+    if (numericValue === "") {
+      setBidAmount("");
+      return;
+    }
+
+    // Convert to number for comparison
+    const numberValue = Number(numericValue);
+
+    // Check if the value exceeds the maximum
+    if (numberValue > MAX_SAFE_INTEGER) {
+      // Optional: Show alert or toast message
+      // Alert.alert('Maximum Limit', 'Maximum bid amount is 9,007,199,254,740,991');
+      setBidAmount(MAX_SAFE_INTEGER.toString());
+    } else {
+      setBidAmount(numericValue);
+    }
+  };
   return (
     <WrapperComponent>
       <DialogBox
@@ -75,7 +99,10 @@ const PlaceBid = ({ route }) => {
 
       <HomeHeader carId={car._id} scrollY={scrollY} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.container}
+        >
           {/* Main Content */}
           <View style={styles.content}>
             {/* Title */}
@@ -98,27 +125,25 @@ const PlaceBid = ({ route }) => {
                 placeholder="Enter Bid"
                 keyboardType="numeric"
                 value={bidAmount}
-                onChangeText={setBidAmount}
+                onChangeText={handleBidAmountChange}
               />
             </View>
 
             {/* Warning Text */}
             <Text style={styles.warning}>
-              Please bid AED {minBidPrice.toLocaleString()} or higher.
+              Please bid AED {minBidPrice} or higher.
             </Text>
 
             {/* Predefined Bid Options */}
             <View style={styles.buttonContainer}>
               {[minBidPrice + 49, minBidPrice + 99, minBidPrice + 249].map(
-                (amount) => (
+                (amount, index) => (
                   <TouchableOpacity
-                    key={amount}
+                    key={index}
                     style={styles.bidButton}
                     onPress={() => handleBidSelection(amount)}
                   >
-                    <Text style={styles.bidText}>
-                      AED {amount.toLocaleString()}
-                    </Text>
+                    <Text style={styles.bidText}>AED {amount}</Text>
                   </TouchableOpacity>
                 )
               )}
@@ -132,10 +157,14 @@ const PlaceBid = ({ route }) => {
           {/* Button at the Bottom */}
           {!mutation.isPending && (
             <View style={styles.buttonWrapper}>
-              <CustomButton title={"Place Bid Now"} onPress={handlePlaceBid} />
+              <CustomButton
+                disabled={bidAmount < minBidPrice}
+                title={"Place Bid Now"}
+                onPress={handlePlaceBid}
+              />
             </View>
           )}
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </WrapperComponent>
   );
@@ -144,8 +173,9 @@ const PlaceBid = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1, // Makes the whole screen usable
-    justifyContent: "space-between", // Pushes content & button apart
+    // justifyContent: "space-between", // Pushes content & button apart
     padding: 20,
+    paddingBottom: 50,
   },
   content: {
     flexGrow: 1, // Allows content to grow and push button down
@@ -220,13 +250,15 @@ const styles = StyleSheet.create({
   },
 
   bidText: {
-    fontSize: 14,
+    fontSize: 11,
+    fontWeight: "700",
     fontFamily: "Inter",
     color: "#2F61BF",
   },
   buttonWrapper: {
     alignItems: "center", // Centers button
-    // paddingBottom: 20, // Adds some spacing at the bottom
+    marginTop: 10,
+    paddingBottom: 50, // Adds some spacing at the bottom
   },
 });
 
