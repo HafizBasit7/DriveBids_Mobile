@@ -35,9 +35,9 @@ const CarDetails2 = () => {
 
   const onChangeCarCity = (value) => {
     dispatch({
-      type: 'UPDATE_FIELD',
-      section: 'carDetails',
-      field: 'location',
+      type: "UPDATE_FIELD",
+      section: "carDetails",
+      field: "location",
       value,
     });
     closeBottomSheet();
@@ -73,7 +73,9 @@ const CarDetails2 = () => {
         {/* Step Progress Indicator */}
         <View style={styles.lineContainer}>
           <View style={styles.line} />
-          <Text style={styles.lineText}>{`Step ${currentStep} of ${totalSteps}`}</Text>
+          <Text
+            style={styles.lineText}
+          >{`Step ${currentStep} of ${totalSteps}`}</Text>
           <View style={styles.line} />
         </View>
 
@@ -85,8 +87,18 @@ const CarDetails2 = () => {
         </View>
 
         {/* Location Input Field that opens bottom sheet */}
-        <View style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: height * 0.65 }}>
-          <TouchableOpacity style={styles.inputWrapper} onPress={openBottomSheet}>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: height * 0.65,
+          }}
+        >
+          <TouchableOpacity
+            style={styles.inputWrapper}
+            onPress={openBottomSheet}
+          >
             <TextInput
               style={styles.input}
               placeholder="Select location"
@@ -113,14 +125,13 @@ const CarDetails2 = () => {
           transparent={true}
           animationType="none"
         >
-          <KeyboardAvoidingView 
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
             style={{ flex: 1 }}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 40 : 0}
           >
             <TouchableWithoutFeedback onPress={closeBottomSheet}>
               <View style={styles.modalOverlay}>
-
                 <StatusBar
                   barStyle="dark-content"
                   backgroundColor="rgba(0,0,0,0.5)"
@@ -135,7 +146,9 @@ const CarDetails2 = () => {
                   >
                     <View style={styles.bottomSheetContent}>
                       <View style={styles.bottomSheetHeader}>
-                        <Text style={styles.bottomSheetTitle}>Select Location</Text>
+                        <Text style={styles.bottomSheetTitle}>
+                          Select Location
+                        </Text>
                         <TouchableOpacity onPress={closeBottomSheet}>
                           <Text style={styles.closeButton}>✕</Text>
                         </TouchableOpacity>
@@ -144,10 +157,10 @@ const CarDetails2 = () => {
                       {/* GooglePlacesAutocomplete inside bottom sheet */}
                       <GooglePlacesAutocomplete
                         ref={googlePlacesRef}
-                        placeholder='Search location'
+                        placeholder="Search location"
                         predefinedPlaces={[]}
                         textInputProps={{
-                          placeholderTextColor: '#000',
+                          placeholderTextColor: "#000",
                         }}
                         predefinedPlacesAlwaysVisible={false}
                         enablePoweredByContainer={false}
@@ -158,14 +171,14 @@ const CarDetails2 = () => {
                             coordinates: [
                               details?.geometry?.location?.lng,
                               details?.geometry?.location?.lat,
-                            ]
+                            ],
                           };
                           onChangeCarCity(updateLocation);
                         }}
-                        onFail={(error) => console.error('123', error)}
+                        onFail={(error) => console.error("123", error)}
                         query={{
-                          key: 'AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI',
-                          language: 'en',
+                          key: "AIzaSyB7uPqMeibItFdpdNa1M4pF0jd6L1xOU7g",
+                          language: "en",
                         }}
                         autoFillOnNotFound={false}
                         currentLocation={false}
@@ -175,8 +188,8 @@ const CarDetails2 = () => {
                         filterReverseGeocodingByTypes={[]}
                         GooglePlacesDetailsQuery={{}}
                         GooglePlacesSearchQuery={{
-                          rankby: 'distance',
-                          type: 'restaurant',
+                          rankby: "distance",
+                          type: "restaurant",
                         }}
                         GoogleReverseGeocodingQuery={{}}
                         isRowScrollable={true}
@@ -188,7 +201,11 @@ const CarDetails2 = () => {
                         nearbyPlacesAPI="GooglePlacesSearch"
                         numberOfLines={1}
                         onNotFound={() => {}}
-                        onTimeout={() => console.warn('google places autocomplete: request timeout')}
+                        onTimeout={() =>
+                          console.warn(
+                            "google places autocomplete: request timeout"
+                          )
+                        }
                         suppressDefaultStyles={false}
                         textInputHide={false}
                         timeout={20000}
@@ -199,14 +216,14 @@ const CarDetails2 = () => {
                             flex: 0,
                           },
                           textInputContainer: {
-                            backgroundColor: '#fff',
+                            backgroundColor: "#fff",
                             borderRadius: 10,
                             borderWidth: 1,
-                            borderColor: '#e0e0e0',
+                            borderColor: "#e0e0e0",
                             marginHorizontal: 15,
                             marginTop: 10,
                             marginBottom: 5,
-                            shadowColor: '#000',
+                            shadowColor: "#000",
                             shadowOffset: { width: 0, height: 1 },
                             shadowOpacity: 0.1,
                             shadowRadius: 1,
@@ -214,17 +231,17 @@ const CarDetails2 = () => {
                           },
                           textInput: {
                             height: 50,
-                            color: '#333',
+                            color: "#333",
                             fontSize: 16,
                             paddingHorizontal: 15,
                             borderRadius: 10,
                           },
                           listView: {
-                            backgroundColor: '#fff',
+                            backgroundColor: "#fff",
                             marginHorizontal: 15,
                             borderRadius: 10,
                             elevation: 1,
-                            shadowColor: '#000',
+                            shadowColor: "#000",
                             shadowOffset: { width: 0, height: 1 },
                             shadowOpacity: 0.1,
                             shadowRadius: 3,
@@ -233,17 +250,17 @@ const CarDetails2 = () => {
                           },
                           row: {
                             padding: 13,
-                            height: 'auto',
+                            height: "auto",
                             minHeight: 44,
-                            flexDirection: 'row',
+                            flexDirection: "row",
                           },
                           separator: {
                             height: 0.5,
-                            backgroundColor: '#c8c7cc',
+                            backgroundColor: "#c8c7cc",
                           },
                           description: {
                             fontSize: 14,
-                            color: '#555',
+                            color: "#555",
                           },
                         }}
                       />

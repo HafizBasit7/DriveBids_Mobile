@@ -84,7 +84,7 @@ const ChangeLocationScreen = () => {
             }, 200);
           }}
           query={{
-            key: "AIzaSyC2oZNWzhuw6yjImkFYSvZ3miShktBq0gI",
+            key: "AIzaSyB7uPqMeibItFdpdNa1M4pF0jd6L1xOU7g",
             language: "en",
           }}
           predefinedPlaces={predefinedPlaces}
