@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "158480824075",
+    "project_id": "drivebidz",
+    "storage_bucket": "drivebidz.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158480824075:android:5bfcd493a32db3c477140e",
+        "android_client_info": {
+          "package_name": "com.umairarshad.DriveBidz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsB0qhJbMuP90KDVMfHBxZXUXbMsF4hg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,31 +1,32 @@
-import AppNavigator from "./Navigations/StackNavigation";
+import { enableScreens } from 'react-native-screens';
+enableScreens();
 import useLoadFonts from "./Hooks/useLoadFonts";
-import { StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-// screens
-import SignupScreen from "./Screens/signupscreen";
-import SignInScreen from "./Screens/SignInScreen";
-import ForgetPass from "./Screens/ForgetPass";
-import Verification from "./Screens/Verification";
-// Components
-import Header from "./CustomComponents/Header";
-import Sidebar from "./CustomComponents/Sidebar";
-import HomeBanner from "./CustomComponents/HomeBanner";
-import { GlobalStyles } from "./Styles/GlobalStyles";
+import R1_App from "./R1_App";
+import AuthContextProvider from "./R1_Contexts/authContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SocketContextProvider from "./R1_Contexts/socketContext";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    }, 
+  }
+});
+
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
   if (!fontsLoaded) {
     return null;
   }
-  return (
-    <>
-      <AppNavigator />
-    </>
+  return (    
+    <AuthContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <SocketContextProvider>
+          <R1_App/>
+        </SocketContextProvider>
+      </QueryClientProvider>
+    </AuthContextProvider>
   );
 }
-const styles = StyleSheet.create({
-  safeContainer: {
-    flex: 1,
-  },
-});

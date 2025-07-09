@@ -5,110 +5,164 @@ import {
   Dimensions,
   StatusBar,
   Text,
-  Image,
   TextInput,
   TouchableOpacity,
+  Animated,
 } from "react-native";
-import SvgHamburger from "../assets/SVG/TahirSvgs/Hamburger.svg";
+import SvgBack from "../assets/SVG/TahirSvgs/back.svg";
 import SvgLocation from "../assets/SVG/TahirSvgs/Location.svg";
 import SvgDown from "../assets/SVG/TahirSvgs/Down.svg";
 import SvgFilter from "../assets/SVG/TahirSvgs/Filter.svg";
 import SvgSearch from "../assets/SVG/TahirSvgs/Search.svg";
+import { useAuth } from "../R1_Contexts/authContext";
+import { useNavigation } from "@react-navigation/native";
+import { Image } from "expo-image";
 
-const Header = () => {
-  // State for search input
+const { height, width } = Dimensions.get("window");
+
+// Animation Constants
+const MAX_HEADER_HEIGHT = height * 0.22;
+const MIN_HEADER_HEIGHT = height * 0.13;
+const SCROLL_RANGE = 150;
+
+const Header = ({ showSearch = true, scrollY, title = null }) => {
+  // Interpolations for animation
+  const headerHeight = scrollY?.interpolate({
+    inputRange: [0, SCROLL_RANGE],
+    outputRange: [MAX_HEADER_HEIGHT, MIN_HEADER_HEIGHT],
+    extrapolate: "clamp",
+  });
+
+  const searchOpacity = scrollY?.interpolate({
+    inputRange: [0, SCROLL_RANGE * 0.5],
+    outputRange: [1, 0],
+    extrapolate: "clamp",
+  });
+
+  const searchScale = scrollY?.interpolate({
+    inputRange: [0, SCROLL_RANGE * 0.5],
+    outputRange: [1, 0.9],
+    extrapolate: "clamp",
+  });
+
+  // Search input state
   const [searchText, setSearchText] = useState("");
+  const { authState } = useAuth();
+  const navigation = useNavigation();
 
-  // State for selected location
-  const [location, setLocation] = useState("Birmingham");
+  const currentSelectedLocation =
+    authState.selectedLocation?.name || authState.user.location?.name;
 
-  // State for profile image
-  const [profileImage, setProfileImage] = useState(
-    "https://your-profile-pic-url.com"
-  );
+  const navigateToChangeLocation = () => {
+    navigation.navigate("ChangeLocation");
+  };
 
   return (
-    <View style={styles.container}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        translucent
-      />
+    <View style={{ backgroundColor: "#fff" }}>
+      <View style={styles.container}>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="transparent"
+          translucent
+        />
 
-      {/* Header Section */}
-      <View style={styles.header}>
-        <View style={styles.rowContainer}>
-          {/* Left Section: Hamburger Icon */}
-          <TouchableOpacity
-            style={styles.left}
-            onPress={() => console.log("Menu clicked")}
-          >
-            <SvgHamburger width={20} height={20} />
-          </TouchableOpacity>
+        <Animated.View style={[styles.header, { height: headerHeight }]}>
+          <View style={styles.rowContainer}>
+            {navigation.canGoBack() && (
+              <TouchableOpacity
+                style={styles.left}
+                onPress={() => navigation.goBack()}
+              >
+                <SvgBack width={30} height={28} />
+              </TouchableOpacity>
+            )}
 
-          {/* Center Section: Location Selector */}
-          <TouchableOpacity
-            style={styles.center}
-            onPress={() => console.log("Change Location")}
-          >
-            <SvgLocation width={20} height={20} />
-            <Text style={styles.text}>{location}</Text>
-            <SvgDown width={15} height={15} />
-          </TouchableOpacity>
+            {!navigation.canGoBack() && (
+              <TouchableOpacity style={styles.left}></TouchableOpacity>
+            )}
 
-          {/* Right Section: Profile Picture */}
-          <TouchableOpacity
-            style={styles.right}
-            onPress={() => console.log("Profile Clicked")}
-          >
-            <Image source={{ uri: profileImage }} style={styles.profilePic} />
-          </TouchableOpacity>
-        </View>
+            {!title && (
+              <TouchableOpacity
+                style={styles.center}
+                onPress={navigateToChangeLocation}
+              >
+                <SvgLocation width={15} height={18} />
+                <Text style={[styles.text]} numberOfLines={1}>
+                  {currentSelectedLocation || "Your City"}
+                </Text>
+                <SvgDown width={15} height={15} />
+              </TouchableOpacity>
+            )}
 
-        {/* Search and Filter Section */}
-        <View style={styles.searchContainer}>
-          {/* Left: Search Bar */}
-          <View style={styles.searchBox}>
-            <SvgSearch width={18} height={18} style={styles.searchIcon} />
-            <TextInput
-              placeholder="Search for Honda Pilot 7-Passenger"
-              style={styles.searchInput}
-              placeholderTextColor="#888"
-              value={searchText}
-              onChangeText={setSearchText}
-            />
+            {title && (
+              <Text style={{ fontWeight: "800", fontSize: 18 }}>{title}</Text>
+            )}
+
+            <TouchableOpacity
+              style={styles.right}
+              onPress={() => navigation.navigate("Profile")}
+            >
+              <Image
+                source={{
+                  uri:
+                    authState?.user?.imgUrl ||
+                    "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png",
+                }}
+                style={styles.profilePic}
+              />
+            </TouchableOpacity>
           </View>
 
-          {/* Right: Filter Icon */}
-          <TouchableOpacity
-            style={styles.filterIcon}
-            onPress={() => console.log("Filter Clicked")}
-          >
-            <SvgFilter width={25} height={25} />
-          </TouchableOpacity>
-        </View>
+          {showSearch && (
+            <Animated.View
+              style={[
+                styles.searchContainer,
+                { opacity: searchOpacity, transform: [{ scale: searchScale }] },
+              ]}
+            >
+              <View style={styles.searchBox}>
+                <SvgSearch width={18} height={18} style={styles.searchIcon} />
+                <TextInput
+                  onPress={() => {
+                    navigation.navigate("FiltersScreen", { fromSearch: true });
+                  }}
+                  placeholder="Search for Honda Pilot 7-Passenger"
+                  style={styles.searchInput}
+                  placeholderTextColor="#888"
+                  value={searchText}
+                  onChangeText={setSearchText}
+                />
+              </View>
+
+              <TouchableOpacity
+                style={styles.filterIcon}
+                onPress={() => navigation.navigate("FiltersScreen")}
+              >
+                <SvgFilter width={25} height={25} />
+              </TouchableOpacity>
+            </Animated.View>
+          )}
+        </Animated.View>
       </View>
     </View>
   );
 };
 
-const { height, width } = Dimensions.get("window");
-
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: "100%",
-    backgroundColor: "white",
+    backgroundColor: "#FEE226",
+    borderBottomLeftRadius: 60,
+    borderBottomRightRadius: 60,
   },
   header: {
     width: width,
-    height: height * 0.27,
     backgroundColor: "#FEE226",
     borderBottomLeftRadius: 60,
     borderBottomRightRadius: 60,
     alignItems: "center",
     justifyContent: "flex-start",
-    paddingVertical: 15,
+    paddingVertical: 6,
   },
   rowContainer: {
     flexDirection: "row",
@@ -127,24 +181,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    marginRight: 30,
   },
   right: {
     width: "20%",
     alignItems: "flex-end",
   },
   text: {
-    marginHorizontal: 8,
+    marginHorizontal: 6,
     fontSize: 16,
     fontWeight: "bold",
   },
   profilePic: {
-    width: 40,
-    height: 40,
+    width: 38,
+    height: 38,
     borderRadius: 20,
     backgroundColor: "gray",
+    marginRight: 5,
   },
-
-  // Search and Filter Section
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",

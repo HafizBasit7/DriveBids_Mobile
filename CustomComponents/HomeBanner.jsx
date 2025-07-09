@@ -8,10 +8,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import BannerCar from "../assets/UmairAssets/BannerCar.svg"; // Ensure correct path
+import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
 
 const HomeBanner = () => {
+
+  const navigation = useNavigation();
+
   return (
     <View style={styles.outerContainer}>
       <View style={styles.container}>
@@ -33,7 +37,7 @@ const HomeBanner = () => {
             </Text>
           </View>
           <View style={styles.bottomRight}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Sell", {screen: 'SellCar'})}}>
               <Text style={styles.buttonText}>Post Ad Now!</Text>
             </TouchableOpacity>
           </View>
@@ -45,7 +49,6 @@ const HomeBanner = () => {
 
 const styles = StyleSheet.create({
   outerContainer: {
-    backgroundColor: "#FFFFFF",
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
@@ -55,7 +58,7 @@ const styles = StyleSheet.create({
     height: height * 0.2, // Increased height for the new section
     backgroundColor: "#FEE226",
     borderRadius: 20,
-    marginTop: 50,
+    marginTop: 25,
     padding: 15,
   },
   topSection: {
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: Platform.OS === "ios" ? -1 : 1 }],
   },
   text: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: "600",
     fontFamily: "Inter-SemiBold", // Ensure the font is properly loaded
   },
