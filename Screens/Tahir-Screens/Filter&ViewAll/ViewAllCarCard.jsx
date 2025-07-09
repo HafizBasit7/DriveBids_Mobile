@@ -248,12 +248,15 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     flexDirection: 'row',
-    height: 180, // Fixed height based on screen width
+    height: 155, // Fixed height based on screen width
     overflow: 'hidden',
   },
   imageContainer: {
     width: '35%',
-    height: '100%',
+    aspectRatio: 1.0, // gives a taller box to avoid over-cropping
+  overflow: 'hidden',
+  borderTopLeftRadius: 15,
+  borderBottomLeftRadius: 15,
   },
   favoriteIcon: {
     position: 'absolute',

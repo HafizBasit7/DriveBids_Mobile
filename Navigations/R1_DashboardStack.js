@@ -15,7 +15,7 @@ import R1_Profile from "./R1_Profile";
 import R1_Notification from "./R1_Notifications";
 import { useQuery } from "@tanstack/react-query";
 import { getNotificationCount } from "../API_Callings/R1_API/Auth";
-import { CommonActions } from "@react-navigation/native";
+import { CommonActions, getFocusedRouteNameFromRoute  } from "@react-navigation/native";
 import { hasUnreadMessages } from "../API_Callings/R1_API/Chat";
 
 //Custom button
@@ -160,13 +160,20 @@ export default function R1_DashboardStack() {
         }}
       />
 
-      <Tab.Screen
-        name="Sell"
-        component={R1_SellCarStack}
-        options={{
-          tabBarButton: (props) => <CustomTabBarButton {...props} />,
-        }}
-      />
+   <Tab.Screen
+  name="Sell"
+  component={R1_SellCarStack}
+  options={({ route }) => {
+    const routeName =
+      route?.state?.routes?.[route.state.index || 0]?.name ?? "SellCar";
+
+    return {
+      tabBarStyle: routeName === "Sell" ? styles.tabBar : { display: "none" },
+      tabBarButton: (props) => <CustomTabBarButton {...props} />,
+    };
+  }}
+/>
+
 
       <Tab.Screen
         name="Messages"
@@ -201,32 +208,40 @@ export default function R1_DashboardStack() {
       />
 
       <Tab.Screen
-        name="Profile"
-        component={R1_Profile}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            e.preventDefault();
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [
-                  {
-                    name: "Profile",
-                    state: { routes: [{ name: "ProfileScreen" }] },
-                  },
-                ],
-              })
-            );
-          },
-        })}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Icon name="settings" size={24} color={color} />
-          ),
-          tabBarLabel: "Settings",
-          tabBarLabelStyle: { fontSize: formattedWidth * 2.7 },
-        }}
-      />
+  name="Profile"
+  component={R1_Profile}
+  listeners={({ navigation }) => ({
+    tabPress: (e) => {
+      e.preventDefault();
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            {
+              name: "Profile",
+              state: { routes: [{ name: "ProfileScreen" }] },
+            },
+          ],
+        })
+      );
+    },
+  })}
+  options={({ route }) => {
+    const focusedRoute = getFocusedRouteNameFromRoute(route) ?? 'ProfileScreen';
+    const isMainScreen = focusedRoute === 'ProfileScreen';
+
+    return {
+      tabBarStyle: isMainScreen ? styles.tabBar : { display: 'none' },
+      tabBarIcon: ({ color }) => (
+        <Icon name="settings" size={24} color={color} />
+      ),
+      tabBarLabel: "Settings",
+      tabBarLabelStyle: { fontSize: formattedWidth * 2.7 },
+    };
+  }}
+/>
+
+
     </Tab.Navigator>
   );
 }

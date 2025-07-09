@@ -387,7 +387,7 @@ const ProfileEditScreen = () => {
           {!loading && (
             <View style={styles.buttonContainer}>
               <CustomButton
-                style={{ marginBottom: 10 }}
+                style={{ marginBottom: 10, marginTop:30 }}
                 title="Save Changes"
                 onPress={handleSaveData}
               />

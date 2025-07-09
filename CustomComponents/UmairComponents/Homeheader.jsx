@@ -355,7 +355,12 @@ const HomeHeader = ({ carId, scrollY }) => {
           scrollEventThrottle={16}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            { useNativeDriver: false }
+            { useNativeDriver: false,
+    listener: (event) => {
+      const offsetX = event.nativeEvent.contentOffset.x;
+      const newIndex = Math.round(offsetX / width);
+      setCurrentIndex(newIndex);
+    }, }
           )}
         >
           {mediaItems.map((item, index) => renderMediaItem({ item, index }))}
@@ -499,10 +504,12 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: GlobalStyles.colors.HomeHeaderColour,
     position: "relative",
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 50,
+    
   },
   image: {
     width: width,
-    height: 170,
+    height: 230,
     resizeMode: "cover",
   },
   backIconContainer: {

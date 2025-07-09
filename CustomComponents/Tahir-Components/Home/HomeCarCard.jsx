@@ -229,6 +229,8 @@ const styles = StyleSheet.create({
     shadowRadius: 9,
     elevation: 2,
     marginVertical: 10,
+    
+
   },
   image: {
     width: "100%",
@@ -301,6 +303,8 @@ const styles = StyleSheet.create({
     width: "60%",
 
     alignSelf: "center",
+     marginTop: 10,
+  marginBottom: 10, 
   },
   buttonText: {
     fontFamily: "Inter-SemiBold",

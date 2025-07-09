@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Dimensions,
+  Linking 
 } from "react-native";
 // import { LinearGradient } from "expo-linear-gradient";
 import { GlobalStyles } from "../../../Styles/GlobalStyles";
@@ -151,12 +152,17 @@ export default function Terms() {
 
         {/* Contact Section */}
         <View style={styles.contactSection}>
-          <View style={styles.divider} />
-          <Text style={styles.contactText}>
-            Questions about these terms? Contact us at{" "}
-            <Text style={styles.contactEmail}>legal@drivebidz.com</Text>
-          </Text>
-        </View>
+  <View style={styles.divider} />
+  <Text style={styles.contactText}>
+    Questions about these terms? Contact us at{' '}
+    <Text
+      style={styles.contactEmail}
+      onPress={() => Linking.openURL('mailto:legal@drivebidz.com')}
+    >
+      legal@drivebidz.com
+    </Text>
+  </Text>
+</View>
 
         {/* Bottom Spacing */}
         <View style={styles.bottomSpacing} />

@@ -24,7 +24,7 @@ const MakeModel = ({ car }) => {
         <View key={index} style={styles.item}>
           <View style={styles.iconWrapper}>
             <View style={styles.iconBorder}>
-              <FontAwesome5 name={item.icon} size={16} color="#2F61BF" />
+              <FontAwesome5 name={item.icon} size={12} color="#2F61BF" />
             </View>
           </View>
           <Text style={styles.label}>{item.label}</Text>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   iconWrapper: {
     backgroundColor: "#fff",
     borderRadius: 10,
-    padding: 8,
+    padding: 6,
     elevation: 3,
     shadowColor: "#000",
     shadowOpacity: 0.1,
@@ -62,22 +62,22 @@ const styles = StyleSheet.create({
   },
   iconBorder: {
     backgroundColor: "#fff",
-    borderWidth: 4,
+    borderWidth: 3,
     borderColor: "#2F61BF",
     borderRadius: 12,
-    padding: 10,
+    padding: 6,
     alignItems: "center",
     justifyContent: "center",
   },
   label: {
-    fontSize: 12,
+    fontSize: 13,
     color: "#777",
     fontWeight: "bold",
     marginTop: 5,
     textAlign: "center",
   },
   value: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: "bold",
     color: "#000",
   },

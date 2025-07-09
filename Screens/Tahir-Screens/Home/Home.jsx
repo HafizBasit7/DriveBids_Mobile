@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   ScrollView,
   Animated,
   RefreshControl,
+  
 } from "react-native";
 import CustomButton from "../../../CustomComponents/CustomButton";
 import { useNavigation } from "@react-navigation/native";
@@ -23,12 +24,17 @@ import { Icon } from "react-native-elements";
 import Loader from "../../../CustomComponents/Loader";
 import { useAuth } from "../../../R1_Contexts/authContext";
 import Nodata from "../../../CustomComponents/NoData";
-
+import { useIsFocused } from "@react-navigation/native";
 export default Home = () => {
+  const isFocused = useIsFocused();
   const scrollY = useRef(new Animated.Value(0)).current;
   const { authState } = useAuth();
 
   const navigation = useNavigation();
+  // Override canGoBack only when Home is focused
+  if (isFocused) {
+    navigation.canGoBack = () => false;
+  }
 
   const currentSelectedLocation = authState.selectedLocation ||
     authState.user.location || { coordinates: [73.1128313, 33.5255503] };
